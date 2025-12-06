@@ -3395,6 +3395,145 @@ negℤ-distribˡ-*ℤ (mkℤ a b) (mkℤ c d) =
 -- Proof outline: 1/2 + 1/2 = (1·2 + 1·2)/(2·2) = 4/4 ≃ 1/1
 
 -- ═══════════════════════════════════════════════════════════════════════════
+-- § 12.7  CANONICAL FORM: THE OBSERVER'S CHOICE
+-- ═══════════════════════════════════════════════════════════════════════════
+--
+-- The Setoid ℚ has many representatives for the same rational:
+--   1/2 ≃ℚ 2/4 ≃ℚ 3/6 ≃ℚ ...
+--
+-- The CANONICAL FORM chooses the unique shortest representative.
+-- This is the "Observer" in the tetrahedron's center:
+--   From infinitely many equivalent descriptions,
+--   ONE is selected as the "actual" value.
+--
+-- Philosophically: This is where DISCRETE meets CONTINUOUS.
+-- The equivalence class is "fuzzy"/continuous; the canonical form is discrete.
+
+-- Decidable ≤ for ℕ (needed for comparisons)
+_≤ℕ_ : ℕ → ℕ → Bool
+zero  ≤ℕ _     = true
+suc _ ≤ℕ zero  = false
+suc m ≤ℕ suc n = m ≤ℕ n
+
+-- Greatest Common Divisor (Euclidean algorithm, subtraction-based)
+-- Uses fuel to ensure termination (Agda requires structural recursion)
+gcd-fuel : ℕ → ℕ → ℕ → ℕ
+gcd-fuel zero    m n       = m + n           -- out of fuel, return sum
+gcd-fuel (suc _) zero n    = n               -- gcd(0,n) = n
+gcd-fuel (suc _) m zero    = m               -- gcd(m,0) = m
+gcd-fuel (suc f) (suc m) (suc n) with (suc m) ≤ℕ (suc n)
+... | true  = gcd-fuel f (suc m) (n ∸ m)     -- m ≤ n: gcd(m, n-m)
+... | false = gcd-fuel f (m ∸ n) (suc n)     -- m > n: gcd(m-n, n)
+
+-- gcd with enough fuel (m + n is always sufficient)
+gcd : ℕ → ℕ → ℕ
+gcd m n = gcd-fuel (m + n) m n
+
+-- For ℕ⁺, gcd is always ≥ 1 when applied to positive numbers
+gcd⁺ : ℕ⁺ → ℕ⁺ → ℕ⁺
+gcd⁺ one⁺ _ = one⁺
+gcd⁺ _ one⁺ = one⁺
+gcd⁺ (suc⁺ m) (suc⁺ n) with gcd (suc (⁺toℕ m)) (suc (⁺toℕ n))
+... | zero  = one⁺  -- impossible for positive inputs, but need totality
+... | suc k = suc⁺ (ℕ→ℕ⁺-helper k)
+  where
+    ℕ→ℕ⁺-helper : ℕ → ℕ⁺
+    ℕ→ℕ⁺-helper zero = one⁺
+    ℕ→ℕ⁺-helper (suc n) = suc⁺ (ℕ→ℕ⁺-helper n)
+
+-- Integer division (truncated), with fuel for termination
+div-fuel : ℕ → ℕ → ℕ⁺ → ℕ
+div-fuel zero    _       _ = zero             -- out of fuel
+div-fuel (suc _) zero    _ = zero             -- 0 / d = 0
+div-fuel (suc f) (suc n) d with (suc n) ≤ℕ ⁺toℕ d
+... | true  = zero                            -- n < d: quotient is 0
+... | false = suc (div-fuel f (n ∸ ⁺toℕ d) d) -- n ≥ d: 1 + (n-d)/d
+
+_div_ : ℕ → ℕ⁺ → ℕ
+n div d = div-fuel n n d  -- n steps is enough
+
+-- Integer division for ℤ (preserving sign)
+divℤ : ℤ → ℕ⁺ → ℤ
+divℤ (mkℤ p n) d = mkℤ (p div d) (n div d)
+
+-- Absolute value of ℤ as ℕ
+absℤ : ℤ → ℕ
+absℤ (mkℤ p n) with p ≤ℕ n
+... | true  = n ∸ p  -- negative: |n - p| = n - p
+... | false = p ∸ n  -- positive: |p - n| = p - n
+
+-- Sign of ℤ: true if non-negative
+signℤ : ℤ → Bool
+signℤ (mkℤ p n) with p ≤ℕ n
+... | true  = false  -- n ≥ p means negative or zero
+... | false = true   -- p > n means positive
+
+-- ═══════════════════════════════════════════════════════════════════════════
+-- § 12.7.1  THE NORMALIZE FUNCTION
+-- ═══════════════════════════════════════════════════════════════════════════
+--
+-- normalize (a/b) = (a/g) / (b/g) where g = gcd(|a|, b)
+--
+-- This selects the UNIQUE canonical representative:
+--   • Denominator is always positive (by construction)
+--   • Numerator and denominator are coprime
+--   • This is the "Observer's Choice" - the discrete from the continuous
+
+-- Helper: ℕ to ℕ⁺ (with fallback to one⁺ for zero)
+ℕtoℕ⁺ : ℕ → ℕ⁺
+ℕtoℕ⁺ zero    = one⁺
+ℕtoℕ⁺ (suc n) = suc⁺ (ℕtoℕ⁺ n)
+
+-- Normalize a rational to canonical form
+normalize : ℚ → ℚ
+normalize (a / b) = 
+  let g = gcd (absℤ a) (⁺toℕ b)
+      g⁺ = ℕtoℕ⁺ g
+  in divℤ a g⁺ / ℕtoℕ⁺ (⁺toℕ b div g⁺)
+
+-- ═══════════════════════════════════════════════════════════════════════════
+-- § 12.7.2  CANONICAL FORM PRESERVES EQUIVALENCE
+-- ═══════════════════════════════════════════════════════════════════════════
+--
+-- THEOREM: normalize q ≃ℚ q
+-- The canonical form is equivalent to the original.
+-- 
+-- Proof would require showing: (a/g) * d ≃ℤ (c/g) * (b/g) when a*d ≃ℤ c*b
+-- This is algebraically straightforward but technically involved.
+
+-- The proof requires gcd properties:
+--   gcd-divides : gcd m n divides both m and n
+--   gcd-coprime : gcd (m/g) (n/g) ≡ 1
+-- With these, normalize-≃ℚ follows from basic algebra.
+--
+-- The key insight: dividing numerator AND denominator by the same g
+-- preserves cross-multiplication equality: (a/g)*(d) = (c)*(b/g) 
+-- follows from a*d = c*b by cancellation.
+
+-- ═══════════════════════════════════════════════════════════════════════════
+-- § 12.7.3  THE PHILOSOPHICAL MEANING
+-- ═══════════════════════════════════════════════════════════════════════════
+--
+-- The normalize function is the OBSERVER in the mathematical sense:
+--
+--   EQUIVALENCE CLASS (infinitely many representations)
+--       ↓ normalize (Observer's Choice)
+--   CANONICAL FORM (unique discrete value)
+--
+-- This mirrors the physical situation:
+--   • The Setoid structure = superposition of possibilities
+--   • The normalize function = measurement/observation
+--   • The canonical form = the "collapsed" definite state
+--
+-- In the K₄ tetrahedron:
+--   • The 4 vertices = distinguishable states
+--   • The center = the Observer's perspective
+--   • normalize = projecting from the center to a vertex
+--
+-- This is NOT a metaphor—it's the mathematical structure that
+-- MAKES observation possible: choosing one from many equivalent descriptions.
+
+-- ═══════════════════════════════════════════════════════════════════════════
 -- § 12.8  WHY ℚ, NOT ℝ, IS FUNDAMENTAL
 -- ═══════════════════════════════════════════════════════════════════════════
 --
@@ -7077,14 +7216,15 @@ record StringTension : Set where
     value    : ℕ  -- σ > 0 (use ℕ for positivity)
     positive : value ≡ zero → ⊥  -- σ ≠ 0
 
--- Absolute value of integer (for Wilson magnitude comparison)
-absℤ : ℤ → ℕ
-absℤ (mkℤ p n) = p + n  -- |p - n| ≤ p + n, good enough for ordering
+-- Note: absℤ defined in § 12.7 is the precise absolute value.
+-- For Wilson magnitude, we use a simpler upper bound.
+absℤ-bound : ℤ → ℕ
+absℤ-bound (mkℤ p n) = p + n  -- |p - n| ≤ p + n, good enough for ordering
 
 -- Wilson magnitude ordering: |W₁| ≥ |W₂| means smaller loop has larger value
 -- This is the PHYSICAL content of area law
 _≥W_ : ℤ → ℤ → Set
-w₁ ≥W w₂ = absℤ w₂ ≤ absℤ w₁
+w₁ ≥W w₂ = absℤ-bound w₂ ≤ absℤ-bound w₁
 
 -- Area Law: Wilson value decreases with area
 -- This is the ORDERING property (monotonic decay)
