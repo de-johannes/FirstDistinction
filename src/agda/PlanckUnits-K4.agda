@@ -25,7 +25,7 @@
 -- Author: Johannes + Claude
 -- Date: 2025-12-03
 
-module exploration.PlanckUnits-K4 where
+module PlanckUnits-K4 where
 
 -- ─────────────────────────────────────────────────────────────────────────────
 -- § 1  BASIC TYPES

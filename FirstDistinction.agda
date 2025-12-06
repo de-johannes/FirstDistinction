@@ -3592,6 +3592,16 @@ negℤ-distribˡ-*ℤ (mkℤ a b) (mkℤ c d) =
       (*ℤ-distribˡ-+ℤ z x y)
       (+ℤ-cong {z *ℤ x} {x *ℤ z} {z *ℤ y} {y *ℤ z} (*ℤ-comm z x) (*ℤ-comm z y)))
 
+-- Helper: rotate middle element in triple product
+-- (x*y)*z ≃ (x*z)*y via assoc-comm-assoc
+*ℤ-rotate : ∀ (x y z : ℤ) → ((x *ℤ y) *ℤ z) ≃ℤ ((x *ℤ z) *ℤ y)
+*ℤ-rotate x y z = 
+  ≃ℤ-trans {(x *ℤ y) *ℤ z} {x *ℤ (y *ℤ z)} {(x *ℤ z) *ℤ y}
+    (*ℤ-assoc x y z)
+    (≃ℤ-trans {x *ℤ (y *ℤ z)} {x *ℤ (z *ℤ y)} {(x *ℤ z) *ℤ y}
+      (*ℤ-cong-r x (*ℤ-comm y z))
+      (≃ℤ-sym {(x *ℤ z) *ℤ y} {x *ℤ (z *ℤ y)} (*ℤ-assoc x z y)))
+
 -- ═══════════════════════════════════════════════════════════════════════════
 -- TRANSITIVITY OF ≃ℚ (The Key Theorem)
 -- ═══════════════════════════════════════════════════════════════════════════
@@ -3828,6 +3838,106 @@ negℤ-distribˡ-*ℤ (mkℤ a b) (mkℤ c d) =
 -- Left inverse: (-q) + q ≃ 0
 +ℚ-inverseˡ : ∀ q → ((-ℚ q) +ℚ q) ≃ℚ 0ℚ
 +ℚ-inverseˡ q = ≃ℚ-trans {(-ℚ q) +ℚ q} {q +ℚ (-ℚ q)} {0ℚ} (+ℚ-comm (-ℚ q) q) (+ℚ-inverseʳ q)
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- ASSOCIATIVITY OF +ℚ (The Key Theorem)
+-- ─────────────────────────────────────────────────────────────────────────────
+-- (p + q) + r ≃ p + (q + r)
+
++ℚ-assoc : ∀ p q r → ((p +ℚ q) +ℚ r) ≃ℚ (p +ℚ (q +ℚ r))
++ℚ-assoc (a / b) (c / d) (e / f) = goal
+  where
+    -- Helpers for ℤ versions of denominators
+    B : ℤ
+    B = ⁺toℤ b
+    D : ℤ
+    D = ⁺toℤ d
+    F : ℤ
+    F = ⁺toℤ f
+    BD : ℤ
+    BD = ⁺toℤ (b *⁺ d)
+    DF : ℤ
+    DF = ⁺toℤ (d *⁺ f)
+    
+    -- LHS and RHS numerators
+    lhs-num : ℤ
+    lhs-num = ((a *ℤ D) +ℤ (c *ℤ B)) *ℤ F +ℤ (e *ℤ BD)
+    rhs-num : ℤ
+    rhs-num = (a *ℤ DF) +ℤ (((c *ℤ F) +ℤ (e *ℤ D)) *ℤ B)
+
+    -- Key homomorphism facts
+    bd-hom : BD ≃ℤ (B *ℤ D)
+    bd-hom = ⁺toℤ-*⁺ b d
+    df-hom : DF ≃ℤ (D *ℤ F)
+    df-hom = ⁺toℤ-*⁺ d f
+
+    -- Shorthand for expanded terms
+    T1 : ℤ
+    T1 = (a *ℤ D) *ℤ F
+    T2L : ℤ
+    T2L = (c *ℤ B) *ℤ F
+    T2R : ℤ
+    T2R = (c *ℤ F) *ℤ B
+    T3L : ℤ
+    T3L = (e *ℤ B) *ℤ D
+    T3R : ℤ
+    T3R = (e *ℤ D) *ℤ B
+
+    -- Step 1: LHS expansion
+    step1a : (((a *ℤ D) +ℤ (c *ℤ B)) *ℤ F) ≃ℤ (T1 +ℤ T2L)
+    step1a = *ℤ-distribʳ-+ℤ (a *ℤ D) (c *ℤ B) F
+
+    -- e*BD ≃ T3L via bd-hom and assoc
+    step1b : (e *ℤ BD) ≃ℤ T3L
+    step1b = ≃ℤ-trans {e *ℤ BD} {e *ℤ (B *ℤ D)} {T3L}
+              (*ℤ-cong-r e bd-hom)
+              (≃ℤ-sym {(e *ℤ B) *ℤ D} {e *ℤ (B *ℤ D)} (*ℤ-assoc e B D))
+
+    -- Step 2: RHS expansion  
+    step2a : (((c *ℤ F) +ℤ (e *ℤ D)) *ℤ B) ≃ℤ (T2R +ℤ T3R)
+    step2a = *ℤ-distribʳ-+ℤ (c *ℤ F) (e *ℤ D) B
+
+    -- a*DF ≃ T1 via df-hom and assoc
+    step2b : (a *ℤ DF) ≃ℤ T1
+    step2b = ≃ℤ-trans {a *ℤ DF} {a *ℤ (D *ℤ F)} {T1}
+              (*ℤ-cong-r a df-hom)
+              (≃ℤ-sym {(a *ℤ D) *ℤ F} {a *ℤ (D *ℤ F)} (*ℤ-assoc a D F))
+
+    -- Key rotations
+    t2-eq : T2L ≃ℤ T2R
+    t2-eq = *ℤ-rotate c B F
+    
+    t3-eq : T3L ≃ℤ T3R
+    t3-eq = *ℤ-rotate e B D
+
+    -- Expanded forms are equal
+    lhs-expanded : lhs-num ≃ℤ ((T1 +ℤ T2L) +ℤ T3L)
+    lhs-expanded = +ℤ-cong {((a *ℤ D) +ℤ (c *ℤ B)) *ℤ F} {T1 +ℤ T2L} {e *ℤ BD} {T3L} 
+                    step1a step1b
+
+    rhs-expanded : rhs-num ≃ℤ (T1 +ℤ (T2R +ℤ T3R))
+    rhs-expanded = +ℤ-cong {a *ℤ DF} {T1} {((c *ℤ F) +ℤ (e *ℤ D)) *ℤ B} {T2R +ℤ T3R}
+                    step2b step2a
+
+    expanded-eq : ((T1 +ℤ T2L) +ℤ T3L) ≃ℤ ((T1 +ℤ T2R) +ℤ T3R)
+    expanded-eq = +ℤ-cong {T1 +ℤ T2L} {T1 +ℤ T2R} {T3L} {T3R}
+                   (+ℤ-cong-r T1 t2-eq) t3-eq
+
+    -- Chain via +ℤ-assoc
+    final : lhs-num ≃ℤ rhs-num
+    final = ≃ℤ-trans {lhs-num} {(T1 +ℤ T2L) +ℤ T3L} {rhs-num} lhs-expanded
+            (≃ℤ-trans {(T1 +ℤ T2L) +ℤ T3L} {(T1 +ℤ T2R) +ℤ T3R} {rhs-num} expanded-eq
+            (≃ℤ-trans {(T1 +ℤ T2R) +ℤ T3R} {T1 +ℤ (T2R +ℤ T3R)} {rhs-num} 
+              (+ℤ-assoc T1 T2R T3R)
+              (≃ℤ-sym {rhs-num} {T1 +ℤ (T2R +ℤ T3R)} rhs-expanded)))
+
+    -- Denominators via *⁺-assoc
+    den-eq : ⁺toℤ (b *⁺ (d *⁺ f)) ≃ℤ ⁺toℤ ((b *⁺ d) *⁺ f)
+    den-eq = ≡→≃ℤ (cong ⁺toℤ (sym (*⁺-assoc b d f)))
+
+    goal : (lhs-num *ℤ ⁺toℤ (b *⁺ (d *⁺ f))) ≃ℤ (rhs-num *ℤ ⁺toℤ ((b *⁺ d) *⁺ f))
+    goal = *ℤ-cong {lhs-num} {rhs-num} {⁺toℤ (b *⁺ (d *⁺ f))} {⁺toℤ ((b *⁺ d) *⁺ f)}
+             final den-eq
 
 -- ─────────────────────────────────────────────────────────────────────────────
 -- MULTIPLICATION LAWS

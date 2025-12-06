@@ -18,7 +18,7 @@
 -- Author: Johannes + Claude
 -- Date: 2025-12-03
 
-module exploration.TetraederZentrum where
+module TetraederZentrum where
 
 -- ─────────────────────────────────────────────────────────────────────────────
 -- § 1  BASIC TYPES

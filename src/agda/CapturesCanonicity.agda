@@ -18,7 +18,7 @@
   We prove: If Captures is coherent, then D₂ captures ONLY (D₀,D₁).
 -}
 
-module exploration.CapturesCanonicity where
+module CapturesCanonicity where
 
 -- ============================================================================
 -- Foundational Types

@@ -17,7 +17,7 @@
     This asymmetry IS time.
 -}
 
-module exploration.TimeFromAsymmetry where
+module TimeFromAsymmetry where
 
 -- ============================================================================
 -- Foundational Types
