@@ -893,10 +893,10 @@ negℤ-cong {mkℤ a b} {mkℤ c d} eq =
   trans (+-comm b c) (trans (sym eq) (+-comm a d))
 
 -- ─────────────────────────────────────────────────────────────────────────────
--- § 4.1  RING LAWS FOR ℤ (Summary)
+-- § 4.1  RING LAWS FOR ℤ (All Proven!)
 -- ─────────────────────────────────────────────────────────────────────────────
 --
--- ℤ forms a COMMUTATIVE RING. The key properties are:
+-- ℤ forms a COMMUTATIVE RING. ALL properties are PROVEN in this file:
 --
 -- EQUIVALENCE (Setoid):
 --   ≃ℤ-refl, ≃ℤ-sym, ≃ℤ-trans  ✓ (proven above)
@@ -906,19 +906,19 @@ negℤ-cong {mkℤ a b} {mkℤ c d} eq =
 --   negℤ-cong                   ✓ (proven above)
 --
 -- ADDITION:
---   +ℤ-comm                     ✓ (next)
---   +ℤ-assoc                    (follows from ℕ assoc)
---   +ℤ-identityˡ/ʳ             (0ℤ is identity)
---   +ℤ-inverseˡ/ʳ              ✓ (proven above)
+--   +ℤ-comm                     ✓ (below)
+--   +ℤ-assoc                    ✓ (below)
+--   +ℤ-identityˡ/ʳ             ✓ (below)
+--   +ℤ-inverseˡ/ʳ              ✓ (proven above in § 4a)
 --
 -- MULTIPLICATION:
 --   *ℤ-comm                     ✓ (proven in § 12)
 --   *ℤ-assoc                    ✓ (proven in § 12)
---   *ℤ-identityˡ/ʳ             (1ℤ is identity)
---   *ℤ-distribˡ/ʳ-+ℤ           (distributivity)
+--   *ℤ-identityˡ/ʳ             ✓ (below)
+--   *ℤ-distribˡ/ʳ-+ℤ           ✓ (below)
+--   *ℤ-zeroˡ/ʳ                  ✓ (proven in § 18)
 --
--- The tedious algebraic proofs are straightforward but lengthy.
--- We prove the key ones explicitly:
+-- The ring emerges from K₄ topology via winding numbers.
 
 -- ADDITION: Commutativity
 +ℤ-comm : ∀ (x y : ℤ) → (x +ℤ y) ≃ℤ (y +ℤ x)
@@ -930,8 +930,114 @@ negℤ-cong {mkℤ a b} {mkℤ c d} eq =
 +ℤ-identityˡ : ∀ (x : ℤ) → (0ℤ +ℤ x) ≃ℤ x
 +ℤ-identityˡ (mkℤ a b) = refl  -- (0+a) + b = a + (0+b) definitionally
 
--- SUMMARY: All ring laws hold for ℤ by construction.
--- The quotient structure (ℕ×ℕ)/~ inherits ring properties from ℕ.
+-- ADDITION: Right identity
++ℤ-identityʳ : ∀ (x : ℤ) → (x +ℤ 0ℤ) ≃ℤ x
++ℤ-identityʳ (mkℤ a b) = cong₂ _+_ (+-identityʳ a) (sym (+-identityʳ b))
+
+-- ADDITION: Associativity  
+-- The ring around the observer: grouping of moves doesn't matter
++ℤ-assoc : (x y z : ℤ) → ((x +ℤ y) +ℤ z) ≃ℤ (x +ℤ (y +ℤ z))
++ℤ-assoc (mkℤ a b) (mkℤ c d) (mkℤ e f) = 
+  -- LHS = mkℤ ((a+c)+e) ((b+d)+f)
+  -- RHS = mkℤ (a+(c+e)) (b+(d+f))
+  -- Need: ((a+c)+e) + (b+(d+f)) ≡ (a+(c+e)) + ((b+d)+f)
+  -- Both sides = a+b+c+d+e+f (just sum of all 6)
+  trans (cong₂ _+_ (+-assoc a c e) refl)
+        (cong ((a + (c + e)) +_) (sym (+-assoc b d f)))
+
+-- MULTIPLICATION: Identity (one circuit around the tetrahedron)
+*ℤ-identityˡ : (x : ℤ) → (1ℤ *ℤ x) ≃ℤ x
+*ℤ-identityˡ (mkℤ a b) = 
+  -- 1ℤ *ℤ mkℤ a b = mkℤ (1*a + 0*b) (1*b + 0*a) = mkℤ (a+0) (b+0)
+  -- Need: ((a+0)+0) + b ≡ a + ((b+0)+0)  i.e. a+b ≡ a+b
+  let lhs-pos = (suc zero * a + zero * b)
+      lhs-neg = (suc zero * b + zero * a)
+      step1 : lhs-pos + b ≡ (a + zero) + b
+      step1 = cong (λ x → x + b) (+-identityʳ (a + zero * a))
+      step2 : (a + zero) + b ≡ a + b
+      step2 = cong (λ x → x + b) (+-identityʳ a)
+      step3 : a + b ≡ a + (b + zero)
+      step3 = sym (cong (a +_) (+-identityʳ b))
+      step4 : a + (b + zero) ≡ a + lhs-neg
+      step4 = sym (cong (a +_) (+-identityʳ (b + zero * b)))
+  in trans step1 (trans step2 (trans step3 step4))
+
+*ℤ-identityʳ : (x : ℤ) → (x *ℤ 1ℤ) ≃ℤ x
+*ℤ-identityʳ (mkℤ a b) = 
+  -- x *ℤ 1ℤ = mkℤ (a*1 + b*0) (a*0 + b*1)
+  -- Need: (a*1 + b*0) + b ≡ a + (a*0 + b*1)
+  let p = a * suc zero + b * zero
+      n = a * zero + b * suc zero
+      p≡a : p ≡ a
+      p≡a = trans (cong₂ _+_ (*-identityʳ a) (*-zeroʳ b)) (+-identityʳ a)
+      n≡b : n ≡ b
+      n≡b = trans (cong₂ _+_ (*-zeroʳ a) (*-identityʳ b)) refl
+      lhs : p + b ≡ a + b
+      lhs = cong (λ x → x + b) p≡a
+      rhs : a + n ≡ a + b
+      rhs = cong (a +_) n≡b
+  in trans lhs (sym rhs)
+
+-- DISTRIBUTIVITY: Quantum superposition law
+-- If in superposition |y⟩ + |z⟩ and apply transformation x,
+-- you get x|y⟩ + x|z⟩
+*ℤ-distribˡ-+ℤ : ∀ x y z → (x *ℤ (y +ℤ z)) ≃ℤ ((x *ℤ y) +ℤ (x *ℤ z))
+*ℤ-distribˡ-+ℤ (mkℤ a b) (mkℤ c d) (mkℤ e f) = 
+  let -- Expand LHS positive part using ℕ distributivity
+      lhs-pos : a * (c + e) + b * (d + f) ≡ (a * c + a * e) + (b * d + b * f)
+      lhs-pos = cong₂ _+_ (*-distribˡ-+ a c e) (*-distribˡ-+ b d f)
+      -- Rearrange to RHS positive part
+      rhs-pos : (a * c + a * e) + (b * d + b * f) ≡ (a * c + b * d) + (a * e + b * f)
+      rhs-pos = trans (+-assoc (a * c) (a * e) (b * d + b * f))
+                (trans (cong ((a * c) +_) (trans (sym (+-assoc (a * e) (b * d) (b * f)))
+                                          (trans (cong (_+ (b * f)) (+-comm (a * e) (b * d)))
+                                                 (+-assoc (b * d) (a * e) (b * f)))))
+                       (sym (+-assoc (a * c) (b * d) (a * e + b * f))))
+      -- Similarly for negative parts
+      lhs-neg : a * (d + f) + b * (c + e) ≡ (a * d + a * f) + (b * c + b * e)
+      lhs-neg = cong₂ _+_ (*-distribˡ-+ a d f) (*-distribˡ-+ b c e)
+      rhs-neg : (a * d + a * f) + (b * c + b * e) ≡ (a * d + b * c) + (a * f + b * e)
+      rhs-neg = trans (+-assoc (a * d) (a * f) (b * c + b * e))
+                (trans (cong ((a * d) +_) (trans (sym (+-assoc (a * f) (b * c) (b * e)))
+                                          (trans (cong (_+ (b * e)) (+-comm (a * f) (b * c)))
+                                                 (+-assoc (b * c) (a * f) (b * e)))))
+                       (sym (+-assoc (a * d) (b * c) (a * f + b * e))))
+  in cong₂ _+_ (trans lhs-pos rhs-pos) (sym (trans lhs-neg rhs-neg))
+
+-- Note: *ℤ-distribʳ-+ℤ is proven in § 12a after *ℤ-comm becomes available
+
+-- ═══════════════════════════════════════════════════════════════════════════
+-- § 4.1a  COMPLETE RING STRUCTURE SUMMARY
+-- ═══════════════════════════════════════════════════════════════════════════
+--
+-- ℤ forms a COMMUTATIVE RING with ALL laws proven inline:
+--
+-- ABELIAN GROUP under +:
+--   +ℤ-assoc     : ((x + y) + z) ≃ (x + (y + z))  ✓ (above)
+--   +ℤ-comm      : (x + y) ≃ (y + x)              ✓ (above)
+--   +ℤ-identityˡ : (0 + x) ≃ x                    ✓ (above)
+--   +ℤ-identityʳ : (x + 0) ≃ x                    ✓ (above)
+--   +ℤ-inverseˡ  : ((-x) + x) ≃ 0                 ✓ (§ 4a)
+--   +ℤ-inverseʳ  : (x + (-x)) ≃ 0                 ✓ (§ 4a)
+--
+-- COMMUTATIVE MONOID under *:
+--   *ℤ-comm      : (x * y) ≃ (y * x)              ✓ (§ 12)
+--   *ℤ-assoc     : ((x*y)*z) ≃ (x*(y*z))          ✓ (§ 12)
+--   *ℤ-identityˡ : (1 * x) ≃ x                    ✓ (above)
+--   *ℤ-identityʳ : (x * 1) ≃ x                    ✓ (above)
+--   *ℤ-zeroˡ     : (0 * x) ≃ 0                    ✓ (§ 18)
+--   *ℤ-zeroʳ     : (x * 0) ≃ 0                    ✓ (§ 18)
+--
+-- DISTRIBUTIVITY:
+--   *ℤ-distribˡ-+ℤ : x * (y + z) ≃ (x*y) + (x*z)  ✓ (above)
+--   *ℤ-distribʳ-+ℤ : (x + y) * z ≃ (x*z) + (y*z)  ✓ (above)
+--
+-- CONGRUENCE (setoid operations):
+--   ≃ℤ-refl, ≃ℤ-sym, ≃ℤ-trans                    ✓ (§ 4)
+--   +ℤ-cong, *ℤ-cong, negℤ-cong                  ✓ (§ 4)
+--
+-- THE RING IS COMPLETE. This structure emerges from K₄ topology.
+-- The quotient (ℕ×ℕ)/≃ℤ IS the mathematical ring ℤ.
 
 
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -3351,6 +3457,18 @@ negℤ-distribˡ-*ℤ (mkℤ a b) (mkℤ c d) =
           in cong₂ _+_ g1-lhs g2-lhs
           
       in trans lhs-expand (trans both-equal (sym rhs-expand))
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- § 12a  RIGHT DISTRIBUTIVITY (uses *ℤ-comm)
+-- ─────────────────────────────────────────────────────────────────────────────
+
+*ℤ-distribʳ-+ℤ : (x y z : ℤ) → ((x +ℤ y) *ℤ z) ≃ℤ ((x *ℤ z) +ℤ (y *ℤ z))
+*ℤ-distribʳ-+ℤ x y z = 
+  ≃ℤ-trans {(x +ℤ y) *ℤ z} {z *ℤ (x +ℤ y)} {(x *ℤ z) +ℤ (y *ℤ z)}
+    (*ℤ-comm (x +ℤ y) z)
+    (≃ℤ-trans {z *ℤ (x +ℤ y)} {(z *ℤ x) +ℤ (z *ℤ y)} {(x *ℤ z) +ℤ (y *ℤ z)}
+      (*ℤ-distribˡ-+ℤ z x y)
+      (+ℤ-cong {z *ℤ x} {x *ℤ z} {z *ℤ y} {y *ℤ z} (*ℤ-comm z x) (*ℤ-comm z y)))
 
 -- Now *ℚ-cong using the infrastructure
 *ℚ-cong : ∀ {p p' q q' : ℚ} → p ≃ℚ p' → q ≃ℚ q' → (p *ℚ q) ≃ℚ (p' *ℚ q')
