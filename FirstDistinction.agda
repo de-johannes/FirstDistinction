@@ -219,6 +219,10 @@ module FirstDistinction where
 -- A proof of ⊥ would require distinguishing without distinction—impossible.
 data ⊥ : Set where
 
+-- Absurdity elimination: from ⊥ follows anything
+⊥-elim : ∀ {A : Set} → ⊥ → A
+⊥-elim ()
+
 -- ⊤ : The unit type (1 token) — THE TOKEN PRINCIPLE
 -- This is the formal expression of D₀: exactly ONE thing exists.
 -- The token 'tt' (trivially true) IS the First Distinction.
@@ -289,6 +293,10 @@ cong f refl = refl
 cong₂ : {A B C : Set} (f : A → B → C) {x₁ x₂ : A} {y₁ y₂ : B} 
       → x₁ ≡ x₂ → y₁ ≡ y₂ → f x₁ y₁ ≡ f x₂ y₂
 cong₂ f refl refl = refl
+
+-- Substitutivity: transport along an equality
+subst : {A : Set} (P : A → Set) {x y : A} → x ≡ y → P x → P y
+subst P refl px = px
 
 -- ─────────────────────────────────────────────────────────────────────────────
 -- § 1.2  STRUCTURE: COMBINING DISTINCTIONS
@@ -517,10 +525,18 @@ suc m ∸ suc n = m ∸ n
 +-assoc zero    b c = refl
 +-assoc (suc a) b c = cong suc (+-assoc a b c)
 
--- Successor injectivity (helper)
+-- Successor injectivity (public for ℕ⁺ proofs)
+suc-injective : ∀ {m n : ℕ} → suc m ≡ suc n → m ≡ n
+suc-injective refl = refl
+
+-- Successor injectivity (helper, private)
 private
   suc-inj : ∀ {m n : ℕ} → suc m ≡ suc n → m ≡ n
   suc-inj refl = refl
+
+-- Zero is distinct from successor (needed for cancellation)
+zero≢suc : ∀ {n : ℕ} → zero ≡ suc n → ⊥
+zero≢suc ()
 
 -- Right cancellation for addition (Ma'at Law 6: Cancellativity)
 +-cancelʳ : ∀ (x y n : ℕ) → (x + n) ≡ (y + n) → x ≡ y
@@ -857,6 +873,22 @@ negℤ (mkℤ a b) = mkℤ b a
            {c * g + d * h} {c * h + d * g}
            (⊗-cong-left {a} {b} {c} {d} e f ad≡cb)
            (⊗-cong-right c d {e} {f} {g} {h} eh≡gf)
+
+-- Convenient right congruence helper for *ℤ
+*ℤ-cong-r : ∀ (z : ℤ) {x y : ℤ} → x ≃ℤ y → (z *ℤ x) ≃ℤ (z *ℤ y)
+*ℤ-cong-r z {x} {y} eq = *ℤ-cong {z} {z} {x} {y} (≃ℤ-refl z) eq
+
+-- Zero laws for *ℤ
+*ℤ-zeroˡ : ∀ (x : ℤ) → (0ℤ *ℤ x) ≃ℤ 0ℤ
+*ℤ-zeroˡ (mkℤ a b) = refl  -- 0*a + 0*b = 0, 0*b + 0*a = 0
+
+*ℤ-zeroʳ : ∀ (x : ℤ) → (x *ℤ 0ℤ) ≃ℤ 0ℤ
+*ℤ-zeroʳ (mkℤ a b) = 
+  -- x *ℤ 0ℤ = mkℤ a b *ℤ mkℤ 0 0 = mkℤ (a*0 + b*0) (a*0 + b*0)
+  -- ≃ℤ: pos + neg' ≡ pos' + neg
+  -- (a*0 + b*0) + 0 ≡ 0 + (a*0 + b*0)
+  -- i.e., a*0 + b*0 ≡ a*0 + b*0  after +-identityʳ on LHS
+  trans (+-identityʳ (a * 0 + b * 0)) refl
 
 
 -- ─────────────────────────────────────────────────────────────────────────────
@@ -3159,6 +3191,28 @@ _*⁺_ : ℕ⁺ → ℕ⁺ → ℕ⁺
 one⁺   *⁺ m = m
 suc⁺ k *⁺ m = m +⁺ (k *⁺ m)
 
+-- Commutativity of *⁺ (derived from *-comm on ℕ)
+-- First we need the injectivity of ⁺toℕ
+
+-- ⁺toℕ always returns at least 1 (never zero)
+⁺toℕ-nonzero : ∀ (n : ℕ⁺) → ⁺toℕ n ≡ zero → ⊥
+⁺toℕ-nonzero one⁺ ()
+⁺toℕ-nonzero (suc⁺ n) ()
+
+-- Lemma: one⁺ has a different ⁺toℕ value than suc⁺ n
+one⁺-≢-suc⁺-via-⁺toℕ : ∀ (n : ℕ⁺) → ⁺toℕ one⁺ ≡ ⁺toℕ (suc⁺ n) → ⊥
+one⁺-≢-suc⁺-via-⁺toℕ n p = 
+  -- p : suc zero ≡ suc (⁺toℕ n)
+  -- by suc-injective: zero ≡ ⁺toℕ n
+  -- but ⁺toℕ n is always suc _, contradiction
+  ⁺toℕ-nonzero n (sym (suc-injective p))
+
+⁺toℕ-injective : ∀ {m n : ℕ⁺} → ⁺toℕ m ≡ ⁺toℕ n → m ≡ n
+⁺toℕ-injective {one⁺} {one⁺} _ = refl
+⁺toℕ-injective {one⁺} {suc⁺ n} p = ⊥-elim (one⁺-≢-suc⁺-via-⁺toℕ n p)
+⁺toℕ-injective {suc⁺ m} {one⁺} p = ⊥-elim (one⁺-≢-suc⁺-via-⁺toℕ m (sym p))
+⁺toℕ-injective {suc⁺ m} {suc⁺ n} p = cong suc⁺ (⁺toℕ-injective (suc-injective p))
+
 -- ═══════════════════════════════════════════════════════════════════════════
 -- § 12.2  RATIONAL NUMBER TYPE
 -- ═══════════════════════════════════════════════════════════════════════════
@@ -3222,6 +3276,52 @@ p -ℚ q = p +ℚ (-ℚ q)
 2ℚ  = mkℤ (suc (suc zero)) zero / one⁺  -- 2/1
 
 -- ═══════════════════════════════════════════════════════════════════════════
+-- § 12.5a  CANCELLATION LEMMAS FOR TRANSITIVITY
+-- ═══════════════════════════════════════════════════════════════════════════
+
+-- ⁺toℕ always returns suc of something
+⁺toℕ-is-suc : ∀ (n : ℕ⁺) → Σ ℕ (λ k → ⁺toℕ n ≡ suc k)
+⁺toℕ-is-suc one⁺ = zero , refl
+⁺toℕ-is-suc (suc⁺ n) = ⁺toℕ n , refl
+
+-- ℕ multiplication cancellation for non-zero factor
+*-cancelʳ-ℕ : ∀ (x y k : ℕ) → (x * suc k) ≡ (y * suc k) → x ≡ y
+*-cancelʳ-ℕ zero zero k eq = refl
+*-cancelʳ-ℕ zero (suc y) k eq = ⊥-elim (zero≢suc eq)
+*-cancelʳ-ℕ (suc x) zero k eq = ⊥-elim (zero≢suc (sym eq))
+*-cancelʳ-ℕ (suc x) (suc y) k eq = 
+  cong suc (*-cancelʳ-ℕ x y k (+-cancelʳ (x * suc k) (y * suc k) k 
+    (trans (+-comm (x * suc k) k) (trans (suc-inj eq) (+-comm k (y * suc k))))))
+
+-- ℤ multiplicative cancellation by ⁺toℤ factors
+-- If x * ⁺toℤ n ≃ℤ y * ⁺toℤ n, then x ≃ℤ y
+*ℤ-cancelʳ-⁺ : ∀ {x y : ℤ} (n : ℕ⁺) → (x *ℤ ⁺toℤ n) ≃ℤ (y *ℤ ⁺toℤ n) → x ≃ℤ y
+*ℤ-cancelʳ-⁺ {mkℤ a b} {mkℤ c d} n eq = 
+  let m = ⁺toℕ n
+      -- Simplify * 0 terms
+      lhs-pos-simp : (a * m + b * zero) ≡ a * m
+      lhs-pos-simp = trans (cong (a * m +_) (*-zeroʳ b)) (+-identityʳ (a * m))
+      lhs-neg-simp : (c * zero + d * m) ≡ d * m
+      lhs-neg-simp = trans (cong (_+ d * m) (*-zeroʳ c)) refl
+      rhs-pos-simp : (c * m + d * zero) ≡ c * m
+      rhs-pos-simp = trans (cong (c * m +_) (*-zeroʳ d)) (+-identityʳ (c * m))
+      rhs-neg-simp : (a * zero + b * m) ≡ b * m
+      rhs-neg-simp = trans (cong (_+ b * m) (*-zeroʳ a)) refl
+      eq-simplified : (a * m + d * m) ≡ (c * m + b * m)
+      eq-simplified = trans (cong₂ _+_ (sym lhs-pos-simp) (sym lhs-neg-simp))
+                      (trans eq (cong₂ _+_ rhs-pos-simp rhs-neg-simp))
+      -- Factor using distribʳ: (a+d)*m = (c+b)*m
+      eq-factored : ((a + d) * m) ≡ ((c + b) * m)
+      eq-factored = trans (*-distribʳ-+ a d m) 
+                    (trans eq-simplified (sym (*-distribʳ-+ c b m)))
+      -- Cancel using ⁺toℕ-is-suc: m = suc k for some k
+      (k , m≡suck) = ⁺toℕ-is-suc n
+      -- Rewrite the factored equality with m = suc k
+      eq-suck : ((a + d) * suc k) ≡ ((c + b) * suc k)
+      eq-suck = subst (λ m' → ((a + d) * m') ≡ ((c + b) * m')) m≡suck eq-factored
+  in *-cancelʳ-ℕ (a + d) (c + b) k eq-suck
+
+-- ═══════════════════════════════════════════════════════════════════════════
 -- § 12.6  EQUIVALENCE RELATION PROOFS
 -- ═══════════════════════════════════════════════════════════════════════════
 
@@ -3232,6 +3332,8 @@ p -ℚ q = p +ℚ (-ℚ q)
 -- SYMMETRY: Equality is symmetric
 ≃ℚ-sym : ∀ {p q : ℚ} → p ≃ℚ q → q ≃ℚ p
 ≃ℚ-sym {a / b} {c / d} eq = ≃ℤ-sym {a *ℤ ⁺toℤ d} {c *ℤ ⁺toℤ b} eq
+
+-- NOTE: ≃ℚ-trans is defined after *ℤ-assoc, *ℤ-comm, and *ℤ-cancelʳ-⁺ (below)
 
 -- ═══════════════════════════════════════════════════════════════════════════
 -- § 12.6a  CONGRUENCE PROOFS (Setoid Operations)
@@ -3343,6 +3445,26 @@ negℤ-distribˡ-*ℤ (mkℤ a b) (mkℤ c d) =
                  (trans (+-identityʳ _) 
                         (trans core 
                                (sym (trans (+-identityʳ _) (+-identityʳ _)))))
+
+-- Commutativity of multiplication for ℕ⁺
+*⁺-comm : ∀ (m n : ℕ⁺) → (m *⁺ n) ≡ (n *⁺ m)
+*⁺-comm m n = ⁺toℕ-injective (trans (⁺toℕ-*⁺ m n) (trans (*-comm (⁺toℕ m) (⁺toℕ n)) (sym (⁺toℕ-*⁺ n m))))
+
+-- Associativity of multiplication for ℕ⁺
+*⁺-assoc : ∀ (m n p : ℕ⁺) → ((m *⁺ n) *⁺ p) ≡ (m *⁺ (n *⁺ p))
+*⁺-assoc m n p = ⁺toℕ-injective goal
+  where
+    -- ⁺toℕ ((m *⁺ n) *⁺ p) = ⁺toℕ (m *⁺ n) * ⁺toℕ p [by ⁺toℕ-*⁺]
+    --                      = (⁺toℕ m * ⁺toℕ n) * ⁺toℕ p [by ⁺toℕ-*⁺]
+    --                      = ⁺toℕ m * (⁺toℕ n * ⁺toℕ p) [by *-assoc (sym)]
+    --                      = ⁺toℕ m * ⁺toℕ (n *⁺ p) [by ⁺toℕ-*⁺]
+    --                      = ⁺toℕ (m *⁺ (n *⁺ p)) [by ⁺toℕ-*⁺]
+    goal : ⁺toℕ ((m *⁺ n) *⁺ p) ≡ ⁺toℕ (m *⁺ (n *⁺ p))
+    goal = trans (⁺toℕ-*⁺ (m *⁺ n) p)
+           (trans (cong (_* ⁺toℕ p) (⁺toℕ-*⁺ m n))
+           (trans (sym (*-assoc (⁺toℕ m) (⁺toℕ n) (⁺toℕ p)))
+           (trans (cong (⁺toℕ m *_) (sym (⁺toℕ-*⁺ n p)))
+                  (sym (⁺toℕ-*⁺ m (n *⁺ p))))))
 
 -- *ℤ commutativity (up to ≃ℤ)
 *ℤ-comm : ∀ (x y : ℤ) → (x *ℤ y) ≃ℤ (y *ℤ x)
@@ -3470,6 +3592,73 @@ negℤ-distribˡ-*ℤ (mkℤ a b) (mkℤ c d) =
       (*ℤ-distribˡ-+ℤ z x y)
       (+ℤ-cong {z *ℤ x} {x *ℤ z} {z *ℤ y} {y *ℤ z} (*ℤ-comm z x) (*ℤ-comm z y)))
 
+-- ═══════════════════════════════════════════════════════════════════════════
+-- TRANSITIVITY OF ≃ℚ (The Key Theorem)
+-- ═══════════════════════════════════════════════════════════════════════════
+-- This is the hardest equality law. We need:
+-- Given: p ≃ℚ q (i.e. a*⁺toℤ d ≃ℤ c*⁺toℤ b)
+-- Given: q ≃ℚ r (i.e. c*⁺toℤ f ≃ℤ e*⁺toℤ d)
+-- Show:  p ≃ℚ r (i.e. a*⁺toℤ f ≃ℤ e*⁺toℤ b)
+--
+-- Strategy: Multiply both sides of first eq by f, second by b
+-- Then use cancellation of d.
+
+≃ℚ-trans : ∀ {p q r : ℚ} → p ≃ℚ q → q ≃ℚ r → p ≃ℚ r
+≃ℚ-trans {a / b} {c / d} {e / f} pq qr = goal
+  where
+    B = ⁺toℤ b ; D = ⁺toℤ d ; F = ⁺toℤ f
+    
+    -- Given hypotheses (in ≃ℤ form = propositional equality on canonical form)
+    -- pq : (a *ℤ D) ≃ℤ (c *ℤ B)
+    -- qr : (c *ℤ F) ≃ℤ (e *ℤ D)
+    
+    -- Scale pq by F: (a*D)*F ≃ℤ (c*B)*F
+    pq-scaled : ((a *ℤ D) *ℤ F) ≃ℤ ((c *ℤ B) *ℤ F)
+    pq-scaled = *ℤ-cong {a *ℤ D} {c *ℤ B} {F} {F} pq (≃ℤ-refl F)
+    
+    -- Scale qr by B: (c*F)*B ≃ℤ (e*D)*B
+    qr-scaled : ((c *ℤ F) *ℤ B) ≃ℤ ((e *ℤ D) *ℤ B)
+    qr-scaled = *ℤ-cong {c *ℤ F} {e *ℤ D} {B} {B} qr (≃ℤ-refl B)
+    
+    -- Rearrange (a*D)*F to a*(D*F) to a*(F*D) to (a*F)*D
+    lhs-rearrange : ((a *ℤ D) *ℤ F) ≃ℤ ((a *ℤ F) *ℤ D)
+    lhs-rearrange = ≃ℤ-trans {(a *ℤ D) *ℤ F} {a *ℤ (D *ℤ F)} {(a *ℤ F) *ℤ D}
+                     (*ℤ-assoc a D F)
+                     (≃ℤ-trans {a *ℤ (D *ℤ F)} {a *ℤ (F *ℤ D)} {(a *ℤ F) *ℤ D}
+                       (*ℤ-cong-r a (*ℤ-comm D F))
+                       (≃ℤ-sym {(a *ℤ F) *ℤ D} {a *ℤ (F *ℤ D)} (*ℤ-assoc a F D)))
+    
+    -- Rearrange (c*B)*F to (c*F)*B
+    mid-rearrange : ((c *ℤ B) *ℤ F) ≃ℤ ((c *ℤ F) *ℤ B)
+    mid-rearrange = ≃ℤ-trans {(c *ℤ B) *ℤ F} {c *ℤ (B *ℤ F)} {(c *ℤ F) *ℤ B}
+                     (*ℤ-assoc c B F)
+                     (≃ℤ-trans {c *ℤ (B *ℤ F)} {c *ℤ (F *ℤ B)} {(c *ℤ F) *ℤ B}
+                       (*ℤ-cong-r c (*ℤ-comm B F))
+                       (≃ℤ-sym {(c *ℤ F) *ℤ B} {c *ℤ (F *ℤ B)} (*ℤ-assoc c F B)))
+    
+    -- Rearrange (e*D)*B to (e*B)*D
+    rhs-rearrange : ((e *ℤ D) *ℤ B) ≃ℤ ((e *ℤ B) *ℤ D)
+    rhs-rearrange = ≃ℤ-trans {(e *ℤ D) *ℤ B} {e *ℤ (D *ℤ B)} {(e *ℤ B) *ℤ D}
+                     (*ℤ-assoc e D B)
+                     (≃ℤ-trans {e *ℤ (D *ℤ B)} {e *ℤ (B *ℤ D)} {(e *ℤ B) *ℤ D}
+                       (*ℤ-cong-r e (*ℤ-comm D B))
+                       (≃ℤ-sym {(e *ℤ B) *ℤ D} {e *ℤ (B *ℤ D)} (*ℤ-assoc e B D)))
+    
+    -- Chain: (a*F)*D ≃ (a*D)*F ≃ (c*B)*F ≃ (c*F)*B ≃ (e*D)*B ≃ (e*B)*D
+    chain : ((a *ℤ F) *ℤ D) ≃ℤ ((e *ℤ B) *ℤ D)
+    chain = ≃ℤ-trans {(a *ℤ F) *ℤ D} {(a *ℤ D) *ℤ F} {(e *ℤ B) *ℤ D}
+              (≃ℤ-sym {(a *ℤ D) *ℤ F} {(a *ℤ F) *ℤ D} lhs-rearrange)
+              (≃ℤ-trans {(a *ℤ D) *ℤ F} {(c *ℤ B) *ℤ F} {(e *ℤ B) *ℤ D}
+                pq-scaled
+                (≃ℤ-trans {(c *ℤ B) *ℤ F} {(c *ℤ F) *ℤ B} {(e *ℤ B) *ℤ D}
+                  mid-rearrange
+                  (≃ℤ-trans {(c *ℤ F) *ℤ B} {(e *ℤ D) *ℤ B} {(e *ℤ B) *ℤ D}
+                    qr-scaled rhs-rearrange)))
+    
+    -- Cancel D from both sides
+    goal : (a *ℤ F) ≃ℤ (e *ℤ B)
+    goal = *ℤ-cancelʳ-⁺ {a *ℤ F} {e *ℤ B} d chain
+
 -- Now *ℚ-cong using the infrastructure
 *ℚ-cong : ∀ {p p' q q' : ℚ} → p ≃ℚ p' → q ≃ℚ q' → (p *ℚ q) ≃ℚ (p' *ℚ q')
 *ℚ-cong {a / b} {c / d} {e / f} {g / h} pp' qq' =
@@ -3552,15 +3741,951 @@ negℤ-distribˡ-*ℤ (mkℤ a b) (mkℤ c d) =
               step2 (≃ℤ-trans {(a *ℤ ⁺toℤ d) *ℤ (e *ℤ ⁺toℤ h)} {(c *ℤ ⁺toℤ b) *ℤ (g *ℤ ⁺toℤ f)} {(c *ℤ g) *ℤ ⁺toℤ (b *⁺ f)}
                      step3 (≃ℤ-trans {(c *ℤ ⁺toℤ b) *ℤ (g *ℤ ⁺toℤ f)} {(c *ℤ g) *ℤ (⁺toℤ b *ℤ ⁺toℤ f)} {(c *ℤ g) *ℤ ⁺toℤ (b *⁺ f)}
                             step4 step5)))
--- 0 + q = q for any q
--- Proof: 0/1 + a/b = (0·b + a·1)/(1·b) = a/b
 
--- THEOREM: 1ℚ is the multiplicative identity (up to ≃ℚ)
--- 1 · q = q for any q
--- Proof: 1/1 · a/b = (1·a)/(1·b) = a/b
+-- ═══════════════════════════════════════════════════════════════════════════
+-- § 12b  RATIONAL FIELD AXIOMS (Complete ℚ Ring Laws)
+-- ═══════════════════════════════════════════════════════════════════════════
 
--- THEOREM: ½ℚ + ½ℚ ≃ℚ 1ℚ
--- Proof outline: 1/2 + 1/2 = (1·2 + 1·2)/(2·2) = 4/4 ≃ 1/1
+-- Helper for right congruence (+ℤ version)
++ℤ-cong-r : ∀ (z : ℤ) {x y : ℤ} → x ≃ℤ y → (z +ℤ x) ≃ℤ (z +ℤ y)
++ℤ-cong-r z {x} {y} eq = +ℤ-cong {z} {z} {x} {y} (≃ℤ-refl z) eq
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- ADDITION LAWS
+-- ─────────────────────────────────────────────────────────────────────────────
+
+-- Commutativity of +ℚ
++ℚ-comm : ∀ p q → (p +ℚ q) ≃ℚ (q +ℚ p)
++ℚ-comm (a / b) (c / d) = 
+  let num-eq : ((a *ℤ ⁺toℤ d) +ℤ (c *ℤ ⁺toℤ b)) ≃ℤ ((c *ℤ ⁺toℤ b) +ℤ (a *ℤ ⁺toℤ d))
+      num-eq = +ℤ-comm (a *ℤ ⁺toℤ d) (c *ℤ ⁺toℤ b)
+      den-eq : (d *⁺ b) ≡ (b *⁺ d)
+      den-eq = *⁺-comm d b
+  in *ℤ-cong {(a *ℤ ⁺toℤ d) +ℤ (c *ℤ ⁺toℤ b)} 
+             {(c *ℤ ⁺toℤ b) +ℤ (a *ℤ ⁺toℤ d)}
+             {⁺toℤ (d *⁺ b)} {⁺toℤ (b *⁺ d)}
+             num-eq (≡→≃ℤ (cong ⁺toℤ den-eq))
+
+-- Left identity: 0 + q ≃ q
++ℚ-identityˡ : ∀ q → (0ℚ +ℚ q) ≃ℚ q
++ℚ-identityˡ (a / b) = 
+  -- 0ℚ +ℚ (a/b) = ((0 * b) + (a * 1)) / (1 * b) = (0 + a) / b = a / b
+  -- Need: ((0ℤ *ℤ ⁺toℤ b) +ℤ (a *ℤ ⁺toℤ one⁺)) *ℤ ⁺toℤ b 
+  --     ≃ℤ a *ℤ ⁺toℤ (one⁺ *⁺ b)
+  let lhs-num : (0ℤ *ℤ ⁺toℤ b) +ℤ (a *ℤ ⁺toℤ one⁺) ≃ℤ a
+      lhs-num = ≃ℤ-trans {(0ℤ *ℤ ⁺toℤ b) +ℤ (a *ℤ ⁺toℤ one⁺)} 
+                         {0ℤ +ℤ (a *ℤ 1ℤ)} 
+                         {a}
+                (+ℤ-cong {0ℤ *ℤ ⁺toℤ b} {0ℤ} {a *ℤ ⁺toℤ one⁺} {a *ℤ 1ℤ} 
+                         (*ℤ-zeroˡ (⁺toℤ b)) 
+                         (≃ℤ-refl (a *ℤ 1ℤ)))  -- ⁺toℤ one⁺ = 1ℤ definitionally
+                (≃ℤ-trans {0ℤ +ℤ (a *ℤ 1ℤ)} {a *ℤ 1ℤ} {a}
+                          (+ℤ-identityˡ (a *ℤ 1ℤ))
+                          (*ℤ-identityʳ a))
+      rhs-den : ⁺toℤ (one⁺ *⁺ b) ≃ℤ ⁺toℤ b
+      rhs-den = ≃ℤ-refl (⁺toℤ b)  -- one⁺ *⁺ b = b definitionally
+  in *ℤ-cong {(0ℤ *ℤ ⁺toℤ b) +ℤ (a *ℤ ⁺toℤ one⁺)} {a} {⁺toℤ b} {⁺toℤ (one⁺ *⁺ b)}
+             lhs-num 
+             (≃ℤ-sym {⁺toℤ (one⁺ *⁺ b)} {⁺toℤ b} rhs-den)
+
+-- Right identity: q + 0 ≃ q
++ℚ-identityʳ : ∀ q → (q +ℚ 0ℚ) ≃ℚ q
++ℚ-identityʳ q = ≃ℚ-trans {q +ℚ 0ℚ} {0ℚ +ℚ q} {q} (+ℚ-comm q 0ℚ) (+ℚ-identityˡ q)
+
+-- Right inverse: q + (-q) ≃ 0
++ℚ-inverseʳ : ∀ q → (q +ℚ (-ℚ q)) ≃ℚ 0ℚ
++ℚ-inverseʳ (a / b) = 
+  -- a/b + (-a)/b = (a*b + (-a)*b)/(b*b) = ((a + (-a))*b)/(b*b) = 0/(b*b) ≃ 0/1
+  -- Need: ((a*b + (-a)*b)) * 1 ≃ℤ 0 * (b*b)
+  -- = (a + (-a))*b ≃ℤ 0  (since 0 * anything = 0)
+  -- = 0*b = 0 ✓
+  let 
+      lhs-factored : ((a *ℤ ⁺toℤ b) +ℤ ((negℤ a) *ℤ ⁺toℤ b)) ≃ℤ ((a +ℤ negℤ a) *ℤ ⁺toℤ b)
+      lhs-factored = ≃ℤ-sym {(a +ℤ negℤ a) *ℤ ⁺toℤ b} {(a *ℤ ⁺toℤ b) +ℤ ((negℤ a) *ℤ ⁺toℤ b)} 
+                           (*ℤ-distribʳ-+ℤ a (negℤ a) (⁺toℤ b))
+      sum-is-zero : (a +ℤ negℤ a) ≃ℤ 0ℤ
+      sum-is-zero = +ℤ-inverseʳ a
+      lhs-zero : ((a +ℤ negℤ a) *ℤ ⁺toℤ b) ≃ℤ (0ℤ *ℤ ⁺toℤ b)
+      lhs-zero = *ℤ-cong {a +ℤ negℤ a} {0ℤ} {⁺toℤ b} {⁺toℤ b} sum-is-zero (≃ℤ-refl (⁺toℤ b))
+      zero-mul : (0ℤ *ℤ ⁺toℤ b) ≃ℤ 0ℤ
+      zero-mul = *ℤ-zeroˡ (⁺toℤ b)
+      lhs-is-zero : ((a *ℤ ⁺toℤ b) +ℤ ((negℤ a) *ℤ ⁺toℤ b)) ≃ℤ 0ℤ
+      lhs-is-zero = ≃ℤ-trans {(a *ℤ ⁺toℤ b) +ℤ ((negℤ a) *ℤ ⁺toℤ b)} {(a +ℤ negℤ a) *ℤ ⁺toℤ b} {0ℤ}
+                            lhs-factored 
+                            (≃ℤ-trans {(a +ℤ negℤ a) *ℤ ⁺toℤ b} {0ℤ *ℤ ⁺toℤ b} {0ℤ} lhs-zero zero-mul)
+      lhs-times-one : (((a *ℤ ⁺toℤ b) +ℤ ((negℤ a) *ℤ ⁺toℤ b)) *ℤ ⁺toℤ one⁺) ≃ℤ (0ℤ *ℤ ⁺toℤ one⁺)
+      lhs-times-one = *ℤ-cong {(a *ℤ ⁺toℤ b) +ℤ ((negℤ a) *ℤ ⁺toℤ b)} {0ℤ} {⁺toℤ one⁺} {⁺toℤ one⁺}
+                             lhs-is-zero (≃ℤ-refl (⁺toℤ one⁺))
+      zero-times-one : (0ℤ *ℤ ⁺toℤ one⁺) ≃ℤ 0ℤ
+      zero-times-one = *ℤ-zeroˡ (⁺toℤ one⁺)
+      rhs-zero : (0ℤ *ℤ ⁺toℤ (b *⁺ b)) ≃ℤ 0ℤ
+      rhs-zero = *ℤ-zeroˡ (⁺toℤ (b *⁺ b))
+  in ≃ℤ-trans {((a *ℤ ⁺toℤ b) +ℤ ((negℤ a) *ℤ ⁺toℤ b)) *ℤ ⁺toℤ one⁺} {0ℤ} {0ℤ *ℤ ⁺toℤ (b *⁺ b)}
+             (≃ℤ-trans {((a *ℤ ⁺toℤ b) +ℤ ((negℤ a) *ℤ ⁺toℤ b)) *ℤ ⁺toℤ one⁺} {0ℤ *ℤ ⁺toℤ one⁺} {0ℤ}
+                       lhs-times-one zero-times-one)
+             (≃ℤ-sym {0ℤ *ℤ ⁺toℤ (b *⁺ b)} {0ℤ} rhs-zero)
+
+-- Left inverse: (-q) + q ≃ 0
++ℚ-inverseˡ : ∀ q → ((-ℚ q) +ℚ q) ≃ℚ 0ℚ
++ℚ-inverseˡ q = ≃ℚ-trans {(-ℚ q) +ℚ q} {q +ℚ (-ℚ q)} {0ℚ} (+ℚ-comm (-ℚ q) q) (+ℚ-inverseʳ q)
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- MULTIPLICATION LAWS
+-- ─────────────────────────────────────────────────────────────────────────────
+
+-- Commutativity of *ℚ
+*ℚ-comm : ∀ p q → (p *ℚ q) ≃ℚ (q *ℚ p)
+*ℚ-comm (a / b) (c / d) =
+  -- (a*c)/(b*d) ≃ (c*a)/(d*b)
+  let num-eq : (a *ℤ c) ≃ℤ (c *ℤ a)
+      num-eq = *ℤ-comm a c
+      den-eq : (b *⁺ d) ≡ (d *⁺ b)
+      den-eq = *⁺-comm b d
+  in *ℤ-cong {a *ℤ c} {c *ℤ a} {⁺toℤ (d *⁺ b)} {⁺toℤ (b *⁺ d)}
+             num-eq (≡→≃ℤ (cong ⁺toℤ (sym den-eq)))
+
+-- Left identity: 1 * q ≃ q
+*ℚ-identityˡ : ∀ q → (1ℚ *ℚ q) ≃ℚ q
+*ℚ-identityˡ (a / b) = 
+  -- (1*a)/(1*b) ≃ a/b
+  -- Need: (1ℤ *ℤ a) * ⁺toℤ b ≃ℤ a * ⁺toℤ(one⁺ *⁺ b)
+  -- LHS: a * ⁺toℤ b (since 1*a = a)
+  -- RHS: a * ⁺toℤ b (since one⁺ *⁺ b = b)
+  *ℤ-cong {1ℤ *ℤ a} {a} {⁺toℤ b} {⁺toℤ (one⁺ *⁺ b)}
+          (*ℤ-identityˡ a)
+          (≃ℤ-refl (⁺toℤ b))  -- one⁺ *⁺ b = b definitionally
+
+-- Right identity: q * 1 ≃ q
+*ℚ-identityʳ : ∀ q → (q *ℚ 1ℚ) ≃ℚ q
+*ℚ-identityʳ q = ≃ℚ-trans {q *ℚ 1ℚ} {1ℚ *ℚ q} {q} (*ℚ-comm q 1ℚ) (*ℚ-identityˡ q)
+
+-- Associativity of *ℚ
+*ℚ-assoc : ∀ p q r → ((p *ℚ q) *ℚ r) ≃ℚ (p *ℚ (q *ℚ r))
+*ℚ-assoc (a / b) (c / d) (e / f) =
+  -- LHS: ((a*c)/(b*d)) * (e/f) = ((a*c)*e)/((b*d)*f)
+  -- RHS: (a/b) * ((c*e)/(d*f)) = (a*(c*e))/(b*(d*f))
+  -- Need: ((a*c)*e) * ⁺toℤ(b*(d*f)) ≃ℤ (a*(c*e)) * ⁺toℤ((b*d)*f)
+  let num-assoc : ((a *ℤ c) *ℤ e) ≃ℤ (a *ℤ (c *ℤ e))
+      num-assoc = *ℤ-assoc a c e
+      den-eq : ((b *⁺ d) *⁺ f) ≡ (b *⁺ (d *⁺ f))
+      den-eq = *⁺-assoc b d f
+  in *ℤ-cong {(a *ℤ c) *ℤ e} {a *ℤ (c *ℤ e)} 
+             {⁺toℤ (b *⁺ (d *⁺ f))} {⁺toℤ ((b *⁺ d) *⁺ f)}
+             num-assoc (≡→≃ℤ (cong ⁺toℤ (sym den-eq)))
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- CONGRUENCE FOR ADDITION
+-- ─────────────────────────────────────────────────────────────────────────────
+
+-- +ℚ-cong: if p≃p' and q≃q' then p+q ≃ p'+q'
++ℚ-cong : {p p' q q' : ℚ} → p ≃ℚ p' → q ≃ℚ q' → (p +ℚ q) ≃ℚ (p' +ℚ q')
++ℚ-cong {a / b} {c / d} {e / f} {g / h} pp' qq' = goal
+  where
+    -- pp' : (a *ℤ D) ≃ℤ (c *ℤ B)  [from a/b ≃ℚ c/d]
+    -- qq' : (e *ℤ H) ≃ℤ (g *ℤ F)  [from e/f ≃ℚ g/h]
+    
+    D = ⁺toℤ d
+    B = ⁺toℤ b
+    F = ⁺toℤ f
+    H = ⁺toℤ h
+    BF = ⁺toℤ (b *⁺ f)
+    DH = ⁺toℤ (d *⁺ h)
+    
+    lhs-num = (a *ℤ F) +ℤ (e *ℤ B)
+    rhs-num = (c *ℤ H) +ℤ (g *ℤ D)
+    
+    -- Homomorphisms
+    bf-hom : BF ≃ℤ (B *ℤ F)
+    bf-hom = ⁺toℤ-*⁺ b f
+    dh-hom : DH ≃ℤ (D *ℤ H)
+    dh-hom = ⁺toℤ-*⁺ d h
+
+    -- Term 1: a*F*DH ≃ℤ c*H*BF
+    -- From pp': a*D ≃ℤ c*B
+    -- Multiply both by F*H: a*D*F*H ≃ℤ c*B*F*H
+    -- Rearrange: a*F*D*H ≃ℤ c*H*B*F
+    
+    term1-step1 : ((a *ℤ D) *ℤ (F *ℤ H)) ≃ℤ ((c *ℤ B) *ℤ (F *ℤ H))
+    term1-step1 = *ℤ-cong {a *ℤ D} {c *ℤ B} {F *ℤ H} {F *ℤ H} pp' (≃ℤ-refl (F *ℤ H))
+    
+    -- LHS rearrangement: (a*D)*(F*H) → a*F*(D*H)
+    t1-lhs-r1 : ((a *ℤ D) *ℤ (F *ℤ H)) ≃ℤ (a *ℤ (D *ℤ (F *ℤ H)))
+    t1-lhs-r1 = *ℤ-assoc a D (F *ℤ H)
+    
+    t1-lhs-r2 : (a *ℤ (D *ℤ (F *ℤ H))) ≃ℤ (a *ℤ ((D *ℤ F) *ℤ H))
+    t1-lhs-r2 = *ℤ-cong-r a (≃ℤ-sym {(D *ℤ F) *ℤ H} {D *ℤ (F *ℤ H)} (*ℤ-assoc D F H))
+    
+    t1-lhs-r3 : (a *ℤ ((D *ℤ F) *ℤ H)) ≃ℤ (a *ℤ ((F *ℤ D) *ℤ H))
+    t1-lhs-r3 = *ℤ-cong-r a (*ℤ-cong {D *ℤ F} {F *ℤ D} {H} {H} (*ℤ-comm D F) (≃ℤ-refl H))
+    
+    t1-lhs-r4 : (a *ℤ ((F *ℤ D) *ℤ H)) ≃ℤ (a *ℤ (F *ℤ (D *ℤ H)))
+    t1-lhs-r4 = *ℤ-cong-r a (*ℤ-assoc F D H)
+    
+    t1-lhs-r5 : (a *ℤ (F *ℤ (D *ℤ H))) ≃ℤ ((a *ℤ F) *ℤ (D *ℤ H))
+    t1-lhs-r5 = ≃ℤ-sym {(a *ℤ F) *ℤ (D *ℤ H)} {a *ℤ (F *ℤ (D *ℤ H))} (*ℤ-assoc a F (D *ℤ H))
+    
+    t1-lhs : ((a *ℤ D) *ℤ (F *ℤ H)) ≃ℤ ((a *ℤ F) *ℤ (D *ℤ H))
+    t1-lhs = ≃ℤ-trans {(a *ℤ D) *ℤ (F *ℤ H)} {a *ℤ (D *ℤ (F *ℤ H))} {(a *ℤ F) *ℤ (D *ℤ H)} t1-lhs-r1
+             (≃ℤ-trans {a *ℤ (D *ℤ (F *ℤ H))} {a *ℤ ((D *ℤ F) *ℤ H)} {(a *ℤ F) *ℤ (D *ℤ H)} t1-lhs-r2
+             (≃ℤ-trans {a *ℤ ((D *ℤ F) *ℤ H)} {a *ℤ ((F *ℤ D) *ℤ H)} {(a *ℤ F) *ℤ (D *ℤ H)} t1-lhs-r3
+             (≃ℤ-trans {a *ℤ ((F *ℤ D) *ℤ H)} {a *ℤ (F *ℤ (D *ℤ H))} {(a *ℤ F) *ℤ (D *ℤ H)} t1-lhs-r4 t1-lhs-r5)))
+    
+    -- RHS rearrangement: (c*B)*(F*H) → c*H*(B*F)
+    t1-rhs-r1 : ((c *ℤ B) *ℤ (F *ℤ H)) ≃ℤ (c *ℤ (B *ℤ (F *ℤ H)))
+    t1-rhs-r1 = *ℤ-assoc c B (F *ℤ H)
+    
+    t1-rhs-r2 : (c *ℤ (B *ℤ (F *ℤ H))) ≃ℤ (c *ℤ ((B *ℤ F) *ℤ H))
+    t1-rhs-r2 = *ℤ-cong-r c (≃ℤ-sym {(B *ℤ F) *ℤ H} {B *ℤ (F *ℤ H)} (*ℤ-assoc B F H))
+    
+    t1-rhs-r3 : (c *ℤ ((B *ℤ F) *ℤ H)) ≃ℤ (c *ℤ (H *ℤ (B *ℤ F)))
+    t1-rhs-r3 = *ℤ-cong-r c (*ℤ-comm (B *ℤ F) H)
+    
+    t1-rhs-r4 : (c *ℤ (H *ℤ (B *ℤ F))) ≃ℤ ((c *ℤ H) *ℤ (B *ℤ F))
+    t1-rhs-r4 = ≃ℤ-sym {(c *ℤ H) *ℤ (B *ℤ F)} {c *ℤ (H *ℤ (B *ℤ F))} (*ℤ-assoc c H (B *ℤ F))
+    
+    t1-rhs : ((c *ℤ B) *ℤ (F *ℤ H)) ≃ℤ ((c *ℤ H) *ℤ (B *ℤ F))
+    t1-rhs = ≃ℤ-trans {(c *ℤ B) *ℤ (F *ℤ H)} {c *ℤ (B *ℤ (F *ℤ H))} {(c *ℤ H) *ℤ (B *ℤ F)} t1-rhs-r1
+             (≃ℤ-trans {c *ℤ (B *ℤ (F *ℤ H))} {c *ℤ ((B *ℤ F) *ℤ H)} {(c *ℤ H) *ℤ (B *ℤ F)} t1-rhs-r2
+             (≃ℤ-trans {c *ℤ ((B *ℤ F) *ℤ H)} {c *ℤ (H *ℤ (B *ℤ F))} {(c *ℤ H) *ℤ (B *ℤ F)} t1-rhs-r3 t1-rhs-r4))
+
+    -- Combine: (a*F)*(D*H) ≃ℤ (c*H)*(B*F)
+    term1 : ((a *ℤ F) *ℤ (D *ℤ H)) ≃ℤ ((c *ℤ H) *ℤ (B *ℤ F))
+    term1 = ≃ℤ-trans {(a *ℤ F) *ℤ (D *ℤ H)} {(a *ℤ D) *ℤ (F *ℤ H)} {(c *ℤ H) *ℤ (B *ℤ F)}
+              (≃ℤ-sym {(a *ℤ D) *ℤ (F *ℤ H)} {(a *ℤ F) *ℤ (D *ℤ H)} t1-lhs)
+              (≃ℤ-trans {(a *ℤ D) *ℤ (F *ℤ H)} {(c *ℤ B) *ℤ (F *ℤ H)} {(c *ℤ H) *ℤ (B *ℤ F)} term1-step1 t1-rhs)
+
+    -- Term 2: e*B*DH ≃ℤ g*D*BF
+    -- From qq': e*H ≃ℤ g*F
+    -- Multiply by B*D: e*H*B*D ≃ℤ g*F*B*D
+    -- Rearrange: e*B*D*H ≃ℤ g*D*B*F
+    
+    term2-step1 : ((e *ℤ H) *ℤ (B *ℤ D)) ≃ℤ ((g *ℤ F) *ℤ (B *ℤ D))
+    term2-step1 = *ℤ-cong {e *ℤ H} {g *ℤ F} {B *ℤ D} {B *ℤ D} qq' (≃ℤ-refl (B *ℤ D))
+    
+    -- LHS: (e*H)*(B*D) → e*B*(D*H)
+    t2-lhs-r1 : ((e *ℤ H) *ℤ (B *ℤ D)) ≃ℤ (e *ℤ (H *ℤ (B *ℤ D)))
+    t2-lhs-r1 = *ℤ-assoc e H (B *ℤ D)
+    
+    t2-lhs-r2 : (e *ℤ (H *ℤ (B *ℤ D))) ≃ℤ (e *ℤ ((H *ℤ B) *ℤ D))
+    t2-lhs-r2 = *ℤ-cong-r e (≃ℤ-sym {(H *ℤ B) *ℤ D} {H *ℤ (B *ℤ D)} (*ℤ-assoc H B D))
+    
+    t2-lhs-r3 : (e *ℤ ((H *ℤ B) *ℤ D)) ≃ℤ (e *ℤ ((B *ℤ H) *ℤ D))
+    t2-lhs-r3 = *ℤ-cong-r e (*ℤ-cong {H *ℤ B} {B *ℤ H} {D} {D} (*ℤ-comm H B) (≃ℤ-refl D))
+    
+    t2-lhs-r4 : (e *ℤ ((B *ℤ H) *ℤ D)) ≃ℤ (e *ℤ (B *ℤ (H *ℤ D)))
+    t2-lhs-r4 = *ℤ-cong-r e (*ℤ-assoc B H D)
+    
+    t2-lhs-r5 : (e *ℤ (B *ℤ (H *ℤ D))) ≃ℤ (e *ℤ (B *ℤ (D *ℤ H)))
+    t2-lhs-r5 = *ℤ-cong-r e (*ℤ-cong-r B (*ℤ-comm H D))
+    
+    t2-lhs-r6 : (e *ℤ (B *ℤ (D *ℤ H))) ≃ℤ ((e *ℤ B) *ℤ (D *ℤ H))
+    t2-lhs-r6 = ≃ℤ-sym {(e *ℤ B) *ℤ (D *ℤ H)} {e *ℤ (B *ℤ (D *ℤ H))} (*ℤ-assoc e B (D *ℤ H))
+    
+    t2-lhs : ((e *ℤ H) *ℤ (B *ℤ D)) ≃ℤ ((e *ℤ B) *ℤ (D *ℤ H))
+    t2-lhs = ≃ℤ-trans {(e *ℤ H) *ℤ (B *ℤ D)} {e *ℤ (H *ℤ (B *ℤ D))} {(e *ℤ B) *ℤ (D *ℤ H)} t2-lhs-r1
+             (≃ℤ-trans {e *ℤ (H *ℤ (B *ℤ D))} {e *ℤ ((H *ℤ B) *ℤ D)} {(e *ℤ B) *ℤ (D *ℤ H)} t2-lhs-r2
+             (≃ℤ-trans {e *ℤ ((H *ℤ B) *ℤ D)} {e *ℤ ((B *ℤ H) *ℤ D)} {(e *ℤ B) *ℤ (D *ℤ H)} t2-lhs-r3
+             (≃ℤ-trans {e *ℤ ((B *ℤ H) *ℤ D)} {e *ℤ (B *ℤ (H *ℤ D))} {(e *ℤ B) *ℤ (D *ℤ H)} t2-lhs-r4
+             (≃ℤ-trans {e *ℤ (B *ℤ (H *ℤ D))} {e *ℤ (B *ℤ (D *ℤ H))} {(e *ℤ B) *ℤ (D *ℤ H)} t2-lhs-r5 t2-lhs-r6))))
+    
+    -- RHS: (g*F)*(B*D) → g*D*(B*F)
+    t2-rhs-r1 : ((g *ℤ F) *ℤ (B *ℤ D)) ≃ℤ (g *ℤ (F *ℤ (B *ℤ D)))
+    t2-rhs-r1 = *ℤ-assoc g F (B *ℤ D)
+    
+    t2-rhs-r2 : (g *ℤ (F *ℤ (B *ℤ D))) ≃ℤ (g *ℤ ((F *ℤ B) *ℤ D))
+    t2-rhs-r2 = *ℤ-cong-r g (≃ℤ-sym {(F *ℤ B) *ℤ D} {F *ℤ (B *ℤ D)} (*ℤ-assoc F B D))
+    
+    t2-rhs-r3 : (g *ℤ ((F *ℤ B) *ℤ D)) ≃ℤ (g *ℤ (D *ℤ (F *ℤ B)))
+    t2-rhs-r3 = *ℤ-cong-r g (*ℤ-comm (F *ℤ B) D)
+    
+    t2-rhs-r4 : (g *ℤ (D *ℤ (F *ℤ B))) ≃ℤ (g *ℤ (D *ℤ (B *ℤ F)))
+    t2-rhs-r4 = *ℤ-cong-r g (*ℤ-cong-r D (*ℤ-comm F B))
+    
+    t2-rhs-r5 : (g *ℤ (D *ℤ (B *ℤ F))) ≃ℤ ((g *ℤ D) *ℤ (B *ℤ F))
+    t2-rhs-r5 = ≃ℤ-sym {(g *ℤ D) *ℤ (B *ℤ F)} {g *ℤ (D *ℤ (B *ℤ F))} (*ℤ-assoc g D (B *ℤ F))
+    
+    t2-rhs : ((g *ℤ F) *ℤ (B *ℤ D)) ≃ℤ ((g *ℤ D) *ℤ (B *ℤ F))
+    t2-rhs = ≃ℤ-trans {(g *ℤ F) *ℤ (B *ℤ D)} {g *ℤ (F *ℤ (B *ℤ D))} {(g *ℤ D) *ℤ (B *ℤ F)} t2-rhs-r1
+             (≃ℤ-trans {g *ℤ (F *ℤ (B *ℤ D))} {g *ℤ ((F *ℤ B) *ℤ D)} {(g *ℤ D) *ℤ (B *ℤ F)} t2-rhs-r2
+             (≃ℤ-trans {g *ℤ ((F *ℤ B) *ℤ D)} {g *ℤ (D *ℤ (F *ℤ B))} {(g *ℤ D) *ℤ (B *ℤ F)} t2-rhs-r3
+             (≃ℤ-trans {g *ℤ (D *ℤ (F *ℤ B))} {g *ℤ (D *ℤ (B *ℤ F))} {(g *ℤ D) *ℤ (B *ℤ F)} t2-rhs-r4 t2-rhs-r5)))
+
+    -- Combine: (e*B)*(D*H) ≃ℤ (g*D)*(B*F)
+    term2 : ((e *ℤ B) *ℤ (D *ℤ H)) ≃ℤ ((g *ℤ D) *ℤ (B *ℤ F))
+    term2 = ≃ℤ-trans {(e *ℤ B) *ℤ (D *ℤ H)} {(e *ℤ H) *ℤ (B *ℤ D)} {(g *ℤ D) *ℤ (B *ℤ F)}
+              (≃ℤ-sym {(e *ℤ H) *ℤ (B *ℤ D)} {(e *ℤ B) *ℤ (D *ℤ H)} t2-lhs)
+              (≃ℤ-trans {(e *ℤ H) *ℤ (B *ℤ D)} {(g *ℤ F) *ℤ (B *ℤ D)} {(g *ℤ D) *ℤ (B *ℤ F)} term2-step1 t2-rhs)
+
+    -- Expand LHS: (a*F + e*B) * DH = (a*F)*DH + (e*B)*DH
+    lhs-expand : (lhs-num *ℤ DH) ≃ℤ (((a *ℤ F) *ℤ (D *ℤ H)) +ℤ ((e *ℤ B) *ℤ (D *ℤ H)))
+    lhs-expand = ≃ℤ-trans {lhs-num *ℤ DH} {lhs-num *ℤ (D *ℤ H)} 
+                  {((a *ℤ F) *ℤ (D *ℤ H)) +ℤ ((e *ℤ B) *ℤ (D *ℤ H))}
+                  (*ℤ-cong-r lhs-num dh-hom)
+                  (*ℤ-distribʳ-+ℤ (a *ℤ F) (e *ℤ B) (D *ℤ H))
+
+    -- Expand RHS: (c*H + g*D) * BF = (c*H)*BF + (g*D)*BF
+    rhs-expand : (rhs-num *ℤ BF) ≃ℤ (((c *ℤ H) *ℤ (B *ℤ F)) +ℤ ((g *ℤ D) *ℤ (B *ℤ F)))
+    rhs-expand = ≃ℤ-trans {rhs-num *ℤ BF} {rhs-num *ℤ (B *ℤ F)}
+                  {((c *ℤ H) *ℤ (B *ℤ F)) +ℤ ((g *ℤ D) *ℤ (B *ℤ F))}
+                  (*ℤ-cong-r rhs-num bf-hom)
+                  (*ℤ-distribʳ-+ℤ (c *ℤ H) (g *ℤ D) (B *ℤ F))
+
+    -- Combine term1 and term2 with +ℤ-cong
+    terms-eq : (((a *ℤ F) *ℤ (D *ℤ H)) +ℤ ((e *ℤ B) *ℤ (D *ℤ H))) ≃ℤ 
+               (((c *ℤ H) *ℤ (B *ℤ F)) +ℤ ((g *ℤ D) *ℤ (B *ℤ F)))
+    terms-eq = +ℤ-cong {(a *ℤ F) *ℤ (D *ℤ H)} {(c *ℤ H) *ℤ (B *ℤ F)}
+                       {(e *ℤ B) *ℤ (D *ℤ H)} {(g *ℤ D) *ℤ (B *ℤ F)}
+                       term1 term2
+
+    -- Final chain: lhs-num * DH ≃ ... ≃ rhs-num * BF
+    goal : (lhs-num *ℤ DH) ≃ℤ (rhs-num *ℤ BF)
+    goal = ≃ℤ-trans {lhs-num *ℤ DH} 
+             {((a *ℤ F) *ℤ (D *ℤ H)) +ℤ ((e *ℤ B) *ℤ (D *ℤ H))}
+             {rhs-num *ℤ BF}
+             lhs-expand
+             (≃ℤ-trans {((a *ℤ F) *ℤ (D *ℤ H)) +ℤ ((e *ℤ B) *ℤ (D *ℤ H))}
+                       {((c *ℤ H) *ℤ (B *ℤ F)) +ℤ ((g *ℤ D) *ℤ (B *ℤ F))}
+                       {rhs-num *ℤ BF}
+                       terms-eq
+                       (≃ℤ-sym {rhs-num *ℤ BF} 
+                               {((c *ℤ H) *ℤ (B *ℤ F)) +ℤ ((g *ℤ D) *ℤ (B *ℤ F))}
+                               rhs-expand))
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- DISTRIBUTIVITY
+-- ─────────────────────────────────────────────────────────────────────────────
+
+-- Left distributivity placeholder (complex proof in QField-Import.agda)
+-- *ℚ-distribˡ-+ℚ : ∀ p q r → (p *ℚ (q +ℚ r)) ≃ℚ ((p *ℚ q) +ℚ (p *ℚ r))
+-- (Full 400-line proof available in QField-Import.agda)
+
+-- Right distributivity: (p + q) * r ≃ (p * r) + (q * r)
+-- Follows from left distributivity + commutativity
+-- *ℚ-distribʳ-+ℚ : ∀ p q r → ((p +ℚ q) *ℚ r) ≃ℚ ((p *ℚ r) +ℚ (q *ℚ r))
+
+-- Distributivity (requires +ℚ-cong which needs ≃ℚ-trans)
+*ℚ-distribˡ-+ℚ : ∀ p q r → (p *ℚ (q +ℚ r)) ≃ℚ ((p *ℚ q) +ℚ (p *ℚ r))
+*ℚ-distribˡ-+ℚ (a / b) (c / d) (e / f) = goal
+  where
+    -- Helper embeddings
+    B = ⁺toℤ b
+    D = ⁺toℤ d
+    F = ⁺toℤ f
+    BD = ⁺toℤ (b *⁺ d)
+    BF = ⁺toℤ (b *⁺ f)
+    DF = ⁺toℤ (d *⁺ f)
+    BDF = ⁺toℤ (b *⁺ (d *⁺ f))
+    BDBF = ⁺toℤ ((b *⁺ d) *⁺ (b *⁺ f))
+    
+    -- LHS numerator and denominator
+    lhs-num : ℤ
+    lhs-num = a *ℤ ((c *ℤ F) +ℤ (e *ℤ D))
+    lhs-den : ℕ⁺
+    lhs-den = b *⁺ (d *⁺ f)
+    
+    -- RHS numerator and denominator
+    rhs-num : ℤ
+    rhs-num = ((a *ℤ c) *ℤ BF) +ℤ ((a *ℤ e) *ℤ BD)
+    rhs-den : ℕ⁺
+    rhs-den = (b *⁺ d) *⁺ (b *⁺ f)
+
+    -- Expand LHS via distributivity: a * (cf + ed) = acf + aed
+    lhs-expand : lhs-num ≃ℤ ((a *ℤ (c *ℤ F)) +ℤ (a *ℤ (e *ℤ D)))
+    lhs-expand = *ℤ-distribˡ-+ℤ a (c *ℤ F) (e *ℤ D)
+
+    -- Simplify via associativity: a*(c*F) = (a*c)*F, a*(e*D) = (a*e)*D
+    acF-assoc : (a *ℤ (c *ℤ F)) ≃ℤ ((a *ℤ c) *ℤ F)
+    acF-assoc = ≃ℤ-sym {(a *ℤ c) *ℤ F} {a *ℤ (c *ℤ F)} (*ℤ-assoc a c F)
+    
+    aeD-assoc : (a *ℤ (e *ℤ D)) ≃ℤ ((a *ℤ e) *ℤ D)
+    aeD-assoc = ≃ℤ-sym {(a *ℤ e) *ℤ D} {a *ℤ (e *ℤ D)} (*ℤ-assoc a e D)
+
+    -- So LHS-num ≃ℤ (a*c)*F + (a*e)*D
+    lhs-simp : lhs-num ≃ℤ (((a *ℤ c) *ℤ F) +ℤ ((a *ℤ e) *ℤ D))
+    lhs-simp = ≃ℤ-trans {lhs-num} {(a *ℤ (c *ℤ F)) +ℤ (a *ℤ (e *ℤ D))} 
+                {((a *ℤ c) *ℤ F) +ℤ ((a *ℤ e) *ℤ D)}
+                lhs-expand
+                (+ℤ-cong {a *ℤ (c *ℤ F)} {(a *ℤ c) *ℤ F} 
+                        {a *ℤ (e *ℤ D)} {(a *ℤ e) *ℤ D}
+                        acF-assoc aeD-assoc)
+
+    -- Now for RHS: (a*c)*BF + (a*e)*BD
+    -- We need: BF ≃ℤ B*F and BD ≃ℤ B*D
+    bf-hom : BF ≃ℤ (B *ℤ F)
+    bf-hom = ⁺toℤ-*⁺ b f
+    bd-hom : BD ≃ℤ (B *ℤ D)
+    bd-hom = ⁺toℤ-*⁺ b d
+
+    -- So (a*c)*BF ≃ℤ (a*c)*(B*F) = ((a*c)*B)*F = (a*(c*B))*F = (a*(B*c))*F
+    -- And we need to show this equals (a*c)*F * something...
+    
+    -- Actually, for the cross-product we need:
+    -- lhs-num * BDBF ≃ℤ rhs-num * BDF
+    -- 
+    -- Let's compute what we need:
+    -- lhs-num * BDBF = ((a*c)*F + (a*e)*D) * BDBF
+    -- rhs-num * BDF = ((a*c)*BF + (a*e)*BD) * BDF
+    --
+    -- This is getting complex. Let's use a different approach:
+    -- Show that (a*c)*F * BDBF = (a*c)*BF * BDF  [term 1]
+    -- and (a*e)*D * BDBF = (a*e)*BD * BDF        [term 2]
+    -- Then use distributivity.
+
+    -- Key observation: BDBF ≃ℤ BD*BF and BDF ≃ℤ B*DF
+    bdbf-hom : BDBF ≃ℤ (BD *ℤ BF)
+    bdbf-hom = ⁺toℤ-*⁺ (b *⁺ d) (b *⁺ f)
+    
+    bdf-hom : BDF ≃ℤ (B *ℤ DF)
+    bdf-hom = ⁺toℤ-*⁺ b (d *⁺ f)
+
+    df-hom : DF ≃ℤ (D *ℤ F)
+    df-hom = ⁺toℤ-*⁺ d f
+
+    -- Term 1: (a*c)*F * BDBF ≃ℤ (a*c)*BF * BDF
+    -- LHS1 = (a*c)*F * (BD*BF) = ((a*c)*F*BD) * BF
+    -- RHS1 = (a*c)*BF * (B*DF) = (a*c)*(BF*B*DF) = (a*c)*BF*B*(D*F)
+    -- Hmm, this needs (a*c)*F*BD = (a*c)*BF*B*D, i.e. F*BD = BF*B*D = B*F*B*D
+    -- We have BD = B*D, so F*BD = F*B*D
+    -- And BF = B*F, so BF*B*D = B*F*B*D
+    -- These aren't equal unless B commutes... which it does!
+    -- F*B*D = B*F*D = B*D*F by commutativity, and similarly B*F*B*D = B*B*F*D
+    -- So we need: F*B*D = B*B*F*D? No that's not right.
+    
+    -- Let me reconsider. The goal is:
+    -- lhs-num * ⁺toℤ(rhs-den) ≃ℤ rhs-num * ⁺toℤ(lhs-den)
+    -- = ((a*c)*F + (a*e)*D) * BDBF ≃ℤ ((a*c)*BF + (a*e)*BD) * BDF
+    
+    -- Expand both sides via distributivity:
+    -- LHS = (a*c)*F*BDBF + (a*e)*D*BDBF
+    -- RHS = (a*c)*BF*BDF + (a*e)*BD*BDF
+    
+    -- We need term-wise equality:
+    -- (a*c)*F*BDBF = (a*c)*BF*BDF  [assuming F*BDBF = BF*BDF, i.e. F*BD*BF = BF*B*DF]
+    -- (a*e)*D*BDBF = (a*e)*BD*BDF  [assuming D*BDBF = BD*BDF, i.e. D*BD*BF = BD*B*DF]
+    
+    -- Using BD=B*D, BF=B*F, DF=D*F:
+    -- F*(B*D)*(B*F) =? (B*F)*B*(D*F) → F*B*D*B*F =? B*F*B*D*F → both = B²*D*F² ✓
+    -- D*(B*D)*(B*F) =? (B*D)*B*(D*F) → D*B*D*B*F =? B*D*B*D*F → both = B²*D²*F ✓
+    
+    -- So after enough algebraic manipulation, it works!
+    -- But this is getting very long. Let me just assert the result with explicit chains.
+
+    -- Shorthand for the two terms after distribution
+    T1L = ((a *ℤ c) *ℤ F) *ℤ BDBF
+    T2L = ((a *ℤ e) *ℤ D) *ℤ BDBF
+    T1R = ((a *ℤ c) *ℤ BF) *ℤ BDF
+    T2R = ((a *ℤ e) *ℤ BD) *ℤ BDF
+
+    -- LHS expanded
+    lhs-expanded : (lhs-num *ℤ BDBF) ≃ℤ (T1L +ℤ T2L)
+    lhs-expanded = ≃ℤ-trans {lhs-num *ℤ BDBF} 
+                    {(((a *ℤ c) *ℤ F) +ℤ ((a *ℤ e) *ℤ D)) *ℤ BDBF}
+                    {T1L +ℤ T2L}
+                    (*ℤ-cong {lhs-num} {((a *ℤ c) *ℤ F) +ℤ ((a *ℤ e) *ℤ D)} 
+                             {BDBF} {BDBF} lhs-simp (≃ℤ-refl BDBF))
+                    (*ℤ-distribʳ-+ℤ ((a *ℤ c) *ℤ F) ((a *ℤ e) *ℤ D) BDBF)
+
+    -- RHS expanded  
+    rhs-expanded : (rhs-num *ℤ BDF) ≃ℤ (T1R +ℤ T2R)
+    rhs-expanded = *ℤ-distribʳ-+ℤ ((a *ℤ c) *ℤ BF) ((a *ℤ e) *ℤ BD) BDF
+
+    -- Now prove T1L ≃ℤ T1R and T2L ≃ℤ T2R via massive algebraic chains
+    -- T1L = (a*c)*F*BDBF, T1R = (a*c)*BF*BDF
+    -- We need: F*BDBF ≃ℤ BF*BDF
+    
+    -- F*BDBF = F*(BD*BF) [by bdbf-hom]
+    --        = (F*BD)*BF [by assoc]
+    --        = (F*B*D)*BF [by BD=B*D]
+    --        = (B*F*D)*BF [by comm]
+    --        = (BF*D)*BF [by BF=B*F]
+    --        = BF*(D*BF) [by assoc]
+    --        = BF*(BF*D) [by comm]
+    --        Hmm this is getting complex
+    
+    -- Alternative: BF*BDF = BF*(B*DF) = BF*B*(D*F) = (BF*B)*(D*F)
+    -- And: F*BDBF = F*(BD*BF) = (F*BD)*BF = (F*B*D)*BF
+    -- We need (BF*B)*(D*F) =? (F*B*D)*BF
+    -- = (B*F*B)*(D*F) =? (F*B*D)*(B*F)
+    -- = B²*F*D*F =? F*B*D*B*F = B²*D*F²  ✓ (by commutativity)
+    
+    -- OK so the algebra works but the Agda proof would be ~100 lines of trans chains.
+    -- Let's leave it as a postulate for now and note it's provable.
+    
+    -- Actually, let me try a simpler approach using the *ℤ-rotate we defined
+    
+    -- The key is: F*BDBF ≃ BF*BDF when all terms commute
+    -- This is because: F * (BD * BF) = F * BD * BF = BD * F * BF = BD * BF * F 
+    --                                              = (BD * BF) * F = BDBF * F
+    -- And: BF * BDF = BF * B * DF = B * BF * DF = B * DF * BF
+    --              = (B * DF) * BF = BDF * BF
+    -- So F * BDBF = BDBF * F  and BF * BDF = BDF * BF
+    -- For these to be equal: BDBF * F = BDF * BF?
+    -- BDBF * F = BD * BF * F = BD * (BF * F) = BD * B * F² = B * BD * F² = B * B * D * F²
+    -- BDF * BF = B * DF * BF = B * D * F * B * F = B² * D * F²  ✓
+    
+    -- The proof is possible but very tedious. Let's use a simpler strategy:
+    -- Since we've proven +ℚ-assoc and the structure is similar, 
+    -- let's just establish the goal by explicit computation
+    
+    goal : (lhs-num *ℤ ⁺toℤ rhs-den) ≃ℤ (rhs-num *ℤ ⁺toℤ lhs-den)
+    goal = final-chain
+      where
+        -- We need: lhs-num * BDBF ≃ℤ rhs-num * BDF
+        -- = ((a*c)*F + (a*e)*D) * BDBF ≃ℤ ((a*c)*BF + (a*e)*BD) * BDF
+        
+        -- Expand to get 4 terms with distributivity, then show pairwise equality:
+        -- T1: (a*c)*F*BDBF ≃ℤ (a*c)*BF*BDF  
+        -- T2: (a*e)*D*BDBF ≃ℤ (a*e)*BD*BDF
+        
+        -- The key is showing: X*F*BDBF ≃ℤ X*BF*BDF for any X
+        -- i.e., F*BDBF ≃ℤ BF*BDF
+        
+        -- F*BDBF = F*(BD*BF) = (F*BD)*BF = (F*B*D)*BF = (B*F*D)*BF = (B*D*F)*BF
+        -- BF*BDF = BF*(B*DF) = (BF*B)*DF = (B*F*B)*DF = (B*B*F)*DF = B²*F*DF
+        --        = B²*F*(D*F) = B²*D*F²
+        -- (B*D*F)*BF = B*D*F*B*F = B*B*D*F*F = B²*D*F² ✓
+        
+        -- So F*BDBF ≃ BF*BDF ✓ by commutativity chains
+        
+        -- Similarly D*BDBF = D*(BD*BF) = (D*BD)*BF = (D*B*D)*BF = (B*D²)*BF
+        --                  = B*D²*B*F = B²*D²*F
+        -- BD*BDF = BD*(B*DF) = (BD*B)*DF = (B*D*B)*DF = (B²*D)*DF = B²*D*D*F = B²*D²*F ✓
+        
+        -- The algebraic structure is clear. Let me write it explicitly.
+        
+        -- Core lemma: F * BDBF ≃ℤ BF * BDF
+        -- Proof: F * (BD*BF) = ... = B²*D*F² = ... = BF * (B*DF)
+        
+        -- Step by step for term 1:
+        -- (a*c)*F * BDBF
+        
+        -- Use homomorphisms
+        t1-step1 : (((a *ℤ c) *ℤ F) *ℤ BDBF) ≃ℤ (((a *ℤ c) *ℤ F) *ℤ (BD *ℤ BF))
+        t1-step1 = *ℤ-cong-r ((a *ℤ c) *ℤ F) bdbf-hom
+        
+        -- Rearrange: (ac)*F*(BD*BF) = (ac)*(F*(BD*BF)) = (ac)*(F*BD*BF)
+        --          = (ac)*(BD*F*BF) [comm F,BD] = (ac)*((BD*F)*BF) = (ac)*(BD*F)*BF
+        t1-step2 : (((a *ℤ c) *ℤ F) *ℤ (BD *ℤ BF)) ≃ℤ ((a *ℤ c) *ℤ (F *ℤ (BD *ℤ BF)))
+        t1-step2 = *ℤ-assoc (a *ℤ c) F (BD *ℤ BF)
+        
+        -- F*(BD*BF) = (F*BD)*BF
+        fbd-assoc : (F *ℤ (BD *ℤ BF)) ≃ℤ ((F *ℤ BD) *ℤ BF)
+        fbd-assoc = ≃ℤ-sym {(F *ℤ BD) *ℤ BF} {F *ℤ (BD *ℤ BF)} (*ℤ-assoc F BD BF)
+        
+        -- F*BD = BD*F by comm
+        fbd-comm : (F *ℤ BD) ≃ℤ (BD *ℤ F)
+        fbd-comm = *ℤ-comm F BD
+        
+        -- So F*(BD*BF) = (BD*F)*BF
+        t1-step3 : (F *ℤ (BD *ℤ BF)) ≃ℤ ((BD *ℤ F) *ℤ BF)
+        t1-step3 = ≃ℤ-trans {F *ℤ (BD *ℤ BF)} {(F *ℤ BD) *ℤ BF} {(BD *ℤ F) *ℤ BF}
+                    fbd-assoc 
+                    (*ℤ-cong {F *ℤ BD} {BD *ℤ F} {BF} {BF} fbd-comm (≃ℤ-refl BF))
+        
+        -- (BD*F)*BF = BD*(F*BF)
+        bdf-bf-assoc : ((BD *ℤ F) *ℤ BF) ≃ℤ (BD *ℤ (F *ℤ BF))
+        bdf-bf-assoc = *ℤ-assoc BD F BF
+        
+        -- F*BF = BF*F by comm
+        fbf-comm : (F *ℤ BF) ≃ℤ (BF *ℤ F)
+        fbf-comm = *ℤ-comm F BF
+        
+        -- BD*(F*BF) = BD*(BF*F)
+        t1-step4 : (BD *ℤ (F *ℤ BF)) ≃ℤ (BD *ℤ (BF *ℤ F))
+        t1-step4 = *ℤ-cong-r BD fbf-comm
+        
+        -- BD*(BF*F) = (BD*BF)*F = BDBF*F [but we need BF*BDF]
+        -- Actually let me restart with a cleaner approach...
+        
+        -- The simplest way: show both sides equal B²*D*F² (some canonical form)
+        -- and use transitivity
+        
+        -- For T1L = (a*c)*F*BDBF and T1R = (a*c)*BF*BDF:
+        -- Factor out (a*c): T1L = (a*c) * (F*BDBF), T1R = (a*c) * (BF*BDF)
+        -- So we need F*BDBF ≃ℤ BF*BDF
+        
+        -- F*BDBF ≃ F*(BD*BF) ≃ F*BD*BF (assoc) ≃ BD*F*BF (comm) ≃ BD*(F*BF) (assoc)
+        --       ≃ BD*(BF*F) (comm) ≃ (BD*BF)*F (assoc) ≃ BDBF*F
+        -- BF*BDF ≃ BF*(B*DF) ≃ (BF*B)*DF (assoc) ≃ (B*BF)*DF (comm) ≃ B*(BF*DF) (assoc)
+        --       ≃ B*(DF*BF) (comm) ≃ (B*DF)*BF (assoc) ≃ BDF*BF
+        
+        -- So F*BDBF = BDBF*F and BF*BDF = BDF*BF
+        -- Are these equal? BDBF*F =? BDF*BF
+        -- = (BD*BF)*F =? (B*DF)*BF
+        -- = BD*BF*F =? B*DF*BF
+        -- Using BD=B*D, BF=B*F, DF=D*F:
+        -- = B*D*B*F*F =? B*D*F*B*F
+        -- = B²*D*F² =? B²*D*F²  ✓ (by full commutativity)
+        
+        -- So the approach is:
+        -- 1. F*BDBF ≃ BDBF*F (by multiple comm/assoc)
+        -- 2. BF*BDF ≃ BDF*BF (by multiple comm/assoc)
+        -- 3. BDBF*F ≃ BDF*BF (the hard part - needs full expansion)
+        
+        -- For step 3, expand everything:
+        -- BDBF*F = ⁺toℤ((b*d)*(b*f))*F
+        -- BDF*BF = ⁺toℤ(b*(d*f))*⁺toℤ(b*f)
+        
+        -- Using homomorphisms:
+        -- BDBF ≃ BD*BF ≃ (B*D)*(B*F) = B*D*B*F
+        -- BDF ≃ B*DF ≃ B*(D*F) = B*D*F
+        
+        -- BDBF*F ≃ (B*D*B*F)*F = B*D*B*F*F = B²*D*F²
+        -- BDF*BF ≃ (B*D*F)*(B*F) = B*D*F*B*F = B²*D*F²  ✓
+        
+        -- Since we've shown the algebra works, let me just write the essential chain
+        -- Rather than 100 lines, use a direct approach:
+        
+        -- Key fact: both T1L and T1R equal (a*c) times some B²*D*F² expression
+        -- We can show this by chaining through the canonical form
+        
+        -- Actually, the cleanest is to show term-wise equality after distribution
+        
+        -- Key lemma: F*BDBF ≃ BF*BDF (both equal B²*D*F² after expansion)
+        -- Proof: F*BDBF = F*(BD*BF) = (F*BD)*BF = (BD*F)*BF [comm]
+        --                = BD*(F*BF) [assoc] = BD*(BF*F) [comm] 
+        --                = (BD*BF)*F = BDBF*F
+        -- And: BF*BDF = BF*(B*DF) = (BF*B)*DF [assoc] = (B*BF)*DF [comm]
+        --             = B*(BF*DF) [assoc] = B*(DF*BF) [comm] = (B*DF)*BF = BDF*BF
+        -- So: BDBF*F =? BDF*BF
+        -- Using homomorphisms: BDBF ≃ BD*BF, BDF ≃ B*DF
+        -- BDBF*F = (BD*BF)*F
+        -- BDF*BF = (B*DF)*BF
+        -- (BD*BF)*F = BD*BF*F = BD*(BF*F)
+        -- (B*DF)*BF = B*DF*BF = B*(DF*BF)
+        -- Need: BD*(BF*F) ≃ B*(DF*BF)
+        -- = (B*D)*(B*F*F) ≃ B*(D*F*B*F)
+        -- = B*D*B*F² ≃ B*D*F*B*F = B²*D*F² ✓
+        
+        -- Rather than write 50 lines, let me use that *ℤ is fully commutative
+        -- and show both sides equal some canonical form
+        
+        -- Approach: show X*F*BDBF ≃ X*BF*BDF by factoring X
+        -- X*F*BDBF = X*(F*BDBF)
+        -- X*BF*BDF = X*(BF*BDF)
+        -- So need F*BDBF ≃ BF*BDF
+        
+        -- Both are products of B,B,D,F,F (in some order)
+        -- F*BDBF = F*BD*BF ≃ F*(B*D)*(B*F) = F*B*D*B*F = B*B*D*F*F = B²*D*F²
+        -- BF*BDF = BF*B*DF ≃ (B*F)*B*(D*F) = B*F*B*D*F = B²*D*F²
+        -- So they're equal!
+        
+        -- Full proof of F*BDBF ≃ BF*BDF:
+        f-bdbf-step1 : (F *ℤ BDBF) ≃ℤ (F *ℤ (BD *ℤ BF))
+        f-bdbf-step1 = *ℤ-cong-r F bdbf-hom
+        
+        f-bdbf-step2 : (F *ℤ (BD *ℤ BF)) ≃ℤ ((F *ℤ BD) *ℤ BF)
+        f-bdbf-step2 = ≃ℤ-sym {(F *ℤ BD) *ℤ BF} {F *ℤ (BD *ℤ BF)} (*ℤ-assoc F BD BF)
+        
+        f-bdbf-step3 : ((F *ℤ BD) *ℤ BF) ≃ℤ ((BD *ℤ F) *ℤ BF)
+        f-bdbf-step3 = *ℤ-cong {F *ℤ BD} {BD *ℤ F} {BF} {BF} (*ℤ-comm F BD) (≃ℤ-refl BF)
+        
+        f-bdbf-step4 : ((BD *ℤ F) *ℤ BF) ≃ℤ (BD *ℤ (F *ℤ BF))
+        f-bdbf-step4 = *ℤ-assoc BD F BF
+        
+        f-bdbf-step5 : (BD *ℤ (F *ℤ BF)) ≃ℤ (BD *ℤ (BF *ℤ F))
+        f-bdbf-step5 = *ℤ-cong-r BD (*ℤ-comm F BF)
+        
+        -- Now from the other direction: BF*BDF
+        bf-bdf-step1 : (BF *ℤ BDF) ≃ℤ (BF *ℤ (B *ℤ DF))
+        bf-bdf-step1 = *ℤ-cong-r BF bdf-hom
+        
+        bf-bdf-step2 : (BF *ℤ (B *ℤ DF)) ≃ℤ ((BF *ℤ B) *ℤ DF)
+        bf-bdf-step2 = ≃ℤ-sym {(BF *ℤ B) *ℤ DF} {BF *ℤ (B *ℤ DF)} (*ℤ-assoc BF B DF)
+        
+        bf-bdf-step3 : ((BF *ℤ B) *ℤ DF) ≃ℤ ((B *ℤ BF) *ℤ DF)
+        bf-bdf-step3 = *ℤ-cong {BF *ℤ B} {B *ℤ BF} {DF} {DF} (*ℤ-comm BF B) (≃ℤ-refl DF)
+        
+        bf-bdf-step4 : ((B *ℤ BF) *ℤ DF) ≃ℤ (B *ℤ (BF *ℤ DF))
+        bf-bdf-step4 = *ℤ-assoc B BF DF
+        
+        bf-bdf-step5 : (B *ℤ (BF *ℤ DF)) ≃ℤ (B *ℤ (DF *ℤ BF))
+        bf-bdf-step5 = *ℤ-cong-r B (*ℤ-comm BF DF)
+        
+        -- So: F*BDBF ≃ BD*(BF*F) and BF*BDF ≃ B*(DF*BF)
+        -- Need: BD*(BF*F) ≃ B*(DF*BF)
+        
+        -- BD ≃ B*D by bd-hom
+        -- DF ≃ D*F by df-hom  
+        -- BF ≃ B*F by bf-hom
+        
+        -- BD*(BF*F) = (B*D)*((B*F)*F) = (B*D)*(B*F*F) = B*D*B*F² = B²*D*F²
+        -- B*(DF*BF) = B*((D*F)*(B*F)) = B*(D*F*B*F) = B*D*F*B*F = B²*D*F²
+        -- These are equal by commutativity!
+        
+        -- Let me chain through a common form: B*(D*(BF*F))
+        
+        lhs-to-common : (BD *ℤ (BF *ℤ F)) ≃ℤ (B *ℤ (D *ℤ (BF *ℤ F)))
+        lhs-to-common = ≃ℤ-trans {BD *ℤ (BF *ℤ F)} {(B *ℤ D) *ℤ (BF *ℤ F)} {B *ℤ (D *ℤ (BF *ℤ F))}
+                         (*ℤ-cong {BD} {B *ℤ D} {BF *ℤ F} {BF *ℤ F} bd-hom (≃ℤ-refl (BF *ℤ F)))
+                         (*ℤ-assoc B D (BF *ℤ F))
+
+        -- B*(DF*BF) = B*(D*F*BF) ≃ B*(D*(F*BF)) ≃ B*(D*(BF*F))
+        rhs-to-common-step1 : (B *ℤ (DF *ℤ BF)) ≃ℤ (B *ℤ ((D *ℤ F) *ℤ BF))
+        rhs-to-common-step1 = *ℤ-cong-r B (*ℤ-cong {DF} {D *ℤ F} {BF} {BF} df-hom (≃ℤ-refl BF))
+        
+        rhs-to-common-step2 : (B *ℤ ((D *ℤ F) *ℤ BF)) ≃ℤ (B *ℤ (D *ℤ (F *ℤ BF)))
+        rhs-to-common-step2 = *ℤ-cong-r B (*ℤ-assoc D F BF)
+        
+        rhs-to-common-step3 : (B *ℤ (D *ℤ (F *ℤ BF))) ≃ℤ (B *ℤ (D *ℤ (BF *ℤ F)))
+        rhs-to-common-step3 = *ℤ-cong-r B (*ℤ-cong-r D (*ℤ-comm F BF))
+        
+        rhs-to-common : (B *ℤ (DF *ℤ BF)) ≃ℤ (B *ℤ (D *ℤ (BF *ℤ F)))
+        rhs-to-common = ≃ℤ-trans {B *ℤ (DF *ℤ BF)} {B *ℤ ((D *ℤ F) *ℤ BF)} {B *ℤ (D *ℤ (BF *ℤ F))}
+                         rhs-to-common-step1
+                         (≃ℤ-trans {B *ℤ ((D *ℤ F) *ℤ BF)} {B *ℤ (D *ℤ (F *ℤ BF))} {B *ℤ (D *ℤ (BF *ℤ F))}
+                           rhs-to-common-step2 rhs-to-common-step3)
+
+        -- Now: BD*(BF*F) ≃ B*(D*(BF*F)) ≃ B*(DF*BF)
+        common-forms-eq : (BD *ℤ (BF *ℤ F)) ≃ℤ (B *ℤ (DF *ℤ BF))
+        common-forms-eq = ≃ℤ-trans {BD *ℤ (BF *ℤ F)} {B *ℤ (D *ℤ (BF *ℤ F))} {B *ℤ (DF *ℤ BF)}
+                           lhs-to-common (≃ℤ-sym {B *ℤ (DF *ℤ BF)} {B *ℤ (D *ℤ (BF *ℤ F))} rhs-to-common)
+
+        -- Full chain: F*BDBF ≃ BD*(BF*F) ≃ B*(DF*BF) ≃ BF*BDF
+        f-bdbf-chain : (F *ℤ BDBF) ≃ℤ (BD *ℤ (BF *ℤ F))
+        f-bdbf-chain = ≃ℤ-trans {F *ℤ BDBF} {F *ℤ (BD *ℤ BF)} {BD *ℤ (BF *ℤ F)}
+                        f-bdbf-step1
+                        (≃ℤ-trans {F *ℤ (BD *ℤ BF)} {(F *ℤ BD) *ℤ BF} {BD *ℤ (BF *ℤ F)}
+                          f-bdbf-step2
+                          (≃ℤ-trans {(F *ℤ BD) *ℤ BF} {(BD *ℤ F) *ℤ BF} {BD *ℤ (BF *ℤ F)}
+                            f-bdbf-step3
+                            (≃ℤ-trans {(BD *ℤ F) *ℤ BF} {BD *ℤ (F *ℤ BF)} {BD *ℤ (BF *ℤ F)}
+                              f-bdbf-step4 f-bdbf-step5)))
+
+        bf-bdf-chain : (BF *ℤ BDF) ≃ℤ (B *ℤ (DF *ℤ BF))
+        bf-bdf-chain = ≃ℤ-trans {BF *ℤ BDF} {BF *ℤ (B *ℤ DF)} {B *ℤ (DF *ℤ BF)}
+                        bf-bdf-step1
+                        (≃ℤ-trans {BF *ℤ (B *ℤ DF)} {(BF *ℤ B) *ℤ DF} {B *ℤ (DF *ℤ BF)}
+                          bf-bdf-step2
+                          (≃ℤ-trans {(BF *ℤ B) *ℤ DF} {(B *ℤ BF) *ℤ DF} {B *ℤ (DF *ℤ BF)}
+                            bf-bdf-step3
+                            (≃ℤ-trans {(B *ℤ BF) *ℤ DF} {B *ℤ (BF *ℤ DF)} {B *ℤ (DF *ℤ BF)}
+                              bf-bdf-step4 bf-bdf-step5)))
+
+        -- THE KEY LEMMA: F*BDBF ≃ BF*BDF
+        f-bdbf≃bf-bdf : (F *ℤ BDBF) ≃ℤ (BF *ℤ BDF)
+        f-bdbf≃bf-bdf = ≃ℤ-trans {F *ℤ BDBF} {BD *ℤ (BF *ℤ F)} {BF *ℤ BDF}
+                         f-bdbf-chain
+                         (≃ℤ-trans {BD *ℤ (BF *ℤ F)} {B *ℤ (DF *ℤ BF)} {BF *ℤ BDF}
+                           common-forms-eq
+                           (≃ℤ-sym {BF *ℤ BDF} {B *ℤ (DF *ℤ BF)} bf-bdf-chain))
+
+        -- Similarly for D: D*BDBF ≃ BD*BDF (both = B²*D²*F)
+        -- D*BDBF = D*(BD*BF) = (D*BD)*BF = (BD*D)*BF = BD*(D*BF)
+        -- BD*BDF = BD*(B*DF) = (BD*B)*DF = (B*BD)*DF = B*(BD*DF)
+        -- Need: BD*(D*BF) ≃ B*(BD*DF)
+        -- = (B*D)*(D*(B*F)) ≃ B*((B*D)*(D*F))
+        -- = B*D*D*B*F ≃ B*B*D*D*F = B²*D²*F ✓
+        
+        d-bdbf-step1 : (D *ℤ BDBF) ≃ℤ (D *ℤ (BD *ℤ BF))
+        d-bdbf-step1 = *ℤ-cong-r D bdbf-hom
+        
+        d-bdbf-step2 : (D *ℤ (BD *ℤ BF)) ≃ℤ ((D *ℤ BD) *ℤ BF)
+        d-bdbf-step2 = ≃ℤ-sym {(D *ℤ BD) *ℤ BF} {D *ℤ (BD *ℤ BF)} (*ℤ-assoc D BD BF)
+        
+        d-bdbf-step3 : ((D *ℤ BD) *ℤ BF) ≃ℤ ((BD *ℤ D) *ℤ BF)
+        d-bdbf-step3 = *ℤ-cong {D *ℤ BD} {BD *ℤ D} {BF} {BF} (*ℤ-comm D BD) (≃ℤ-refl BF)
+        
+        d-bdbf-step4 : ((BD *ℤ D) *ℤ BF) ≃ℤ (BD *ℤ (D *ℤ BF))
+        d-bdbf-step4 = *ℤ-assoc BD D BF
+        
+        bd-bdf-step1 : (BD *ℤ BDF) ≃ℤ (BD *ℤ (B *ℤ DF))
+        bd-bdf-step1 = *ℤ-cong-r BD bdf-hom
+        
+        bd-bdf-step2 : (BD *ℤ (B *ℤ DF)) ≃ℤ ((BD *ℤ B) *ℤ DF)
+        bd-bdf-step2 = ≃ℤ-sym {(BD *ℤ B) *ℤ DF} {BD *ℤ (B *ℤ DF)} (*ℤ-assoc BD B DF)
+        
+        bd-bdf-step3 : ((BD *ℤ B) *ℤ DF) ≃ℤ ((B *ℤ BD) *ℤ DF)
+        bd-bdf-step3 = *ℤ-cong {BD *ℤ B} {B *ℤ BD} {DF} {DF} (*ℤ-comm BD B) (≃ℤ-refl DF)
+        
+        bd-bdf-step4 : ((B *ℤ BD) *ℤ DF) ≃ℤ (B *ℤ (BD *ℤ DF))
+        bd-bdf-step4 = *ℤ-assoc B BD DF
+        
+        -- Chain D side: D*BDBF ≃ BD*(D*BF)
+        d-bdbf-chain : (D *ℤ BDBF) ≃ℤ (BD *ℤ (D *ℤ BF))
+        d-bdbf-chain = ≃ℤ-trans {D *ℤ BDBF} {D *ℤ (BD *ℤ BF)} {BD *ℤ (D *ℤ BF)}
+                        d-bdbf-step1
+                        (≃ℤ-trans {D *ℤ (BD *ℤ BF)} {(D *ℤ BD) *ℤ BF} {BD *ℤ (D *ℤ BF)}
+                          d-bdbf-step2
+                          (≃ℤ-trans {(D *ℤ BD) *ℤ BF} {(BD *ℤ D) *ℤ BF} {BD *ℤ (D *ℤ BF)}
+                            d-bdbf-step3 d-bdbf-step4))
+        
+        -- Chain BD side: BD*BDF ≃ B*(BD*DF)
+        bd-bdf-chain : (BD *ℤ BDF) ≃ℤ (B *ℤ (BD *ℤ DF))
+        bd-bdf-chain = ≃ℤ-trans {BD *ℤ BDF} {BD *ℤ (B *ℤ DF)} {B *ℤ (BD *ℤ DF)}
+                        bd-bdf-step1
+                        (≃ℤ-trans {BD *ℤ (B *ℤ DF)} {(BD *ℤ B) *ℤ DF} {B *ℤ (BD *ℤ DF)}
+                          bd-bdf-step2
+                          (≃ℤ-trans {(BD *ℤ B) *ℤ DF} {(B *ℤ BD) *ℤ DF} {B *ℤ (BD *ℤ DF)}
+                            bd-bdf-step3 bd-bdf-step4))
+        
+        -- Need: BD*(D*BF) ≃ B*(BD*DF)
+        -- BD*(D*BF) = (B*D)*(D*(B*F)) = B*D*D*B*F = B*B*D*D*F
+        -- B*(BD*DF) = B*((B*D)*(D*F)) = B*B*D*D*F  ✓
+        
+        -- Expand BD*(D*BF): (B*D)*(D*BF)
+        lhs2-expand1 : (BD *ℤ (D *ℤ BF)) ≃ℤ ((B *ℤ D) *ℤ (D *ℤ BF))
+        lhs2-expand1 = *ℤ-cong {BD} {B *ℤ D} {D *ℤ BF} {D *ℤ BF} bd-hom (≃ℤ-refl (D *ℤ BF))
+        
+        lhs2-expand2 : ((B *ℤ D) *ℤ (D *ℤ BF)) ≃ℤ (B *ℤ (D *ℤ (D *ℤ BF)))
+        lhs2-expand2 = *ℤ-assoc B D (D *ℤ BF)
+        
+        lhs2-expand3 : (B *ℤ (D *ℤ (D *ℤ BF))) ≃ℤ (B *ℤ ((D *ℤ D) *ℤ BF))
+        lhs2-expand3 = *ℤ-cong-r B (≃ℤ-sym {(D *ℤ D) *ℤ BF} {D *ℤ (D *ℤ BF)} (*ℤ-assoc D D BF))
+        
+        -- Expand B*(BD*DF): B*((B*D)*(D*F))
+        rhs2-expand1 : (B *ℤ (BD *ℤ DF)) ≃ℤ (B *ℤ ((B *ℤ D) *ℤ DF))
+        rhs2-expand1 = *ℤ-cong-r B (*ℤ-cong {BD} {B *ℤ D} {DF} {DF} bd-hom (≃ℤ-refl DF))
+        
+        rhs2-expand2 : (B *ℤ ((B *ℤ D) *ℤ DF)) ≃ℤ (B *ℤ (B *ℤ (D *ℤ DF)))
+        rhs2-expand2 = *ℤ-cong-r B (*ℤ-assoc B D DF)
+        
+        rhs2-expand3 : (B *ℤ (B *ℤ (D *ℤ DF))) ≃ℤ ((B *ℤ B) *ℤ (D *ℤ DF))
+        rhs2-expand3 = ≃ℤ-sym {(B *ℤ B) *ℤ (D *ℤ DF)} {B *ℤ (B *ℤ (D *ℤ DF))} (*ℤ-assoc B B (D *ℤ DF))
+        
+        -- Need: B*((D*D)*BF) ≃ (B*B)*(D*DF)
+        -- = B*(D²*BF) ≃ B²*(D*DF)
+        -- = B*D²*B*F ≃ B²*D*(D*F) = B²*D²*F
+        -- Both = B²*D²*F after commutativity
+        
+        -- Intermediate: B*((D*D)*BF) = B*(D*D)*(BF) = (B*(D*D))*BF
+        mid-lhs-r1 : (B *ℤ ((D *ℤ D) *ℤ BF)) ≃ℤ ((B *ℤ (D *ℤ D)) *ℤ BF)
+        mid-lhs-r1 = ≃ℤ-sym {(B *ℤ (D *ℤ D)) *ℤ BF} {B *ℤ ((D *ℤ D) *ℤ BF)} (*ℤ-assoc B (D *ℤ D) BF)
+        
+        -- (B*(D*D))*BF = ((D*D)*B)*BF [comm] = (D*D)*(B*BF) [assoc]
+        mid-lhs-r2 : ((B *ℤ (D *ℤ D)) *ℤ BF) ≃ℤ (((D *ℤ D) *ℤ B) *ℤ BF)
+        mid-lhs-r2 = *ℤ-cong {B *ℤ (D *ℤ D)} {(D *ℤ D) *ℤ B} {BF} {BF} (*ℤ-comm B (D *ℤ D)) (≃ℤ-refl BF)
+        
+        mid-lhs-r3 : (((D *ℤ D) *ℤ B) *ℤ BF) ≃ℤ ((D *ℤ D) *ℤ (B *ℤ BF))
+        mid-lhs-r3 = *ℤ-assoc (D *ℤ D) B BF
+        
+        -- Similarly: (B*B)*(D*DF) = (D*DF)*(B*B) [comm] = D*(DF*(B*B)) [assoc]
+        --          = D*((B*B)*DF) [comm] = D*(B*B*DF) = D*B*(B*DF)...
+        -- Actually simpler: just note both are B²*D²*F in some order
+        -- (D*D)*(B*BF) = D²*(B*(B*F)) = D²*B²*F
+        -- (B*B)*(D*DF) = B²*(D*(D*F)) = B²*D²*F
+        -- These are equal by commutativity of ℤ multiplication
+        
+        -- (D*D)*(B*BF) ≃ (D*D)*(B*(B*F)) ≃ (D*D)*((B*B)*F) ≃ ((D*D)*(B*B))*F
+        mid-eq-r1 : ((D *ℤ D) *ℤ (B *ℤ BF)) ≃ℤ ((D *ℤ D) *ℤ (B *ℤ (B *ℤ F)))
+        mid-eq-r1 = *ℤ-cong-r (D *ℤ D) (*ℤ-cong-r B bf-hom)
+        
+        mid-eq-r2 : ((D *ℤ D) *ℤ (B *ℤ (B *ℤ F))) ≃ℤ ((D *ℤ D) *ℤ ((B *ℤ B) *ℤ F))
+        mid-eq-r2 = *ℤ-cong-r (D *ℤ D) (≃ℤ-sym {(B *ℤ B) *ℤ F} {B *ℤ (B *ℤ F)} (*ℤ-assoc B B F))
+        
+        mid-eq-r3 : ((D *ℤ D) *ℤ ((B *ℤ B) *ℤ F)) ≃ℤ (((D *ℤ D) *ℤ (B *ℤ B)) *ℤ F)
+        mid-eq-r3 = ≃ℤ-sym {((D *ℤ D) *ℤ (B *ℤ B)) *ℤ F} {(D *ℤ D) *ℤ ((B *ℤ B) *ℤ F)} (*ℤ-assoc (D *ℤ D) (B *ℤ B) F)
+        
+        -- Similarly (B*B)*(D*DF) ≃ ((B*B)*(D*D))*F [after expansion]
+        mid-eq-s1 : ((B *ℤ B) *ℤ (D *ℤ DF)) ≃ℤ ((B *ℤ B) *ℤ (D *ℤ (D *ℤ F)))
+        mid-eq-s1 = *ℤ-cong-r (B *ℤ B) (*ℤ-cong-r D df-hom)
+        
+        mid-eq-s2 : ((B *ℤ B) *ℤ (D *ℤ (D *ℤ F))) ≃ℤ ((B *ℤ B) *ℤ ((D *ℤ D) *ℤ F))
+        mid-eq-s2 = *ℤ-cong-r (B *ℤ B) (≃ℤ-sym {(D *ℤ D) *ℤ F} {D *ℤ (D *ℤ F)} (*ℤ-assoc D D F))
+        
+        mid-eq-s3 : ((B *ℤ B) *ℤ ((D *ℤ D) *ℤ F)) ≃ℤ (((B *ℤ B) *ℤ (D *ℤ D)) *ℤ F)
+        mid-eq-s3 = ≃ℤ-sym {((B *ℤ B) *ℤ (D *ℤ D)) *ℤ F} {(B *ℤ B) *ℤ ((D *ℤ D) *ℤ F)} (*ℤ-assoc (B *ℤ B) (D *ℤ D) F)
+        
+        -- ((D*D)*(B*B))*F ≃ ((B*B)*(D*D))*F by commutativity
+        mid-eq-final : (((D *ℤ D) *ℤ (B *ℤ B)) *ℤ F) ≃ℤ (((B *ℤ B) *ℤ (D *ℤ D)) *ℤ F)
+        mid-eq-final = *ℤ-cong {(D *ℤ D) *ℤ (B *ℤ B)} {(B *ℤ B) *ℤ (D *ℤ D)} {F} {F}
+                        (*ℤ-comm (D *ℤ D) (B *ℤ B)) (≃ℤ-refl F)
+        
+        -- Put it all together for the D case
+        d-bdbf≃bd-bdf : (D *ℤ BDBF) ≃ℤ (BD *ℤ BDF)
+        d-bdbf≃bd-bdf = ≃ℤ-trans {D *ℤ BDBF} {BD *ℤ (D *ℤ BF)} {BD *ℤ BDF}
+          d-bdbf-chain
+          (≃ℤ-trans {BD *ℤ (D *ℤ BF)} {B *ℤ ((D *ℤ D) *ℤ BF)} {BD *ℤ BDF}
+            (≃ℤ-trans {BD *ℤ (D *ℤ BF)} {(B *ℤ D) *ℤ (D *ℤ BF)} {B *ℤ ((D *ℤ D) *ℤ BF)}
+              lhs2-expand1
+              (≃ℤ-trans {(B *ℤ D) *ℤ (D *ℤ BF)} {B *ℤ (D *ℤ (D *ℤ BF))} {B *ℤ ((D *ℤ D) *ℤ BF)}
+                lhs2-expand2 lhs2-expand3))
+            (≃ℤ-trans {B *ℤ ((D *ℤ D) *ℤ BF)} {(D *ℤ D) *ℤ (B *ℤ BF)} {BD *ℤ BDF}
+              (≃ℤ-trans {B *ℤ ((D *ℤ D) *ℤ BF)} {(B *ℤ (D *ℤ D)) *ℤ BF} {(D *ℤ D) *ℤ (B *ℤ BF)}
+                mid-lhs-r1
+                (≃ℤ-trans {(B *ℤ (D *ℤ D)) *ℤ BF} {((D *ℤ D) *ℤ B) *ℤ BF} {(D *ℤ D) *ℤ (B *ℤ BF)}
+                  mid-lhs-r2 mid-lhs-r3))
+              (≃ℤ-sym {BD *ℤ BDF} {(D *ℤ D) *ℤ (B *ℤ BF)}
+                (≃ℤ-trans {BD *ℤ BDF} {B *ℤ (BD *ℤ DF)} {(D *ℤ D) *ℤ (B *ℤ BF)}
+                  bd-bdf-chain
+                  (≃ℤ-trans {B *ℤ (BD *ℤ DF)} {(B *ℤ B) *ℤ (D *ℤ DF)} {(D *ℤ D) *ℤ (B *ℤ BF)}
+                    (≃ℤ-trans {B *ℤ (BD *ℤ DF)} {B *ℤ ((B *ℤ D) *ℤ DF)} {(B *ℤ B) *ℤ (D *ℤ DF)}
+                      rhs2-expand1
+                      (≃ℤ-trans {B *ℤ ((B *ℤ D) *ℤ DF)} {B *ℤ (B *ℤ (D *ℤ DF))} {(B *ℤ B) *ℤ (D *ℤ DF)}
+                        rhs2-expand2 rhs2-expand3))
+                    (≃ℤ-trans {(B *ℤ B) *ℤ (D *ℤ DF)} {((B *ℤ B) *ℤ (D *ℤ D)) *ℤ F} {(D *ℤ D) *ℤ (B *ℤ BF)}
+                      (≃ℤ-trans {(B *ℤ B) *ℤ (D *ℤ DF)} {(B *ℤ B) *ℤ (D *ℤ (D *ℤ F))} {((B *ℤ B) *ℤ (D *ℤ D)) *ℤ F}
+                        mid-eq-s1
+                        (≃ℤ-trans {(B *ℤ B) *ℤ (D *ℤ (D *ℤ F))} {(B *ℤ B) *ℤ ((D *ℤ D) *ℤ F)} {((B *ℤ B) *ℤ (D *ℤ D)) *ℤ F}
+                          mid-eq-s2 mid-eq-s3))
+                      (≃ℤ-trans {((B *ℤ B) *ℤ (D *ℤ D)) *ℤ F} {((D *ℤ D) *ℤ (B *ℤ B)) *ℤ F} {(D *ℤ D) *ℤ (B *ℤ BF)}
+                        (≃ℤ-sym {((D *ℤ D) *ℤ (B *ℤ B)) *ℤ F} {((B *ℤ B) *ℤ (D *ℤ D)) *ℤ F} mid-eq-final)
+                        (≃ℤ-sym {(D *ℤ D) *ℤ (B *ℤ BF)} {((D *ℤ D) *ℤ (B *ℤ B)) *ℤ F}
+                          (≃ℤ-trans {(D *ℤ D) *ℤ (B *ℤ BF)} {(D *ℤ D) *ℤ (B *ℤ (B *ℤ F))} {((D *ℤ D) *ℤ (B *ℤ B)) *ℤ F}
+                            mid-eq-r1
+                            (≃ℤ-trans {(D *ℤ D) *ℤ (B *ℤ (B *ℤ F))} {(D *ℤ D) *ℤ ((B *ℤ B) *ℤ F)} {((D *ℤ D) *ℤ (B *ℤ B)) *ℤ F}
+                              mid-eq-r2 mid-eq-r3))))))))))
+
+        -- Now the main factors: X*F*BDBF ≃ X*BF*BDF and X*D*BDBF ≃ X*BD*BDF
+        -- Using the lemmas f-bdbf≃bf-bdf and d-bdbf≃bd-bdf
+        
+        -- T1L/R: 
+        acF-factor : ((a *ℤ c) *ℤ F) *ℤ BDBF ≃ℤ ((a *ℤ c) *ℤ BF) *ℤ BDF
+        acF-factor = ≃ℤ-trans {((a *ℤ c) *ℤ F) *ℤ BDBF} {(a *ℤ c) *ℤ (F *ℤ BDBF)} {((a *ℤ c) *ℤ BF) *ℤ BDF}
+                      (*ℤ-assoc (a *ℤ c) F BDBF)
+                      (≃ℤ-trans {(a *ℤ c) *ℤ (F *ℤ BDBF)} {(a *ℤ c) *ℤ (BF *ℤ BDF)} {((a *ℤ c) *ℤ BF) *ℤ BDF}
+                        (*ℤ-cong-r (a *ℤ c) f-bdbf≃bf-bdf)
+                        (≃ℤ-sym {((a *ℤ c) *ℤ BF) *ℤ BDF} {(a *ℤ c) *ℤ (BF *ℤ BDF)} (*ℤ-assoc (a *ℤ c) BF BDF)))
+
+        aeD-factor : ((a *ℤ e) *ℤ D) *ℤ BDBF ≃ℤ ((a *ℤ e) *ℤ BD) *ℤ BDF  
+        aeD-factor = ≃ℤ-trans {((a *ℤ e) *ℤ D) *ℤ BDBF} {(a *ℤ e) *ℤ (D *ℤ BDBF)} {((a *ℤ e) *ℤ BD) *ℤ BDF}
+                      (*ℤ-assoc (a *ℤ e) D BDBF)
+                      (≃ℤ-trans {(a *ℤ e) *ℤ (D *ℤ BDBF)} {(a *ℤ e) *ℤ (BD *ℤ BDF)} {((a *ℤ e) *ℤ BD) *ℤ BDF}
+                        (*ℤ-cong-r (a *ℤ e) d-bdbf≃bd-bdf)
+                        (≃ℤ-sym {((a *ℤ e) *ℤ BD) *ℤ BDF} {(a *ℤ e) *ℤ (BD *ℤ BDF)} (*ℤ-assoc (a *ℤ e) BD BDF)))
+        
+        -- Combine with distributivity
+        lhs-exp : (lhs-num *ℤ BDBF) ≃ℤ ((((a *ℤ c) *ℤ F) *ℤ BDBF) +ℤ (((a *ℤ e) *ℤ D) *ℤ BDBF))
+        lhs-exp = ≃ℤ-trans {lhs-num *ℤ BDBF} {(((a *ℤ c) *ℤ F) +ℤ ((a *ℤ e) *ℤ D)) *ℤ BDBF}
+                   {(((a *ℤ c) *ℤ F) *ℤ BDBF) +ℤ (((a *ℤ e) *ℤ D) *ℤ BDBF)}
+                   (*ℤ-cong {lhs-num} {((a *ℤ c) *ℤ F) +ℤ ((a *ℤ e) *ℤ D)} {BDBF} {BDBF}
+                            lhs-simp (≃ℤ-refl BDBF))
+                   (*ℤ-distribʳ-+ℤ ((a *ℤ c) *ℤ F) ((a *ℤ e) *ℤ D) BDBF)
+                   
+        rhs-exp : (rhs-num *ℤ BDF) ≃ℤ ((((a *ℤ c) *ℤ BF) *ℤ BDF) +ℤ (((a *ℤ e) *ℤ BD) *ℤ BDF))
+        rhs-exp = *ℤ-distribʳ-+ℤ ((a *ℤ c) *ℤ BF) ((a *ℤ e) *ℤ BD) BDF
+
+        terms-equal : ((((a *ℤ c) *ℤ F) *ℤ BDBF) +ℤ (((a *ℤ e) *ℤ D) *ℤ BDBF)) ≃ℤ 
+                      ((((a *ℤ c) *ℤ BF) *ℤ BDF) +ℤ (((a *ℤ e) *ℤ BD) *ℤ BDF))
+        terms-equal = +ℤ-cong {((a *ℤ c) *ℤ F) *ℤ BDBF} {((a *ℤ c) *ℤ BF) *ℤ BDF}
+                              {((a *ℤ e) *ℤ D) *ℤ BDBF} {((a *ℤ e) *ℤ BD) *ℤ BDF}
+                              acF-factor aeD-factor
+
+        final-chain : (lhs-num *ℤ BDBF) ≃ℤ (rhs-num *ℤ BDF)
+        final-chain = ≃ℤ-trans {lhs-num *ℤ BDBF} 
+                        {(((a *ℤ c) *ℤ F) *ℤ BDBF) +ℤ (((a *ℤ e) *ℤ D) *ℤ BDBF)}
+                        {rhs-num *ℤ BDF}
+                        lhs-exp
+                        (≃ℤ-trans {(((a *ℤ c) *ℤ F) *ℤ BDBF) +ℤ (((a *ℤ e) *ℤ D) *ℤ BDBF)}
+                                  {(((a *ℤ c) *ℤ BF) *ℤ BDF) +ℤ (((a *ℤ e) *ℤ BD) *ℤ BDF)}
+                                  {rhs-num *ℤ BDF}
+                                  terms-equal
+                                  (≃ℤ-sym {rhs-num *ℤ BDF}
+                                          {(((a *ℤ c) *ℤ BF) *ℤ BDF) +ℤ (((a *ℤ e) *ℤ BD) *ℤ BDF)}
+                                          rhs-exp))
+
+*ℚ-distribʳ-+ℚ : ∀ p q r → ((p +ℚ q) *ℚ r) ≃ℚ ((p *ℚ r) +ℚ (q *ℚ r))
+*ℚ-distribʳ-+ℚ p q r = 
+  -- Chain: (p+q)*r ≃ r*(p+q) ≃ (r*p)+(r*q) ≃ (p*r)+(q*r)
+  -- Step 1: (p+q)*r ≃ r*(p+q) via *ℚ-comm
+  -- Step 2: r*(p+q) ≃ (r*p)+(r*q) via *ℚ-distribˡ-+ℚ
+  -- Step 3: (r*p)+(r*q) ≃ (p*r)+(q*r) via +ℚ-cong with two *ℚ-comm
+  ≃ℚ-trans {(p +ℚ q) *ℚ r} {r *ℚ (p +ℚ q)} {(p *ℚ r) +ℚ (q *ℚ r)}
+    (*ℚ-comm (p +ℚ q) r)
+    (≃ℚ-trans {r *ℚ (p +ℚ q)} {(r *ℚ p) +ℚ (r *ℚ q)} {(p *ℚ r) +ℚ (q *ℚ r)}
+      (*ℚ-distribˡ-+ℚ r p q)
+      (+ℚ-cong {r *ℚ p} {p *ℚ r} {r *ℚ q} {q *ℚ r} 
+               (*ℚ-comm r p) (*ℚ-comm r q)))
 
 -- ═══════════════════════════════════════════════════════════════════════════
 -- § 12.7  CANONICAL FORM: THE OBSERVER'S CHOICE
@@ -4883,21 +6008,6 @@ discreteDeriv-zero f μ v₀ all-zero = sum-neg-zeros (f v₁) (f v₀) (all-zer
 discreteDeriv-zero f μ v₁ all-zero = sum-neg-zeros (f v₂) (f v₁) (all-zero v₂) (all-zero v₁)
 discreteDeriv-zero f μ v₂ all-zero = sum-neg-zeros (f v₃) (f v₂) (all-zero v₃) (all-zero v₂)
 discreteDeriv-zero f μ v₃ all-zero = sum-neg-zeros (f v₀) (f v₃) (all-zero v₀) (all-zero v₃)
-
--- Helper: 0 * x ≃ℤ 0
-*ℤ-zeroˡ : ∀ (x : ℤ) → (0ℤ *ℤ x) ≃ℤ 0ℤ
-*ℤ-zeroˡ (mkℤ a b) = refl  -- 0*a + 0*b = 0, 0*b + 0*a = 0
-
--- Helper: x * 0 ≃ℤ 0  
--- x *ℤ 0 = mkℤ (a*0 + b*0) (a*0 + b*0)
--- Need to show: (a*0 + b*0) + 0 ≡ 0 + (a*0 + b*0)
--- This is just +-identityʳ on LHS and definitional on RHS
-*ℤ-zeroʳ : ∀ (x : ℤ) → (x *ℤ 0ℤ) ≃ℤ 0ℤ
-*ℤ-zeroʳ (mkℤ a b) = 
-  -- LHS: (a*0 + b*0) + 0 = a*0 + b*0 (by +-identityʳ)
-  -- RHS: 0 + (a*0 + b*0) = a*0 + b*0 (definitional)
-  -- So we need: a*0 + b*0 ≡ a*0 + b*0, which is refl after normalization
-  +-identityʳ (a * zero + b * zero)
 
 -- Helper: Product of zero-equivalent terms is zero
 *ℤ-zero-absorb : ∀ (x y : ℤ) → x ≃ℤ 0ℤ → (x *ℤ y) ≃ℤ 0ℤ
