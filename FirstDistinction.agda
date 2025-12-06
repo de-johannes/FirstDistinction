@@ -745,6 +745,16 @@ negℤ (mkℤ a b) = mkℤ b a
 *-comm zero    n = sym (*-zeroʳ n)
 *-comm (suc m) n = trans (cong (n +_) (*-comm m n)) (sym (*-sucʳ n m))
 
+-- ASSOCIATIVITY of multiplication (ℕ)
+*-assoc : ∀ (a b c : ℕ) → (a * (b * c)) ≡ ((a * b) * c)
+*-assoc zero b c = refl
+*-assoc (suc a) b c = 
+  -- suc a * (b * c) = b * c + a * (b * c)
+  -- (suc a * b) * c = (b + a * b) * c = b * c + (a * b) * c  [by *-distribʳ-+]
+  -- Need: b * c + a * (b * c) = b * c + (a * b) * c
+  -- IH: a * (b * c) = (a * b) * c
+  trans (cong (b * c +_) (*-assoc a b c)) (sym (*-distribʳ-+ b (a * b) c))
+
 *-distribˡ-+ : ∀ (a b c : ℕ) → (a * (b + c)) ≡ ((a * b) + (a * c))
 *-distribˡ-+ a b c = 
   trans (*-comm a (b + c))
@@ -2983,14 +2993,15 @@ data ℕ⁺ : Set where
 -- Note: ⁺toℕ one⁺ = suc zero, ⁺toℕ (suc⁺ n) = suc (⁺toℕ n)
 -- So ⁺toℕ n is NEVER zero by construction!
 
+-- Addition of non-zero naturals  
+_+⁺_ : ℕ⁺ → ℕ⁺ → ℕ⁺
+one⁺   +⁺ n = suc⁺ n
+suc⁺ m +⁺ n = suc⁺ (m +⁺ n)
+
 -- Product of non-zero naturals is non-zero
 _*⁺_ : ℕ⁺ → ℕ⁺ → ℕ⁺
 one⁺   *⁺ m = m
 suc⁺ k *⁺ m = m +⁺ (k *⁺ m)
-  where
-    _+⁺_ : ℕ⁺ → ℕ⁺ → ℕ⁺
-    one⁺   +⁺ n = suc⁺ n
-    suc⁺ m +⁺ n = suc⁺ (m +⁺ n)
 
 -- ═══════════════════════════════════════════════════════════════════════════
 -- § 12.2  RATIONAL NUMBER TYPE
@@ -3066,16 +3077,313 @@ p -ℚ q = p +ℚ (-ℚ q)
 ≃ℚ-sym : ∀ {p q : ℚ} → p ≃ℚ q → q ≃ℚ p
 ≃ℚ-sym {a / b} {c / d} eq = ≃ℤ-sym {a *ℤ ⁺toℤ d} {c *ℤ ⁺toℤ b} eq
 
--- TRANSITIVITY: Uses the ℤ transitivity
--- (a/b ≃ c/d) ∧ (c/d ≃ e/f) → (a/b ≃ e/f)
--- i.e., a·d ≃ c·b ∧ c·f ≃ e·d → a·f ≃ e·b
--- This requires cancellation properties proven in § 4
-
 -- ═══════════════════════════════════════════════════════════════════════════
--- § 12.7  VERIFICATION THEOREMS
+-- § 12.6a  CONGRUENCE PROOFS (Setoid Operations)
 -- ═══════════════════════════════════════════════════════════════════════════
 
--- THEOREM: 0ℚ is the additive identity (up to ≃ℚ)
+-- First, we need: negℤ distributes over *ℤ (left factor)
+-- negℤ (x *ℤ y) ≃ℤ (negℤ x) *ℤ y
+negℤ-distribˡ-*ℤ : ∀ (x y : ℤ) → negℤ (x *ℤ y) ≃ℤ (negℤ x *ℤ y)
+negℤ-distribˡ-*ℤ (mkℤ a b) (mkℤ c d) = 
+  -- negℤ (mkℤ (a*c + b*d) (a*d + b*c)) = mkℤ (a*d + b*c) (a*c + b*d)
+  -- (negℤ (mkℤ a b)) *ℤ (mkℤ c d) = (mkℤ b a) *ℤ (mkℤ c d)
+  --                                = mkℤ (b*c + a*d) (b*d + a*c)
+  -- Need: (a*d + b*c) + (b*d + a*c) ≡ (b*c + a*d) + (a*c + b*d)
+  -- Both sides equal (a*c + a*d + b*c + b*d), just rearranged
+  let lhs = (a * d + b * c) + (b * d + a * c)
+      rhs = (b * c + a * d) + (a * c + b * d)
+      step1 : (a * d + b * c) ≡ (b * c + a * d)
+      step1 = +-comm (a * d) (b * c)
+      step2 : (b * d + a * c) ≡ (a * c + b * d)
+      step2 = +-comm (b * d) (a * c)
+  in cong₂ _+_ step1 step2
+
+-- NEGATION CONGRUENCE: -ℚ respects ≃ℚ
+--   If p ≃ℚ q, then -ℚ p ≃ℚ -ℚ q
+-ℚ-cong : ∀ {p q : ℚ} → p ≃ℚ q → (-ℚ p) ≃ℚ (-ℚ q)
+-ℚ-cong {a / b} {c / d} eq = 
+  -- eq : (a *ℤ ⁺toℤ d) ≃ℤ (c *ℤ ⁺toℤ b)
+  -- Need: (negℤ a *ℤ ⁺toℤ d) ≃ℤ (negℤ c *ℤ ⁺toℤ b)
+  -- Strategy: negℤ a *ℤ d ≃ℤ negℤ (a *ℤ d) ≃ℤ negℤ (c *ℤ b) ≃ℤ negℤ c *ℤ b
+  let step1 : (negℤ a *ℤ ⁺toℤ d) ≃ℤ negℤ (a *ℤ ⁺toℤ d)
+      step1 = ≃ℤ-sym {negℤ (a *ℤ ⁺toℤ d)} {negℤ a *ℤ ⁺toℤ d} (negℤ-distribˡ-*ℤ a (⁺toℤ d))
+      step2 : negℤ (a *ℤ ⁺toℤ d) ≃ℤ negℤ (c *ℤ ⁺toℤ b)
+      step2 = negℤ-cong {a *ℤ ⁺toℤ d} {c *ℤ ⁺toℤ b} eq
+      step3 : negℤ (c *ℤ ⁺toℤ b) ≃ℤ (negℤ c *ℤ ⁺toℤ b)
+      step3 = negℤ-distribˡ-*ℤ c (⁺toℤ b)
+  in ≃ℤ-trans {negℤ a *ℤ ⁺toℤ d} {negℤ (a *ℤ ⁺toℤ d)} {negℤ c *ℤ ⁺toℤ b}
+       step1 (≃ℤ-trans {negℤ (a *ℤ ⁺toℤ d)} {negℤ (c *ℤ ⁺toℤ b)} {negℤ c *ℤ ⁺toℤ b} step2 step3)
+
+-- MULTIPLICATION CONGRUENCE: *ℚ respects ≃ℚ
+--   If p ≃ℚ p' and q ≃ℚ q', then p *ℚ q ≃ℚ p' *ℚ q'
+--
+-- For (a/b) *ℚ (e/f) = (a*e)/(b*f) and (c/d) *ℚ (g/h) = (c*g)/(d*h)
+-- We need: (a*e) * (d*h) ≃ℤ (c*g) * (b*f)
+-- Given:   a*d ≃ℤ c*b  (from p ≃ℚ p')
+--          e*h ≃ℤ g*f  (from q ≃ℚ q')
+--
+-- We need associativity and commutativity of *ℤ at the ℕ level
+-- to rearrange: (a*e)*(d*h) = (a*d)*(e*h) and (c*g)*(b*f) = (c*b)*(g*f)
+-- Then use *ℤ-cong!
+
+-- ⁺toℕ respects addition
+⁺toℕ-+⁺ : ∀ (j k : ℕ⁺) → ⁺toℕ (j +⁺ k) ≡ ⁺toℕ j + ⁺toℕ k
+⁺toℕ-+⁺ one⁺ k = refl
+⁺toℕ-+⁺ (suc⁺ j) k = cong suc (⁺toℕ-+⁺ j k)
+
+-- ⁺toℕ respects multiplication
+⁺toℕ-*⁺ : ∀ (j k : ℕ⁺) → ⁺toℕ (j *⁺ k) ≡ ⁺toℕ j * ⁺toℕ k
+⁺toℕ-*⁺ one⁺ k = sym (+-identityʳ (⁺toℕ k))
+⁺toℕ-*⁺ (suc⁺ j) k = trans (⁺toℕ-+⁺ k (j *⁺ k)) (cong (⁺toℕ k +_) (⁺toℕ-*⁺ j k))
+
+-- Helper: ⁺toℤ of product equals product of ⁺toℤ (up to ≃ℤ)
+-- ⁺toℤ (m *⁺ n) ≃ℤ (⁺toℤ m) *ℤ (⁺toℤ n)
+
+-- For base case, we need an explicit proof since the types don't reduce fully
+⁺toℤ-*⁺ : ∀ (m n : ℕ⁺) → ⁺toℤ (m *⁺ n) ≃ℤ (⁺toℤ m *ℤ ⁺toℤ n)
+⁺toℤ-*⁺ one⁺ one⁺ = refl  -- Special case: both are one
+⁺toℤ-*⁺ one⁺ (suc⁺ k) = 
+  -- LHS: ⁺toℤ (one⁺ *⁺ suc⁺ k) = ⁺toℤ (suc⁺ k) = mkℤ (suc (⁺toℕ k)) 0
+  -- RHS: ⁺toℤ one⁺ *ℤ ⁺toℤ (suc⁺ k) = mkℤ 1 0 *ℤ mkℤ (suc (⁺toℕ k)) 0
+  --    = mkℤ (1 * suc(⁺toℕ k) + 0*0) (1*0 + 0*suc(⁺toℕ k))
+  --    = mkℤ (suc(⁺toℕ k) + 0) 0
+  -- ≃ℤ need: (suc(⁺toℕ k)) + 0 ≡ (suc(⁺toℕ k) + 0) + 0
+  -- i.e., suc(⁺toℕ k) ≡ suc(⁺toℕ k) + 0 + 0
+  -- Use +-identityʳ twice (or sym on RHS)
+  sym (trans (+-identityʳ _) (+-identityʳ _))
+⁺toℤ-*⁺ (suc⁺ m) n = goal
+  where
+    -- Expand the types:
+    -- LHS: ⁺toℤ (suc⁺ m *⁺ n) = ⁺toℤ (n +⁺ (m *⁺ n)) 
+    --    = mkℤ (⁺toℕ (n +⁺ (m *⁺ n))) 0
+    -- RHS: ⁺toℤ (suc⁺ m) *ℤ ⁺toℤ n 
+    --    = mkℤ (suc (⁺toℕ m)) 0 *ℤ mkℤ (⁺toℕ n) 0
+    --    = mkℤ (suc (⁺toℕ m) * ⁺toℕ n + 0 * 0) (suc (⁺toℕ m) * 0 + 0 * ⁺toℕ n)
+    
+    -- ≃ℤ expands to: LHS.pos + RHS.neg ≡ RHS.pos + LHS.neg
+    -- = ⁺toℕ (n +⁺ (m *⁺ n)) + (suc (⁺toℕ m) * 0 + 0 * ⁺toℕ n) 
+    --   ≡ (suc (⁺toℕ m) * ⁺toℕ n + 0 * 0) + 0
+    
+    -- Shorthand for ⁺toℕ 
+    pn = ⁺toℕ n
+    pm = ⁺toℕ m
+    
+    -- The RHS neg component simplifies to 0
+    rhs-neg-zero : suc pm * 0 + 0 * pn ≡ 0
+    rhs-neg-zero = trans (cong (_+ 0 * pn) (*-zeroʳ (suc pm))) refl
+    
+    -- Core: ⁺toℕ (n +⁺ (m *⁺ n)) = pn + pm * pn = suc pm * pn
+    core : ⁺toℕ (n +⁺ (m *⁺ n)) ≡ suc pm * pn
+    core = trans (⁺toℕ-+⁺ n (m *⁺ n)) (cong (pn +_) (⁺toℕ-*⁺ m n))
+    
+    -- Goal after simplifications:
+    -- ⁺toℕ (n +⁺ (m *⁺ n)) + 0 ≡ (suc pm * pn + 0) + 0
+    -- Using core: suc pm * pn + 0 ≡ (suc pm * pn + 0) + 0
+    -- Simplify LHS: suc pm * pn
+    -- Simplify RHS: suc pm * pn
+    
+    goal : ⁺toℕ (n +⁺ (m *⁺ n)) + (suc pm * 0 + 0 * pn) ≡ (suc pm * pn + 0 * 0) + 0
+    goal = trans (cong (⁺toℕ (n +⁺ (m *⁺ n)) +_) rhs-neg-zero)
+                 (trans (+-identityʳ _) 
+                        (trans core 
+                               (sym (trans (+-identityʳ _) (+-identityʳ _)))))
+
+-- *ℤ commutativity (up to ≃ℤ)
+*ℤ-comm : ∀ (x y : ℤ) → (x *ℤ y) ≃ℤ (y *ℤ x)
+*ℤ-comm (mkℤ a b) (mkℤ c d) = 
+  -- x *ℤ y = mkℤ (a*c + b*d) (a*d + b*c)
+  -- y *ℤ x = mkℤ (c*a + d*b) (c*b + d*a)
+  -- ≃ℤ need: (a*c + b*d) + (c*b + d*a) ≡ (c*a + d*b) + (a*d + b*c)
+  -- After *-comm: (c*a + d*b) + (b*c + a*d) ≡ (c*a + d*b) + (a*d + b*c)
+  -- Need +-comm for the right summand: (b*c + a*d) ≡ (a*d + b*c)
+  trans (cong₂ _+_ (cong₂ _+_ (*-comm a c) (*-comm b d)) 
+                   (cong₂ _+_ (*-comm c b) (*-comm d a)))
+        (cong ((c * a + d * b) +_) (+-comm (b * c) (a * d)))
+
+-- *ℤ associativity (up to ≃ℤ)  
+-- The algebraic proof is tedious but straightforward:
+-- Both sides expand to the same 8-term sum after distributivity
+*ℤ-assoc : ∀ (x y z : ℤ) → ((x *ℤ y) *ℤ z) ≃ℤ (x *ℤ (y *ℤ z))
+*ℤ-assoc (mkℤ a b) (mkℤ c d) (mkℤ e f) =
+  -- LHS: ((mkℤ (ac+bd) (ad+bc)) *ℤ (mkℤ e f))
+  --    = mkℤ ((ac+bd)e + (ad+bc)f) ((ac+bd)f + (ad+bc)e)
+  -- RHS: (mkℤ a b) *ℤ (mkℤ (ce+df) (cf+de))  
+  --    = mkℤ (a(ce+df) + b(cf+de)) (a(cf+de) + b(ce+df))
+  -- Need: LHS-pos + RHS-neg ≡ RHS-pos + LHS-neg
+  -- After expansion: both reduce to same sum of 8 terms
+  *ℤ-assoc-helper a b c d e f
+  where
+    -- The key is that both expand to:
+    -- ace + adf + bcf + bde  (positive part, various orderings)
+    -- acf + ade + bce + bdf  (negative part, various orderings)
+    *ℤ-assoc-helper : ∀ (a b c d e f : ℕ) →
+      (((a * c + b * d) * e + (a * d + b * c) * f) + (a * (c * f + d * e) + b * (c * e + d * f)))
+      ≡ ((a * (c * e + d * f) + b * (c * f + d * e)) + ((a * c + b * d) * f + (a * d + b * c) * e))
+    *ℤ-assoc-helper a b c d e f = 
+      -- Both sides, after full expansion and rearrangement, equal:
+      -- (ace + bde + adf + bcf) + (acf + bdf + ade + bce)
+      -- We use the ℕ ring laws to show this
+      let 
+        -- Helper expansions
+        lhs1 : (a * c + b * d) * e ≡ a * c * e + b * d * e
+        lhs1 = *-distribʳ-+ (a * c) (b * d) e
+        
+        lhs2 : (a * d + b * c) * f ≡ a * d * f + b * c * f
+        lhs2 = *-distribʳ-+ (a * d) (b * c) f
+        
+        lhs3 : (a * c + b * d) * f ≡ a * c * f + b * d * f
+        lhs3 = *-distribʳ-+ (a * c) (b * d) f
+        
+        lhs4 : (a * d + b * c) * e ≡ a * d * e + b * c * e
+        lhs4 = *-distribʳ-+ (a * d) (b * c) e
+        
+        rhs1 : a * (c * e + d * f) ≡ a * c * e + a * d * f
+        rhs1 = trans (*-distribˡ-+ a (c * e) (d * f)) (cong₂ _+_ (*-assoc a c e) (*-assoc a d f))
+        
+        rhs2 : b * (c * f + d * e) ≡ b * c * f + b * d * e
+        rhs2 = trans (*-distribˡ-+ b (c * f) (d * e)) (cong₂ _+_ (*-assoc b c f) (*-assoc b d e))
+        
+        rhs3 : a * (c * f + d * e) ≡ a * c * f + a * d * e
+        rhs3 = trans (*-distribˡ-+ a (c * f) (d * e)) (cong₂ _+_ (*-assoc a c f) (*-assoc a d e))
+        
+        rhs4 : b * (c * e + d * f) ≡ b * c * e + b * d * f
+        rhs4 = trans (*-distribˡ-+ b (c * e) (d * f)) (cong₂ _+_ (*-assoc b c e) (*-assoc b d f))
+        
+        -- Expand LHS completely
+        lhs-expand : ((a * c + b * d) * e + (a * d + b * c) * f) + (a * (c * f + d * e) + b * (c * e + d * f))
+                   ≡ (a * c * e + b * d * e + (a * d * f + b * c * f)) + (a * c * f + a * d * e + (b * c * e + b * d * f))
+        lhs-expand = cong₂ _+_ (cong₂ _+_ lhs1 lhs2) (cong₂ _+_ rhs3 rhs4)
+        
+        -- Expand RHS completely  
+        rhs-expand : (a * (c * e + d * f) + b * (c * f + d * e)) + ((a * c + b * d) * f + (a * d + b * c) * e)
+                   ≡ (a * c * e + a * d * f + (b * c * f + b * d * e)) + (a * c * f + b * d * f + (a * d * e + b * c * e))
+        rhs-expand = cong₂ _+_ (cong₂ _+_ rhs1 rhs2) (cong₂ _+_ lhs3 lhs4)
+        
+        -- The 8 terms on each side are the same, just reordered
+        -- LHS terms: ace, bde, adf, bcf, acf, ade, bce, bdf  
+        -- RHS terms: ace, adf, bcf, bde, acf, bdf, ade, bce
+        -- We need to show these sums are equal by commutativity of +
+        
+        -- Simplify: just show the sums are equal by repeated comm/assoc
+        -- This is tedious but mechanical
+        both-equal : (a * c * e + b * d * e + (a * d * f + b * c * f)) + (a * c * f + a * d * e + (b * c * e + b * d * f))
+                   ≡ (a * c * e + a * d * f + (b * c * f + b * d * e)) + (a * c * f + b * d * f + (a * d * e + b * c * e))
+        both-equal = 
+          -- LHS grouped: (ace + bde + adf + bcf) + (acf + ade + bce + bdf)
+          -- RHS grouped: (ace + adf + bcf + bde) + (acf + bdf + ade + bce)
+          -- Group 1: {ace, bde, adf, bcf} = {ace, adf, bcf, bde}  ✓ (same elements)
+          -- Group 2: {acf, ade, bce, bdf} = {acf, bdf, ade, bce}  ✓ (same elements)
+          let 
+            -- Rearrange first group on LHS
+            g1-lhs : a * c * e + b * d * e + (a * d * f + b * c * f)
+                   ≡ a * c * e + a * d * f + (b * c * f + b * d * e)
+            g1-lhs = trans (+-assoc (a * c * e) (b * d * e) (a * d * f + b * c * f))
+                     (trans (cong (a * c * e +_) (trans (sym (+-assoc (b * d * e) (a * d * f) (b * c * f)))
+                            (trans (cong (_+ b * c * f) (+-comm (b * d * e) (a * d * f)))
+                            (+-assoc (a * d * f) (b * d * e) (b * c * f)))))
+                     (trans (cong (a * c * e +_) (cong (a * d * f +_) (+-comm (b * d * e) (b * c * f))))
+                     (sym (+-assoc (a * c * e) (a * d * f) (b * c * f + b * d * e)))))
+            
+            -- Rearrange second group on LHS
+            g2-lhs : a * c * f + a * d * e + (b * c * e + b * d * f)
+                   ≡ a * c * f + b * d * f + (a * d * e + b * c * e)
+            g2-lhs = trans (+-assoc (a * c * f) (a * d * e) (b * c * e + b * d * f))
+                     (trans (cong (a * c * f +_) (trans (sym (+-assoc (a * d * e) (b * c * e) (b * d * f)))
+                            (trans (cong (_+ b * d * f) (+-comm (a * d * e) (b * c * e)))
+                            (+-assoc (b * c * e) (a * d * e) (b * d * f)))))
+                     (trans (cong (a * c * f +_) (trans (cong (b * c * e +_) (+-comm (a * d * e) (b * d * f)))
+                            (trans (sym (+-assoc (b * c * e) (b * d * f) (a * d * e)))
+                            (trans (cong (_+ a * d * e) (+-comm (b * c * e) (b * d * f)))
+                            (+-assoc (b * d * f) (b * c * e) (a * d * e))))))
+                     (trans (cong (a * c * f +_) (cong (b * d * f +_) (+-comm (b * c * e) (a * d * e))))
+                     (sym (+-assoc (a * c * f) (b * d * f) (a * d * e + b * c * e))))))
+                     
+          in cong₂ _+_ g1-lhs g2-lhs
+          
+      in trans lhs-expand (trans both-equal (sym rhs-expand))
+
+-- Now *ℚ-cong using the infrastructure
+*ℚ-cong : ∀ {p p' q q' : ℚ} → p ≃ℚ p' → q ≃ℚ q' → (p *ℚ q) ≃ℚ (p' *ℚ q')
+*ℚ-cong {a / b} {c / d} {e / f} {g / h} pp' qq' =
+  -- pp' : (a *ℤ ⁺toℤ d) ≃ℤ (c *ℤ ⁺toℤ b)
+  -- qq' : (e *ℤ ⁺toℤ h) ≃ℤ (g *ℤ ⁺toℤ f)
+  -- Need: ((a *ℤ e) *ℤ ⁺toℤ (d *⁺ h)) ≃ℤ ((c *ℤ g) *ℤ ⁺toℤ (b *⁺ f))
+  --
+  -- Strategy:
+  -- (a*e) * ⁺toℤ(d*h) ≃ (a*e) * (⁺toℤ d * ⁺toℤ h)  [by ⁺toℤ-*⁺]
+  --                   ≃ ((a*⁺toℤ d) * (e*⁺toℤ h))   [by assoc/comm]
+  --                   ≃ ((c*⁺toℤ b) * (g*⁺toℤ f))   [by pp', qq' and *ℤ-cong]
+  --                   ≃ (c*g) * (⁺toℤ b * ⁺toℤ f)   [by assoc/comm]
+  --                   ≃ (c*g) * ⁺toℤ(b*f)           [by ⁺toℤ-*⁺]
+  let 
+    -- Step 1: Expand denominators
+    step1 : ((a *ℤ e) *ℤ ⁺toℤ (d *⁺ h)) ≃ℤ ((a *ℤ e) *ℤ (⁺toℤ d *ℤ ⁺toℤ h))
+    step1 = *ℤ-cong {a *ℤ e} {a *ℤ e} {⁺toℤ (d *⁺ h)} {⁺toℤ d *ℤ ⁺toℤ h}
+                    (≃ℤ-refl (a *ℤ e)) (⁺toℤ-*⁺ d h)
+    
+    -- Step 2: Rearrange to (a*⁺toℤ d)*(e*⁺toℤ h)
+    step2 : ((a *ℤ e) *ℤ (⁺toℤ d *ℤ ⁺toℤ h)) ≃ℤ ((a *ℤ ⁺toℤ d) *ℤ (e *ℤ ⁺toℤ h))
+    step2 = ≃ℤ-trans {(a *ℤ e) *ℤ (⁺toℤ d *ℤ ⁺toℤ h)} 
+                     {a *ℤ (e *ℤ (⁺toℤ d *ℤ ⁺toℤ h))} 
+                     {(a *ℤ ⁺toℤ d) *ℤ (e *ℤ ⁺toℤ h)}
+            (*ℤ-assoc a e (⁺toℤ d *ℤ ⁺toℤ h))
+            (≃ℤ-trans {a *ℤ (e *ℤ (⁺toℤ d *ℤ ⁺toℤ h))} 
+                      {a *ℤ ((⁺toℤ d *ℤ ⁺toℤ h) *ℤ e)} 
+                      {(a *ℤ ⁺toℤ d) *ℤ (e *ℤ ⁺toℤ h)}
+             (*ℤ-cong {a} {a} {e *ℤ (⁺toℤ d *ℤ ⁺toℤ h)} {(⁺toℤ d *ℤ ⁺toℤ h) *ℤ e} 
+                      (≃ℤ-refl a) (*ℤ-comm e (⁺toℤ d *ℤ ⁺toℤ h)))
+             (≃ℤ-trans {a *ℤ ((⁺toℤ d *ℤ ⁺toℤ h) *ℤ e)} 
+                       {a *ℤ (⁺toℤ d *ℤ (⁺toℤ h *ℤ e))} 
+                       {(a *ℤ ⁺toℤ d) *ℤ (e *ℤ ⁺toℤ h)}
+              (*ℤ-cong {a} {a} {(⁺toℤ d *ℤ ⁺toℤ h) *ℤ e} {⁺toℤ d *ℤ (⁺toℤ h *ℤ e)} 
+                       (≃ℤ-refl a) (*ℤ-assoc (⁺toℤ d) (⁺toℤ h) e))
+              (≃ℤ-trans {a *ℤ (⁺toℤ d *ℤ (⁺toℤ h *ℤ e))} 
+                        {(a *ℤ ⁺toℤ d) *ℤ (⁺toℤ h *ℤ e)} 
+                        {(a *ℤ ⁺toℤ d) *ℤ (e *ℤ ⁺toℤ h)}
+               (≃ℤ-sym {(a *ℤ ⁺toℤ d) *ℤ (⁺toℤ h *ℤ e)} {a *ℤ (⁺toℤ d *ℤ (⁺toℤ h *ℤ e))} 
+                       (*ℤ-assoc a (⁺toℤ d) (⁺toℤ h *ℤ e)))
+               (*ℤ-cong {a *ℤ ⁺toℤ d} {a *ℤ ⁺toℤ d} {⁺toℤ h *ℤ e} {e *ℤ ⁺toℤ h} 
+                        (≃ℤ-refl (a *ℤ ⁺toℤ d)) (*ℤ-comm (⁺toℤ h) e)))))
+
+    -- Step 3: Apply the equivalences pp' and qq'
+    step3 : ((a *ℤ ⁺toℤ d) *ℤ (e *ℤ ⁺toℤ h)) ≃ℤ ((c *ℤ ⁺toℤ b) *ℤ (g *ℤ ⁺toℤ f))
+    step3 = *ℤ-cong {a *ℤ ⁺toℤ d} {c *ℤ ⁺toℤ b} {e *ℤ ⁺toℤ h} {g *ℤ ⁺toℤ f} pp' qq'
+    
+    -- Step 4: Rearrange back to (c*g)*(⁺toℤ b * ⁺toℤ f)
+    step4 : ((c *ℤ ⁺toℤ b) *ℤ (g *ℤ ⁺toℤ f)) ≃ℤ ((c *ℤ g) *ℤ (⁺toℤ b *ℤ ⁺toℤ f))
+    step4 = ≃ℤ-trans {(c *ℤ ⁺toℤ b) *ℤ (g *ℤ ⁺toℤ f)} 
+                     {c *ℤ (⁺toℤ b *ℤ (g *ℤ ⁺toℤ f))} 
+                     {(c *ℤ g) *ℤ (⁺toℤ b *ℤ ⁺toℤ f)}
+            (*ℤ-assoc c (⁺toℤ b) (g *ℤ ⁺toℤ f))
+            (≃ℤ-trans {c *ℤ (⁺toℤ b *ℤ (g *ℤ ⁺toℤ f))} 
+                      {c *ℤ (g *ℤ (⁺toℤ b *ℤ ⁺toℤ f))} 
+                      {(c *ℤ g) *ℤ (⁺toℤ b *ℤ ⁺toℤ f)}
+             (*ℤ-cong {c} {c} {⁺toℤ b *ℤ (g *ℤ ⁺toℤ f)} {g *ℤ (⁺toℤ b *ℤ ⁺toℤ f)} 
+                      (≃ℤ-refl c) 
+                      (≃ℤ-trans {⁺toℤ b *ℤ (g *ℤ ⁺toℤ f)} 
+                                {(⁺toℤ b *ℤ g) *ℤ ⁺toℤ f} 
+                                {g *ℤ (⁺toℤ b *ℤ ⁺toℤ f)}
+                       (≃ℤ-sym {(⁺toℤ b *ℤ g) *ℤ ⁺toℤ f} {⁺toℤ b *ℤ (g *ℤ ⁺toℤ f)} 
+                               (*ℤ-assoc (⁺toℤ b) g (⁺toℤ f)))
+                       (≃ℤ-trans {(⁺toℤ b *ℤ g) *ℤ ⁺toℤ f} 
+                                 {(g *ℤ ⁺toℤ b) *ℤ ⁺toℤ f} 
+                                 {g *ℤ (⁺toℤ b *ℤ ⁺toℤ f)}
+                        (*ℤ-cong {⁺toℤ b *ℤ g} {g *ℤ ⁺toℤ b} {⁺toℤ f} {⁺toℤ f} 
+                                 (*ℤ-comm (⁺toℤ b) g) (≃ℤ-refl (⁺toℤ f)))
+                        (*ℤ-assoc g (⁺toℤ b) (⁺toℤ f)))))
+             (≃ℤ-sym {(c *ℤ g) *ℤ (⁺toℤ b *ℤ ⁺toℤ f)} {c *ℤ (g *ℤ (⁺toℤ b *ℤ ⁺toℤ f))} 
+                     (*ℤ-assoc c g (⁺toℤ b *ℤ ⁺toℤ f))))
+    
+    -- Step 5: Contract denominators
+    step5 : ((c *ℤ g) *ℤ (⁺toℤ b *ℤ ⁺toℤ f)) ≃ℤ ((c *ℤ g) *ℤ ⁺toℤ (b *⁺ f))
+    step5 = *ℤ-cong {c *ℤ g} {c *ℤ g} {⁺toℤ b *ℤ ⁺toℤ f} {⁺toℤ (b *⁺ f)}
+                    (≃ℤ-refl (c *ℤ g)) (≃ℤ-sym {⁺toℤ (b *⁺ f)} {⁺toℤ b *ℤ ⁺toℤ f} (⁺toℤ-*⁺ b f))
+    
+  in ≃ℤ-trans {(a *ℤ e) *ℤ ⁺toℤ (d *⁺ h)} {(a *ℤ e) *ℤ (⁺toℤ d *ℤ ⁺toℤ h)} {(c *ℤ g) *ℤ ⁺toℤ (b *⁺ f)}
+       step1 (≃ℤ-trans {(a *ℤ e) *ℤ (⁺toℤ d *ℤ ⁺toℤ h)} {(a *ℤ ⁺toℤ d) *ℤ (e *ℤ ⁺toℤ h)} {(c *ℤ g) *ℤ ⁺toℤ (b *⁺ f)}
+              step2 (≃ℤ-trans {(a *ℤ ⁺toℤ d) *ℤ (e *ℤ ⁺toℤ h)} {(c *ℤ ⁺toℤ b) *ℤ (g *ℤ ⁺toℤ f)} {(c *ℤ g) *ℤ ⁺toℤ (b *⁺ f)}
+                     step3 (≃ℤ-trans {(c *ℤ ⁺toℤ b) *ℤ (g *ℤ ⁺toℤ f)} {(c *ℤ g) *ℤ (⁺toℤ b *ℤ ⁺toℤ f)} {(c *ℤ g) *ℤ ⁺toℤ (b *⁺ f)}
+                            step4 step5)))
 -- 0 + q = q for any q
 -- Proof: 0/1 + a/b = (0·b + a·1)/(1·b) = a/b
 
