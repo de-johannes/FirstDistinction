@@ -1,8 +1,12 @@
 \documentclass[11pt,a4paper]{article}
- 
-% Pakete (pdflatex-kompatibel)
+
+% ============================================================================
+% PACKAGES
+% ============================================================================
+
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
 \usepackage{amsmath,amsthm,amssymb}
 \usepackage{mathtools}
 \usepackage{geometry}
@@ -15,603 +19,835 @@
 \usepackage{fancyhdr}
 \usepackage{titlesec}
 \usepackage{abstract}
+\usepackage{booktabs}
 
-% Seitengeometrie
+% ============================================================================
+% GEOMETRY
+% ============================================================================
+
 \geometry{
   a4paper,
   left=3cm,
   right=3cm,
   top=3cm,
-  bottom=3cm
+  bottom=3.5cm
 }
 
-% Farben
-\definecolor{primarycolor}{RGB}{0,51,102}
-\definecolor{secondarycolor}{RGB}{102,0,51}
-\definecolor{codebackground}{RGB}{245,245,245}
+% ============================================================================
+% COLORS (Sanft, inspiriert von TheIrrefutable)
+% ============================================================================
 
-% Hyperref-Einstellungen
+\definecolor{fd-blue}{RGB}{70,130,180}       % Stahlblau
+\definecolor{fd-dark}{RGB}{50,50,60}         % Dunkles Grau
+\definecolor{fd-light}{RGB}{245,248,250}     % Sehr helles Blaugrau
+\definecolor{fd-green}{RGB}{60,120,60}       % Beobachtungsgrün
+\definecolor{fd-accent}{RGB}{150,80,80}      % Gedämpftes Rot
+\definecolor{code-bg}{RGB}{250,250,252}      % Fast weiß
+
+% ============================================================================
+% HYPERREF
+% ============================================================================
+
 \hypersetup{
   colorlinks=true,
-  linkcolor=primarycolor,
-  citecolor=secondarycolor,
-  urlcolor=primarycolor,
+  linkcolor=fd-blue,
+  citecolor=fd-blue,
+  urlcolor=fd-blue,
   pdfauthor={Johannes Wielsch},
   pdftitle={First Distinction: Graphentheorie aus einem primitiven Prinzip}
 }
 
-% Abschnittsformatierung
+% ============================================================================
+% SECTION STYLING
+% ============================================================================
+
 \titleformat{\section}
-  {\Large\bfseries\color{primarycolor}}
+  {\Large\bfseries\color{fd-dark}}
   {\thesection}{1em}{}
 \titleformat{\subsection}
-  {\large\bfseries\color{primarycolor}}
+  {\large\bfseries\color{fd-dark}}
   {\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{fd-dark}}
+  {\thesubsubsection}{1em}{}
 
-% Theorem-Umgebungen
+% ============================================================================
+% THEOREM ENVIRONMENTS
+% ============================================================================
+
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{korollar}[theorem]{Korollar}
 
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Beispiel}
 
 \theoremstyle{remark}
-\newtheorem{remark}[theorem]{Bemerkung}
-\newtheorem{note}[theorem]{Notiz}
+\newtheorem{bemerkung}[theorem]{Bemerkung}
 
-% Benutzerdefinierte Boxen
-\newtcolorbox{keyresult}{
-  colback=primarycolor!5,
-  colframe=primarycolor,
+% ============================================================================
+% CUSTOM BOXES
+% ============================================================================
+
+\tcbuselibrary{skins,breakable}
+
+% Bewiesene Resultate (blau)
+\newtcolorbox{bewiesen}[1][]{
+  colback=fd-light,
+  colframe=fd-blue,
+  fonttitle=\bfseries,
+  title={Bewiesen (Maschinenverifiziert)},
+  breakable,
   boxrule=1pt,
-  arc=3pt,
-  left=5pt,
-  right=5pt,
-  top=5pt,
-  bottom=5pt
+  #1
 }
 
-\newtcolorbox{epistemological}{
-  colback=secondarycolor!5,
-  colframe=secondarycolor,
+% Beobachtungen (grün) - explizit NICHT bewiesene Physik
+\newtcolorbox{beobachtung}[1][]{
+  colback=green!3,
+  colframe=fd-green,
+  fonttitle=\bfseries,
+  title={Beobachtung (Numerischer Zufall?)},
+  breakable,
   boxrule=1pt,
-  arc=3pt,
-  left=5pt,
-  right=5pt,
-  top=5pt,
-  bottom=5pt
+  #1
 }
 
-% Code-Listen
+% Schlüsseleinsicht (neutral)
+\newtcolorbox{einsicht}[1][]{
+  colback=fd-light,
+  colframe=fd-dark,
+  fonttitle=\bfseries,
+  title={Einsicht},
+  breakable,
+  boxrule=1pt,
+  #1
+}
+
+% ============================================================================
+% CODE LISTINGS
+% ============================================================================
+
 \lstset{
   basicstyle=\small\ttfamily,
-  backgroundcolor=\color{codebackground},
+  backgroundcolor=\color{code-bg},
   frame=single,
   framexleftmargin=5pt,
   framexrightmargin=5pt,
   xleftmargin=10pt,
   xrightmargin=10pt,
   breaklines=true,
-  columns=flexible
+  columns=flexible,
+  rulecolor=\color{fd-blue!30}
 }
 
-% Kopf- und Fußzeile
+% ============================================================================
+% HEADER/FOOTER
+% ============================================================================
+
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small\textit{First Distinction}}
+\fancyhead[L]{\small\itshape First Distinction}
 \fancyhead[R]{\small\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 
-% Titelseite
+% ============================================================================
+% TITLE
+% ============================================================================
+
 \title{
-  \Huge\bfseries\color{primarycolor}
+  \Huge\bfseries\color{fd-dark}
   First Distinction\\[0.5em]
-  \Large Graphentheorie aus einem primitiven Prinzip in Agda\\[1em]
-  \large Maschinenverifiziert mit \texttt{--safe --without-K}
+  \Large Graphentheorie aus einem primitiven Prinzip\\[1em]
+  \large\normalfont Maschinenverifiziert in Agda mit \texttt{--safe --without-K}
 }
 
 \author{
   \Large Johannes Wielsch\\[0.5em]
   \normalsize Mit KI-Unterstützung:\\
-  \small Claude (Sonnet 4.5 \& Opus 4.5), Perplexity Sonar-Reasoning-Pro,\\
-  \small Deepseek R1, ChatGPT (GPT-4o, GPT-4.1, GPT-5)
+  \small Claude, ChatGPT, Deepseek, Perplexity
 }
 
-\date{\today\\[1em]\normalsize\href{https://doi.org/10.5281/zenodo.17826218}{DOI: 10.5281/zenodo.17826218}}
+\date{
+  \today\\[1em]
+  \normalsize\href{https://doi.org/10.5281/zenodo.17826218}{DOI: 10.5281/zenodo.17826218}
+}
+
+% ============================================================================
+% DOCUMENT
+% ============================================================================
 
 \begin{document}
 
 \maketitle
 
+% ============================================================================
+% ABSTRACT
+% ============================================================================
+
 \begin{abstract}
 \noindent
-Dieses Dokument präsentiert, in Agda \texttt{--safe --without-K}:
+\textbf{Was dieses Dokument beweist} (Agda \texttt{--safe --without-K}):
 
-\textbf{Die These:} Aus einer einzigen Prämisse---``etwas ist von etwas unterscheidbar''---emergiert der vollständige Graph $K_4$ (Tetraeder) als einzige stabile Struktur. Das ist Graphentheorie: 4 Knoten, 6 Kanten, Euler-Charakteristik $\chi = 2$.
+Aus der Prämisse "`etwas kann von etwas unterschieden werden"' emergiert der vollständige Graph $K_4$ als einzige stabile Struktur. Dies ist reine Graphentheorie: 4 Knoten, 6 Kanten, Euler-Charakteristik $\chi = 2$.
 
-\textbf{Die Konstruktion:} Eine Distinktion ($D_0$) erzwingt eine zweite ($D_1$). Zwei erzwingen eine dritte ($D_2$). Drei erzwingen eine vierte ($D_3$). Bei vier: Abschluss---jedes Paar hat einen Zeugen. $K_4$ ist der minimale Graph, bei dem diese Stabilität gilt.
+\medskip
+\textbf{Was dieses Dokument beobachtet} (nicht bewiesen---möglicherweise zufällig):
 
-\textbf{Die Beobachtung:} $K_4$-Invarianten entsprechen der Physik:
-\begin{itemize}[nosep]
-  \item Laplace-Eigenraumdimension $\to d = 3$ (Raumdimensionen)
-  \item Euler $\times$ Grad $\times$ Knoten $\to \kappa = 8$ (Einstein-Kopplung)
-  \item Spektralformel $\to \alpha^{-1} = 137{,}036$ (Feinstruktur, 0{,}00003\% Fehler)
-  \item Kombinatorische Formeln $\to$ Teilchenmassen (0{,}008--1\% Fehler)
-\end{itemize}
+Die $K_4$-Invarianten stimmen numerisch mit bestimmten physikalischen Konstanten überein. Ob dies bedeutsam oder zufällig ist, ist eine offene Frage, die dieses Dokument nicht beantwortet.
 
-\textbf{Status:} Die Mathematik ist maschinenverifiziert. Die physikalische Korrespondenz ist Hypothese---aber eine, die durch bemerkenswerte numerische Übereinstimmung über mehrere unabhängige Größen gestützt wird.
+\medskip
+\textbf{Status:} Die Mathematik ist maschinenverifiziert. Die Physik-Korrespondenz ist \textit{unbewiesene Hypothese}.
 \end{abstract}
 
 \tableofcontents
 \newpage
 
-% ====================================================================
-\section{Einführung}
-% ====================================================================
+% ============================================================================
+\section{Einleitung}
+% ============================================================================
 
-\subsection{Motivation und Kontext}
+\subsection{Was dieses Dokument ist}
 
-Warum hat der Raum drei Dimensionen? Warum ist die Kopplungskonstante der Einstein-Feldgleichungen $\kappa = 8\pi G/c^4$? Warum ist die Feinstrukturkonstante $\alpha^{-1} \approx 137{,}036$? Warum beträgt das Proton-zu-Elektron-Massenverhältnis ungefähr $1836$?
+Dies ist ein Dokument über \textbf{Graphentheorie}. Konkret: Was ist der einfachste Graph, der allein aus dem Konzept der "`Unterscheidung"' emergieren kann?
 
-Die Standardphysik behandelt diese als \textit{gemessene} Parameter---Eigenschaften unseres Universums, die im Prinzip anders hätten sein können. Die Theorie der Ersten Distinktion (FD) schlägt etwas Radikales vor: Diese Werte sind nicht kontingent, sondern \textit{notwendig} und emergieren aus der minimalen Struktur, die für jede Distinktion erforderlich ist.
+Die Antwort, konstruktiv in Agda bewiesen: der vollständige Graph $K_4$ (Tetraeder).
 
-\subsection{Die zentrale These}
+\subsection{Was dieses Dokument nicht ist}
 
-FD stellt eine starke Behauptung auf: \textbf{Physikalische Realität emergiert notwendigerweise aus dem Akt der Distinktion selbst}. Genauer gesagt:
+Dies ist \textit{kein} Physik-Paper. Wir behaupten nicht, die physikalische Realität herzuleiten. Wir beobachten, dass bestimmte $K_4$-Invarianten zufällig mit physikalischen Konstanten übereinstimmen. Ob dies bedeutsam oder zufällig ist, ist eine offene Frage.
 
-\begin{keyresult}
-\textbf{Hauptthese:} Ausgehend von der unvermeidlichen Prämisse, dass Distinktion existiert ($D_0$---die Fähigkeit, ``dies'' im Gegensatz zu ``nicht-dies'' zu markieren), und unter Verwendung nur konstruktiver Typentheorie ohne Axiome, können wir \textit{herleiten}:
-\begin{enumerate}
-  \item Den vollständigen Graphen $K_4$ als einzige stabile Struktur
-  \item Räumliche Dimensionalität $d = 3$ aus spektraler Geometrie
-  \item Zeitliche Dimensionalität $t = 1$ aus Asymmetrie
-  \item Die Kopplungskonstante $\kappa = 8$
-  \item Die Feinstrukturkonstante $\alpha^{-1} \approx 137{,}036$
-  \item Teilchenmassenverhältnisse (Proton, Myon, Tau, Top-Quark)
-  \item Einstein-artige Feldgleichungen
-\end{enumerate}
-\end{keyresult}
+\subsection{Epistemologische Ehrlichkeit}
 
-Der Beweis ist in Agda formalisiert, einem abhängig getypten Beweisassistenten, der mathematische Strenge durch maschinelle Verifikation sicherstellt.
+In diesem Dokument trennen wir strikt zwischen dem, was \textit{bewiesen} ist, und dem, was \textit{beobachtet} wird:
 
-\subsection{Epistemologischer Rahmen}
+\begin{bewiesen}
+Aussagen in blauen Boxen sind \textbf{mathematisch bewiesen}. Sie kompilieren in Agda unter \texttt{--safe --without-K}. Es sind Theoreme der konstruktiven Mathematik.
+\end{bewiesen}
 
-FD erfordert sorgfältige Unterscheidung zwischen dem, was \textit{bewiesen} ist, und dem, was \textit{hypothetisiert} wird:
+\begin{beobachtung}
+Aussagen in grünen Boxen sind \textbf{numerische Beobachtungen}. Sie notieren, dass berechnete Werte zufällig mit experimentellen Messungen übereinstimmen. \textit{Kein kausaler Zusammenhang ist bewiesen.}
+\end{beobachtung}
 
-\begin{epistemological}
-\textbf{BEWIESEN (Mathematische Gewissheit):}
+\subsection{Warum Agda?}
+
+\textbf{Agda} ist eine dependently-typed Programmiersprache und Beweisassistent. Anders als Beweise auf Papier wird jeder Schritt maschinell geprüft.
+
+Wir verwenden die striktesten Einstellungen:
 \begin{itemize}
-  \item $K_4$ (vollständiger Graph mit 4 Knoten) emergiert als einziger stabiler Graph aus Speichersättigung
-  \item Die Formeln $d = V-1 = 3$, $\kappa = 2V = 8$, $\alpha^{-1} = \chi^2 \times \text{Grad}^2 + 2F_2 \approx 137$
-  \item Teilchenmassenformeln berechnen spezifische ganze Zahlen: $1836$, $207$, $3519$, etc.
-  \item Alle Herleitungen sind typgeprüft in Agda unter \texttt{--safe --without-K}
+  \item \texttt{--safe}: Keine Axiome, keine Postulate, keine Hintertüren
+  \item \texttt{--without-K}: Gewährleistet Kompatibilität mit Homotopie-Typentheorie
+  \item Keine Bibliotheksimporte: Vollständig eigenständig
 \end{itemize}
 
-\textbf{HYPOTHESE (Physikalische Korrespondenz):}
-\begin{itemize}
-  \item Dass die mathematisch gefundene $K_4$-Struktur die physikalische Raumzeit \textit{ist}
-  \item Dass der berechnete Wert $137{,}036$ die inverse Feinstrukturkonstante \textit{ist}
-  \item Dass $1836$ das Proton-zu-Elektron-Massenverhältnis \textit{ist}
-  \item Dass die numerischen Übereinstimmungen nicht zufällig sind
-\end{itemize}
-\end{epistemological}
-
-Die Mathematik steht unabhängig von der physikalischen Interpretation. Selbst wenn die physikalische Korrespondenz letztlich falsch ist, bleibt die mathematische Struktur bewiesen.
-
-\subsection{Methodologie}
-
-FD verwendet \textbf{Martin-Löfs intuitionistische Typentheorie}, formalisiert in Agda mit den strengsten Einstellungen:
-\begin{itemize}
-  \item \texttt{--safe}: Keine Axiome, keine Postulate, keine Schlupflöcher
-  \item \texttt{--without-K}: Sichert Eindeutigkeit der Identitätsbeweise
-  \item Keine Bibliotheksimporte: Vollständig in sich geschlossene Konstruktion
-\end{itemize}
-
-Das bedeutet, dass jedes Objekt konstruktiv gebaut wird. Zu sagen ``$x$ existiert'' bedeutet, einen expliziten Algorithmus zu präsentieren, der $x$ konstruiert. Es gibt keinen Raum für nicht-konstruktives Schließen.
+\textbf{Konsequenz:} Wenn es kompiliert, ist es bewiesen. Keine versteckten Annahmen möglich.
 
 \subsection{Struktur dieses Dokuments}
 
-Diese Zusammenfassung folgt dem logischen Ablauf der FD-Herleitung:
+\begin{enumerate}
+  \item \textbf{Teil I: Die Mathematik} --- Was bewiesen ist
+  \item \textbf{Teil II: Die Beobachtungen} --- Was bemerkt wird (aber nicht bewiesen)
+  \item \textbf{Teil III: Diskussion} --- Offene Fragen und Ehrlichkeit
+\end{enumerate}
 
-\begin{itemize}
-  \item \textbf{Abschnitt~\ref{sec:foundations}}: Grundlagen---vom Token-Prinzip zur Logik
-  \item \textbf{Abschnitt~\ref{sec:mathematics}}: Mathematik---von der Logik zur Zahl
-  \item \textbf{Abschnitt~\ref{sec:ontology}}: Ontologie---von der Zahl zum Sein
-  \item \textbf{Abschnitt~\ref{sec:geometry}}: Geometrie---vom Sein zum Raum
-  \item \textbf{Abschnitt~\ref{sec:spacetime}}: Raumzeit---vom Raum zur Zeit
-  \item \textbf{Abschnitt~\ref{sec:physics}}: Physik---von der Zeit zur Materie
-  \item \textbf{Abschnitt~\ref{sec:complete}}: Der vollständige Beweis
-  \item \textbf{Abschnitt~\ref{sec:masses}}: Masse aus Topologie
-  \item \textbf{Abschnitt~\ref{sec:discussion}}: Diskussion und Implikationen
-  \item \textbf{Abschnitt~\ref{sec:conclusion}}: Schlussfolgerung
-\end{itemize}
+% ============================================================================
+\part{Die Mathematik (Bewiesen)}
+% ============================================================================
 
-% ====================================================================
-\section{Grundlagen: Vom Token zur Logik}
-\label{sec:foundations}
-% ====================================================================
+% ============================================================================
+\section{Der Ausgangspunkt: Unterscheidung}
+\label{sec:unterscheidung}
+% ============================================================================
 
-\subsection{Das Token-Prinzip}
+\subsection{Das primitive Konzept}
 
-Die Grundlage von FD beruht auf dem \textbf{Token-Prinzip}, das implizit in Martin-Löfs intuitionistischer Typentheorie (1972) enthalten ist:
-
-\begin{definition}[Token-Prinzip]
-Jeder gültige Typ wird durch seine Bewohner (Tokens) charakterisiert. Der einfachste nicht-leere Typ hat genau EIN Token.
+\begin{definition}[Unterscheidung]
+Eine \textbf{Unterscheidung} ist der primitive Begriff, dass "`dies"' sich von "`jenem"' unterscheidet. In der Typentheorie: ein bewohnter Typ mit entscheidbarer Gleichheit.
 \end{definition}
 
-In der Typentheorie manifestiert sich dies als:
-\begin{itemize}
-  \item $\bot$ (leerer Typ) hat 0 Tokens---vor jeder Distinktion
-  \item $\top$ (Einheitstyp) hat 1 Token---DIE Distinktion selbst
-  \item $\mathsf{Bool}$ hat 2 Tokens---die erste ``echte'' Distinktion
-\end{itemize}
+Wir bezeichnen die erste Unterscheidung als $D_0$. Dies ist kein Axiom---es ist die Anerkennung, dass überhaupt etwas zu sagen die Fähigkeit zur Unterscheidung voraussetzt.
 
-\textbf{Kernaussage}: Das Token-Prinzip ist nicht willkürlich. Es ist die formale Anerkennung, dass \textit{Existenz Unterscheidbarkeit erfordert}. Der Einheitstyp $\top$ mit seinem einzigen Bewohner $\mathtt{tt}$ ist isomorph zur primordialen Distinktion $D_0$.
+\begin{einsicht}
+Um zu leugnen, dass Unterscheidung existiert, müssen Sie Ihre Leugnung von ihrem Gegenteil unterscheiden. Das Konzept setzt sich selbst voraus.
+\end{einsicht}
 
-\subsection{Identität und Selbsterkennung}
+\subsection{Formalisierung in Agda}
 
-Martin-Löfs Identitätstyp erfasst eine tiefgreifende Wahrheit: \textit{Eine Distinktion kann sich selbst erkennen}. Dies ist Reflexivität:
+\begin{lstlisting}[language=Haskell,caption={Der Unterscheidungs-Typ}]
+-- Der Einheitstyp: genau ein Bewohner
+data Top : Set where
+  tt : Top
 
-\begin{lstlisting}[language=Haskell,caption={Identitätstyp in Agda}]
-data _==_ {A : Set} (x : A) : A -> Set where
-  refl : x == x
+-- Dies ist D0: die Tatsache, dass "etwas" existiert
+D0 : Top
+D0 = tt
 \end{lstlisting}
 
-Die Gleichung $x \equiv x$ besagt: ``x ist dieselbe Distinktion wie x.'' Dies ist nicht zirkulär---es ist die selbstbezeugenden Natur von $D_0$. Daraus leiten wir Symmetrie, Transitivität und Kongruenz ab.
+Der Einheitstyp $\top$ mit seinem einzigen Bewohner \texttt{tt} \textit{ist} die Formalisierung von "`etwas existiert, das unterschieden werden kann"'.
 
-\subsection{Die Brücke: Token-Prinzip zur Physik}
+% ============================================================================
+\section{Erzwungene Emergenz: Von \texorpdfstring{$D_0$}{D0} zu \texorpdfstring{$K_4$}{K4}}
+\label{sec:emergenz}
+% ============================================================================
 
-Das Token-Prinzip etabliert eine vollständige Brücke:
-\begin{enumerate}
-  \item \textbf{LOGIK}: $\bot, \top, \mathsf{Bool}, \neg, \equiv, \times, \Sigma$---Konsequenzen der Distinktion
-  \item \textbf{MATHEMATIK}: Aus dem Zählen von Distinktionen emergiert $\mathbb{N}$
-  \item \textbf{PHYSIK}: Aus $D_0$ emergiert $K_4$, und aus $K_4$ emergiert die Raumzeit
-\end{enumerate}
+\subsection{Die Genesis-Kette}
 
-% ====================================================================
-\section{Mathematik: Von der Logik zur Zahl}
-\label{sec:mathematics}
-% ====================================================================
-
-\subsection{Natürliche Zahlen: Distinktionen zählen}
-
-Natürliche Zahlen emergieren aus dem Zählen von Distinktionen. Sie sind \textit{keine} primitiven Axiome, sondern \textit{Ergebnisse} des Zählens.
-
-\subsection{Ganze Zahlen als vorzeichenbehaftete Windungszahlen}
-
-Ganze Zahlen emergieren als vorzeichenbehaftete Pfade im Drift-Graphen: $(n, m)$ mit Netto-Windungsäquivalenz $(a,b) \sim (c,d)$ genau dann, wenn $a+d = c+b$.
-
-\subsection{Die Zahlenhierarchie}
-
-Die vollständige Hierarchie emergiert konstruktiv: $\mathbb{N} \to \mathbb{Z} \to \mathbb{Q} \to \mathbb{R}$, wobei alle Ringgesetze bewiesen, nicht angenommen werden.
-
-% ====================================================================
-\section{Ontologie: Von der Zahl zum Sein}
-\label{sec:ontology}
-% ====================================================================
-
-\subsection{Die unvermeidliche Erste Distinktion \texorpdfstring{($D_0$)}{(D0)}}
-
-\begin{theorem}[Unvermeidlichkeit von $D_0$]
-Jede ausdrückbare Aussage setzt Distinktion voraus. Selbst die Verneinung von Distinktion erfordert die Unterscheidung von Verneinung und Bejahung. $D_0$ ist unvermeidlich.
+\begin{bewiesen}
+\begin{theorem}[Genesis-Kette]
+Ausgehend von $D_0$ werden weitere Unterscheidungen erzwungen:
+\begin{align*}
+D_0 &\Rightarrow D_1 \quad \text{(um $D_0$ von "`nicht-$D_0$"' zu unterscheiden)} \\
+D_0, D_1 &\Rightarrow D_2 \quad \text{(um ihren Unterschied zu bezeugen)} \\
+D_0, D_1, D_2 &\Rightarrow D_3 \quad \text{(für Abschluss)}
+\end{align*}
+Bei $n = 4$ schließt sich das System: Jedes Paar $(D_i, D_j)$ hat einen Zeugen unter den verbleibenden zwei.
 \end{theorem}
+\end{bewiesen}
 
-\subsection{Speichersättigung und \texorpdfstring{$K_4$}{K4}-Emergenz}
+\textbf{Warum stoppt dies bei 4?}
 
-Der Speicher zählt Paare von Distinktionen: $\text{Speicher}(n) = n(n-1)/2$ (Dreieckszahlen).
+Mit 4 Unterscheidungen $\{D_0, D_1, D_2, D_3\}$ gibt es $\binom{4}{2} = 6$ Paare. Jedes Paar $(D_i, D_j)$ kann von den anderen beiden Unterscheidungen bezeugt werden. Keine neue Unterscheidung wird erzwungen.
 
+\subsection{Speichersättigung}
+
+Definiere \textbf{Speicher} als die Anzahl unterscheidbarer Paare:
+\[
+\text{memory}(n) = \binom{n}{2} = \frac{n(n-1)}{2}
+\]
+
+\begin{bewiesen}
 \begin{theorem}[Speichersättigung]
 \begin{align*}
-\text{Speicher}(3) &= 3 \quad \text{(drei Paare)} \\
-\text{Speicher}(4) &= 6 \quad \text{(sechs Paare = } K_4 \text{-Kanten!)}
+\text{memory}(2) &= 1 \\
+\text{memory}(3) &= 3 \\
+\text{memory}(4) &= 6 = E(K_4)
 \end{align*}
-Bei $n=4$ sättigt der Speicher und erzwingt die Emergenz von $K_4$.
+Bei $n=4$ entspricht der Speicher der Kantenanzahl von $K_4$. Der vollständige Graph emergiert.
 \end{theorem}
+\end{bewiesen}
 
-\subsection{\texorpdfstring{$K_4$}{K4}-Eindeutigkeit}
+\subsection{Der vollständige Graph \texorpdfstring{$K_4$}{K4}}
 
-\begin{theorem}[K$_4$-Eindeutigkeit]
-$K_4$ ist der \textit{einzige} vollständige Graph, der erfüllt:
+Der vollständige Graph $K_4$ ist der Graph, in dem jeder Knoten mit jedem anderen verbunden ist.
+
+\begin{bewiesen}
+\textbf{$K_4$-Invarianten:}
+\begin{align*}
+V &= 4 && \text{(Knoten)} \\
+E &= 6 && \text{(Kanten)} \\
+F &= 4 && \text{(Flächen, als Tetraeder)} \\
+\chi &= V - E + F = 2 && \text{(Euler-Charakteristik)} \\
+\text{deg} &= 3 && \text{(Grad jedes Knotens)}
+\end{align*}
+\end{bewiesen}
+
+% ============================================================================
+\section{\texorpdfstring{$K_4$}{K4}-Eindeutigkeit}
+\label{sec:eindeutigkeit}
+% ============================================================================
+
+\begin{bewiesen}
+\begin{theorem}[$K_4$-Eindeutigkeit]
+$K_4$ ist der \textbf{einzige} vollständige Graph, der erfüllt:
 \begin{enumerate}
-  \item Speichersättigung ($\text{Speicher}(4) = 6 = E$)
-  \item Selbststabilität (gleicher Grad für alle Knoten)
-  \item Nichttriviale spektrale Struktur (Eigenwert-Vielfachheit 3)
-  \item Sphärische Topologie ($\chi = 2$)
+  \item Speichersättigung (Kanten = Paare)
+  \item Uniformer Knotengrad (Symmetrie)
+  \item Abschluss (jedes Paar hat einen Zeugen)
+  \item Minimale Kardinalität für diese Eigenschaften
 \end{enumerate}
 \end{theorem}
+\end{bewiesen}
 
-% ====================================================================
-\section{Geometrie: Vom Sein zum Raum}
-\label{sec:geometry}
-% ====================================================================
+\textbf{Warum nicht $K_3$?} Drei Knoten ergeben nur 3 Paare, aber keinen Abschluss---jedem Paar fehlt ein Dritt-Zeuge.
 
-\subsection{Der \texorpdfstring{$K_4$}{K4}-Laplace-Operator und Eigenwerte}
+\textbf{Warum nicht $K_5$?} Fünf Knoten würden funktionieren, aber $K_4$ ist \textit{minimal}. Der Genesis-Prozess stoppt, sobald Abschluss erreicht ist.
 
-Der Laplace-Operator $L_{K_4}$ hat Eigenwerte $\{0, 4, 4, 4\}$:
+% ============================================================================
+\section{Spektrale Eigenschaften von \texorpdfstring{$K_4$}{K4}}
+\label{sec:spektral}
+% ============================================================================
+
+\subsection{Die Graph-Laplace-Matrix}
+
+Für jeden Graphen $G$ ist die \textbf{Laplace-Matrix}:
+\[
+L = D - A
+\]
+wobei $D$ die Gradmatrix und $A$ die Adjazenzmatrix ist.
+
+Für $K_4$:
+\[
+L_{K_4} = \begin{pmatrix}
+3 & -1 & -1 & -1 \\
+-1 & 3 & -1 & -1 \\
+-1 & -1 & 3 & -1 \\
+-1 & -1 & -1 & 3
+\end{pmatrix}
+\]
+
+\begin{bewiesen}
+\begin{theorem}[$K_4$-Laplace-Eigenwerte]
+Die Eigenwerte von $L_{K_4}$ sind:
+\[
+\text{spec}(L_{K_4}) = \{0, 4, 4, 4\}
+\]
+mit Multiplizitäten $(1, 3)$.
+\end{theorem}
+\end{bewiesen}
+
+\subsection{Eigenraumdimension}
+
+\begin{bewiesen}
+\begin{theorem}[Eigenraumdimension]
+Der nicht-triviale Eigenraum von $L_{K_4}$ hat Dimension:
+\[
+\dim(\ker(L - 4I)) = 3
+\]
+\end{theorem}
+\end{bewiesen}
+
+Dies ist ein Theorem über Graphentheorie. Die Zahl 3 ist eine Invariante von $K_4$.
+
+\subsection{Eigenvektoren}
+
+Die drei Eigenvektoren zum Eigenwert $\lambda = 4$ sind orthonormal und spannen einen 3-dimensionalen Unterraum von $\mathbb{R}^4$ auf.
+
+\begin{bewiesen}
+\begin{theorem}[Orthonormalbasis]
+Die Eigenvektoren von $L_{K_4}$ für $\lambda = 4$ bilden eine Orthonormalbasis eines 3-dimensionalen Raums:
+\begin{align*}
+v_1 &= \frac{1}{\sqrt{2}}(1, -1, 0, 0) \\
+v_2 &= \frac{1}{\sqrt{6}}(1, 1, -2, 0) \\
+v_3 &= \frac{1}{\sqrt{12}}(1, 1, 1, -3)
+\end{align*}
+\end{theorem}
+\end{bewiesen}
+
+% ============================================================================
+\section{Kombinatorische Formeln}
+\label{sec:formeln}
+% ============================================================================
+
+Die $K_4$-Invarianten kombinieren sich zu spezifischen ganzen Zahlen. Dies sind mathematische Fakten, keine Physik.
+
+\subsection{Grundlegende Invarianten}
+
+\begin{bewiesen}
+\textbf{$K_4$-Zahlen:}
+\begin{align*}
+V &= 4 && \text{(Knoten)} \\
+E &= 6 && \text{(Kanten)} \\
+\chi &= 2 && \text{(Euler-Charakteristik)} \\
+\text{deg} &= 3 && \text{(Knotengrad)} \\
+\lambda &= 4 && \text{(Spektrallücke)}
+\end{align*}
+\end{bewiesen}
+
+\subsection{Die Fermat-Verbindung}
+
+$K_4$ hat $V = 4 = 2^2$ Knoten. Dies verbindet sich mit Fermat-Zahlen:
+\[
+F_n = 2^{2^n} + 1
+\]
+
+\begin{bewiesen}
+\begin{theorem}[Fermat-Primzahl $F_2$]
+\[
+F_2 = 2^{2^2} + 1 = 2^4 + 1 = 17
+\]
+$F_2$ ist prim und erscheint in der $K_4$-Kombinatorik.
+\end{theorem}
+\end{bewiesen}
+
+\subsection{Abgeleitete Größen}
+
+\begin{bewiesen}
+\begin{theorem}[Kombinatorische Formeln aus $K_4$]
+\begin{align}
+\text{Eigenraumdim} &= V - 1 = 3 \\
+2V &= 8 \\
+\lambda^3 \cdot \chi + \text{deg}^2 &= 64 \cdot 2 + 9 = 137 \\
+\chi^2 \cdot \text{deg}^3 \cdot F_2 &= 4 \cdot 27 \cdot 17 = 1836 \\
+\text{deg}^2 \cdot (E + F_2) &= 9 \cdot 23 = 207 \\
+F_2 \cdot 207 &= 3519
+\end{align}
+\end{theorem}
+\end{bewiesen}
+
+Dies ist reine Arithmetik. Die Zahlen 137, 1836, 207, 3519 sind mathematische Outputs der $K_4$-Struktur.
+
+\subsection{Die Verschränkungs-Identität}
+
+\begin{bewiesen}
+\begin{theorem}[$K_4$-Verschränkungs-Identität]
+$K_4$ ist der \textbf{einzige} vollständige Graph, bei dem:
+\[
+\chi \times \text{deg} = E
+\]
+Verifikation: $2 \times 3 = 6$ \quad \checkmark
+\end{theorem}
+\end{bewiesen}
+
+Für $K_3$: $\chi \times \text{deg} = 1 \times 2 = 2 \neq 3 = E$. Scheitert.
+
+Für $K_5$: $\chi \times \text{deg} = 2 \times 4 = 8 \neq 10 = E$. Scheitert.
+
+Nur $K_4$ erfüllt diese Identität.
+
+% ============================================================================
+\section{Der Agda-Beweis}
+\label{sec:agda}
+% ============================================================================
+
+\subsection{Verifikationsstatus}
+
+Alle Behauptungen in Teil I sind formalisiert in:
 \begin{itemize}
-  \item $\lambda_0 = 0$ (trivial, Vielfachheit 1)
-  \item $\lambda_1 = 4$ (räumlich, Vielfachheit 3)
+  \item \texttt{FirstDistinction.agda} (15.000+ Zeilen)
+  \item Kompiliert mit \texttt{agda --safe --without-K}
+  \item Verfügbar unter: \url{https://github.com/de-johannes/FirstDistinction}
 \end{itemize}
 
-\begin{keyresult}
-\textbf{Räumliche Dimensionalität:} $d = \text{Vielfachheit von } \lambda = 4 = \mathbf{3}$
-\end{keyresult}
+\subsection{Wie zu verifizieren}
 
-Die drei orthonormalen Eigenvektoren spannen $\mathbb{R}^3$ auf---dies \textit{ist} unsere räumliche Geometrie.
+\begin{lstlisting}[language=bash,caption={Verifikationsbefehl}]
+git clone https://github.com/de-johannes/FirstDistinction.git
+cd FirstDistinction
+agda --safe --without-K FirstDistinction.agda
+\end{lstlisting}
 
-% ====================================================================
-\section{Raumzeit: Vom Raum zur Zeit}
-\label{sec:spacetime}
-% ====================================================================
+Wenn es ohne Fehler kompiliert, sind die Beweise gültig.
 
-\subsection{Zeit aus Asymmetrie}
+\subsection{Was maschinenverifiziert ist}
 
-\begin{theorem}[Zeit aus Asymmetrie]
-Die Drift-Irreversibilität (man kann eine Distinktion nicht ``rückgängig machen'') erzwingt genau EINE Zeitdimension mit entgegengesetzter Signatur zum Raum, was die Minkowski-Signatur ergibt:
-\begin{equation}
-\eta_{\mu\nu} = \text{diag}(-1, +1, +1, +1)
-\end{equation}
-\end{theorem}
-
-\subsection{Metrik, Ricci-Krümmung und Einstein-Tensor}
-
-Die diskrete Metrik kodiert die Lorentz-Signatur. Der Ricci-Tensor bezieht sich auf den Laplace-Eigenwert: $R_{\mu\nu} = 4 g_{\mu\nu}$.
-
-Die Skalarkrümmung: $R = V \times \text{Grad} = 4 \times 3 = 12$.
-
-Der Einstein-Tensor: $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu} = -2 g_{\mu\nu}$.
-
-% ====================================================================
-\section{Physik: Von der Zeit zur Materie}
-\label{sec:physics}
-% ====================================================================
-
-\subsection{Die Kopplungskonstante \texorpdfstring{$\kappa = 8$}{κ = 8}}
-
-\begin{theorem}[Kopplungskonstante]
-\begin{equation}
-\kappa = 2V = 2 \times 4 = 8
-\end{equation}
-Dies ist die diskrete Version von $\kappa = 8\pi G/c^4$.
-\end{theorem}
-
-\subsection{Einstein-Feldgleichungen}
-
-\begin{theorem}[Einstein-Gleichungen aus $K_4$]
-Alle 16 Komponenten von $G_{\mu\nu} = \kappa T_{\mu\nu}$ gelten, wenn Materie geometrisch definiert wird: $T_{\mu\nu} := G_{\mu\nu} / \kappa$.
-\end{theorem}
-
-\textbf{Kernaussage}: Materie ist nicht unabhängig---sie \textit{ist} Geometrie!
-
-\subsection{Bianchi-Identität}
-
-Die Bianchi-Identität $\nabla_\mu G^{\mu\nu} = 0$ wird aus den Riemann-Tensor-Symmetrien \textit{hergeleitet}, die aus der $K_4$-Topologie folgen.
-
-% ====================================================================
-\section{Der vollständige Beweis}
-\label{sec:complete}
-% ====================================================================
-
-\subsection{Die Herleitungskette}
-
-\begin{theorem}[FD-Emergenz: $D_0 \to 3D$]
-\begin{equation}
-D_0 \xrightarrow{\text{Genesis}} \{D_0, D_1, D_2\} \xrightarrow{\text{Sättigung}} D_3 \xrightarrow{K_4} L_{K_4} \xrightarrow{\text{spektral}} d = 3
-\end{equation}
-\end{theorem}
-
-\begin{theorem}[FD-Vollständig: $D_0 \to 3+1D$ Raumzeit]
-\begin{equation}
-D_0 \xrightarrow{\text{FD-Emergenz}} d = 3 \xrightarrow{\text{Asymmetrie}} t = 1 \xrightarrow{\text{Signatur}} (3+1)D
-\end{equation}
-\end{theorem}
-
-\begin{theorem}[FD-VollständigeART: $D_0 \to$ Einstein-Gleichungen]
-\begin{equation}
-D_0 \to \text{Raumzeit}(3+1) \to R_{\mu\nu} \to G_{\mu\nu} \xrightarrow{\kappa=8} G_{\mu\nu} = 8 T_{\mu\nu}
-\end{equation}
-\end{theorem}
-
-\subsection{Die Feinstrukturkonstante}
-
-\begin{theorem}[Feinstruktur aus $K_4$]
-\begin{equation}
-\alpha^{-1} = \chi^2 \times \text{Grad}^2 + 2F_2 \approx 4 \times 9 + 34 = 137{,}036
-\end{equation}
-wobei $F_2 = 2^4 + 1 = 17$ die Fermat-Primzahl ist.
-\end{theorem}
-
-\textbf{Experimentell}: $\alpha^{-1} = 137{,}035\,999\,177$ \quad \textbf{Fehler}: $0{,}00003\%$
-
-% ====================================================================
-\section{Masse aus Topologie}
-\label{sec:masses}
-% ====================================================================
-
-\subsection{Das Protonenmassenverhältnis}
-
-\begin{theorem}[Protonenmasse]
-\begin{equation}
-\frac{m_p}{m_e} = \chi^2 \times \text{Grad}^3 \times F_2 = 4 \times 27 \times 17 = 1836
-\end{equation}
-\textbf{Experimentell}: $1836{,}152\,673$ \quad \textbf{Fehler}: $0{,}008\%$
-\end{theorem}
-
-Physikalische Interpretation: $\chi^2 = 4$ (Spin-Faktor), $\text{Grad}^3 = 27$ (Quark-Windungsvolumen), $F_2 = 17$ (Fermion-Sektoren).
-
-\subsection{Die \texorpdfstring{K$_4$}{K4}-Verschränkungsidentität}
-
-Eine bemerkenswerte Entdeckung: $\chi \times \text{Grad} = E \Rightarrow 2 \times 3 = 6$.
-
-\begin{keyresult}
-$K_4$ ist der EINZIGE vollständige Graph, bei dem $\chi \times \text{Grad} = E$. Dies ermöglicht zwei äquivalente Protonenformeln:
-\begin{align}
-m_p/m_e &= \chi^2 \times \text{Grad}^3 \times F_2 \quad \text{(topologisch)} \\
-&= \text{Grad} \times E^2 \times F_2 \quad \text{(relational)}
-\end{align}
-\end{keyresult}
-
-\subsection{Leptonenmassen}
-
-\begin{theorem}[Myonenmasse]
-\begin{equation}
-m_\mu/m_e = \text{Grad}^2 \times (E + F_2) = 9 \times 23 = 207
-\end{equation}
-\textbf{Experimentell}: $206{,}768$ \quad \textbf{Fehler}: $0{,}1\%$
-\end{theorem}
-
-\begin{theorem}[Tau-Masse]
-\begin{equation}
-m_\tau/m_e = F_2 \times m_\mu/m_e = 17 \times 207 = 3519
-\end{equation}
-\textbf{Experimentell}: $3477{,}23$ \quad \textbf{Fehler}: $1{,}2\%$
-\end{theorem}
-
-\textbf{Bemerkenswert}: Das Tau/Myon-Verhältnis ist \textit{exakt} $F_2 = 17$!
-
-\subsection{Schwere Quarks}
-
-\begin{theorem}[Top-Quark]
-$m_t/m_e = \alpha^{-2} \times \text{Grad} \times E = 137^2 \times 18 = 337\,842$
-
-\textbf{Experimentell}: $\approx 337\,900$ \quad \textbf{Fehler}: $0{,}02\%$
-\end{theorem}
-
-\begin{theorem}[Charm-Quark]
-$m_c/m_e = \alpha^{-1} \times 22 = 3\,014$
-
-\textbf{Experimentell}: $\approx 2\,820$ \quad \textbf{Fehler}: $7\%$
-\end{theorem}
-
-% ====================================================================
-\section{Diskussion und Implikationen}
-\label{sec:discussion}
-% ====================================================================
-
-\subsection{Epistemologischer Status}
-
-\begin{epistemological}
-\textbf{BEWIESEN (Agda \texttt{--safe}):}
-$K_4$-Emergenz, Formeln ($d=3$, $\kappa=8$, $\alpha^{-1}$, Massen), maschinelle Verifikation.
-
-\textbf{HYPOTHESE (Physik):}
-Dass $K_4$ die Raumzeit \textit{ist}, dass berechnete Werte physikalische Konstanten \textit{sind}.
-\end{epistemological}
-
-\subsection{Robustheit: Warum nicht \texorpdfstring{K$_3$}{K3} oder \texorpdfstring{K$_5$}{K5}?}
-
-\begin{table}[h]
-\centering
-\begin{tabular}{|l|c|c|c|c|}
-\hline
-\textbf{Parameter} & \textbf{K$_3$} & \textbf{K$_4$} & \textbf{K$_5$} & \textbf{Exp.} \\
-\hline
-$d$ & 2 & 3 & 4 & 3 \\
-$\kappa$ & 6 & 8 & 10 & 8 \\
-$\alpha^{-1}$ & 31 & 137 & 266 & 137 \\
-$m_p/m_e$ & 288 & 1836 & 8448 & 1836 \\
-$m_\mu/m_e$ & 52 & 207 & 656 & 207 \\
-\hline
-\end{tabular}
-\caption{K$_4$-Exklusivität: Nur K$_4$ stimmt mit dem Experiment überein. K$_3$ und K$_5$ versagen um Faktoren von 3--6$\times$.}
-\end{table}
-
-\textbf{Schlussfolgerung}: Dies ist keine Feinabstimmung---es ist \textit{Eindeutigkeit}.
-
-\subsection{Implikationen}
-
-Wenn FD korrekt ist:
+\begin{bewiesen}
+\textbf{Verifizierte Behauptungen:}
 \begin{enumerate}
-  \item \textbf{Keine freien Parameter}: Standardmodell-Parameter sind bestimmt, nicht willkürlich
-  \item \textbf{Dimensionale Notwendigkeit}: 3+1D ist die einzige stabile Struktur
-  \item \textbf{Massenhierarchie erklärt}: Massen durch K$_4$-Windung bestimmt
-  \item \textbf{Vereinheitlichung}: Logik = Mathematik = Physik
-  \item \textbf{Testbarkeit}: Präzise Vorhersagen, die falsifiziert werden können
+  \item $K_4$ emergiert aus Unterscheidung und Speichersättigung
+  \item $K_4$-Eindeutigkeit unter vollständigen Graphen
+  \item Laplace-Eigenwerte $\{0, 4, 4, 4\}$
+  \item Eigenraumdimension = 3
+  \item Alle kombinatorischen Formeln
+  \item Verschränkungs-Identität $\chi \times \text{deg} = E$
+\end{enumerate}
+\end{bewiesen}
+
+% ============================================================================
+\part{Die Beobachtungen (Nicht Bewiesen)}
+% ============================================================================
+
+Der folgende Abschnitt notiert numerische Zufälle. \textbf{Dies sind keine Theoreme über Physik. Kein kausaler Zusammenhang ist bewiesen.}
+
+% ============================================================================
+\section{Dimensions-Zufall}
+\label{sec:obs-dim}
+% ============================================================================
+
+\begin{beobachtung}
+Die $K_4$-Eigenraumdimension ist 3.
+
+Physikalische Beobachtung: Der Raum hat 3 Dimensionen.
+
+\medskip
+\textit{Dies könnte sein:}
+\begin{itemize}
+  \item Zufall
+  \item Selektionsbias (wir bemerken Übereinstimmungen, ignorieren Fehlschläge)
+  \item Tiefe Verbindung (unbewiesen)
+\end{itemize}
+\end{beobachtung}
+
+% ============================================================================
+\section{Kopplungs-Zufall}
+\label{sec:obs-kopplung}
+% ============================================================================
+
+\begin{beobachtung}
+Die Größe $2V = 2 \times 4 = 8$.
+
+Physikalische Beobachtung: Die Einstein-Feldgleichung verwendet $\kappa = 8\pi G/c^4$, wobei der numerische Faktor 8 ist.
+
+\medskip
+\textit{Kein kausaler Zusammenhang bewiesen.}
+\end{beobachtung}
+
+% ============================================================================
+\section{Feinstruktur-Zufall}
+\label{sec:obs-alpha}
+% ============================================================================
+
+\begin{beobachtung}
+Die Spektralformel ergibt:
+\[
+\lambda^3 \cdot \chi + \text{deg}^2 + \text{Korrektur} = 137{,}036...
+\]
+
+Physikalische Beobachtung: Die inverse Feinstrukturkonstante:
+\[
+\alpha^{-1} = 137{,}035\,999\,177(21)
+\]
+
+Übereinstimmung: $\approx 0{,}00003\%$
+
+\medskip
+\textit{Kein kausaler Zusammenhang bewiesen. Der "`Korrekturterm"' beinhaltet $V/(\text{deg} \cdot (E^2+1))$, was Post-hoc-Anpassung sein könnte.}
+\end{beobachtung}
+
+% ============================================================================
+\section{Massenverhältnis-Zufälle}
+\label{sec:obs-masse}
+% ============================================================================
+
+\begin{beobachtung}
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Formel} & \textbf{$K_4$-Wert} & \textbf{Experiment} & \textbf{Fehler} \\
+\midrule
+$\chi^2 \cdot \text{deg}^3 \cdot F_2$ & 1836 & 1836,15 & 0,008\% \\
+$\text{deg}^2 \cdot (E + F_2)$ & 207 & 206,77 & 0,1\% \\
+$F_2 \cdot 207$ & 3519 & 3477 & 1,2\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Physikalische Beobachtung: Diese entsprechen den Proton/Elektron-, Muon/Elektron- und Tau/Elektron-Massenverhältnissen.
+
+\medskip
+\textit{Kein kausaler Zusammenhang bewiesen. Könnte Numerologie sein.}
+\end{beobachtung}
+
+% ============================================================================
+\section{Signatur-Zufall}
+\label{sec:obs-signatur}
+% ============================================================================
+
+\begin{beobachtung}
+$K_4$ hat:
+\begin{itemize}
+  \item 3 symmetrische Eigenvektoren (räumlich)
+  \item 1 asymmetrische Richtung (die Genesis-Sequenz $D_0 \to D_1 \to D_2 \to D_3$ ist irreversibel)
+\end{itemize}
+
+Physikalische Beobachtung: Raumzeit hat Signatur $(-,+,+,+)$---eine Zeitdimension, drei Raumdimensionen.
+
+\medskip
+\textit{Kein kausaler Zusammenhang bewiesen.}
+\end{beobachtung}
+
+% ============================================================================
+\section{Zusammenfassung der Beobachtungen}
+\label{sec:obs-zusammenfassung}
+% ============================================================================
+
+\begin{beobachtung}
+\begin{center}
+\begin{tabular}{lccl}
+\toprule
+\textbf{Größe} & \textbf{$K_4$} & \textbf{Physik} & \textbf{Status} \\
+\midrule
+Raumdimensionen & 3 & 3 & Exakte Übereinstimmung \\
+Zeitdimensionen & 1 & 1 & Exakte Übereinstimmung \\
+Signatur & $(-,+,+,+)$ & $(-,+,+,+)$ & Exakte Übereinstimmung \\
+Kopplungsfaktor & 8 & 8 & Exakte Übereinstimmung \\
+$\alpha^{-1}$ & 137,036 & 137,036 & 0,00003\% \\
+$m_p/m_e$ & 1836 & 1836,15 & 0,008\% \\
+$m_\mu/m_e$ & 207 & 206,77 & 0,1\% \\
+$m_\tau/m_e$ & 3519 & 3477 & 1,2\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{4 exakte Übereinstimmungen. 4 nahe Übereinstimmungen.}
+
+\medskip
+\textit{Ist dies bedeutsam oder zufällig? Dieses Dokument beantwortet diese Frage nicht.}
+\end{beobachtung}
+
+% ============================================================================
+\part{Diskussion}
+% ============================================================================
+
+% ============================================================================
+\section{Was tatsächlich bewiesen ist}
+\label{sec:bewiesen-zusammenfassung}
+% ============================================================================
+
+\begin{bewiesen}
+\textbf{Mathematische Theoreme (Agda \texttt{--safe}):}
+\begin{enumerate}
+  \item Aus "`Unterscheidung existiert"' emergiert der vollständige Graph $K_4$ eindeutig
+  \item $K_4$ hat spezifische Invarianten: $V=4$, $E=6$, $\chi=2$, $\text{deg}=3$
+  \item Die Laplace-Matrix hat Eigenwerte $\{0,4,4,4\}$
+  \item Die Eigenraumdimension ist 3
+  \item Spezifische kombinatorische Formeln ergeben 137, 1836, 207, 3519
+  \item Die Verschränkungs-Identität $\chi \cdot \text{deg} = E$ ist einzigartig für $K_4$
 \end{enumerate}
 
-% ====================================================================
+Dies sind \textbf{Fakten über Graphentheorie}, maschinenverifiziert.
+\end{bewiesen}
+
+% ============================================================================
+\section{Was nicht bewiesen ist}
+\label{sec:nicht-bewiesen}
+% ============================================================================
+
+\begin{beobachtung}
+\textbf{Nicht bewiesen:}
+\begin{enumerate}
+  \item Dass $K_4$ physikalische Raumzeit "`ist"'
+  \item Dass die Zahl 137,036 die Feinstrukturkonstante "`ist"'
+  \item Dass 1836 das Proton/Elektron-Massenverhältnis "`ist"'
+  \item Dass irgendeine dieser Korrespondenzen bedeutsam ist
+  \item Dass die numerischen Übereinstimmungen nicht zufällig sind
+\end{enumerate}
+
+Die Behauptung "`Mathematik bestimmt Physik"' ist eine \textbf{philosophische Hypothese}, kein Theorem.
+\end{beobachtung}
+
+% ============================================================================
+\section{Warum nicht \texorpdfstring{$K_3$}{K3} oder \texorpdfstring{$K_5$}{K5}?}
+\label{sec:warum-k4}
+% ============================================================================
+
+\begin{bewiesen}
+\textbf{Mathematische Antwort:} $K_4$ ist der einzige minimale vollständige Graph, der Speichersättigung und Abschluss erfüllt. Dies ist bewiesen.
+\end{bewiesen}
+
+\begin{beobachtung}
+\textbf{Numerische Beobachtung:} Wenn wir dieselben Formeln für $K_3$ und $K_5$ berechnen:
+
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Größe} & \textbf{$K_3$} & \textbf{$K_4$} & \textbf{$K_5$} & \textbf{Expt.} \\
+\midrule
+Eigenraumdim & 2 & 3 & 4 & 3 \\
+$2V$ & 6 & 8 & 10 & 8 \\
+"`$\alpha^{-1}$"' & 31 & 137 & 266 & 137 \\
+"`$m_p/m_e$"' & 288 & 1836 & 8448 & 1836 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Nur $K_4$-Werte stimmen mit dem Experiment überein.
+
+\medskip
+\textit{Dies könnte Evidenz für eine tiefe Verbindung sein, oder es könnte Selektionsbias sein---wir bemerken nur, wenn Formeln passen.}
+\end{beobachtung}
+
+% ============================================================================
+\section{Mögliche Interpretationen}
+\label{sec:interpretationen}
+% ============================================================================
+
+\subsection{Interpretation 1: Zufall}
+
+Die Zahlen stimmen zufällig überein. Mit genügend Formeln und genügend Konstanten werden einige zufällig passen. Dies ist die Nullhypothese und kann nicht ausgeschlossen werden.
+
+\subsection{Interpretation 2: Selektionsbias}
+
+Wir haben Formeln gefunden, die zu den Daten passen. Dies ist eine Form von Numerologie. Die Tatsache, dass Formeln existieren, bedeutet nicht, dass sie fundamental sind.
+
+\subsection{Interpretation 3: Tiefe Verbindung}
+
+Mathematik schränkt Physik ein. Die Struktur der Unterscheidung \textit{ist} die Struktur der Realität. Dies ist die stärkste Behauptung und die am wenigsten bewiesene.
+
+\begin{einsicht}
+Dieses Dokument präsentiert die Mathematik ehrlich. Die Interpretation bleibt dem Leser überlassen. Wir behaupten nicht, dass Interpretation 3 korrekt ist---nur dass die numerischen Übereinstimmungen bemerkenswert genug sind, um Aufmerksamkeit zu verdienen.
+\end{einsicht}
+
+% ============================================================================
+\section{Was dies falsifizieren würde}
+\label{sec:falsifikation}
+% ============================================================================
+
+\begin{enumerate}
+  \item \textbf{Mathematischer Fehler:} Finden Sie einen Bug im Agda-Code. Dies würde die Beweise falsifizieren.
+  \item \textbf{Alternative Herleitung:} Zeigen Sie, dass ein anderer Graph (nicht $K_4$) aus Unterscheidung emergiert.
+  \item \textbf{Versteckter Parameter:} Finden Sie einen einstellbaren Parameter in den Formeln.
+  \item \textbf{Bessere Numerologie:} Finden Sie einfachere Formeln, die die Konstanten besser treffen.
+\end{enumerate}
+
+Die mathematischen Behauptungen sind falsifizierbar durch das Finden von Fehlern im Agda-Code. Die physikalische Interpretation ist schwerer zu falsifizieren, aber klar als Hypothese gekennzeichnet.
+
+% ============================================================================
+\section{Offene Fragen}
+\label{sec:offen}
+% ============================================================================
+
+\begin{enumerate}
+  \item \textbf{Warum Fermat-Primzahlen?} Das Erscheinen von $F_2 = 17$ ist unerklärt.
+  \item \textbf{Fraktionale Präzision:} Die Formel ergibt 137,036, das Experiment ergibt 137,035999. Woher kommt die Differenz?
+  \item \textbf{Andere Konstanten:} Kann dieser Ansatz Konstanten vorhersagen, die wir noch nicht abgeglichen haben?
+  \item \textbf{Dynamik:} $K_4$ ist statisch. Wie emergieren Bewegungsgleichungen?
+\end{enumerate}
+
+% ============================================================================
 \section{Schlussfolgerung}
-\label{sec:conclusion}
-% ====================================================================
+\label{sec:schluss}
+% ============================================================================
 
 \subsection{Zusammenfassung}
 
-Die Erste Distinktion demonstriert:
+\begin{bewiesen}
+\textbf{Was wir bewiesen haben:}
+\begin{itemize}
+  \item $K_4$ emergiert eindeutig aus dem Konzept der Unterscheidung
+  \item $K_4$ hat spezifische spektrale und kombinatorische Eigenschaften
+  \item Diese Eigenschaften berechnen sich zu spezifischen Zahlen
+\end{itemize}
+Alle Beweise sind maschinenverifiziert in Agda.
+\end{bewiesen}
 
-\begin{keyresult}
-Von einer unvermeidlichen Prämisse ($D_0$) zur physikalischen Realität:
-\begin{equation}
-D_0 \to K_4 \to \{d=3, t=1, \kappa=8, \alpha^{-1}, \text{Massen}\} \to \text{Raumzeit + Materie}
-\end{equation}
+\begin{beobachtung}
+\textbf{Was wir beobachtet haben:}
+\begin{itemize}
+  \item Diese Zahlen stimmen mit physikalischen Konstanten überein
+  \item Die Übereinstimmungen sind präzise (0,00003\% bis 1,2\%)
+  \item Nur $K_4$ produziert passende Werte
+\end{itemize}
+Kein kausaler Zusammenhang ist bewiesen.
+\end{beobachtung}
 
-Jeder Schritt ist konstruktiv, maschinenverifiziert, eindeutig und numerisch präzise (Fehler $<1\%$).
-\end{keyresult}
+\subsection{Abschließende Aussage}
 
-\subsection{Der Unangreifbare Beweis}
+\begin{einsicht}
+Die Mathematik ist sicher. Die Physik ist Hypothese.
 
-Der vollständige FD-Beweis (\texttt{FD-Unangreifbar}) zeigt:
-\begin{enumerate}
-  \item Mathematische Konsistenz (typgeprüft)
-  \item Logische Vollständigkeit (alle Konstanten hergeleitet)
-  \item Eindeutigkeit (nur K$_4$ funktioniert)
-  \item Numerische Übereinstimmung (Fehler 0{,}008\%--1{,}2\%)
-  \item Keine Feinabstimmung (K$_4$ aus Notwendigkeit)
-\end{enumerate}
+Wir präsentieren die stärkstmögliche mathematische Evidenz, aber wir behaupten nicht, Physik aus reinem Denken hergeleitet zu haben. Diese Behauptung würde einen Beweis erfordern, den wir nicht haben.
 
-\subsection{Abschließende Reflexion}
+Wenn Sie einen Fehler finden, öffnen Sie ein Issue. Wir wollen es wissen.
+\end{einsicht}
 
-Aus $D_0$---der unvermeidlichen ersten Distinktion---emergiert Raum, Zeit, Materie, Kraft und die spezifischen Konstanten, die wir messen.
-
-\textit{Aus der Distinktion, alles.}
-
-% ====================================================================
-\section{Notation und Glossar}
+% ============================================================================
+\section{Notationsreferenz}
 \label{sec:notation}
-% ====================================================================
+% ============================================================================
 
-\subsection{Grundlegende Symbole}
+\begin{tabular}{ll}
+\toprule
+\textbf{Symbol} & \textbf{Bedeutung} \\
+\midrule
+$D_0, D_1, D_2, D_3$ & Die vier primordialen Unterscheidungen \\
+$K_4$ & Vollständiger Graph auf 4 Knoten \\
+$V = 4$ & Knotenanzahl \\
+$E = 6$ & Kantenanzahl \\
+$F = 4$ & Flächenanzahl (als Tetraeder) \\
+$\chi = 2$ & Euler-Charakteristik \\
+$\text{deg} = 3$ & Knotengrad \\
+$\lambda = 4$ & Nicht-trivialer Laplace-Eigenwert \\
+$F_2 = 17$ & Fermat-Primzahl $2^{2^2} + 1$ \\
+$L$ & Graph-Laplace-Matrix \\
+\bottomrule
+\end{tabular}
 
-\begin{description}
-  \item[$D_0, D_1, D_2, D_3$] Die vier primordialen Distinktionen
-  \item[$K_4$] Vollständiger Graph mit 4 Knoten (Tetraeder)
-  \item[$V = 4$] Knoten
-  \item[$E = 6$] Kanten
-  \item[$\chi = 2$] Euler-Charakteristik (sphärische Topologie)
-  \item[Grad $= 3$] Grad jedes Knotens
-  \item[$F_2 = 17$] Fermat-Primzahl: $2^{2^2} + 1$
-\end{description}
+% ============================================================================
+% BIBLIOGRAPHY
+% ============================================================================
 
-\subsection{Physikalische Symbole}
-
-\begin{description}
-  \item[$d = 3$] Räumliche Dimensionalität
-  \item[$t = 1$] Zeitliche Dimensionalität
-  \item[$\kappa = 8$] Einstein-Kopplungskonstante (diskret)
-  \item[$\alpha^{-1} \approx 137{,}036$] Inverse Feinstrukturkonstante
-  \item[$\lambda = 4$] Laplace-Eigenwert
-  \item[$G_{\mu\nu}$] Einstein-Tensor
-  \item[$T_{\mu\nu}$] Energie-Impuls-Tensor
-  \item[$R_{\mu\nu}$] Ricci-Tensor
-\end{description}
-
-\subsection{Schlüsseltheoreme}
-
-\begin{description}
-  \item[Unvermeidlichkeit] $D_0$ kann nicht kohärent verneint werden
-  \item[Speichersättigung] Erzwingt $K_4$ bei $n=4$
-  \item[K$_4$-Eindeutigkeit] Einziger stabiler vollständiger Graph
-  \item[Räumliche Dimension] $d = 3$ aus Eigenwert-Vielfachheit
-  \item[Kopplung] $\kappa = 2V = 8$
-  \item[Feinstruktur] $\alpha^{-1} = \chi^2 \times \text{Grad}^2 + 2F_2$
-  \item[Protonenmasse] $m_p/m_e = \chi^2 \times \text{Grad}^3 \times F_2 = 1836$
-  \item[Verschränkung] $\chi \times \text{Grad} = E$ (einzigartig für K$_4$)
-\end{description}
-
-% ====================================================================
 \begin{thebibliography}{99}
 
 \bibitem{martinlof1972}
@@ -626,9 +862,9 @@ The Agda Team, \textit{Agda Documentation},
 CODATA, \textit{Recommended Values of the Fundamental Physical Constants: 2018}, 
 Rev. Mod. Phys. 93, 025010 (2021).
 
-\bibitem{planck2018}
-Planck Collaboration, \textit{Planck 2018 Results. VI. Cosmological Parameters}, 
-Astron. Astrophys. 641, A6 (2020).
+\bibitem{spencerbrown}
+G. Spencer-Brown, \textit{Laws of Form}, 
+Julian Press (1969).
 
 \end{thebibliography}
 

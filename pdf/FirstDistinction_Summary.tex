@@ -1,6 +1,9 @@
 \documentclass[11pt,a4paper]{article}
- 
-% Packages (pdflatex compatible)
+
+% ============================================================================
+% PACKAGES
+% ============================================================================
+
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amsthm,amssymb}
@@ -15,40 +18,62 @@
 \usepackage{fancyhdr}
 \usepackage{titlesec}
 \usepackage{abstract}
+\usepackage{booktabs}
 
-% Geometry
+% ============================================================================
+% GEOMETRY
+% ============================================================================
+
 \geometry{
   a4paper,
   left=3cm,
   right=3cm,
   top=3cm,
-  bottom=3cm
+  bottom=3.5cm
 }
 
-% Colors
-\definecolor{primarycolor}{RGB}{0,51,102}
-\definecolor{secondarycolor}{RGB}{102,0,51}
-\definecolor{codebackground}{RGB}{245,245,245}
+% ============================================================================
+% COLORS (Soft, inspired by TheIrrefutable)
+% ============================================================================
 
-% Hyperref setup
+\definecolor{fd-blue}{RGB}{70,130,180}       % Steel blue
+\definecolor{fd-dark}{RGB}{50,50,60}         % Dark gray
+\definecolor{fd-light}{RGB}{245,248,250}     % Very light blue-gray
+\definecolor{fd-green}{RGB}{60,120,60}       % Observation green
+\definecolor{fd-accent}{RGB}{150,80,80}      % Muted red
+\definecolor{code-bg}{RGB}{250,250,252}      % Almost white
+
+% ============================================================================
+% HYPERREF
+% ============================================================================
+
 \hypersetup{
   colorlinks=true,
-  linkcolor=primarycolor,
-  citecolor=secondarycolor,
-  urlcolor=primarycolor,
+  linkcolor=fd-blue,
+  citecolor=fd-blue,
+  urlcolor=fd-blue,
   pdfauthor={Johannes Wielsch},
   pdftitle={First Distinction: Graph Theory from a Primitive Principle}
 }
 
-% Section styling
+% ============================================================================
+% SECTION STYLING
+% ============================================================================
+
 \titleformat{\section}
-  {\Large\bfseries\color{primarycolor}}
+  {\Large\bfseries\color{fd-dark}}
   {\thesection}{1em}{}
 \titleformat{\subsection}
-  {\large\bfseries\color{primarycolor}}
+  {\large\bfseries\color{fd-dark}}
   {\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{fd-dark}}
+  {\thesubsubsection}{1em}{}
 
-% Theorem environments
+% ============================================================================
+% THEOREM ENVIRONMENTS
+% ============================================================================
+
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -57,561 +82,771 @@
 
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
 
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
-\newtheorem{note}[theorem]{Note}
 
-% Custom boxes
-\newtcolorbox{keyresult}{
-  colback=primarycolor!5,
-  colframe=primarycolor,
+% ============================================================================
+% CUSTOM BOXES
+% ============================================================================
+
+\tcbuselibrary{skins,breakable}
+
+% Proven results (blue)
+\newtcolorbox{proven}[1][]{
+  colback=fd-light,
+  colframe=fd-blue,
+  fonttitle=\bfseries,
+  title={Proven (Machine-Verified)},
+  breakable,
   boxrule=1pt,
-  arc=3pt,
-  left=5pt,
-  right=5pt,
-  top=5pt,
-  bottom=5pt
+  #1
 }
 
-\newtcolorbox{epistemological}{
-  colback=secondarycolor!5,
-  colframe=secondarycolor,
+% Observations (green) - explicitly NOT proven physics
+\newtcolorbox{observation}[1][]{
+  colback=green!3,
+  colframe=fd-green,
+  fonttitle=\bfseries,
+  title={Observation (Numerical Coincidence?)},
+  breakable,
   boxrule=1pt,
-  arc=3pt,
-  left=5pt,
-  right=5pt,
-  top=5pt,
-  bottom=5pt
+  #1
 }
 
-% Code listings
+% Key insight (neutral)
+\newtcolorbox{keyinsight}[1][]{
+  colback=fd-light,
+  colframe=fd-dark,
+  fonttitle=\bfseries,
+  title={Key Insight},
+  breakable,
+  boxrule=1pt,
+  #1
+}
+
+% ============================================================================
+% CODE LISTINGS
+% ============================================================================
+
 \lstset{
   basicstyle=\small\ttfamily,
-  backgroundcolor=\color{codebackground},
+  backgroundcolor=\color{code-bg},
   frame=single,
   framexleftmargin=5pt,
   framexrightmargin=5pt,
   xleftmargin=10pt,
   xrightmargin=10pt,
   breaklines=true,
-  columns=flexible
+  columns=flexible,
+  rulecolor=\color{fd-blue!30}
 }
 
-% Header and footer
+% ============================================================================
+% HEADER/FOOTER
+% ============================================================================
+
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small\textit{First Distinction}}
+\fancyhead[L]{\small\itshape First Distinction}
 \fancyhead[R]{\small\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 
-% Title page information
+% ============================================================================
+% TITLE
+% ============================================================================
+
 \title{
-  \Huge\bfseries\color{primarycolor}
+  \Huge\bfseries\color{fd-dark}
   First Distinction\\[0.5em]
-  \Large Graph Theory from a Primitive Principle in Agda\\[1em]
-  \large Machine-Verified with \texttt{--safe --without-K}
+  \Large Graph Theory from a Primitive Principle\\[1em]
+  \large\normalfont Machine-Verified in Agda with \texttt{--safe --without-K}
 }
 
 \author{
   \Large Johannes Wielsch\\[0.5em]
   \normalsize With AI Collaboration:\\
-  \small Claude (Sonnet 4.5 \& Opus 4.5), Perplexity Sonar-Reasoning-Pro,\\
-  \small Deepseek R1, ChatGPT (GPT-4o, GPT-4.1, GPT-5)
+  \small Claude, ChatGPT, Deepseek, Perplexity
 }
 
-\date{\today\\[1em]\normalsize\href{https://doi.org/10.5281/zenodo.17826218}{DOI: 10.5281/zenodo.17826218}}
+\date{
+  \today\\[1em]
+  \normalsize\href{https://doi.org/10.5281/zenodo.17826218}{DOI: 10.5281/zenodo.17826218}
+}
+
+% ============================================================================
+% DOCUMENT
+% ============================================================================
 
 \begin{document}
 
 \maketitle
 
+% ============================================================================
+% ABSTRACT
+% ============================================================================
+
 \begin{abstract}
 \noindent
-This document presents, in Agda \texttt{--safe --without-K}:
+\textbf{What this document proves} (Agda \texttt{--safe --without-K}):
 
-\textbf{The claim:} From a single premise---``something can be distinguished from something''---the complete graph $K_4$ (tetrahedron) emerges as the unique stable structure. This is graph theory: 4 vertices, 6 edges, Euler characteristic $\chi = 2$.
+From the premise ``something can be distinguished from something,'' the complete graph $K_4$ emerges as the unique stable structure. This is pure graph theory: 4 vertices, 6 edges, Euler characteristic $\chi = 2$.
 
-\textbf{The construction:} One distinction ($D_0$) forces a second ($D_1$). Two force a third ($D_2$). Three force a fourth ($D_3$). At four, closure: every pair has a witness. $K_4$ is the minimal graph where this stability holds.
+\medskip
+\textbf{What this document observes} (not proven---possibly coincidental):
 
-\textbf{The observation:} $K_4$ invariants match physics:
-\begin{itemize}[nosep]
-  \item Laplacian eigenspace dimension $\to d = 3$ (spatial dimensions)
-  \item Euler $\times$ degree $\times$ vertices $\to \kappa = 8$ (Einstein coupling)
-  \item Spectral formula $\to \alpha^{-1} = 137.036$ (fine structure, 0.00003\% error)
-  \item Combinatorial formulas $\to$ particle mass ratios (0.008--1\% error)
-\end{itemize}
+The $K_4$ invariants numerically match certain physical constants with surprising precision. Whether this is meaningful or coincidental is an open question that this document does not answer.
 
-\textbf{Status:} The mathematics is machine-verified. The physics correspondence is hypothesis---but one supported by remarkable numerical agreement across multiple independent quantities.
+\medskip
+\textbf{Status:} The mathematics is machine-verified. The physics correspondence is \textit{unproven hypothesis}.
 \end{abstract}
 
 \tableofcontents
 \newpage
 
-% ====================================================================
+% ============================================================================
 \section{Introduction}
-% ====================================================================
+% ============================================================================
 
-\subsection{Motivation and Context}
+\subsection{What This Document Is}
 
-Why does space have three dimensions? Why is the Einstein field equation coupling constant $\kappa = 8\pi G/c^4$? Why is the fine structure constant $\alpha^{-1} \approx 137.036$? Why is the proton-to-electron mass ratio approximately $1836$?
+This is a document about \textbf{graph theory}. Specifically: what is the simplest graph that can emerge from the concept of ``distinction'' alone?
 
-Standard physics treats these as \textit{measured} parameters---features of our universe that could, in principle, have been different. First Distinction (FD) theory proposes something radical: these values are not contingent but \textit{necessary}, emerging from the minimal structure required for any distinction to exist.
+The answer, proven constructively in Agda: the complete graph $K_4$ (tetrahedron).
 
-\subsection{The Central Claim}
+\subsection{What This Document Is Not}
 
-FD makes a strong claim: \textbf{physical reality emerges necessarily from the act of distinction itself}. More precisely:
+This is \textit{not} a physics paper. We do not claim to derive physical reality. We observe that certain $K_4$ invariants happen to match physical constants with surprising precision. Whether this is meaningful or coincidental is an open question.
 
-\begin{keyresult}
-\textbf{Main Thesis:} Starting from the unavoidable premise that distinction exists ($D_0$---the ability to mark ``this'' as opposed to ``not-this''), and using only constructive type theory with no axioms, we can \textit{derive}:
-\begin{enumerate}
-  \item The complete graph $K_4$ as the unique stable structure
-  \item Spatial dimensionality $d = 3$ from spectral geometry
-  \item Temporal dimensionality $t = 1$ from asymmetry
-  \item The coupling constant $\kappa = 8$
-  \item The fine structure constant $\alpha^{-1} \approx 137.036$
-  \item Particle mass ratios (proton, muon, tau, top quark)
-  \item Einstein-like field equations
-\end{enumerate}
-\end{keyresult}
+\subsection{Epistemological Honesty}
 
-The proof is formalized in Agda, a dependently-typed proof assistant, ensuring mathematical rigor through machine verification.
+Throughout this document, we maintain strict separation between what is \textit{proven} and what is \textit{observed}:
 
-\subsection{Epistemological Framework}
+\begin{proven}
+Statements in blue boxes are \textbf{mathematically proven}. They type-check in Agda under \texttt{--safe --without-K}. They are theorems of constructive mathematics.
+\end{proven}
 
-FD requires careful distinction between what is \textit{proven} and what is \textit{hypothesized}:
+\begin{observation}
+Statements in green boxes are \textbf{numerical observations}. They note that computed values happen to match experimental measurements. \textit{No causal connection is proven.}
+\end{observation}
 
-\begin{epistemological}
-\textbf{PROVEN (Mathematical Certainty):}
-\begin{itemize}
-  \item $K_4$ (complete graph on 4 vertices) emerges as the unique stable graph from memory saturation
-  \item The formulas $d = V-1 = 3$, $\kappa = 2V = 8$, $\alpha^{-1} = \chi^2 \times \text{deg}^2 + 2F_2 \approx 137$
-  \item Particle mass formulas compute to specific integers: $1836$, $207$, $3519$, etc.
-  \item All derivations type-check in Agda under \texttt{--safe --without-K}
-\end{itemize}
+\subsection{Why Agda?}
 
-\textbf{HYPOTHESIS (Physical Correspondence):}
-\begin{itemize}
-  \item That the $K_4$ structure found mathematically \textit{is} physical spacetime
-  \item That the computed value $137.036$ \textit{is} the inverse fine structure constant
-  \item That $1836$ \textit{is} the proton-to-electron mass ratio
-  \item That the numerical agreements are not coincidental
-\end{itemize}
-\end{epistemological}
+\textbf{Agda} is a dependently-typed programming language and proof assistant. Unlike proofs on paper, every step is machine-checked.
 
-The mathematics stands independent of the physics interpretation. Even if the physical correspondence is ultimately incorrect, the mathematical structure remains proven.
-
-\subsection{Methodology}
-
-FD uses \textbf{Martin-Löf intuitionistic type theory} formalized in Agda with the strictest settings:
+We use the strictest settings:
 \begin{itemize}
   \item \texttt{--safe}: No axioms, no postulates, no escape hatches
-  \item \texttt{--without-K}: Ensures uniqueness of identity proofs
-  \item No library imports: Fully self-contained construction
+  \item \texttt{--without-K}: Ensures compatibility with Homotopy Type Theory
+  \item No library imports: Fully self-contained
 \end{itemize}
 
-This means every object is constructively built. To say ``$x$ exists'' means presenting an explicit algorithm that constructs $x$. There is no room for non-constructive reasoning.
+\textbf{Consequence:} If it compiles, it's proven. No hidden assumptions possible.
 
 \subsection{Structure of This Document}
 
-This summary follows the logical progression of the FD derivation:
+\begin{enumerate}
+  \item \textbf{Part I: The Mathematics} --- What is proven
+  \item \textbf{Part II: The Observations} --- What is noticed (but not proven)
+  \item \textbf{Part III: Discussion} --- Open questions and honesty
+\end{enumerate}
 
-\begin{itemize}
-  \item \textbf{Section~\ref{sec:foundations}}: Foundations---from Token Principle to Logic
-  \item \textbf{Section~\ref{sec:mathematics}}: Mathematics---from Logic to Number
-  \item \textbf{Section~\ref{sec:ontology}}: Ontology---from Number to Being
-  \item \textbf{Section~\ref{sec:geometry}}: Geometry---from Being to Space
-  \item \textbf{Section~\ref{sec:spacetime}}: Spacetime---from Space to Time
-  \item \textbf{Section~\ref{sec:physics}}: Physics---from Time to Matter
-  \item \textbf{Section~\ref{sec:complete}}: The Complete Proof
-  \item \textbf{Section~\ref{sec:masses}}: Mass from Topology
-  \item \textbf{Section~\ref{sec:discussion}}: Discussion and Implications
-  \item \textbf{Section~\ref{sec:conclusion}}: Conclusion
-\end{itemize}
+% ============================================================================
+\part{The Mathematics (Proven)}
+% ============================================================================
 
-% ====================================================================
-\section{Foundations: From Token to Logic}
-\label{sec:foundations}
-% ====================================================================
+% ============================================================================
+\section{The Starting Point: Distinction}
+\label{sec:distinction}
+% ============================================================================
 
-\subsection{The Token Principle}
+\subsection{The Primitive Concept}
 
-The foundation of FD rests on what we call the \textbf{Token Principle}, implicit in Martin-Löf's intuitionistic type theory (1972):
-
-\begin{definition}[Token Principle]
-Every valid type is characterized by its inhabitants (tokens). The simplest non-empty type has exactly ONE token.
+\begin{definition}[Distinction]
+A \textbf{distinction} is the primitive notion that ``this'' differs from ``that.'' In type theory: an inhabited type with decidable equality.
 \end{definition}
 
-In type theory, this manifests as:
-\begin{itemize}
-  \item $\bot$ (empty type) has 0 tokens---before any distinction
-  \item $\top$ (unit type) has 1 token---THE distinction itself
-  \item $\mathsf{Bool}$ has 2 tokens---the first ``real'' distinction
-\end{itemize}
+We denote the first distinction as $D_0$. This is not an axiom---it is the recognition that to say anything at all presupposes the ability to distinguish.
 
-\textbf{Key insight}: The Token Principle is not arbitrary. It's the formal recognition that \textit{existence requires distinguishability}. The unit type $\top$ with its single inhabitant $\mathtt{tt}$ is isomorphic to the primordial distinction $D_0$.
+\begin{keyinsight}
+To deny that distinction exists, you must distinguish your denial from its opposite. The concept is self-presupposing.
+\end{keyinsight}
 
-\subsection{Identity and Self-Recognition}
+\subsection{Formalization in Agda}
 
-Martin-Löf's identity type captures a profound truth: \textit{a distinction can recognize itself}. This is reflexivity:
+\begin{lstlisting}[language=Haskell,caption={The Distinction Type}]
+-- The unit type: exactly one inhabitant
+data Top : Set where
+  tt : Top
 
-\begin{lstlisting}[language=Haskell,caption={Identity Type in Agda}]
-data _==_ {A : Set} (x : A) : A -> Set where
-  refl : x == x
+-- This is D0: the fact that "something" exists
+D0 : Top
+D0 = tt
 \end{lstlisting}
 
-The equation $x \equiv x$ says: ``x is the same distinction as x.'' This is not circular---it is the self-witnessing nature of $D_0$. From this, we derive symmetry, transitivity, and congruence.
+The unit type $\top$ with its single inhabitant \texttt{tt} \textit{is} the formalization of ``something exists that can be distinguished.''
 
-\subsection{The Bridge: Token Principle to Physics}
+% ============================================================================
+\section{Forced Emergence: From \texorpdfstring{$D_0$}{D0} to \texorpdfstring{$K_4$}{K4}}
+\label{sec:emergence}
+% ============================================================================
 
-The Token Principle establishes a complete bridge:
-\begin{enumerate}
-  \item \textbf{LOGIC}: $\bot, \top, \mathsf{Bool}, \neg, \equiv, \times, \Sigma$---consequences of distinction
-  \item \textbf{MATHEMATICS}: From counting distinctions emerges $\mathbb{N}$
-  \item \textbf{PHYSICS}: From $D_0$ emerges $K_4$, and from $K_4$ emerges spacetime
-\end{enumerate}
+\subsection{The Genesis Chain}
 
-% ====================================================================
-\section{Mathematics: From Logic to Number}
-\label{sec:mathematics}
-% ====================================================================
-
-\subsection{Natural Numbers: Counting Distinctions}
-
-Natural numbers emerge from counting distinctions. They are \textit{not} primitive axioms but \textit{results} of counting.
-
-\subsection{Integers as Signed Winding Numbers}
-
-Integers emerge as signed paths in the drift graph: $(n, m)$ with net winding equivalence $(a,b) \sim (c,d)$ iff $a+d = c+b$.
-
-\subsection{The Number Hierarchy}
-
-The complete hierarchy emerges constructively: $\mathbb{N} \to \mathbb{Z} \to \mathbb{Q} \to \mathbb{R}$ where all ring laws are proven, not assumed.
-
-% ====================================================================
-\section{Ontology: From Number to Being}
-\label{sec:ontology}
-% ====================================================================
-
-\subsection{The Unavoidable First Distinction \texorpdfstring{($D_0$)}{(D0)}}
-
-\begin{theorem}[Unavoidability of $D_0$]
-Any expressible statement presupposes distinction. Even denying distinction requires distinguishing denial from assertion. $D_0$ is unavoidable.
+\begin{proven}
+\begin{theorem}[Genesis Chain]
+Starting from $D_0$, additional distinctions are forced:
+\begin{align*}
+D_0 &\Rightarrow D_1 \quad \text{(to distinguish $D_0$ from ``not-$D_0$'')} \\
+D_0, D_1 &\Rightarrow D_2 \quad \text{(to witness their difference)} \\
+D_0, D_1, D_2 &\Rightarrow D_3 \quad \text{(for closure)}
+\end{align*}
+At $n = 4$, the system closes: every pair $(D_i, D_j)$ has a witness among the remaining two.
 \end{theorem}
+\end{proven}
 
-\subsection{Memory Saturation and \texorpdfstring{$K_4$}{K4} Emergence}
+\textbf{Why does this stop at 4?}
 
-Memory counts pairs of distinctions: $\text{memory}(n) = n(n-1)/2$ (triangular numbers).
+With 4 distinctions $\{D_0, D_1, D_2, D_3\}$, there are $\binom{4}{2} = 6$ pairs. Each pair $(D_i, D_j)$ can be witnessed by the other two distinctions. No new distinction is forced.
 
+\subsection{Memory Saturation}
+
+Define \textbf{memory} as the count of distinguishable pairs:
+\[
+\text{memory}(n) = \binom{n}{2} = \frac{n(n-1)}{2}
+\]
+
+\begin{proven}
 \begin{theorem}[Memory Saturation]
 \begin{align*}
-\text{memory}(3) &= 3 \quad \text{(three pairs)} \\
-\text{memory}(4) &= 6 \quad \text{(six pairs = } K_4 \text{ edges!)}
+\text{memory}(2) &= 1 \\
+\text{memory}(3) &= 3 \\
+\text{memory}(4) &= 6 = E(K_4)
 \end{align*}
-At $n=4$, memory saturates, forcing emergence of $K_4$.
+At $n=4$, memory equals the edge count of $K_4$. The complete graph emerges.
 \end{theorem}
+\end{proven}
 
-\subsection{\texorpdfstring{$K_4$}{K4} Uniqueness}
+\subsection{The Complete Graph \texorpdfstring{$K_4$}{K4}}
 
-\begin{theorem}[K$_4$ Uniqueness]
-$K_4$ is the \textit{unique} complete graph satisfying:
+The complete graph $K_4$ is the graph where every vertex is connected to every other vertex.
+
+\begin{proven}
+\textbf{$K_4$ Invariants:}
+\begin{align*}
+V &= 4 && \text{(vertices)} \\
+E &= 6 && \text{(edges)} \\
+F &= 4 && \text{(faces, as tetrahedron)} \\
+\chi &= V - E + F = 2 && \text{(Euler characteristic)} \\
+\text{deg} &= 3 && \text{(degree of each vertex)}
+\end{align*}
+\end{proven}
+
+% ============================================================================
+\section{\texorpdfstring{$K_4$}{K4} Uniqueness}
+\label{sec:uniqueness}
+% ============================================================================
+
+\begin{proven}
+\begin{theorem}[$K_4$ Uniqueness]
+$K_4$ is the \textbf{unique} complete graph satisfying:
 \begin{enumerate}
-  \item Memory saturation ($\text{memory}(4) = 6 = E$)
-  \item Self-stability (equal degree for all vertices)
-  \item Non-trivial spectral structure (eigenvalue multiplicity 3)
-  \item Spherical topology ($\chi = 2$)
+  \item Memory saturation (edges = pairs)
+  \item Uniform vertex degree (symmetry)
+  \item Closure (every pair has a witness)
+  \item Minimal cardinality for these properties
 \end{enumerate}
 \end{theorem}
+\end{proven}
 
-% ====================================================================
-\section{Geometry: From Being to Space}
-\label{sec:geometry}
-% ====================================================================
+\textbf{Why not $K_3$?} Three vertices give only 3 pairs, but no closure---each pair lacks a third-party witness.
 
-\subsection{The \texorpdfstring{$K_4$}{K4} Laplacian and Eigenvalues}
+\textbf{Why not $K_5$?} Five vertices would work, but $K_4$ is \textit{minimal}. The genesis process stops as soon as closure is achieved.
 
-The Laplacian $L_{K_4}$ has eigenvalues $\{0, 4, 4, 4\}$:
+% ============================================================================
+\section{Spectral Properties of \texorpdfstring{$K_4$}{K4}}
+\label{sec:spectral}
+% ============================================================================
+
+\subsection{The Graph Laplacian}
+
+For any graph $G$, the \textbf{Laplacian matrix} is:
+\[
+L = D - A
+\]
+where $D$ is the degree matrix and $A$ is the adjacency matrix.
+
+For $K_4$:
+\[
+L_{K_4} = \begin{pmatrix}
+3 & -1 & -1 & -1 \\
+-1 & 3 & -1 & -1 \\
+-1 & -1 & 3 & -1 \\
+-1 & -1 & -1 & 3
+\end{pmatrix}
+\]
+
+\begin{proven}
+\begin{theorem}[$K_4$ Laplacian Eigenvalues]
+The eigenvalues of $L_{K_4}$ are:
+\[
+\text{spec}(L_{K_4}) = \{0, 4, 4, 4\}
+\]
+with multiplicities $(1, 3)$.
+\end{theorem}
+\end{proven}
+
+\subsection{Eigenspace Dimension}
+
+\begin{proven}
+\begin{theorem}[Eigenspace Dimension]
+The non-trivial eigenspace of $L_{K_4}$ has dimension:
+\[
+\dim(\ker(L - 4I)) = 3
+\]
+\end{theorem}
+\end{proven}
+
+This is a theorem about graph theory. The number 3 is an invariant of $K_4$.
+
+\subsection{Eigenvectors}
+
+The three eigenvectors corresponding to $\lambda = 4$ are orthonormal and span a 3-dimensional subspace of $\mathbb{R}^4$. 
+
+\begin{proven}
+\begin{theorem}[Orthonormal Basis]
+The eigenvectors of $L_{K_4}$ for $\lambda = 4$ form an orthonormal basis for a 3-dimensional space:
+\begin{align*}
+v_1 &= \frac{1}{\sqrt{2}}(1, -1, 0, 0) \\
+v_2 &= \frac{1}{\sqrt{6}}(1, 1, -2, 0) \\
+v_3 &= \frac{1}{\sqrt{12}}(1, 1, 1, -3)
+\end{align*}
+\end{theorem}
+\end{proven}
+
+% ============================================================================
+\section{Combinatorial Formulas}
+\label{sec:formulas}
+% ============================================================================
+
+The $K_4$ invariants combine to produce specific integers. These are mathematical facts, not physics.
+
+\subsection{Basic Invariants}
+
+\begin{proven}
+\textbf{$K_4$ Numbers:}
+\begin{align*}
+V &= 4 && \text{(vertices)} \\
+E &= 6 && \text{(edges)} \\
+\chi &= 2 && \text{(Euler characteristic)} \\
+\text{deg} &= 3 && \text{(vertex degree)} \\
+\lambda &= 4 && \text{(spectral gap)}
+\end{align*}
+\end{proven}
+
+\subsection{The Fermat Connection}
+
+$K_4$ has $V = 4 = 2^2$ vertices. This connects to Fermat numbers:
+\[
+F_n = 2^{2^n} + 1
+\]
+
+\begin{proven}
+\begin{theorem}[Fermat Prime $F_2$]
+\[
+F_2 = 2^{2^2} + 1 = 2^4 + 1 = 17
+\]
+$F_2$ is prime, and appears in $K_4$ combinatorics.
+\end{theorem}
+\end{proven}
+
+\subsection{Derived Quantities}
+
+\begin{proven}
+\begin{theorem}[Combinatorial Formulas from $K_4$]
+\begin{align}
+\text{Eigenspace dim} &= V - 1 = 3 \\
+2V &= 8 \\
+\lambda^3 \cdot \chi + \text{deg}^2 &= 64 \cdot 2 + 9 = 137 \\
+\chi^2 \cdot \text{deg}^3 \cdot F_2 &= 4 \cdot 27 \cdot 17 = 1836 \\
+\text{deg}^2 \cdot (E + F_2) &= 9 \cdot 23 = 207 \\
+F_2 \cdot 207 &= 3519
+\end{align}
+\end{theorem}
+\end{proven}
+
+These are pure arithmetic. The numbers 137, 1836, 207, 3519 are mathematical outputs of $K_4$ structure.
+
+\subsection{The Entanglement Identity}
+
+\begin{proven}
+\begin{theorem}[$K_4$ Entanglement Identity]
+$K_4$ is the \textbf{unique} complete graph where:
+\[
+\chi \times \text{deg} = E
+\]
+Verification: $2 \times 3 = 6$ \quad \checkmark
+\end{theorem}
+\end{proven}
+
+For $K_3$: $\chi \times \text{deg} = 1 \times 2 = 2 \neq 3 = E$. Fails.
+
+For $K_5$: $\chi \times \text{deg} = 2 \times 4 = 8 \neq 10 = E$. Fails.
+
+Only $K_4$ satisfies this identity.
+
+% ============================================================================
+\section{The Agda Proof}
+\label{sec:agda}
+% ============================================================================
+
+\subsection{Verification Status}
+
+All claims in Part I are formalized in:
 \begin{itemize}
-  \item $\lambda_0 = 0$ (trivial, multiplicity 1)
-  \item $\lambda_1 = 4$ (spatial, multiplicity 3)
+  \item \texttt{FirstDistinction.agda} (15,000+ lines)
+  \item Compiles with \texttt{agda --safe --without-K}
+  \item Available at: \url{https://github.com/de-johannes/FirstDistinction}
 \end{itemize}
 
-\begin{keyresult}
-\textbf{Spatial Dimensionality:} $d = \text{multiplicity of } \lambda = 4 = \mathbf{3}$
-\end{keyresult}
+\subsection{How to Verify}
 
-The three orthonormal eigenvectors span $\mathbb{R}^3$---this \textit{is} our spatial geometry.
+\begin{lstlisting}[language=bash,caption={Verification Command}]
+git clone https://github.com/de-johannes/FirstDistinction.git
+cd FirstDistinction
+agda --safe --without-K FirstDistinction.agda
+\end{lstlisting}
 
-% ====================================================================
-\section{Spacetime: From Space to Time}
-\label{sec:spacetime}
-% ====================================================================
+If it compiles without errors, the proofs are valid.
 
-\subsection{Time from Asymmetry}
+\subsection{What Is Machine-Verified}
 
-\begin{theorem}[Time from Asymmetry]
-The drift irreversibility (you cannot ``un-make'' a distinction) forces exactly ONE time dimension with opposite signature to space, giving Minkowski signature:
-\begin{equation}
-\eta_{\mu\nu} = \text{diag}(-1, +1, +1, +1)
-\end{equation}
-\end{theorem}
-
-\subsection{Metric, Ricci Curvature, and Einstein Tensor}
-
-The discrete metric encodes the Lorentz signature. The Ricci tensor relates to the Laplacian eigenvalue: $R_{\mu\nu} = 4 g_{\mu\nu}$.
-
-The scalar curvature: $R = V \times \text{deg} = 4 \times 3 = 12$.
-
-The Einstein tensor: $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu} = -2 g_{\mu\nu}$.
-
-% ====================================================================
-\section{Physics: From Time to Matter}
-\label{sec:physics}
-% ====================================================================
-
-\subsection{The Coupling Constant \texorpdfstring{$\kappa = 8$}{κ = 8}}
-
-\begin{theorem}[Coupling Constant]
-\begin{equation}
-\kappa = 2V = 2 \times 4 = 8
-\end{equation}
-This is the discrete version of $\kappa = 8\pi G/c^4$.
-\end{theorem}
-
-\subsection{Einstein Field Equations}
-
-\begin{theorem}[Einstein Equations from $K_4$]
-All 16 components of $G_{\mu\nu} = \kappa T_{\mu\nu}$ hold when matter is defined geometrically: $T_{\mu\nu} := G_{\mu\nu} / \kappa$.
-\end{theorem}
-
-\textbf{Key insight}: Matter is not independent---it \textit{is} geometry!
-
-\subsection{Bianchi Identity}
-
-The Bianchi identity $\nabla_\mu G^{\mu\nu} = 0$ is \textit{derived} from Riemann tensor symmetries, which follow from $K_4$ topology.
-
-% ====================================================================
-\section{The Complete Proof}
-\label{sec:complete}
-% ====================================================================
-
-\subsection{The Derivation Chain}
-
-\begin{theorem}[FD-Emergence: $D_0 \to 3D$]
-\begin{equation}
-D_0 \xrightarrow{\text{genesis}} \{D_0, D_1, D_2\} \xrightarrow{\text{saturation}} D_3 \xrightarrow{K_4} L_{K_4} \xrightarrow{\text{spectral}} d = 3
-\end{equation}
-\end{theorem}
-
-\begin{theorem}[FD-Complete: $D_0 \to 3+1D$ Spacetime]
-\begin{equation}
-D_0 \xrightarrow{\text{FD-Emergence}} d = 3 \xrightarrow{\text{asymmetry}} t = 1 \xrightarrow{\text{signature}} (3+1)D
-\end{equation}
-\end{theorem}
-
-\begin{theorem}[FD-FullGR: $D_0 \to$ Einstein Equations]
-\begin{equation}
-D_0 \to \text{Spacetime}(3+1) \to R_{\mu\nu} \to G_{\mu\nu} \xrightarrow{\kappa=8} G_{\mu\nu} = 8 T_{\mu\nu}
-\end{equation}
-\end{theorem}
-
-\subsection{The Fine Structure Constant}
-
-\begin{theorem}[Fine Structure from $K_4$]
-\begin{equation}
-\alpha^{-1} = \chi^2 \times \text{deg}^2 + 2F_2 \approx 4 \times 9 + 34 = 137.036
-\end{equation}
-where $F_2 = 2^4 + 1 = 17$ is the Fermat prime.
-\end{theorem}
-
-\textbf{Experimental}: $\alpha^{-1} = 137.035\,999\,177$ \quad \textbf{Error}: $0.00003\%$
-
-% ====================================================================
-\section{Mass from Topology}
-\label{sec:masses}
-% ====================================================================
-
-\subsection{The Proton Mass Ratio}
-
-\begin{theorem}[Proton Mass]
-\begin{equation}
-\frac{m_p}{m_e} = \chi^2 \times \text{deg}^3 \times F_2 = 4 \times 27 \times 17 = 1836
-\end{equation}
-\textbf{Experimental}: $1836.152\,673$ \quad \textbf{Error}: $0.008\%$
-\end{theorem}
-
-Physical interpretation: $\chi^2 = 4$ (spin factor), $\text{deg}^3 = 27$ (quark winding volume), $F_2 = 17$ (fermion sectors).
-
-\subsection{The \texorpdfstring{K$_4$}{K4} Entanglement Identity}
-
-A remarkable discovery: $\chi \times \text{deg} = E \Rightarrow 2 \times 3 = 6$.
-
-\begin{keyresult}
-$K_4$ is the ONLY complete graph where $\chi \times \text{deg} = E$. This enables two equivalent proton formulas:
-\begin{align}
-m_p/m_e &= \chi^2 \times \text{deg}^3 \times F_2 \quad \text{(topological)} \\
-&= \text{deg} \times E^2 \times F_2 \quad \text{(relational)}
-\end{align}
-\end{keyresult}
-
-\subsection{Lepton Masses}
-
-\begin{theorem}[Muon Mass]
-\begin{equation}
-m_\mu/m_e = \text{deg}^2 \times (E + F_2) = 9 \times 23 = 207
-\end{equation}
-\textbf{Experimental}: $206.768$ \quad \textbf{Error}: $0.1\%$
-\end{theorem}
-
-\begin{theorem}[Tau Mass]
-\begin{equation}
-m_\tau/m_e = F_2 \times m_\mu/m_e = 17 \times 207 = 3519
-\end{equation}
-\textbf{Experimental}: $3477.23$ \quad \textbf{Error}: $1.2\%$
-\end{theorem}
-
-\textbf{Remarkable}: The tau/muon ratio is \textit{exactly} $F_2 = 17$!
-
-\subsection{Heavy Quarks}
-
-\begin{theorem}[Top Quark]
-$m_t/m_e = \alpha^{-2} \times \text{deg} \times E = 137^2 \times 18 = 337,842$
-
-\textbf{Experimental}: $\approx 337,900$ \quad \textbf{Error}: $0.02\%$
-\end{theorem}
-
-\begin{theorem}[Charm Quark]
-$m_c/m_e = \alpha^{-1} \times 22 = 3,014$
-
-\textbf{Experimental}: $\approx 2,820$ \quad \textbf{Error}: $7\%$
-\end{theorem}
-
-% ====================================================================
-\section{Discussion and Implications}
-\label{sec:discussion}
-% ====================================================================
-
-\subsection{Epistemological Status}
-
-\begin{epistemological}
-\textbf{PROVEN (Agda \texttt{--safe}):}
-$K_4$ emergence, formulas ($d=3$, $\kappa=8$, $\alpha^{-1}$, masses), machine verification.
-
-\textbf{HYPOTHESIS (Physics):}
-That $K_4$ \textit{is} spacetime, computed values \textit{are} physical constants.
-\end{epistemological}
-
-\subsection{Robustness: Why Not \texorpdfstring{K$_3$}{K3} or \texorpdfstring{K$_5$}{K5}?}
-
-\begin{table}[h]
-\centering
-\begin{tabular}{|l|c|c|c|c|}
-\hline
-\textbf{Parameter} & \textbf{K$_3$} & \textbf{K$_4$} & \textbf{K$_5$} & \textbf{Expt} \\
-\hline
-$d$ & 2 & 3 & 4 & 3 \\
-$\kappa$ & 6 & 8 & 10 & 8 \\
-$\alpha^{-1}$ & 31 & 137 & 266 & 137 \\
-$m_p/m_e$ & 288 & 1836 & 8448 & 1836 \\
-$m_\mu/m_e$ & 52 & 207 & 656 & 207 \\
-\hline
-\end{tabular}
-\caption{K$_4$ Exclusivity: Only K$_4$ matches experiment. K$_3$ and K$_5$ fail by factors of 3--6$\times$.}
-\end{table}
-
-\textbf{Conclusion}: This is not fine-tuning---it's \textit{uniqueness}.
-
-\subsection{Implications}
-
-If FD is correct:
+\begin{proven}
+\textbf{Verified claims:}
 \begin{enumerate}
-  \item \textbf{No Free Parameters}: Standard Model parameters are determined, not arbitrary
-  \item \textbf{Dimensional Necessity}: 3+1D is the only stable structure
-  \item \textbf{Mass Hierarchy Explained}: Masses determined by K$_4$ winding
-  \item \textbf{Unification}: Logic = Mathematics = Physics
-  \item \textbf{Testability}: Precise predictions that can be falsified
+  \item $K_4$ emerges from distinction and memory saturation
+  \item $K_4$ uniqueness among complete graphs
+  \item Laplacian eigenvalues $\{0, 4, 4, 4\}$
+  \item Eigenspace dimension = 3
+  \item All combinatorial formulas
+  \item Entanglement identity $\chi \times \text{deg} = E$
+\end{enumerate}
+\end{proven}
+
+% ============================================================================
+\part{The Observations (Not Proven)}
+% ============================================================================
+
+The following section notes numerical coincidences. \textbf{These are not theorems about physics. No causal connection is proven.}
+
+% ============================================================================
+\section{Dimensional Coincidence}
+\label{sec:obs-dim}
+% ============================================================================
+
+\begin{observation}
+The $K_4$ eigenspace dimension is 3.
+
+Physical observation: Space has 3 dimensions.
+
+\medskip
+\textit{This could be:}
+\begin{itemize}
+  \item Coincidence
+  \item Selection bias (we notice matches, ignore misses)
+  \item Deep connection (unproven)
+\end{itemize}
+\end{observation}
+
+% ============================================================================
+\section{Coupling Coincidence}
+\label{sec:obs-coupling}
+% ============================================================================
+
+\begin{observation}
+The quantity $2V = 2 \times 4 = 8$.
+
+Physical observation: The Einstein field equation uses $\kappa = 8\pi G/c^4$, where the numerical factor is 8.
+
+\medskip
+\textit{No causal connection proven.}
+\end{observation}
+
+% ============================================================================
+\section{Fine Structure Coincidence}
+\label{sec:obs-alpha}
+% ============================================================================
+
+\begin{observation}
+The spectral formula yields:
+\[
+\lambda^3 \cdot \chi + \text{deg}^2 + \text{correction} = 137.036...
+\]
+
+Physical observation: The inverse fine structure constant:
+\[
+\alpha^{-1} = 137.035\,999\,177(21)
+\]
+
+Agreement: $\approx 0.00003\%$
+
+\medskip
+\textit{No causal connection proven. The ``correction term'' involves $V/(\text{deg} \cdot (E^2+1))$ which could be post-hoc fitting.}
+\end{observation}
+
+% ============================================================================
+\section{Mass Ratio Coincidences}
+\label{sec:obs-mass}
+% ============================================================================
+
+\begin{observation}
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Formula} & \textbf{$K_4$ Value} & \textbf{Experimental} & \textbf{Error} \\
+\midrule
+$\chi^2 \cdot \text{deg}^3 \cdot F_2$ & 1836 & 1836.15 & 0.008\% \\
+$\text{deg}^2 \cdot (E + F_2)$ & 207 & 206.77 & 0.1\% \\
+$F_2 \cdot 207$ & 3519 & 3477 & 1.2\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Physical observation: These match proton/electron, muon/electron, and tau/electron mass ratios.
+
+\medskip
+\textit{No causal connection proven. Could be numerology.}
+\end{observation}
+
+% ============================================================================
+\section{Signature Coincidence}
+\label{sec:obs-signature}
+% ============================================================================
+
+\begin{observation}
+$K_4$ has:
+\begin{itemize}
+  \item 3 symmetric eigenvectors (spatial)
+  \item 1 asymmetric direction (the genesis sequence $D_0 \to D_1 \to D_2 \to D_3$ is irreversible)
+\end{itemize}
+
+Physical observation: Spacetime has signature $(-,+,+,+)$---one time dimension, three space dimensions.
+
+\medskip
+\textit{No causal connection proven.}
+\end{observation}
+
+% ============================================================================
+\section{Summary of Observations}
+\label{sec:obs-summary}
+% ============================================================================
+
+\begin{observation}
+\begin{center}
+\begin{tabular}{lccl}
+\toprule
+\textbf{Quantity} & \textbf{$K_4$} & \textbf{Physics} & \textbf{Status} \\
+\midrule
+Spatial dimensions & 3 & 3 & Exact match \\
+Time dimensions & 1 & 1 & Exact match \\
+Signature & $(-,+,+,+)$ & $(-,+,+,+)$ & Exact match \\
+Coupling factor & 8 & 8 & Exact match \\
+$\alpha^{-1}$ & 137.036 & 137.036 & 0.00003\% \\
+$m_p/m_e$ & 1836 & 1836.15 & 0.008\% \\
+$m_\mu/m_e$ & 207 & 206.77 & 0.1\% \\
+$m_\tau/m_e$ & 3519 & 3477 & 1.2\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{4 exact matches. 4 close matches.}
+
+\medskip
+\textit{Is this meaningful or coincidental? This document does not answer that question.}
+\end{observation}
+
+% ============================================================================
+\part{Discussion}
+% ============================================================================
+
+% ============================================================================
+\section{What Is Actually Proven}
+\label{sec:proven-summary}
+% ============================================================================
+
+\begin{proven}
+\textbf{Mathematical theorems (Agda \texttt{--safe}):}
+\begin{enumerate}
+  \item From ``distinction exists,'' the complete graph $K_4$ emerges uniquely
+  \item $K_4$ has specific invariants: $V=4$, $E=6$, $\chi=2$, $\text{deg}=3$
+  \item The Laplacian has eigenvalues $\{0,4,4,4\}$
+  \item The eigenspace dimension is 3
+  \item Specific combinatorial formulas produce 137, 1836, 207, 3519
+  \item The entanglement identity $\chi \cdot \text{deg} = E$ is unique to $K_4$
 \end{enumerate}
 
-% ====================================================================
+These are \textbf{facts about graph theory}, machine-verified.
+\end{proven}
+
+% ============================================================================
+\section{What Is Not Proven}
+\label{sec:not-proven}
+% ============================================================================
+
+\begin{observation}
+\textbf{Not proven:}
+\begin{enumerate}
+  \item That $K_4$ ``is'' physical spacetime
+  \item That the number 137.036 ``is'' the fine structure constant
+  \item That 1836 ``is'' the proton/electron mass ratio
+  \item That any of these correspondences are meaningful
+  \item That the numerical agreements are not coincidental
+\end{enumerate}
+
+The claim ``mathematics determines physics'' is a \textbf{philosophical hypothesis}, not a theorem.
+\end{observation}
+
+% ============================================================================
+\section{Why Not \texorpdfstring{$K_3$}{K3} or \texorpdfstring{$K_5$}{K5}?}
+\label{sec:why-k4}
+% ============================================================================
+
+\begin{proven}
+\textbf{Mathematical answer:} $K_4$ is the unique minimal complete graph satisfying memory saturation and closure. This is proven.
+\end{proven}
+
+\begin{observation}
+\textbf{Numerical observation:} If we compute the same formulas for $K_3$ and $K_5$:
+
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Quantity} & \textbf{$K_3$} & \textbf{$K_4$} & \textbf{$K_5$} & \textbf{Expt.} \\
+\midrule
+Eigenspace dim & 2 & 3 & 4 & 3 \\
+$2V$ & 6 & 8 & 10 & 8 \\
+``$\alpha^{-1}$'' & 31 & 137 & 266 & 137 \\
+``$m_p/m_e$'' & 288 & 1836 & 8448 & 1836 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Only $K_4$ values match experiment.
+
+\medskip
+\textit{This could be evidence for a deep connection, or it could be selection bias---we only notice when formulas match.}
+\end{observation}
+
+% ============================================================================
+\section{Possible Interpretations}
+\label{sec:interpretations}
+% ============================================================================
+
+\subsection{Interpretation 1: Coincidence}
+
+The numbers happen to match. With enough formulas and enough constants, some will align by chance. This is the null hypothesis and cannot be ruled out.
+
+\subsection{Interpretation 2: Selection Bias}
+
+We found formulas that fit the data. This is a form of numerology. The fact that formulas exist does not mean they are fundamental.
+
+\subsection{Interpretation 3: Deep Connection}
+
+Mathematics constrains physics. The structure of distinction \textit{is} the structure of reality. This is the strongest claim and the least proven.
+
+\begin{keyinsight}
+This document presents the mathematics honestly. The interpretation is left to the reader. We do not claim Interpretation 3 is correct---only that the numerical agreements are remarkable enough to warrant attention.
+\end{keyinsight}
+
+% ============================================================================
+\section{What Would Falsify This}
+\label{sec:falsification}
+% ============================================================================
+
+\begin{enumerate}
+  \item \textbf{Mathematical error:} Find a bug in the Agda code. This would falsify the proofs.
+  \item \textbf{Alternative derivation:} Show that a different graph (not $K_4$) emerges from distinction.
+  \item \textbf{Hidden parameter:} Find an adjustable parameter in the formulas.
+  \item \textbf{Better numerology:} Find simpler formulas that match the constants better.
+\end{enumerate}
+
+The mathematical claims are falsifiable by finding errors in the Agda code. The physical interpretation is harder to falsify but is clearly labeled as hypothesis.
+
+% ============================================================================
+\section{Open Questions}
+\label{sec:open}
+% ============================================================================
+
+\begin{enumerate}
+  \item \textbf{Why Fermat primes?} The appearance of $F_2 = 17$ is unexplained.
+  \item \textbf{Fractional precision:} The formula gives 137.036, experiment gives 137.035999. Where does the difference come from?
+  \item \textbf{Other constants:} Can this approach predict constants we haven't yet matched?
+  \item \textbf{Dynamics:} $K_4$ is static. How do equations of motion emerge?
+\end{enumerate}
+
+% ============================================================================
 \section{Conclusion}
 \label{sec:conclusion}
-% ====================================================================
+% ============================================================================
 
 \subsection{Summary}
 
-First Distinction demonstrates:
+\begin{proven}
+\textbf{What we proved:}
+\begin{itemize}
+  \item $K_4$ emerges uniquely from the concept of distinction
+  \item $K_4$ has specific spectral and combinatorial properties
+  \item These properties compute to specific numbers
+\end{itemize}
+All proofs are machine-verified in Agda.
+\end{proven}
 
-\begin{keyresult}
-From one unavoidable premise ($D_0$) to physical reality:
-\begin{equation}
-D_0 \to K_4 \to \{d=3, t=1, \kappa=8, \alpha^{-1}, \text{masses}\} \to \text{Spacetime + Matter}
-\end{equation}
+\begin{observation}
+\textbf{What we observed:}
+\begin{itemize}
+  \item Those numbers match physical constants
+  \item The matches are precise (0.00003\% to 1.2\%)
+  \item Only $K_4$ produces matching values
+\end{itemize}
+No causal connection is proven.
+\end{observation}
 
-Every step is constructive, machine-verified, unique, and numerically precise (errors $<1\%$).
-\end{keyresult}
+\subsection{Final Statement}
 
-\subsection{The Unangreifbar Proof}
+\begin{keyinsight}
+The mathematics is certain. The physics is hypothesis.
 
-The complete FD proof (\texttt{FD-Unangreifbar}) shows:
-\begin{enumerate}
-  \item Mathematical consistency (type-checks)
-  \item Logical completeness (all constants derived)
-  \item Uniqueness (only K$_4$ works)
-  \item Numerical agreement (errors 0.008\%--1.2\%)
-  \item No fine-tuning (K$_4$ from necessity)
-\end{enumerate}
+We present the strongest possible mathematical evidence, but we do not claim to have derived physics from pure thought. That claim would require proof we do not have.
 
-\subsection{Final Reflection}
+If you find an error, open an issue. We want to know.
+\end{keyinsight}
 
-From $D_0$---the unavoidable first distinction---emerges space, time, matter, force, and the specific constants we measure. 
-
-\textit{From distinction, everything.}
-
-% ====================================================================
-\section{Notation and Glossary}
+% ============================================================================
+\section{Notation Reference}
 \label{sec:notation}
-% ====================================================================
+% ============================================================================
 
-\subsection{Fundamental Symbols}
+\begin{tabular}{ll}
+\toprule
+\textbf{Symbol} & \textbf{Meaning} \\
+\midrule
+$D_0, D_1, D_2, D_3$ & The four primordial distinctions \\
+$K_4$ & Complete graph on 4 vertices \\
+$V = 4$ & Vertex count \\
+$E = 6$ & Edge count \\
+$F = 4$ & Face count (as tetrahedron) \\
+$\chi = 2$ & Euler characteristic \\
+$\text{deg} = 3$ & Vertex degree \\
+$\lambda = 4$ & Non-trivial Laplacian eigenvalue \\
+$F_2 = 17$ & Fermat prime $2^{2^2} + 1$ \\
+$L$ & Graph Laplacian matrix \\
+\bottomrule
+\end{tabular}
 
-\begin{description}
-  \item[$D_0, D_1, D_2, D_3$] The four primordial distinctions
-  \item[$K_4$] Complete graph on 4 vertices (tetrahedron)
-  \item[$V = 4$] Vertices
-  \item[$E = 6$] Edges
-  \item[$\chi = 2$] Euler characteristic (spherical topology)
-  \item[deg $= 3$] Degree of each vertex
-  \item[$F_2 = 17$] Fermat prime: $2^{2^2} + 1$
-\end{description}
+% ============================================================================
+% BIBLIOGRAPHY
+% ============================================================================
 
-\subsection{Physical Symbols}
-
-\begin{description}
-  \item[$d = 3$] Spatial dimensionality
-  \item[$t = 1$] Temporal dimensionality
-  \item[$\kappa = 8$] Einstein coupling constant (discrete)
-  \item[$\alpha^{-1} \approx 137.036$] Inverse fine structure constant
-  \item[$\lambda = 4$] Laplacian eigenvalue
-  \item[$G_{\mu\nu}$] Einstein tensor
-  \item[$T_{\mu\nu}$] Stress-energy tensor
-  \item[$R_{\mu\nu}$] Ricci tensor
-\end{description}
-
-\subsection{Key Theorems}
-
-\begin{description}
-  \item[Unavoidability] $D_0$ cannot be coherently denied
-  \item[Memory Saturation] Forces $K_4$ at $n=4$
-  \item[K$_4$ Uniqueness] Only stable complete graph
-  \item[Spatial Dimension] $d = 3$ from eigenvalue multiplicity
-  \item[Coupling] $\kappa = 2V = 8$
-  \item[Fine Structure] $\alpha^{-1} = \chi^2 \times \text{deg}^2 + 2F_2$
-  \item[Proton Mass] $m_p/m_e = \chi^2 \times \text{deg}^3 \times F_2 = 1836$
-  \item[Entanglement] $\chi \times \text{deg} = E$ (unique to K$_4$)
-\end{description}
-
-% ====================================================================
 \begin{thebibliography}{99}
 
 \bibitem{martinlof1972}
@@ -626,9 +861,9 @@ The Agda Team, \textit{Agda Documentation},
 CODATA, \textit{Recommended Values of the Fundamental Physical Constants: 2018}, 
 Rev. Mod. Phys. 93, 025010 (2021).
 
-\bibitem{planck2018}
-Planck Collaboration, \textit{Planck 2018 Results. VI. Cosmological Parameters}, 
-Astron. Astrophys. 641, A6 (2020).
+\bibitem{spencerbrown}
+G. Spencer-Brown, \textit{Laws of Form}, 
+Julian Press (1969).
 
 \end{thebibliography}
 
