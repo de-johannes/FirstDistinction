@@ -1,7 +1,8 @@
 \documentclass[11pt,a4paper]{article}
 
-% Moderne LaTeX-Pakete
-\usepackage{fontspec}
+% Pakete (pdflatex-kompatibel)
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{amsmath,amsthm,amssymb}
 \usepackage{mathtools}
 \usepackage{geometry}
@@ -24,14 +25,6 @@
   bottom=3cm
 }
 
-% Moderne Schriftarten (LuaLaTeX)
-\setmainfont{TeX Gyre Pagella}
-\setmonofont{DejaVu Sans Mono}[Scale=0.9]
-
-% unicode-math NACH Textschriften laden
-\usepackage{unicode-math}
-\setmathfont{TeX Gyre Pagella Math}
-
 % Farben
 \definecolor{primarycolor}{RGB}{0,51,102}
 \definecolor{secondarycolor}{RGB}{102,0,51}
@@ -44,7 +37,7 @@
   citecolor=secondarycolor,
   urlcolor=primarycolor,
   pdfauthor={Johannes Wielsch},
-  pdftitle={Erste Distinktion: Eine konstruktive Herleitung der physikalischen Realität}
+  pdftitle={First Distinction: Eine konstruktive Herleitung der physikalischen Realität}
 }
 
 % Abschnittsformatierung
@@ -109,14 +102,14 @@
 % Kopf- und Fußzeile
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small\textit{Erste Distinktion}}
+\fancyhead[L]{\small\textit{First Distinction}}
 \fancyhead[R]{\small\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 
 % Titelseite
 \title{
   \Huge\bfseries\color{primarycolor}
-  Erste Distinktion\\[0.5em]
+  First Distinction\\[0.5em]
   \Large Eine konstruktive, axiomfreie Herleitung der physikalischen Realität\\[1em]
   \large Vom Token-Prinzip zur Allgemeinen Relativitätstheorie
 }
@@ -128,7 +121,7 @@
   \small Deepseek R1, ChatGPT (GPT-4o, GPT-4.1, GPT-5)
 }
 
-\date{\today}
+\date{\today\\[1em]\normalsize\href{https://doi.org/10.5281/zenodo.17826218}{DOI: 10.5281/zenodo.17826218}}
 
 \begin{document}
 
@@ -136,25 +129,21 @@
 
 \begin{abstract}
 \noindent
-Dieses Dokument präsentiert \textbf{Erste Distinktion} (FD), einen formalen mathematischen Beweis, dass Strukturen, die der physikalischen Raumzeit entsprechen---einschließlich $3+1$ Dimensionalität, der Kopplungskonstante $\kappa = 8$, der Feinstrukturkonstante $\alpha^{-1} \approx 137{,}036$ und Teilchenmassenverhältnissen---aus einer einzigen unvermeidlichen Prämisse emergieren: der Existenz der Distinktion selbst ($D_0$).
+Dieses Dokument präsentiert, in Agda \texttt{--safe --without-K}:
 
-Der Beweis ist:
+\textbf{Die These:} Aus einer einzigen Prämisse---``etwas ist von etwas unterscheidbar''---emergiert der vollständige Graph $K_4$ (Tetraeder) als einzige stabile Struktur. Das ist Graphentheorie: 4 Knoten, 6 Kanten, Euler-Charakteristik $\chi = 2$.
+
+\textbf{Die Konstruktion:} Eine Distinktion ($D_0$) erzwingt eine zweite ($D_1$). Zwei erzwingen eine dritte ($D_2$). Drei erzwingen eine vierte ($D_3$). Bei vier: Abschluss---jedes Paar hat einen Zeugen. $K_4$ ist der minimale Graph, bei dem diese Stabilität gilt.
+
+\textbf{Die Beobachtung:} $K_4$-Invarianten entsprechen der Physik:
 \begin{itemize}[nosep]
-  \item \textbf{Konstruktiv}: Jedes Objekt wird explizit konstruiert, nicht angenommen
-  \item \textbf{Axiomfrei}: Keine mathematischen Axiome werden postuliert
-  \item \textbf{Maschinengeprüft}: Verifiziert durch den Agda-Typprüfer unter \texttt{--safe --without-K}
-  \item \textbf{In sich geschlossen}: Keine externen Bibliotheksimporte
+  \item Laplace-Eigenraumdimension $\to d = 3$ (Raumdimensionen)
+  \item Euler $\times$ Grad $\times$ Knoten $\to \kappa = 8$ (Einstein-Kopplung)
+  \item Spektralformel $\to \alpha^{-1} = 137{,}036$ (Feinstruktur, 0{,}00003\% Fehler)
+  \item Kombinatorische Formeln $\to$ Teilchenmassen (0{,}008--1\% Fehler)
 \end{itemize}
 
-\textbf{Epistemologischer Status:}
-\begin{description}[nosep]
-  \item[BEWIESEN (Mathematik, Agda \texttt{--safe}):] $K_4$ emergiert als einziger stabiler Graph aus Selbstreferenz; $K_4$-Formeln berechnen $d=3$, $\kappa=8$, $\alpha^{-1} \approx 137{,}036$, Teilchenmassenverhältnisse; alle Herleitungen sind maschinenverifiziert.
-  \item[HYPOTHESE (Physikalische Korrespondenz):] Dass die $K_4$-Struktur die physikalische Raumzeit IST; dass die berechneten Werte physikalische Konstanten SIND; dass die numerische Übereinstimmung nicht zufällig ist.
-\end{description}
-
-Die Mathematik ist bewiesen. Die physikalische Identifikation ist eine testbare Hypothese, gestützt durch bemerkenswerte numerische Übereinstimmung: $\alpha$ (Fehler $0{,}00003\%$), Protonenmasse (Fehler $0{,}008\%$), Myonenmasse (Fehler $0{,}1\%$).
-
-\textbf{Kernresultat:} Von reiner Logik (Typentheorie) zur physikalischen Realität durch unvermeidliche Konstruktion---keine freien Parameter, kein Feinabstimmen, keine funktionierenden Alternativen.
+\textbf{Status:} Die Mathematik ist maschinenverifiziert. Die physikalische Korrespondenz ist Hypothese---aber eine, die durch bemerkenswerte numerische Übereinstimmung über mehrere unabhängige Größen gestützt wird.
 \end{abstract}
 
 \tableofcontents

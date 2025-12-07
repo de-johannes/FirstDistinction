@@ -1,7 +1,8 @@
 \documentclass[11pt,a4paper]{article}
 
-% Modern LaTeX packages
-\usepackage{fontspec}
+% Packages (pdflatex compatible)
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{amsmath,amsthm,amssymb}
 \usepackage{mathtools}
 \usepackage{geometry}
@@ -23,14 +24,6 @@
   top=3cm,
   bottom=3cm
 }
-
-% Modern fonts (LuaLaTeX)
-\setmainfont{TeX Gyre Pagella}
-\setmonofont{DejaVu Sans Mono}[Scale=0.9]
-
-% Load unicode-math AFTER setting text fonts and WITH proper options
-\usepackage{unicode-math}
-\setmathfont{TeX Gyre Pagella Math}
 
 % Colors
 \definecolor{primarycolor}{RGB}{0,51,102}
@@ -128,7 +121,7 @@
   \small Deepseek R1, ChatGPT (GPT-4o, GPT-4.1, GPT-5)
 }
 
-\date{\today}
+\date{\today\\[1em]\normalsize\href{https://doi.org/10.5281/zenodo.17826218}{DOI: 10.5281/zenodo.17826218}}
 
 \begin{document}
 
@@ -136,25 +129,21 @@
 
 \begin{abstract}
 \noindent
-This document presents \textbf{First Distinction} (FD), a formal mathematical proof that structures matching physical spacetime---including $3+1$ dimensionality, the coupling constant $\kappa = 8$, the fine structure constant $\alpha^{-1} \approx 137.036$, and particle mass ratios---emerge from a single unavoidable premise: the existence of distinction itself ($D_0$).
+This document presents, in Agda \texttt{--safe --without-K}:
 
-The proof is:
+\textbf{The claim:} From a single premise---``something can be distinguished from something''---the complete graph $K_4$ (tetrahedron) emerges as the unique stable structure. This is graph theory: 4 vertices, 6 edges, Euler characteristic $\chi = 2$.
+
+\textbf{The construction:} One distinction ($D_0$) forces a second ($D_1$). Two force a third ($D_2$). Three force a fourth ($D_3$). At four, closure: every pair has a witness. $K_4$ is the minimal graph where this stability holds.
+
+\textbf{The observation:} $K_4$ invariants match physics:
 \begin{itemize}[nosep]
-  \item \textbf{Constructive}: Every object is explicitly built, not assumed
-  \item \textbf{Axiom-free}: No mathematical axioms are postulated
-  \item \textbf{Machine-checked}: Verified by the Agda type-checker under \texttt{--safe --without-K}
-  \item \textbf{Self-contained}: No external library imports
+  \item Laplacian eigenspace dimension $\to d = 3$ (spatial dimensions)
+  \item Euler $\times$ degree $\times$ vertices $\to \kappa = 8$ (Einstein coupling)
+  \item Spectral formula $\to \alpha^{-1} = 137.036$ (fine structure, 0.00003\% error)
+  \item Combinatorial formulas $\to$ particle mass ratios (0.008--1\% error)
 \end{itemize}
 
-\textbf{Epistemological Status:}
-\begin{description}[nosep]
-  \item[PROVEN (Mathematics, Agda \texttt{--safe}):] $K_4$ emerges as unique stable graph from self-reference; $K_4$ formulas compute $d=3$, $\kappa=8$, $\alpha^{-1} \approx 137.036$, particle mass ratios; all derivations are machine-verified.
-  \item[HYPOTHESIS (Physics correspondence):] That $K_4$ structure IS physical spacetime; that computed values ARE physical constants; that numerical agreement is not coincidental.
-\end{description}
-
-The mathematics is proven. The physics identification is a testable hypothesis supported by remarkable numerical agreement: $\alpha$ (error $0.00003\%$), proton mass (error $0.008\%$), muon mass (error $0.1\%$).
-
-\textbf{Key Result:} From pure logic (type theory) to physical reality through unavoidable construction---no free parameters, no fine-tuning, no alternatives that work.
+\textbf{Status:} The mathematics is machine-verified. The physics correspondence is hypothesis---but one supported by remarkable numerical agreement across multiple independent quantities.
 \end{abstract}
 
 \tableofcontents
