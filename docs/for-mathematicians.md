@@ -5,52 +5,47 @@ title: For Mathematicians
 
 # For Mathematicians
 
-**A formal derivation in constructive type theory.**
+A formal derivation in constructive type theory.
 
 ---
 
-## The Logical Structure
+## The Logical Framework
 
-First Distinction is a theorem-proving exercise in **Agda** under strict constraints:
+First Distinction is a theorem-proving exercise in Agda under maximal restrictions:
 
 ```
---safe        No unsafe pragmas (no trustMe, no primTrustMe)
---without-K   No uniqueness of identity proofs (compatible with HoTT)
---no-libraries   No standard library (everything from scratch)
+--safe           No unsafe pragmas
+--without-K      No uniqueness of identity proofs
 ```
 
-This means: **every object exists only if constructed**. No axioms, no postulates, no holes.
+Every object exists only if constructed. No axioms, no postulates, no holes.
 
 ---
 
 ## The Single Premise
 
-We start with one type:
-
 ```agda
 data Distinction : Set where
-  φ  : Distinction
-  ¬φ : Distinction
+  phi  : Distinction
+  not-phi : Distinction
 ```
 
-This is isomorphic to `Bool`, but with semantic intent: φ and ¬φ are the two "poles" of the first distinction D₀.
+This is isomorphic to Bool but with semantic intent: phi and not-phi are the two poles of the first distinction D0.
 
 **Claim:** This premise is unavoidable.
 
-**Proof sketch:** To deny "distinction exists," you must distinguish that denial from its opposite. The denial presupposes what it denies.
-
-**Formalization:**
+**Proof:** To deny "distinction exists," you must distinguish that denial from its opposite. The denial presupposes what it denies.
 
 ```agda
 record Unavoidable (P : Set) : Set where
   field
-    to-assert : P           -- To assert P requires P
-    to-deny   : ¬ P → P     -- To deny P requires P
+    to-assert : P
+    to-deny   : (P -> Empty) -> P
 
-unavoidability-of-D₀ : Unavoidable Distinction
-unavoidability-of-D₀ = record
-  { to-assert = φ
-  ; to-deny   = λ _ → φ
+unavoidability : Unavoidable Distinction
+unavoidability = record
+  { to-assert = phi
+  ; to-deny   = lambda _ -> phi
   }
 ```
 
@@ -58,258 +53,210 @@ unavoidability-of-D₀ = record
 
 ## The Derivation Chain
 
-From D₀, we derive:
-
 ```
-D₀ (First Distinction)
- │
- ├─→ D₁ (Polarity: φ vs ¬φ)
- │
- ├─→ D₂ (Relation: D₀ ≠ D₁ witnessed)
- │    │
- │    └─→ K₃ (Complete graph on 3 vertices)
- │
- ├─→ D₃ (Forced by irreducible pair (D₀,D₂))
- │    │
- │    └─→ K₄ (Complete graph on 4 vertices) ← STABLE
- │
- ├─→ Laplacian L of K₄
- │    │
- │    ├─→ Eigenvalues {0, 4, 4, 4}
- │    │    │
- │    │    ├─→ d = 3 (spatial dimension = multiplicity of λ=4)
- │    │    └─→ 3 fermion generations (same multiplicity!)
- │    │
- │    └─→ Ricci scalar R = Tr(L) = 12
- │
- ├─→ Bool = {φ, ¬φ} with |Bool| = 2
- │    │
- │    ├─→ Spin-1/2 (2 states)
- │    ├─→ g = 2 (gyromagnetic ratio)
- │    └─→ Spinor dimension = |Bool|² = 4
- │
- ├─→ Clifford algebra Cl(1,3)
- │    │
- │    ├─→ dim = 2⁴ = 16
- │    ├─→ 4 γ-matrices = |V| vertices
- │    └─→ 6 bivectors = |E| edges
- │
- ├─→ Drift irreversibility
- │    │
- │    └─→ t = 1 (time dimension)
- │         │
- │         └─→ Signature (−,+,+,+)
- │
- └─→ Einstein equations G_μν + Λg_μν = κT_μν
-      │
-      ├─→ Λ = 3 (from K₄)
-      └─→ κ = 8 (from Bool × K₄)
+D0 (First Distinction)
+ |
+ +-- D1 (Polarity: phi vs not-phi)
+ |
+ +-- D2 (Relation: D0 is not D1)
+ |    |
+ |    +-- K3 (triangle)
+ |
+ +-- D3 (Forced by irreducible pair (D0, D2))
+ |    |
+ |    +-- K4 (tetrahedron) -- STABLE
+ |
+ +-- Laplacian L of K4
+ |    |
+ |    +-- Eigenvalues {0, 4, 4, 4}
+ |    |    |
+ |    |    +-- d = 3 (multiplicity of lambda = 4)
+ |    |
+ |    +-- Ricci scalar R = Tr(L) = 12
+ |
+ +-- Drift irreversibility
+      |
+      +-- t = 1 (time dimension)
+           |
+           +-- Signature (-, +, +, +)
 ```
 
-Every arrow is a **theorem with a `refl` proof** (computed, not asserted).
+Every arrow is a theorem with a `refl` proof.
 
 ---
 
-## Key Constructions
+## Core Constructions
 
-### The K₄ Graph
+### Natural Numbers
 
 ```agda
-data K4Vertex : Set where
-  v₀ v₁ v₂ v₃ : K4Vertex
+data N : Set where
+  zero : N
+  suc  : N -> N
 
-data K4Edge : K4Vertex → K4Vertex → Set where
-  -- All 6 edges (complete graph)
-  e₀₁ : K4Edge v₀ v₁
-  e₀₂ : K4Edge v₀ v₂
-  e₀₃ : K4Edge v₀ v₃
-  e₁₂ : K4Edge v₁ v₂
-  e₁₃ : K4Edge v₁ v₃
-  e₂₃ : K4Edge v₂ v₃
+_+_ : N -> N -> N
+zero  + n = n
+suc m + n = suc (m + n)
 ```
 
-### The Laplacian
+All ring laws proven: commutativity, associativity, distributivity.
+
+### Integers as Setoid Quotient
 
 ```agda
--- L = D - A where D = degree matrix, A = adjacency
--- For K₄: L = 4I - J where J is all-ones
--- Eigenvalues: 0 (once), 4 (three times)
-
-laplacianK4 : K4Vertex → K4Vertex → ℤ
-laplacianK4 v w with v ≟ w
-... | yes _ = mkℤ 3 0   -- Diagonal: degree = 3
-... | no  _ = mkℤ 0 1   -- Off-diagonal: -1 (using ℤ representation)
-```
-
-### The Eigenvector Proof
-
-```agda
--- Eigenvector e₁ = (1, -1, 0, 0) with eigenvalue 4
-theorem-eigenvector-1 : L · e₁ ≡ 4 · e₁
-theorem-eigenvector-1 = refl  -- COMPUTED!
-```
-
----
-
-## The Integer Construction
-
-We build ℤ as a **setoid quotient**:
-
-```agda
-record ℤ : Set where
-  constructor mkℤ
+record Z : Set where
+  constructor mkZ
   field
-    pos : ℕ
-    neg : ℕ
+    pos : N
+    neg : N
 
--- Equivalence: (a,b) ≃ (c,d) iff a+d = c+b
-_≃ℤ_ : ℤ → ℤ → Set
-mkℤ a b ≃ℤ mkℤ c d = (a + d) ≡ (c + b)
+_equiv_ : Z -> Z -> Set
+mkZ a b equiv mkZ c d = (a + d) == (c + b)
 ```
 
-This is process-based: integers are **signed winding numbers** on the drift graph.
+This is process-based: integers are signed winding numbers.
 
----
-
-## The Memory Function
+### Rationals as Field
 
 ```agda
--- Memory = pairs of distinctions = triangular numbers
-triangular : ℕ → ℕ
-triangular zero = zero
+record Q : Set where
+  constructor _/_
+  field
+    num : Z
+    den : N-positive
+```
+
+All 17 field axioms proven:
+
+| Axiom | Status |
+|-------|--------|
+| equiv-refl | Proven |
+| equiv-sym | Proven |
+| equiv-trans | Proven |
+| +Q-comm | Proven |
+| +Q-assoc | Proven |
+| +Q-identity-left | Proven |
+| +Q-identity-right | Proven |
+| +Q-inverse-left | Proven |
+| +Q-inverse-right | Proven |
+| *Q-comm | Proven |
+| *Q-assoc | Proven |
+| *Q-identity-left | Proven |
+| *Q-identity-right | Proven |
+| *Q-distrib-left | Proven |
+| *Q-distrib-right | Proven |
+| +Q-cong | Proven |
+| *Q-cong | Proven |
+
+### The Memory Function
+
+```agda
+triangular : N -> N
+triangular zero    = zero
 triangular (suc n) = n + triangular n
 
-memory : ℕ → ℕ
+memory : N -> N
 memory = triangular
 
--- K₄ has 6 edges = C(4,2) = 4×3/2
-theorem-K4-edges : memory 4 ≡ 6
+theorem-K4-edges : memory 4 == 6
 theorem-K4-edges = refl
 ```
 
----
+### The Captures Relation
 
-## The Captures Relation
-
-The key to K₄ stability: **all pairs are captured**.
+The key to K4 stability: all pairs are captured.
 
 ```agda
--- A pair is captured if:
--- 1. Reflexive: (Dᵢ, Dᵢ) is captured by Dᵢ itself
--- 2. Defining: (D₀, D₁) is captured by D₂ (its definition)
---              (D₀, D₂) is captured by D₃
---              (D₁, D₂) is captured by D₃
+captures? : GenesisID -> GenesisPair -> Bool
+captures? id pair = is-reflexive pair or is-defining id pair
 
-captures? : GenesisPair → Bool
-captures? p = is-reflexive-pair p ∨ is-defining-pair p
+theorem-K4-stable : All pairs captured
+```
 
--- All K₄ pairs are captured
-theorem-K4-stable : (p : GenesisPair) → captures? p ≡ true ∨ ...
+A pair is captured if:
+1. Reflexive: (Di, Di) captured by Di itself
+2. Defining: (D0, D1) captured by D2, (D0, D2) captured by D3
+
+---
+
+## Key Theorems
+
+### K4 Uniqueness
+
+**Theorem:** K4 is the unique stable graph under the captures relation.
+
+**Proof sketch:**
+1. K3 is unstable: pair (D0, D2) is irreducible
+2. K4 is stable: all 6 pairs captured
+3. K5 cannot form: no forcing mechanism beyond K4
+
+```agda
+K3-unstable : IrreduciblePair pair-D0D2
+K3-unstable = theorem-D0D2-is-irreducible
+
+K4-stable : All-captured
+K4-stable = theorem-all-K4-pairs-captured
+```
+
+### Dimension Theorem
+
+**Theorem:** d = 3 follows from the multiplicity of eigenvalue lambda = 4.
+
+The K4 Laplacian has eigenvalues {0, 4, 4, 4}. The eigenvalue 4 has multiplicity 3, giving 3 linearly independent eigenvectors spanning a 3-dimensional space.
+
+```agda
+theorem-dimension-3 : eigenvalue-multiplicity 4 == 3
+theorem-dimension-3 = refl
+```
+
+### Signature Theorem
+
+**Theorem:** The metric signature is (-, +, +, +).
+
+Edges are symmetric (bidirectional): contribute +1.
+Drift is asymmetric (irreversible): contributes -1.
+
+```agda
+theorem-signature : signature == (neg, pos, pos, pos)
+theorem-signature = refl
 ```
 
 ---
 
-## The Clifford Algebra from K₄
+## The Alpha Formula
 
-The Dirac equation requires the Clifford algebra Cl(1,3). Its structure emerges from K₄ combinatorics:
-
-```agda
--- Clifford dimension = 2^|V| = 2⁴ = 16
-clifford-dimension : ℕ
-clifford-dimension = 16
-
--- Decomposition by grade (Pascal's triangle row 4):
---   C(4,0) = 1   (identity)
---   C(4,1) = 4   (γ-matrices = vertices)
---   C(4,2) = 6   (bivectors = EDGES!)
---   C(4,3) = 4   (trivectors)
---   C(4,4) = 1   (pseudoscalar γ⁵)
-
-theorem-clifford-decomp : 1 + 4 + 6 + 4 + 1 ≡ 16
-theorem-clifford-decomp = refl
-
--- The "6" in the middle IS |E|!
-theorem-bivectors-are-edges : 6 ≡ edgeCountK4
-theorem-bivectors-are-edges = refl
-```
-
-### Spin and the Gyromagnetic Ratio
-
-```agda
--- |Bool| = 2 gives Spin-1/2 structure
-states-per-distinction : ℕ
-states-per-distinction = 2  -- {φ, ¬φ}
-
--- Gyromagnetic ratio g = |Bool| = 2
-gyromagnetic-g : ℕ
-gyromagnetic-g = states-per-distinction
-
-theorem-g-equals-2 : gyromagnetic-g ≡ 2
-theorem-g-equals-2 = refl  -- COMPUTED!
-
--- Spinor dimension = |Bool|² = 4
-spinor-dimension : ℕ
-spinor-dimension = states-per-distinction * states-per-distinction
-
-theorem-spinor-4 : spinor-dimension ≡ 4
-theorem-spinor-4 = refl
-```
-
-### The Dirac ↔ K₄ Numerical Coincidences
-
-| Dirac Structure | K₄ Origin | Status |
-|-----------------|-----------|--------|
-| 4-component spinor | \|Bool\|² = 4 | Numerical match |
-| 4 γ-matrices | \|V\| = 4 | Numerical match |
-| 6 bivectors | \|E\| = 6 | Numerical match |
-| Clifford dim = 16 | 2⁴ | Math fact |
-| g = 2 | \|Bool\| = 2 | Numerical match |
-| Signature (−,+,+,+) | Drift asymmetry | **DERIVED** |
-| 3 space dimensions | λ-multiplicity | **DERIVED** |
-| 3 generations | λ-multiplicity | Hypothesis |
-
-**Status legend:**
-- **DERIVED** = Proven theorem with `refl`
-- **Math fact** = True by combinatorics
-- **Numerical match** = Numbers agree, structural link unproven
-- **Hypothesis** = Physics interpretation
-
----
-
-## The α Formula
-
-Two independent derivations produce the same number:
+Two independent derivations produce the same number.
 
 ### Spectral Derivation
 
-$$\alpha^{-1} = \lambda^3 \chi + \deg^2 + \frac{V}{\deg(E^2+1)}$$
-
-```agda
-alpha-inverse-integer : ℕ
-alpha-inverse-integer = (λ-nat ^ 3) * χ + (deg * deg)
--- = 64 × 2 + 9 = 137
-
-theorem-alpha-integer : alpha-inverse-integer ≡ 137
-theorem-alpha-integer = refl  -- COMPUTED!
+```
+alpha-inverse = lambda^3 * chi + deg^2 + V / (deg * (E^2 + 1))
 ```
 
-### Operad Derivation
+With K4 values:
+- lambda = 4 (spectral gap)
+- chi = 2 (Euler characteristic)
+- deg = 3 (vertex degree)
+- V = 4, E = 6
 
-$$\alpha^{-1} = \Pi(\text{categorical arities}) \times \chi + \Sigma(\text{algebraic arities})$$
+Calculation:
+- 4^3 * 2 = 128
+- 3^2 = 9
+- 4 / (3 * 37) = 4/111
+
+Result: 128 + 9 + 0.036 = 137.036
 
 ```agda
--- Categorical: 2 × 4 × 2 × 4 = 64 (PRODUCT - divergent)
--- Algebraic: 3 + 3 + 2 + 1 = 9 (SUM - convergent)
-
-alpha-from-operad : ℕ
-alpha-from-operad = (2 * 4 * 2 * 4) * 2 + (3 + 3 + 2 + 1)
--- = 64 × 2 + 9 = 137
-
-theorem-operad-equals-spectral : alpha-from-operad ≡ alpha-integer
-theorem-operad-equals-spectral = refl
+theorem-alpha-integer : alpha-integer == 137
+theorem-alpha-integer = refl
 ```
 
-**Epistemological note:** The formulas computing 137 are **theorems** (Agda-verified). That this number IS the physical fine structure constant α⁻¹ is **hypothesis**, supported by the 0.00003% agreement.
+### Cross-Validation
+
+The same result from operad structure:
+- Product of categorical arities: 2 * 4 * 2 * 4 = 64
+- Sum of algebraic arities: 3 + 3 + 2 + 1 = 9
+- Result: 64 * 2 + 9 = 137
 
 ---
 
@@ -317,92 +264,45 @@ theorem-operad-equals-spectral = refl
 
 | Metric | Value |
 |--------|-------|
-| Total lines | ~10,000 |
-| Sections (§) | 25+ |
-| Theorems with `refl` | 100+ |
-| Postulates | **0** |
-| Holes | **0** |
-| Axiom K uses | **0** |
+| Total lines | 14,923 |
+| Named theorems | 911 |
+| Proofs by refl | 626 |
+| Postulates | 0 |
+| Holes | 0 |
 
-## What IS Proven vs What is Hypothesis
+---
 
-### PROVEN (Agda --safe --without-K):
-- K₄ emerges as the unique stable graph under the captures relation
-- The formulas compute specific numbers: d=3, 137.036, N=5×4¹⁰⁰, etc.
+## What IS Proven vs Hypothesis
+
+### PROVEN (Agda --safe --without-K)
+
+- K4 emerges as the unique stable graph
+- The formulas compute specific numbers
 - All mathematical derivations are machine-verified
+- Complete number hierarchy N to Z to Q
 
-### HYPOTHESIS (not checkable by Agda):
-- That K₄ structure IS physical spacetime
-- That 137.036 IS α⁻¹ (rather than numerical coincidence)
-- That N × t_Planck IS the cosmic age
-- Any claim about "physics" beyond the mathematical computation
+### HYPOTHESIS (not checkable by Agda)
 
-**The mathematics is proven. The physics correspondence is testable hypothesis supported by remarkable numerical agreement.**
+- That K4 structure IS physical spacetime
+- That 137.036 IS alpha inverse
+- That the numerical matches have physical meaning
 
----
-
-## What's Already Proven (Mathematics)
-
-| Result | Status | Where | Note |
-|--------|--------|-------|------|
-| K₄ uniqueness | ✅ PROVEN | § 7 | Captures relation forces exactly 4 |
-| d = 3 dimensions | ✅ PROVEN | § 11 | λ-multiplicity theorem |
-| Signature (−,+,+,+) | ✅ PROVEN | § 13 | Drift asymmetry theorem |
-| \|Bool\| = 2 | ✅ PROVEN | § 1 | Definition of distinction |
-| \|Bool\|² = 4 | ✅ PROVEN | § 18c | 2 × 2 = 4 |
-| C(4,k) = {1,4,6,4,1} | ✅ MATH FACT | § 18c | Pascal's triangle |
-| Formula = 137.036 | ✅ PROVEN | § 22f | Spectral formula computed |
-| N = 5 × 4¹⁰⁰ | ✅ PROVEN | § 22b'' | Epoch count formula |
-| **Physical identification:** | | | |
-| 3 generations = λ-mult | ? HYPOTHESIS | § 11 | Numbers match, link unproven |
-| g = 2 = \|Bool\| | ? HYPOTHESIS | § 18c | We define g := \|Bool\|, physics TBD |
-| Spinor = 4 = \|Bool\|² | ? HYPOTHESIS | § 18c | Numbers match, link unproven |
-| Clifford(K₄) = Cl(1,3) | ? HYPOTHESIS | § 18c | Structure matches, identity unproven |
-| 137.036 = α⁻¹ | ? HYPOTHESIS | § 22f | 0.00003% match, coincidence? |
-
-**Key insight:** The NUMBERS are proven. The IDENTIFICATION with physics is hypothesis.
-
-The structural match between K₄ and Dirac is complete:
-- Both have 4 "generators" (vertices / γ-matrices)
-- Both have 6 "products" (edges / bivectors)
-- Both have 16-dimensional algebra (2⁴)
-- Both have signature (−,+,+,+)
-
-Whether this is **the same structure** or just **isomorphic structures** is the open question.
-
-**Further research may include**:
-- Deriving Hilbert space / quantum mechanics from distinction
-- Higher-order corrections to α beyond 4/111
+The mathematics is proven. The physics correspondence is hypothesis.
 
 ---
 
-## Verify It Yourself
+## Source Code
+
+The complete proof: [FirstDistinction.agda](https://github.com/de-johannes/FirstDistinction/blob/main/FirstDistinction.agda)
 
 ```bash
 git clone https://github.com/de-johannes/FirstDistinction.git
 cd FirstDistinction
-agda --safe --without-K --no-libraries FirstDistinction.agda
+agda --safe --without-K FirstDistinction.agda
 ```
 
-Compilation = validity. No interpretation needed.
+Compilation equals validity.
 
 ---
 
-## The Agda Source
-
-The complete proof: [FirstDistinction.agda](https://github.com/de-johannes/FirstDistinction/blob/main/FirstDistinction.agda)
-
-Key sections:
-- § 1-4: Type theory foundations
-- § 5-7: Distinction and K₄ emergence
-- § 10-12: Laplacian and eigenvalues
-- § 14-18: Einstein equations
-- § 18c: Spin and Dirac structure
-- § 22: Predictions (α, Λ, τ)
-
----
-
-<div class="footer-links">
-  <a href="/">← Home</a>
-  <a href="for-physicists">← For Physicists</a>
-</div>
+[Back](./) | [For Physicists](for-physicists)

@@ -1,159 +1,210 @@
 ---
 layout: default
-title: Verify
+title: Verification
 ---
 
-# Verify
+# Verification
 
-FD is not a claim. It's code that either compiles or doesn't.
-
----
-
-## Status
-
-[![CI](https://github.com/de-johannes/FirstDistinction/actions/workflows/ci.yml/badge.svg)](https://github.com/de-johannes/FirstDistinction/actions/workflows/ci.yml)
-
-| Check | Status |
-|-------|--------|
-| `FirstDistinction.agda` compiles | ✓ |
-| `--safe` (no unsafe features) | ✓ |
-| `--without-K` (no Axiom K dependency) | ✓ |
-| `--no-libraries` (no external imports) | ✓ |
-| No postulates | ✓ |
-| No holes `{!!}` | ✓ |
-| Numerical validation | ✓ |
+How to check this yourself.
 
 ---
 
-## Check it yourself
+## Requirements
 
-### 1. Clone the repository
+- Agda 2.7.0.1 or later
+- Git
+
+No external libraries needed. The proof is self-contained.
+
+---
+
+## Installation
+
+### macOS
 
 ```bash
-git clone https://github.com/de-johannes/FirstDistinction.git
-cd FirstDistinction
-```
-
-### 2. Install Agda
-
-```bash
-# macOS
 brew install agda
-
-# Ubuntu/Debian
-sudo apt install agda
-
-# Or via Stack
-stack install Agda
 ```
 
-Version 2.6.3+ recommended.
-
-### 3. Compile
+### Linux (Ubuntu/Debian)
 
 ```bash
-agda --safe --without-K --no-libraries FirstDistinction.agda
+apt-get install agda
 ```
 
-If no error message appears: **The proof is valid.**
+### From Source
+
+```bash
+cabal update
+cabal install Agda
+```
 
 ---
 
-## What do the flags mean?
+## Clone and Compile---
 
-| Flag | Meaning |
+## What the Flags Mean
+
+| Flag | Purpose |
 |------|---------|
-| `--safe` | No `postulate`, no `TERMINATING` pragmas, no unsafe features |
-| `--without-K` | No Axiom K (important for homotopy type theory compatibility) |
-| `--no-libraries` | No external libraries — everything self-defined |
+| --safe | Disables postulate, trustMe, unsafe pragmas |
+| --without-K | No uniqueness of identity proofs |
 
-This combination is the strictest setting in Agda. If the code compiles, there are no backdoors.
+These flags enforce constructive mathematics. Nothing is assumed, everything is constructed.
 
 ---
 
-## Numerical validation
+## Interpreting the Output
 
-The Python scripts validate the numerical predictions:
+### Success
+
+No output means success.
 
 ```bash
-python src/python/validate_K4.py      # K₄ spectral geometry
-python src/python/validate_alpha.py   # Fine structure constant
-python src/python/validate_lambda.py  # Cosmological constant
-python src/python/validate_cosmic_age.py  # Cosmic age
+agda --safe --without-K FirstDistinction.agda
+# (no output)
 ```
 
-These are **not** part of the formal proof, but demonstrate that the derived values match observations.
+The file compiles. All proofs are valid.
+
+### Failure
+
+Any error means something is wrong:
+
+```
+Error in ... at line N
+```
+
+If you see this, either:
+1. Your Agda version is incompatible
+2. The file was modified incorrectly
+3. There is a genuine bug (report it)
 
 ---
 
-## Key Theorems
+## What Compilation Proves
 
-All machine-verified in Agda under `--safe --without-K --no-libraries`:
+Agda is a dependently-typed proof assistant. When a file compiles under --safe --without-K:
 
-### Geometry
+1. Every type is inhabited only by valid proofs
+2. Every function terminates
+3. No axioms were assumed (--safe)
+4. No K-axiom was used (--without-K)
 
-| Theorem | Statement | Section |
-|---------|-----------|---------|
-| `theorem-dimension-3` | d = 3 from λ=4 multiplicity | § 11 |
-| `theorem-signature` | (−,+,+,+) from drift asymmetry | § 16 |
-| `theorem-euler-char` | χ = V − E + F = 2 | § 15 |
-
-### Fine Structure Constant
-
-| Theorem | Statement | Section |
-|---------|-----------|---------|
-| `theorem-alpha-integer` | α⁻¹ = 137 (integer part) | § 22f |
-| `theorem-spectral-term` | λ³χ = 128 | § 22f |
-| `theorem-correction-denom` | 4/111 correction | § 22f |
-
-### Cosmic Age N = 5 × 4¹⁰⁰
-
-| Theorem | Statement | Section |
-|---------|-----------|---------|
-| `theorem-prefactor-consistent` | 5 = (d+1)+1 = V+1 = E−1 = κ−d | § 22b |
-| `K4-is-pythagorean` | E²+κ² = 100 = 10² | § 22b |
-| `K3-not-pythagorean` | K₃: E²+κ² = 45 (not perfect square) | § 22b |
-| `K5-not-pythagorean` | K₅: E²+κ² = 200 (not perfect square) | § 22b |
-| `theorem-total-capacity` | Information capacity = E² + κ² = 100 | § 22b |
-
-The cosmic age formula is **fully derived**:
-- **5** = spacetime + observer (5 equivalent proofs)
-- **4** = V = λ (K₄ vertices = spectral gap)
-- **100** = E² + κ² (K₄ uniquely Pythagorean among all K_n)
+A compiling Agda file IS a proof certificate.
 
 ---
 
-## Proof structure
+## File Statistics
 
-```
-FirstDistinction.agda (5000+ lines incl. comments)
-├── § 1-10   Foundations (distinctions, K₄ emergence)
-├── § 11-15  Spectral geometry (Laplacian, eigenvalues)
-├── § 16-18  Spacetime structure (3+1, signature)
-├── § 19-21  Einstein equations (Ricci, coupling)
-├── § 22     Predictions (α, N, Λ, τ)
-│   ├── § 22f   α⁻¹ = 137.036 (spectral derivation)
-│   └── § 22b   N = 5 × 4^100 (information capacity)
-└── § 23     Ultimate Theorem
-```
-
-The key type:
-
-```agda
-ultimate-theorem : Unavoidable Distinction → FD-FullGR
-ultimate-theorem d = full-GR-from-distinction d
-```
-
-From the unavoidability of distinction to complete 4D General Relativity.
+| Metric | Value |
+|--------|-------|
+| Total lines | 14,923 |
+| Code lines | 8,559 |
+| Comment lines | 6,364 |
+| Named theorems | 911 |
+| Refl proofs | 626 |
+| Postulates | 0 |
+| Holes | 0 |
+| External imports | 0 |
 
 ---
 
-## Found a bug?
+## Code Structure
 
-Open a [GitHub Issue](https://github.com/de-johannes/FirstDistinction/issues).
+The file is self-contained and derives everything inline:
 
-If `FirstDistinction.agda` no longer compiles with the stated flags, that's a real bug. Everything else is discussion.
+1. Natural numbers and their arithmetic
+2. Integers as signed pairs
+3. Positive naturals
+4. Rationals as quotients
+5. Field axioms for Q
+6. Genesis process (D0 through D3)
+7. K4 graph structure
+8. Eigenvalue calculations
+9. Physical predictions
+
+All 17 field axioms for rationals are proven:
+
+| Operation | Axioms |
+|-----------|--------|
+| Equality | refl, sym, trans |
+| Addition | comm, assoc, id-left, id-right, inv-left, inv-right, cong |
+| Multiplication | comm, assoc, id-left, id-right, distrib-left, distrib-right, cong |
 
 ---
 
-[← Back](./)
+## Quick Checks
+
+Verify Agda version:
+
+```bash
+agda --version
+```
+
+Expected: Agda version 2.7.0.1 or higher
+
+Check file exists:
+
+```bash
+ls -la FirstDistinction.agda
+```
+
+Expected: File with approximately 15000 lines
+
+Count theorems:
+
+```bash
+grep -c "theorem-\|lemma-" FirstDistinction.agda
+```
+
+Expected: Approximately 911
+
+---
+
+## Common Issues
+
+### Wrong Agda Version
+
+```
+Unsupported Agda version
+```
+
+Solution: Upgrade to 2.7.0.1 or later.
+
+### Missing Standard Library
+
+This proof uses NO standard library. If you see import errors, you have a modified file.
+
+### Timeout
+
+Large proofs may take time. Wait for completion.
+
+---
+
+## For CI/CD
+
+```yaml
+# .github/workflows/verify.yml
+name: Verify
+on: [push]
+jobs:
+  agda:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: wenkokke/setup-agda@v2
+      - run: agda --safe --without-K FirstDistinction.agda
+```
+
+---
+
+## Source
+
+Repository: [github.com/de-johannes/FirstDistinction](https://github.com/de-johannes/FirstDistinction)
+
+Main file: [FirstDistinction.agda](https://github.com/de-johannes/FirstDistinction/blob/main/FirstDistinction.agda)
+
+---
+
+[Back](./) | [For Mathematicians](for-mathematicians)
