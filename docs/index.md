@@ -3,13 +3,6 @@ layout: default
 title: D₀ (Home)
 ---
 
-<div class="badges" style="text-align: center; margin-bottom: 1rem;">
-  <a href="https://github.com/de-johannes/FirstDistinction/actions/workflows/ci.yml"><img src="https://github.com/de-johannes/FirstDistinction/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <a href="https://doi.org/10.5281/zenodo.17826218"><img src="https://zenodo.org/badge/1108945544.svg" alt="DOI"></a>
-  <a href="https://agda.readthedocs.io/"><img src="https://img.shields.io/badge/Agda-2.7.0.1-blue" alt="Agda"></a>
-  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
-</div>
-
 <div class="hero">
   <div class="k4-symbol">
     <svg viewBox="0 0 100 100" class="tetrahedron">

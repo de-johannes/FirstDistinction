@@ -23,7 +23,15 @@
 </head>
 <body>
   <header class="site-header">
-    <a href="{{ '/' | relative_url }}" class="site-title">First Distinction</a>
+    <div class="header-top">
+      <a href="{{ '/' | relative_url }}" class="site-title">First Distinction</a>
+      <div class="header-badges">
+        <a href="https://github.com/de-johannes/FirstDistinction/actions/workflows/ci.yml"><img src="https://github.com/de-johannes/FirstDistinction/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+        <a href="https://doi.org/10.5281/zenodo.17826218"><img src="https://zenodo.org/badge/1108945544.svg" alt="DOI"></a>
+        <a href="https://agda.readthedocs.io/"><img src="https://img.shields.io/badge/Agda-2.7.0.1-blue" alt="Agda"></a>
+        <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+      </div>
+    </div>
     <nav class="site-nav">
       <a href="{{ '/' | relative_url }}">Home</a>
       <a href="{{ '/verify' | relative_url }}">Verify</a>
