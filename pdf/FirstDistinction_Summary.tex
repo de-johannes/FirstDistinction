@@ -4,7 +4,6 @@
 \usepackage{fontspec}
 \usepackage{amsmath,amsthm,amssymb}
 \usepackage{mathtools}
-\usepackage{unicode-math}
 \usepackage{geometry}
 \usepackage{xcolor}
 \usepackage{hyperref}
@@ -27,8 +26,11 @@
 
 % Modern fonts (LuaLaTeX)
 \setmainfont{TeX Gyre Pagella}
-\setmathfont{TeX Gyre Pagella Math}
 \setmonofont{DejaVu Sans Mono}[Scale=0.9]
+
+% Load unicode-math AFTER setting text fonts and WITH proper options
+\usepackage{unicode-math}
+\setmathfont{TeX Gyre Pagella Math}
 
 % Colors
 \definecolor{primarycolor}{RGB}{0,51,102}
