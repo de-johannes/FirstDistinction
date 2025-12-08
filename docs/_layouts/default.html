@@ -18,17 +18,29 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
   
-  <!-- Google Analytics (cookieless, IP anonymized) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PR9LTLR61B"></script>
+  <!-- Google Analytics (consent-based) -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-PR9LTLR61B', {
-      'anonymize_ip': true,
-      'storage': 'none',
-      'client_storage': 'none'
-    });
+    // Check consent from localStorage
+    function hasAnalyticsConsent() {
+      return localStorage.getItem('analytics-consent') === 'true';
+    }
+    
+    // Load Google Analytics only if consent given
+    if (hasAnalyticsConsent()) {
+      var script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=G-PR9LTLR61B';
+      document.head.appendChild(script);
+      
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-PR9LTLR61B', {
+        'anonymize_ip': true,
+        'storage': 'none',
+        'client_storage': 'none'
+      });
+    }
   </script>
   
   <!-- Styles -->
@@ -56,6 +68,43 @@
     {{ content }}
   </main>
 
+  <!-- Consent Banner -->
+  <div id="consent-banner" class="consent-banner" style="display:none;">
+    <div class="consent-content">
+      <p>
+        <strong>🍪 Analytics</strong><br>
+        We use cookieless Google Analytics with IP anonymization to understand visitor traffic. 
+        No personal data is stored. <a href="{{ '/privacy' | relative_url }}">Learn more</a>
+      </p>
+      <div class="consent-buttons">
+        <button id="consent-accept" class="btn-accept">Accept</button>
+        <button id="consent-decline" class="btn-decline">Decline</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Show banner if no choice made yet
+    if (!localStorage.getItem('analytics-consent-set')) {
+      document.getElementById('consent-banner').style.display = 'block';
+    }
+
+    // Handle accept
+    document.getElementById('consent-accept').addEventListener('click', function() {
+      localStorage.setItem('analytics-consent', 'true');
+      localStorage.setItem('analytics-consent-set', 'true');
+      document.getElementById('consent-banner').style.display = 'none';
+      location.reload(); // Reload to activate analytics
+    });
+
+    // Handle decline
+    document.getElementById('consent-decline').addEventListener('click', function() {
+      localStorage.setItem('analytics-consent', 'false');
+      localStorage.setItem('analytics-consent-set', 'true');
+      document.getElementById('consent-banner').style.display = 'none';
+    });
+  </script>
+
   <footer class="site-footer">
     <p>
       <a href="{{ '/privacy' | relative_url }}">Privacy Policy / Datenschutz</a> | 
@@ -63,7 +112,7 @@
       <a href="https://github.com/de-johannes/FirstDistinction/issues">Report Issue</a>
     </p>
     <p style="font-size: 0.9em; opacity: 0.7;">
-      This site uses cookieless Google Analytics with IP anonymization.
+      This site uses cookieless Google Analytics with IP anonymization (only with your consent).
     </p>
   </footer>
 </body>
