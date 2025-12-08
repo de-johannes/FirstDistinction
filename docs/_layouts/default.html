@@ -18,6 +18,19 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
   
+  <!-- Google Analytics (cookieless, IP anonymized) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX', {
+      'anonymize_ip': true,
+      'storage': 'none',
+      'client_storage': 'none'
+    });
+  </script>
+  
   <!-- Styles -->
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/custom.css' | relative_url }}">
@@ -42,5 +55,16 @@
   <main>
     {{ content }}
   </main>
+
+  <footer class="site-footer">
+    <p>
+      <a href="{{ '/privacy' | relative_url }}">Privacy Policy / Datenschutz</a> | 
+      <a href="https://github.com/de-johannes/FirstDistinction">GitHub</a> | 
+      <a href="https://github.com/de-johannes/FirstDistinction/issues">Report Issue</a>
+    </p>
+    <p style="font-size: 0.9em; opacity: 0.7;">
+      This site uses cookieless Google Analytics with IP anonymization.
+    </p>
+  </footer>
 </body>
 </html>
