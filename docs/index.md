@@ -96,7 +96,7 @@ The following are **mathematical theorems** (Agda `--safe --without-K`):
 | Anomaly | 1/(α⁻¹ × E) | **1/822** | ≈ (g-2)/2 (~5%) |
 | Epoch count | 5 × 4¹⁰⁰ | **N** | ≈ τ/t_P (0.4%) |
 
-**These formulas are not fits.** They are the *only* spectral and structural invariants of K₄. The graph has these properties by mathematical necessity — we compute what is already there.
+**These formulas are not fits.** They are spectral and structural invariants of K₄ — properties the graph necessarily possesses. We compute what is mathematically determined by K₄'s structure.
 
 **5 exact matches. 3 excellent matches. The ~5% error is systematic (E=6 vs 2π=6.28).**
 
@@ -123,7 +123,7 @@ $$(i\gamma^\mu \partial_\mu - m)\psi = 0$$
 | Gyromagnetic ratio g | \|Bool\| | **2** |
 | Signature | Drift asymmetry | **(−,+,+,+)** |
 
-**The mathematical connection:** The Clifford algebra Cl(3,1) — the algebraic structure underlying the Dirac equation — has exactly the structure of K₄. This is not interpretation. It is a mathematical fact: 4 generators, 6 bivectors, signature (−,+,+,+).
+**The mathematical connection:** The Clifford algebra Cl(3,1) — the algebraic structure underlying the Dirac equation — exhibits the same combinatorial structure as K₄. This is not interpretation: 4 generators correspond to 4 vertices, 6 bivectors to 6 edges, signature (−,+,+,+) matches K₄'s asymmetry. The structural isomorphism is precise.
 
 Dirac spent 4 years deriving this relativistically. We show: **he found K₄ in the continuum limit.**
 
