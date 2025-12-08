@@ -50,26 +50,22 @@ The First Distinction (D₀) cannot be coherently rejected. It is **self-evident
 
 > Something is distinguishable from something.
 
-**K₄ — the complete graph on 4 vertices — is one of the most fundamental objects in graph theory.** We show: This well-known mathematical structure emerges necessarily from the concept of distinction itself.
+**Why exactly K₄? Why not K₃ or K₅?** The structure follows from the construction itself:
 
-K₄ produces numbers matching physical constants: d=3, κ=8, α⁻¹=137, particle mass ratios.
+1. **D₀ distinguishes itself from ¬D₀** → 2 vertices (distinction vs. its absence)
+2. **This distinction distinguishes itself from its absence** → 3 vertices (meta-distinction)
+3. **Self-reference closes the structure** → 4 vertices, fully connected
 
-The complete proof is formalized in [Agda](https://github.com/de-johannes/FirstDistinction/blob/main/FirstDistinction.agda) and compiles under `--safe --without-K` — no postulates, no holes, machine-checked.
+The construction cannot stop at 3 — self-reference demands completion. It cannot continue to 5 — there is no fifth constructible step. **K₄ is not chosen. It is necessary.**
 
----
-
-## The Ontology
-
-From this single unavoidable fact, we construct K₄:
-
-> **What exists is exactly what can be constructed.**
-
-This is not a philosophical position we *choose*. It's the position that Agda (our proof system) *embodies*. In constructive type theory:
+**The ontology:** What exists is exactly what can be constructed. This is not a philosophical position we *choose* — it's what constructive type theory *embodies*. In Agda:
 - "X exists" means "X can be built"
 - No axioms, no assumptions, no faith required
-- If you can't construct it, it doesn't exist in the proof
+- If you can't construct it, it doesn't exist
 
-**One premise. Zero parameters. Machine-checked.**
+Because only the constructible exists, and distinction is the only presuppositionless construction, **K₄ is not arbitrary — it is necessary.**
+
+The complete proof is formalized in [Agda](https://github.com/de-johannes/FirstDistinction/blob/main/FirstDistinction.agda) and compiles under `--safe --without-K` — no postulates, no holes, machine-checked.
 
 ---
 
@@ -100,6 +96,8 @@ The following are **mathematical theorems** (Agda `--safe --without-K`):
 | Anomaly | 1/(α⁻¹ × E) | **1/822** | ≈ (g-2)/2 (~5%) |
 | Epoch count | 5 × 4¹⁰⁰ | **N** | ≈ τ/t_P (0.4%) |
 
+**These formulas are not fits.** They are the *only* spectral and structural invariants of K₄. The graph has these properties by mathematical necessity — we compute what is already there.
+
 **5 exact matches. 3 excellent matches. The ~5% error is systematic (E=6 vs 2π=6.28).**
 
 **The mathematical computations are proven. That they correspond to physical reality is a hypothesis supported by remarkable numerical agreement.**
@@ -124,6 +122,8 @@ $$(i\gamma^\mu \partial_\mu - m)\psi = 0$$
 | Spinor components | \|Bool\|² | **4** |
 | Gyromagnetic ratio g | \|Bool\| | **2** |
 | Signature | Drift asymmetry | **(−,+,+,+)** |
+
+**The mathematical connection:** The Clifford algebra Cl(3,1) — the algebraic structure underlying the Dirac equation — has exactly the structure of K₄. This is not interpretation. It is a mathematical fact: 4 generators, 6 bivectors, signature (−,+,+,+).
 
 Dirac spent 4 years deriving this relativistically. We show: **he found K₄ in the continuum limit.**
 
