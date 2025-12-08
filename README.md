@@ -92,7 +92,7 @@ Every number in $(i\gamma^\mu \partial_\mu - m)\psi = 0$ comes from K₄:
 | Gyromagnetic ratio | \|Bool\| | 2 |
 | Signature | Drift asymmetry | (−,+,+,+) |
 
-The equation that predicts antimatter has K₄ structure. Dirac found it empirically in 1928. We show why.
+**The connection:** K₄ → Laplacian spectrum {0,4,4,4} → 3D eigenspace → Cl(3,1). The dimensional invariants match: 4 generators ↔ 4 vertices, 6 bivectors ↔ 6 edges. This is spectral correspondence, not direct isomorphism.
 
 ---
 
@@ -101,7 +101,7 @@ The equation that predicts antimatter has K₄ structure. Dirac found it empiric
 **What IS proven (Agda `--safe --without-K`):**
 - K₄ emerges uniquely from self-referential distinction
 - All K₄ invariants compute: 3, 8, 137.036, 1836, ...
-- Clifford structure matches Dirac equation numerically
+- Dimensional invariants of K₄ match those of Cl(3,1)
 - Every formula is machine-verified, no axioms, no holes
 
 **What is HYPOTHESIS:**

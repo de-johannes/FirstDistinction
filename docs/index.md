@@ -153,9 +153,15 @@ $$(i\gamma^\mu \partial_\mu - m)\psi = 0$$
 | Gyromagnetic ratio g | \|Bool\| | **2** |
 | Signature | Drift asymmetry | **(−,+,+,+)** |
 
-**The mathematical connection:** The Clifford algebra Cl(3,1) — the algebraic structure underlying the Dirac equation — exhibits the same combinatorial structure as K₄. This is not interpretation: 4 generators correspond to 4 vertices, 6 bivectors to 6 edges, signature (−,+,+,+) matches K₄'s asymmetry. The structural isomorphism is precise.
+**The mathematical connection:** The link is not direct but proceeds through the Laplacian spectrum:
 
-Dirac spent 4 years deriving this relativistically. We show: **he found K₄ in the continuum limit.**
+```
+K₄ → L_K4 → Spectrum {0,4,4,4} → dim=3 → Cl(3,1)
+```
+
+The three eigenvectors of L_K4 for λ=4 span a 3-dimensional space. A Clifford algebra on a (3+1)-dimensional space with signature (−,+,+,+) **is** Cl(3,1). The dimensional invariants (4 generators, 6 bivectors, 16 dimensions) match K₄'s structure. This is a **categorical correspondence via spectral data**, not a direct isomorphism of graph and algebra.
+
+Dirac derived this structure empirically over 4 years. We observe: **the same dimensions emerge from K₄'s spectrum.**
 
 And K₄ comes from D₀ = {φ, ¬φ} = "yes or no".
 
