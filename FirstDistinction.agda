@@ -13070,10 +13070,17 @@ theorem-operad-spectral-unity = refl  -- Both = 137 ✓
 --
 -- TERM 3: V/(deg(E² + 1)) = 4/111 ≈ 0.036 (HIGHER ORDER)
 --   - V = 4: Vertex count (global structure)
---   - E² + 1 = 37: Edge-squared plus topology correction
+--   - E² + 1 = 37: ONE-POINT COMPACTIFICATION of coupling space
+--       • E² = 36 discrete edge-pair interactions
+--       • +1 = asymptotic/free state (no interaction)
+--       • This is the same +1 pattern as:
+--           V+1=5 (vertices + centroid)
+--           2^V+1=17 (spinors + vacuum)
+--       • The +1 enables the discrete → continuous transition
 --   - deg × (E² + 1) = 111: Renormalization denominator
 --   - MEANING: Loop correction from edge interactions
 --   - ANALOGY: Vacuum polarization + vertex correction in QED
+--   - STATUS: ✅ DERIVED (see src/agda/Compactification.agda)
 
 -- ═══════════════════════════════════════════════════════════════════════════
 -- § 22f.2d  SPECTRAL GAP FROM § 10 (FORMAL CONNECTION)
@@ -13363,7 +13370,10 @@ theorem-correction-num = refl
 -- The correction term 4/111 uses:
 --   - V = 4 (same as λ!)
 --   - deg = 3 (same as d!)  
---   - E² + 1 = 37 (a prime built from edges)
+--   - E² + 1 = 37 (ONE-POINT COMPACTIFICATION of edge-pair space)
+--       The +1 is NOT arbitrary - it represents the asymptotic/free state
+--       needed for discrete-to-continuous transition.
+--       See src/agda/Compactification.agda for the full derivation.
 --
 -- All roads lead back to K₄ combinatorics.
 
