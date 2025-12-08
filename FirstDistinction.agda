@@ -10453,7 +10453,7 @@ theorem-hierarchy-derived = record
 --     ↓ total
 --   10⁶⁰ = 10²⁶ × 10³⁴ — PROVEN: theorem-hierarchy-is-60
 --
--- The "magic number" 10⁶⁰ traces entirely to:
+-- The large number 10⁶⁰ traces entirely to:
 --   • 4 (K₄ vertices) — from graph theory
 --   • 3 (spatial dimensions) — from K₄ embedding
 -- Both are COMBINATORIALLY DETERMINED by D₀.
@@ -10471,7 +10471,7 @@ theorem-hierarchy-derived = record
  ✓ 2/3 exponent from 3D matter expansion  
  ✓ 10⁶⁰ = 10²⁶ (inflation) × 10³⁴ (matter era)
  
- The 'magic numbers' trace to:
+ The large numbers trace to:
  • 4 (K₄ vertices) → e-fold count
  • 3 (dimensions) → expansion exponent
  • G (from K₄) → structure formation time" #-}
@@ -12554,10 +12554,10 @@ theorem-divergent-is-multiplicative = refl
 -- 8. Confluence: 4 (diamond x,y,z,w)
 -- Check: 2×2×4×4 = 64 ✓
 --
--- THE REMARKABLE FACT: These standard arities happen to satisfy
---   Σ(algebraic) = deg² = 9
---   Π(categorical) = λ³ = 64
--- This is what makes the operad derivation work.
+-- PROVEN FACT (see theorems below): These standard arities NECESSARILY satisfy
+--   Σ(algebraic) = deg² = 9       (theorem-algebraic-arities)
+--   Π(categorical) = λ³ = 64      (theorem-categorical-arities)
+-- The arities are FORCED by universal algebra, the equalities are PROVEN by refl.
 
 -- Algebraic law arities (describe Δ, convergent, SUM)
 -- These values are DEFINITIONS from universal algebra, not choices.
@@ -14384,7 +14384,7 @@ proton-exponent-uniqueness = record
 --   K₅: 2 × 4 = 8  ≠ 10 (edges)
 --   K₆: 2 × 5 = 10 ≠ 15 (edges)
 --
--- ONLY K₄ has this "magical" correlation!
+-- ONLY K₄ has this topological entanglement!
 -- This is like Bell inequality violation: stronger than classical.
 --
 -- PHYSICAL MEANING
