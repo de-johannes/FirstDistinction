@@ -39,3 +39,6 @@ exclude:
 # Enable GitHub Pages
 plugins:
   - jekyll-seo-tag
+
+# Google Analytics
+google_analytics: G-PR9LTLR61B
