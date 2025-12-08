@@ -109,11 +109,26 @@
     <p>
       <a href="{{ '/privacy' | relative_url }}">Privacy Policy / Datenschutz</a> | 
       <a href="https://github.com/de-johannes/FirstDistinction">GitHub</a> | 
-      <a href="https://github.com/de-johannes/FirstDistinction/issues">Report Issue</a>
+      <a href="https://github.com/de-johannes/FirstDistinction/issues">Report Issue</a> | 
+      <a href="#" id="manage-consent">Manage Consent</a>
     </p>
     <p style="font-size: 0.9em; opacity: 0.7;">
       This site uses cookieless Google Analytics with IP anonymization (only with your consent).
     </p>
   </footer>
+
+  <script>
+    // Manage consent link - show banner and clear consent
+    document.getElementById('manage-consent').addEventListener('click', function(e) {
+      e.preventDefault();
+      // Clear existing consent
+      localStorage.removeItem('analytics-consent');
+      localStorage.removeItem('analytics-consent-set');
+      // Show banner again
+      document.getElementById('consent-banner').style.display = 'block';
+      // Scroll to banner
+      document.getElementById('consent-banner').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
 </body>
 </html>
