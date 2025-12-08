@@ -106,6 +106,34 @@ The following are **mathematical theorems** (Agda `--safe --without-K`):
 
 ---
 
+## Visual Evidence
+
+### Why K₄ is unique for α⁻¹
+
+The spectral formula λᵈχ + deg² for complete graphs Kₙ:
+
+![K₄ Uniqueness](/assets/images/fig2_alpha_uniqueness.png)
+
+**Only K₄ produces a value near 137.** K₃ gives 22. K₅ gives 1,266. This is not fine-tuning — it's the unique solution.
+
+### Genesis: How K₄ emerges
+
+![Genesis Chain](/assets/images/fig4_genesis.png)
+
+**Each step is forced.** D₁ distinguishes D₀ from its absence. D₂ witnesses the (D₀, D₁) pair. D₃ closes the structure. At n=4, every pair has witnesses among the remaining two. K₄ is not chosen — it is necessary.
+
+### The +1 in E²+1 = 37
+
+![Compactification Pattern](/assets/images/fig5_compactification.png)
+
+**One-point compactification:** The +1 is the mathematical price for transitioning from discrete K₄ (∈ ℚ) to continuous physics (∈ ℝ). All three compactified values (5, 17, 37) are prime.
+
+### Summary: K₄ Invariants and Observed Matches
+
+![Summary](/assets/images/fig6_summary.png)
+
+---
+
 ## The Dirac Equation IS K₄
 
 The most fundamental equation of particle physics:

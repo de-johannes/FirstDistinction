@@ -53,9 +53,15 @@ Machine-checked under `--safe --without-K`. No postulates, no holes.
 | Laplacian eigenspace dim | **3** | Spatial dimensions | exact |
 | Drift asymmetry | **1** | Time dimension | exact |
 | \|Bool\| × \|K₄\| | **κ = 8** | Einstein coupling 8πG | exact |
-| Spectral formula | **137.036** | Fine structure α⁻¹ | 0.00003% |
+| Spectral formula | **137.036** | Fine structure α⁻¹ | 0.000027% |
 | 5 × 4¹⁰⁰ Planck times | **13.7 Gyr** | Cosmic age | 0.4% |
 | Clifford grades | **1,4,6,4,1** | Dirac γ-matrices | exact |
+
+### Why K₄ is Unique
+
+![K₄ Uniqueness](figures/fig2_alpha_uniqueness.png)
+
+**Only K₄ produces ~137.** The spectral formula for Kₙ grows exponentially. K₃ gives 22. K₅ gives 1,266. This is not fine-tuning.
 
 ### Mass Ratios (Combinatorial Formulas)
 

@@ -20,6 +20,7 @@
 \usepackage{titlesec}
 \usepackage{abstract}
 \usepackage{booktabs}
+\usepackage{graphicx}
 
 % ============================================================================
 % GEOMETRY
@@ -887,6 +888,39 @@ $F_2 = 17$ & Fermat-Primzahl $2^{2^2} + 1$ \\
 $L$ & Graph-Laplace-Matrix \\
 \bottomrule
 \end{tabular}
+
+% ============================================================================
+% ABBILDUNGEN
+% ============================================================================
+
+\newpage
+\section*{Anhang: Visualisierungen}
+
+Die folgenden Abbildungen illustrieren die zentralen mathematischen Resultate. Alle werden direkt aus der $K_4$-Struktur berechnet.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.85\textwidth]{../figures/fig2_alpha_uniqueness.pdf}
+\caption{\textbf{Warum $K_4$ einzigartig ist.} Die Spektralformel $\lambda^d \chi + \text{deg}^2$ für vollständige Graphen $K_n$. Nur $K_4$ liefert einen Wert nahe 137. Das ist kein Feintuning.}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.85\textwidth]{../figures/fig4_genesis.pdf}
+\caption{\textbf{Die erzwungene Entstehung von $K_4$.} Jeder Schritt ist notwendig: $D_1$ unterscheidet $D_0$ von seiner Abwesenheit, $D_2$ bezeugt das $(D_0, D_1)$-Paar, $D_3$ schließt die Struktur.}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{../figures/fig5_compactification.pdf}
+\caption{\textbf{Einpunkt-Kompaktifizierung.} Das +1-Muster: $V+1=5$, $2^V+1=17$, $E^2+1=37$. Alle kompaktifizierten Werte sind prim. Das ist der mathematische Preis für den Übergang vom diskreten $K_4$ zur kontinuierlichen Physik.}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{../figures/fig3_precision.pdf}
+\caption{\textbf{Präzision.} Unsere Formel gibt $\alpha^{-1} = 137 + 4/111 = 137{,}036036...$, übereinstimmend mit CODATA 2022 ($137{,}035999$) auf 0{,}000027\%.}
+\end{figure}
 
 % ============================================================================
 % BIBLIOGRAPHY

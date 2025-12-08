@@ -19,6 +19,7 @@
 \usepackage{titlesec}
 \usepackage{abstract}
 \usepackage{booktabs}
+\usepackage{graphicx}
 
 % ============================================================================
 % GEOMETRY
@@ -886,6 +887,39 @@ $F_2 = 17$ & Fermat prime $2^{2^2} + 1$ \\
 $L$ & Graph Laplacian matrix \\
 \bottomrule
 \end{tabular}
+
+% ============================================================================
+% FIGURES
+% ============================================================================
+
+\newpage
+\section*{Appendix: Visualizations}
+
+The following figures illustrate the key mathematical results. All are computed directly from $K_4$ structure.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.85\textwidth]{../figures/fig2_alpha_uniqueness.pdf}
+\caption{\textbf{Why $K_4$ is unique.} The spectral formula $\lambda^d \chi + \text{deg}^2$ for complete graphs $K_n$. Only $K_4$ produces a value near 137. This is not fine-tuning.}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.85\textwidth]{../figures/fig4_genesis.pdf}
+\caption{\textbf{The forced emergence of $K_4$.} Each step is necessary: $D_1$ distinguishes $D_0$ from its absence, $D_2$ witnesses the $(D_0, D_1)$ pair, $D_3$ closes the structure.}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{../figures/fig5_compactification.pdf}
+\caption{\textbf{One-point compactification.} The +1 pattern: $V+1=5$, $2^V+1=17$, $E^2+1=37$. All compactified values are prime. This is the mathematical price for transitioning from discrete $K_4$ to continuous physics.}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{../figures/fig3_precision.pdf}
+\caption{\textbf{Precision.} Our formula gives $\alpha^{-1} = 137 + 4/111 = 137.036036...$, matching CODATA 2022 ($137.035999$) to 0.000027\%.}
+\end{figure}
 
 % ============================================================================
 % BIBLIOGRAPHY
