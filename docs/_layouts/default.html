@@ -27,19 +27,28 @@
     
     // Load Google Analytics only if consent given
     if (hasAnalyticsConsent()) {
+      // Configure gtag BEFORE loading script to prevent cookies
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      
+      // Disable all storage BEFORE gtag.js loads
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied'
+      });
+      
       var script = document.createElement('script');
       script.async = true;
       script.src = 'https://www.googletagmanager.com/gtag/js?id=G-PR9LTLR61B';
       document.head.appendChild(script);
       
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-PR9LTLR61B', {
-        'anonymize_ip': true,
-        'storage': 'none',
-        'client_storage': 'none'
-      });
+      script.onload = function() {
+        gtag('js', new Date());
+        gtag('config', 'G-PR9LTLR61B', {
+          'anonymize_ip': true,
+          'cookie_flags': 'max-age=0;secure;samesite=none'  // Expire immediately
+        });
+      };
     }
   </script>
   
