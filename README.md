@@ -5,6 +5,8 @@
 [![Agda](https://img.shields.io/badge/Agda-2.7.0.1-blue)](https://agda.readthedocs.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+📖 **[Full Documentation →](https://de-johannes.github.io/FirstDistinction/)**
+
 **4 vertices. 6 edges. Everything else follows.**
 
 ---
