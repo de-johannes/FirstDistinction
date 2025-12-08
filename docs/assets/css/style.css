@@ -278,4 +278,25 @@ mjx-container {
   th, td {
     padding: 0.4rem 0.5rem;
   }
+
+  main img {
+    width: 100%;
+  }
+}
+
+/* Images - clickable, responsive */
+main img {
+  max-width: 100%;
+  width: 600px;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+main img:hover {
+  box-shadow: 0 4px 12px rgba(128, 128, 128, 0.3);
 }
