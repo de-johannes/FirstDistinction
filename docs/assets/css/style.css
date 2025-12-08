@@ -304,3 +304,16 @@ main img {
 main img:hover {
   box-shadow: 0 4px 12px rgba(128, 128, 128, 0.3);
 }
+
+/* Badges - don't apply figure styling */
+main a > img[src*="badge"],
+main a > img[src*="shields"],
+main a > img[src*="zenodo"] {
+  width: auto;
+  max-width: none;
+  display: inline;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+}
