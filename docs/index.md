@@ -92,7 +92,7 @@ The following are **mathematical theorems** (Agda `--safe --without-K`):
 | Signature | Symmetric/asymmetric | **(−,+,+,+)** | ✓ matches GR |
 | Coupling | dim × χ | **κ = 8** | ✓ matches 8πG |
 | Gyromagnetic | \|Bool\| | **g = 2** | ✓ Dirac prediction |
-| Spectral formula | λ³χ + deg² + corr | **137.036** | ≈ α⁻¹ (0.00003%) |
+| Spectral formula | λ³χ + deg² + 4/111 | **137.036036** | ≈ α⁻¹ (0.000027%) |
 | Anomaly | 1/(α⁻¹ × E) | **1/822** | ≈ (g-2)/2 (~5%) |
 | Epoch count | 5 × 4¹⁰⁰ | **N** | ≈ τ/t_P (0.4%) |
 
