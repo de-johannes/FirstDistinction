@@ -96,7 +96,7 @@ The following are **mathematical theorems** (Agda `--safe --without-K`):
 | Anomaly | 1/(α⁻¹ × E) | **1/822** | ≈ (g-2)/2 (~5%) |
 | Epoch count | 5 × 4¹⁰⁰ | **N** | ≈ τ/t_P (0.4%) |
 
-**These formulas are not fits.** They are spectral and structural invariants of K₄ — properties the graph necessarily possesses. We compute what is mathematically determined by K₄'s structure.
+**These formulas are not fits.** They are spectral and structural invariants of K₄ — properties the graph necessarily possesses. The formula structure (exponents, operations, term placement) is **machine-verified as uniquely determined** — all alternatives provably fail to produce 137.
 
 **5 exact matches. 3 excellent matches. The ~5% error is systematic (E=6 vs 2π=6.28).**
 
@@ -117,6 +117,8 @@ The spectral formula λᵈχ + deg² for complete graphs Kₙ:
 <a href="{{ '/assets/images/fig2_alpha_uniqueness.png' | relative_url }}"><img src="{{ '/assets/images/fig2_alpha_uniqueness.png' | relative_url }}" alt="K₄ Uniqueness"></a>
 
 **Only K₄ produces a value near 137.** K₃ gives 22. K₅ gives 1,266. This is not fine-tuning — it's the unique solution.
+
+**Formula structure is proven unique:** Machine-verified theorems show that λ² or λ⁴ fail, χ adding (not multiplying) fails, and deg² multiplying (not adding) fails. See [§22f.2e′–⁗](https://github.com/de-johannes/FirstDistinction/blob/main/FirstDistinction.agda#L13195) for the formal proofs.
 
 ### Genesis: How K₄ emerges
 

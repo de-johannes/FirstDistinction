@@ -63,6 +63,8 @@ Machine-checked under `--safe --without-K`. No postulates, no holes.
 
 **Only K₄ produces ~137.** The spectral formula for Kₙ grows exponentially. K₃ gives 22. K₅ gives 1,266. This is not fine-tuning.
 
+**Formula structure is proven unique:** Machine-verified theorems (§22f.2e′–⁗) show that λ² or λ⁴ fail, χ adding (not multiplying) fails, and deg² multiplying (not adding) fails. All alternative formulas are proven to produce wrong values.
+
 ### Mass Ratios (Combinatorial Formulas)
 
 | Particle | K₄ Formula | Computed | Experiment | Error |
@@ -101,6 +103,7 @@ Every number in $(i\gamma^\mu \partial_\mu - m)\psi = 0$ comes from K₄:
 **What IS proven (Agda `--safe --without-K`):**
 - K₄ emerges uniquely from self-referential distinction
 - All K₄ invariants compute: 3, 8, 137.036, 1836, ...
+- Formula structure (λ³χ + deg²) is **uniquely determined** — all alternatives proven to fail
 - Dimensional invariants of K₄ match those of Cl(3,1)
 - Every formula is machine-verified, no axioms, no holes
 

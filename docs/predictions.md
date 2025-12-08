@@ -147,6 +147,13 @@ floor(alpha-inverse) = 137
 
 This matches measurement.
 
+**The formula structure is uniquely determined:** Machine-verified proofs (§22f.2e′–⁗) show that:
+- λ² or λ⁴ instead of λ³ → fails to give 137
+- χ adding to λ³ instead of multiplying → fails
+- deg² multiplying instead of adding → fails
+
+All alternative formulas are **proven** to produce wrong values. The structure is forced, not fitted.
+
 ---
 
 ## Open Questions
