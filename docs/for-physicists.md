@@ -107,9 +107,9 @@ This matrix has eigenvalues:
 
 The multiplicity 3 means there are exactly 3 independent directions perpendicular to the constant mode. This IS the definition of 3 spatial dimensions.
 
-![Eigenvectors as 3D Axes](/assets/images/fig1_eigenvectors_d3.png)
+[![Eigenvectors as 3D Axes](/assets/images/fig1_eigenvectors_d3.png)](/assets/images/fig1_eigenvectors_d3.png)
 
-**The three eigenvectors for λ=4 form an orthonormal basis for ℝ³.** This is not chosen — it is computed from L_K4.
+*Click to enlarge.* **The three eigenvectors for λ=4 form an orthonormal basis for ℝ³.** This is not chosen — it is computed from L_K4.
 
 ```agda
 theorem-dimension-3 : eigenvalue-multiplicity 4 == 3
