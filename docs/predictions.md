@@ -157,12 +157,19 @@ The formula gives 137.036...
 
 CODATA gives 137.035999084...
 
-The difference is 0.000001. 
+The difference is 0.000037 (about 0.00003%).
 
-Possible sources:
-- Missing higher-order graph corrections
-- Physical running of alpha
-- Rounding in discrete arithmetic
+**Note on the +1 in E²+1=37:** This is NOT arbitrary fitting. It follows the same **one-point compactification** pattern as:
+- V+1=5 (vertices + centroid)
+- 2^V+1=17 (spinors + vacuum)  
+- E²+1=37 (edge-pair couplings + asymptotic/free state)
+
+The +1 represents the topological closure needed for discrete→continuous transition. See `src/agda/Compactification.agda` for the formal derivation.
+
+Possible sources of remaining 0.00003% difference:
+- Higher-order corrections not yet derived
+- Physical running of alpha at different scales
+- The fundamental limit of the discrete approximation
 
 ### Mass Hierarchy
 

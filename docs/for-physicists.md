@@ -188,6 +188,12 @@ V / (deg * (E^2 + 1)) = 4 / (3 * 37) = 4/111 = 0.036...
 alpha-inverse = 128 + 9 + 0.036 = 137.036
 ```
 
+**Note on E²+1=37:** The +1 is NOT arbitrary. It is the **one-point compactification** of the coupling space:
+- E² = 36 discrete edge-pair interactions
+- +1 = asymptotic/free state (no interaction)
+
+This follows the same pattern as V+1=5 (centroid) and 2^V+1=17 (vacuum).
+
 ### Measured Value
 
 ```

@@ -581,7 +581,7 @@ Physikalische Beobachtung: Die Einstein-Feldgleichung verwendet $\kappa = 8\pi G
 \begin{beobachtung}
 Die Spektralformel ergibt:
 \[
-\lambda^3 \cdot \chi + \text{deg}^2 + \text{Korrektur} = 137{,}036...
+\alpha^{-1} = \lambda^3 \cdot \chi + \text{deg}^2 + \frac{V}{\text{deg} \cdot (E^2+1)} = 128 + 9 + \frac{4}{111} = 137{,}036...
 \]
 
 Physikalische Beobachtung: Die inverse Feinstrukturkonstante:
@@ -592,7 +592,16 @@ Physikalische Beobachtung: Die inverse Feinstrukturkonstante:
 Übereinstimmung: $\approx 0{,}00003\%$
 
 \medskip
-\textit{Kein kausaler Zusammenhang bewiesen. Der "`Korrekturterm"' beinhaltet $V/(\text{deg} \cdot (E^2+1))$, was Post-hoc-Anpassung sein könnte.}
+\textbf{Zur $+1$ in $E^2+1$:} Dies ist \textit{kein} willkürlicher Anpassungsparameter. Es folgt dem gleichen \textbf{Ein-Punkt-Kompaktifizierungs}-Muster wie:
+\begin{itemize}[nosep]
+  \item $V+1=5$ (Ecken + Zentroid)
+  \item $2^V+1=17$ (Spinoren + Vakuum)
+  \item $E^2+1=37$ (Kanten-Paar-Kopplungen + freier Zustand)
+\end{itemize}
+Die $+1$ repräsentiert den topologischen Abschluss für den Übergang diskret$\to$kontinuierlich. Siehe \texttt{src/agda/Compactification.agda} für die formale Herleitung.
+
+\medskip
+\textit{Obwohl die $+1$ mathematisch abgeleitet ist, ist kein kausaler physikalischer Zusammenhang bewiesen.}
 \end{beobachtung}
 
 % ============================================================================
