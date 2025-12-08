@@ -44,30 +44,17 @@ The First Distinction (D₀) cannot be coherently rejected. It is **self-evident
 
 ---
 
-## The Dirac Equation IS K₄
+## What is First Distinction?
 
-The most fundamental equation of particle physics:
+**First Distinction (FD)** constructs K₄ (the complete graph on 4 vertices) from a single premise:
 
-$$(i\gamma^\mu \partial_\mu - m)\psi = 0$$
+> Something is distinguishable from something.
 
-**Every number in this equation comes from K₄:**
+**K₄ — the complete graph on 4 vertices — is one of the most fundamental objects in graph theory.** We show: This well-known mathematical structure emerges necessarily from the concept of distinction itself.
 
-| Dirac (1928) | K₄ Structure | Value |
-|--------------|--------------|-------|
-| γ-matrices | Vertices | **4** |
-| Bivectors (γᵘγᵛ) | Edges | **6** |
-| Clifford dimension | 2^Vertices | **16** |
-| Spinor components | \|Bool\|² | **4** |
-| Gyromagnetic ratio g | \|Bool\| | **2** |
-| Signature | Drift asymmetry | **(−,+,+,+)** |
+K₄ produces numbers matching physical constants: d=3, κ=8, α⁻¹=137, particle mass ratios.
 
-Dirac spent 4 years deriving this relativistically. We show: **he found K₄ in the continuum limit.**
-
-And K₄ comes from D₀ = {φ, ¬φ} = "yes or no".
-
-**The equation that predicts antimatter follows from the simplest possible distinction.**
-
-[→ Full derivation](for-mathematicians#the-clifford-algebra-from-k₄)
+The complete proof is formalized in [Agda](https://github.com/de-johannes/FirstDistinction/blob/main/FirstDistinction.agda) and compiles under `--safe --without-K` — no postulates, no holes, machine-checked.
 
 ---
 
@@ -98,37 +85,6 @@ This is not a philosophical position we *choose*. It's the position that Agda (o
 
 ---
 
-## What is First Distinction?
-
-**First Distinction (FD)** constructs K₄ (the complete graph on 4 vertices) from a single premise:
-
-> Something is distinguishable from something.
-
-K₄ produces numbers matching physical constants: d=3, κ=8, α⁻¹=137, particle mass ratios.
-
-The complete proof is formalized in [Agda](https://github.com/de-johannes/FirstDistinction/blob/main/FirstDistinction.agda) and compiles under `--safe --without-K` — no postulates, no holes, machine-checked.
-
----
-
-## What is Agda?
-
-**Agda** is a functional programming language with dependent types and an interactive proof assistant. Unlike mathematical proofs on paper, every step is machine-checked — the compiler guarantees logical consistency.
-
-**Why Agda for First Distinction?**
-
-- **No hidden assumptions:** The `--safe --without-K` mode forbids logical axioms and postulates. What is not explicitly derived does not exist.
-- **Full transparency:** Anyone can verify the proof themselves — a single compiler run suffices.
-- **Reproducible:** The result does not depend on human interpretation.
-
-**What does "proof" mean in Agda?**
-
-A proof is a program whose type encodes a mathematical statement. If the program compiles, the statement is proven.
-
-- *For physicists:* Like a numerical experiment that is always exactly reproducible — but with symbolic rather than numerical precision.
-- *For mathematicians:* Like a formally verified proof in a Hilbert system, machine-checked for correctness.
-
----
-
 ## What is computed?
 
 The following are **mathematical theorems** (Agda `--safe --without-K`):
@@ -152,6 +108,52 @@ The following are **mathematical theorems** (Agda `--safe --without-K`):
 
 ---
 
+## The Dirac Equation IS K₄
+
+The most fundamental equation of particle physics:
+
+$$(i\gamma^\mu \partial_\mu - m)\psi = 0$$
+
+**Every number in this equation comes from K₄:**
+
+| Dirac (1928) | K₄ Structure | Value |
+|--------------|--------------|-------|
+| γ-matrices | Vertices | **4** |
+| Bivectors (γᵘγᵛ) | Edges | **6** |
+| Clifford dimension | 2^Vertices | **16** |
+| Spinor components | \|Bool\|² | **4** |
+| Gyromagnetic ratio g | \|Bool\| | **2** |
+| Signature | Drift asymmetry | **(−,+,+,+)** |
+
+Dirac spent 4 years deriving this relativistically. We show: **he found K₄ in the continuum limit.**
+
+And K₄ comes from D₀ = {φ, ¬φ} = "yes or no".
+
+**The equation that predicts antimatter follows from the simplest possible distinction.**
+
+[→ Full derivation](for-mathematicians#the-clifford-algebra-from-k₄)
+
+---
+
+## What is Agda?
+
+**Agda** is a functional programming language with dependent types and an interactive proof assistant. Unlike mathematical proofs on paper, every step is machine-checked — the compiler guarantees logical consistency.
+
+**Why Agda for First Distinction?**
+
+- **No hidden assumptions:** The `--safe --without-K` mode forbids logical axioms and postulates. What is not explicitly derived does not exist.
+- **Full transparency:** Anyone can verify the proof themselves — a single compiler run suffices.
+- **Reproducible:** The result does not depend on human interpretation.
+
+**What does "proof" mean in Agda?**
+
+A proof is a program whose type encodes a mathematical statement. If the program compiles, the statement is proven.
+
+- *For physicists:* Like a numerical experiment that is always exactly reproducible — but with symbolic rather than numerical precision.
+- *For mathematicians:* Like a formally verified proof in a Hilbert system, machine-checked for correctness.
+
+---
+
 ## Why Type Theory?
 
 In 1972, Per Martin-Löf created intuitionistic type theory.
@@ -168,32 +170,6 @@ We observe: **⊤ with `tt` has the same structure as D₀ with φ.**
 | _≡_ (identity) | Self-recognition of D₀ |
 
 Type theory embodies constructivism. We use it to construct K₄.
-
----
-
-## How does it work?
-
-**In plain language:**
-
-1. **You can't have ONE distinction alone**  
-   If D₀ exists, you can distinguish D₀ from "not D₀". That's a second distinction D₁.
-
-2. **Two distinctions need a third**  
-   "D₀ is different from D₁" — that *relation* is itself a distinction: D₂.
-
-3. **Three isn't stable**  
-   Now (D₀, D₂) is a new pair without a witness. This forces D₃.
-
-4. **Four is stable**  
-   With 4 distinctions, all 6 possible pairs are "witnessed". Nothing new is forced.
-
-5. **Four points = Tetrahedron = 3D space**  
-   The geometry of 4 vertices connected by 6 edges IS three-dimensional space.
-
-6. **The process of arriving there = Time**  
-   The irreversible sequence D₀ → D₁ → D₂ → D₃ is the arrow of time.
-
-**That's it.** From "distinction exists" to 3+1 dimensional spacetime in 6 steps.
 
 ---
 
