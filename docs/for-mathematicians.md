@@ -264,7 +264,7 @@ The same result from operad structure:
 
 | Metric | Value |
 |--------|-------|
-| Total lines | 14,923 |
+| Total lines | 7,029 |
 | Named theorems | 911 |
 | Proofs by refl | 626 |
 | Postulates | 0 |

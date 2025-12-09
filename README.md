@@ -26,7 +26,7 @@ This isn't wordplay. It's the starting point. We formalize what follows.
 
 ## What This Is
 
-A single Agda file (`FirstDistinction.agda`, 12,400+ lines) that:
+A single Agda file (`FirstDistinction.agda`, 7,500+ lines) that:
 
 1. **Proves** K₄ (tetrahedron graph) emerges from self-referential distinction
 2. **Computes** invariants: V=4, E=6, χ=2, deg=3, Laplacian eigenvalues {0,4,4,4}
@@ -124,7 +124,7 @@ cd FirstDistinction
 agda --safe --without-K FirstDistinction.agda
 ```
 
-If it compiles, the K₄ derivations are valid. 12,400+ lines. Zero holes.
+If it compiles, the K₄ derivations are valid. 7,000+ lines. Zero holes.
 
 ---
 
@@ -132,7 +132,7 @@ If it compiles, the K₄ derivations are valid. 12,400+ lines. Zero holes.
 
 ```
 FirstDistinction/
-├── FirstDistinction.agda  # The proof (12,400+ lines)
+├── FirstDistinction.agda  # The proof (7,000+ lines)
 ├── validate_K4.py         # Numerical validation
 ├── docs/                  # Full documentation
 └── README.md

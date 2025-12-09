@@ -99,9 +99,7 @@ A compiling Agda file IS a proof certificate.
 
 | Metric | Value |
 |--------|-------|
-| Total lines | 14,923 |
-| Code lines | 8,559 |
-| Comment lines | 6,364 |
+| Total lines | 7,029 |
 | Named theorems | 911 |
 | Refl proofs | 626 |
 | Postulates | 0 |
@@ -150,7 +148,7 @@ Check file exists:
 ls -la FirstDistinction.agda
 ```
 
-Expected: File with approximately 15000 lines
+Expected: File with approximately 7000 lines
 
 Count theorems:
 
