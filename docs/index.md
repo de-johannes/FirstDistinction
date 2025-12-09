@@ -138,13 +138,13 @@ The spectral formula λᵈχ + deg² for complete graphs Kₙ:
 
 ---
 
-## The Dirac Equation IS K₄
+## K₄ has the same dimensional invariants as the Dirac Equation
 
 The most fundamental equation of particle physics:
 
 $$(i\gamma^\mu \partial_\mu - m)\psi = 0$$
 
-**Every number in this equation comes from K₄:**
+**The dimensional structure matches K₄:**
 
 | Dirac (1928) | K₄ Structure | Value |
 |--------------|--------------|-------|
