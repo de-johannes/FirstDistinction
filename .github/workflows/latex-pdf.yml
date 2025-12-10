@@ -35,6 +35,7 @@ jobs:
             FD-03-Dimension.tex
             FD-04-Masses.tex
             FD-05-Time.tex
+            FD-06-Methodology.tex
             FirstDistinction_Summary.tex
 
       - name: List generated PDFs
