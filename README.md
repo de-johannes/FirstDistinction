@@ -203,7 +203,7 @@ Every number in $(i\gamma^\mu \partial_\mu - m)\psi = 0$ comes from K₄:
 - That these numerical matches are not coincidental
 - That physics derives from graph theory
 
-**Rigor improvements (Dec 2024-Jan 2025):**
+**Rigor improvements:**
 - #1-#3: Made captures, graph construction, Laplacian explicit (no "it just is")
 - #4-#7: Applied 4-part proof structure to eigenspace, dimension, Minkowski, alpha
 - #8-#10: Derived g-factor, topological brake, mass ratios from K₄ (not observed)
@@ -237,8 +237,8 @@ Current file stats (after rigor improvements):
 ```
 FirstDistinction/
 ├── FirstDistinction.agda  # The proof (7,000+ lines)
-├── validate_K4.py         # Numerical validation
-├── docs/                  # Full documentation
+├── docs/                  # Website
+├── pdf/                   # PDF summary
 └── README.md
 ```
 
