@@ -21,6 +21,7 @@
 *.lot
 
 work
+src
 
 .venv
 

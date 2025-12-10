@@ -26,7 +26,7 @@ This isn't wordplay. It's the starting point. We formalize what follows.
 
 ## What This Is
 
-A single Agda file (`FirstDistinction.agda`, 7,500+ lines) that:
+A single Agda file (`FirstDistinction.agda`, 7,000+ lines) that:
 
 1. **Proves** K₄ (tetrahedron graph) emerges from self-referential distinction
 2. **Computes** invariants: V=4, E=6, χ=2, deg=3, Laplacian eigenvalues {0,4,4,4}
