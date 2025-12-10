@@ -138,6 +138,13 @@ record Σ (A : Set) (B : A → Set) : Set where
     proj₂ : B proj₁
 open Σ public
 
+-- Sum type (disjoint union)
+data _⊎_ (A B : Set) : Set where
+  inj₁ : A → A ⊎ B
+  inj₂ : B → A ⊎ B
+
+infixr 1 _⊎_
+
 -- ─────────────────────────────────────────────────────────────────────────
 -- § 4  MATHEMATICAL EMERGENCE: Numbers from Counting
 -- ─────────────────────────────────────────────────────────────────────────
@@ -166,6 +173,10 @@ data ℕ : Set where
 count : {A : Set} → List A → ℕ
 count []       = zero
 count (x ∷ xs) = suc (count xs)
+
+-- Alias for count (standard library uses 'length')
+length : {A : Set} → List A → ℕ
+length = count
 
 -- THEOREM: ℕ ≅ cardinalities of finite lists
 -- This proves: numbers ARE what emerges from counting, not what we assume.
@@ -2360,6 +2371,27 @@ edge-03 = mkEdge v₀ v₃ id₀≢id₃
 edge-12 = mkEdge v₁ v₂ id₁≢id₂
 edge-13 = mkEdge v₁ v₃ id₁≢id₃
 edge-23 = mkEdge v₂ v₃ id₂≢id₃
+
+-- THEOREM: K₄ is complete (every distinct pair has an edge)
+-- This proves that the 6 edges above are ALL edges in K₄
+K4-is-complete : (v w : K4Vertex) → ¬ (vertex-to-id v ≡ vertex-to-id w) → 
+                 (K4Edge ⊎ K4Edge)
+K4-is-complete v₀ v₀ neq = ⊥-elim (neq refl)
+K4-is-complete v₀ v₁ _   = inj₁ edge-01
+K4-is-complete v₀ v₂ _   = inj₁ edge-02
+K4-is-complete v₀ v₃ _   = inj₁ edge-03
+K4-is-complete v₁ v₀ _   = inj₂ edge-01
+K4-is-complete v₁ v₁ neq = ⊥-elim (neq refl)
+K4-is-complete v₁ v₂ _   = inj₁ edge-12
+K4-is-complete v₁ v₃ _   = inj₁ edge-13
+K4-is-complete v₂ v₀ _   = inj₂ edge-02
+K4-is-complete v₂ v₁ _   = inj₂ edge-12
+K4-is-complete v₂ v₂ neq = ⊥-elim (neq refl)
+K4-is-complete v₂ v₃ _   = inj₁ edge-23
+K4-is-complete v₃ v₀ _   = inj₂ edge-03
+K4-is-complete v₃ v₁ _   = inj₂ edge-13
+K4-is-complete v₃ v₂ _   = inj₂ edge-23
+K4-is-complete v₃ v₃ neq = ⊥-elim (neq refl)
 
 k4-edge-count : ℕ
 k4-edge-count = K4-E
