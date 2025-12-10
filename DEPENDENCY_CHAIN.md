@@ -2,11 +2,9 @@
 
 This document traces how values are **computed** (not set) in FirstDistinction.agda.
 
-**Language note:** We say K₄ values "match observed constants" or "correspond to measured values" — NOT "are" or "prove" physics. The mathematical computation is proven. That it matches physical reality is a hypothesis.
-
 ## Why This Matters
 
-Critics correctly point out that final proofs often look like `theorem-X : Y ≡ Z; theorem-X = refl`. This appears circular or trivial. The point is: when Agda accepts `refl`, it has **computed both sides** to identical normal forms. The complexity lies in the computation chain, not the final equality.
+Feedback correctly points out that final proofs often look like `theorem-X : Y ≡ Z; theorem-X = refl`. This appears circular or trivial. The point is: when Agda accepts `refl`, it has **computed both sides** to identical normal forms. The complexity lies in the computation chain, not the final equality.
 
 ## The Core Chain
 
