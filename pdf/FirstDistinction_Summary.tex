@@ -161,7 +161,8 @@
   \Huge\bfseries\color{fd-dark}
   First Distinction\\[0.5em]
   \Large Graph Theory from a Primitive Principle\\[1em]
-  \large\normalfont Machine-Verified in Agda with \texttt{--safe --without-K}
+  \large\normalfont Machine-Verified in Agda with \texttt{--safe --without-K}\\[0.5em]
+  \normalsize Master Overview --- See FD-01 through FD-05 for Detailed Papers
 }
 
 \author{
@@ -189,7 +190,7 @@
 
 \begin{abstract}
 \noindent
-\textbf{What this document proves} (Agda \texttt{--safe --without-K}):
+\textbf{What this document proves} (Agda \texttt{--safe --without-K}, 7,938 lines):
 
 From the premise ``something can be distinguished from something,'' the complete graph $K_4$ emerges as the unique stable structure. This is pure graph theory: 4 vertices, 6 edges, Euler characteristic $\chi = 2$.
 
@@ -200,6 +201,16 @@ The $K_4$ invariants numerically match certain physical constants with surprisin
 
 \medskip
 \textbf{Status:} The mathematics is machine-verified. The physics correspondence is \textit{unproven hypothesis}.
+
+\medskip
+\textbf{Paper Series:} This overview is supplemented by five focused papers (46 pages total):
+\begin{itemize}[nosep]
+  \item FD-01: Genesis \& $K_4$ Uniqueness (8 pages)
+  \item FD-02: Fine Structure Constant (7 pages)
+  \item FD-03: Dimension 3+1 from Eigenvalues (9 pages)
+  \item FD-04: Particle Mass Ratios (10 pages)
+  \item FD-05: Time from Asymmetry (12 pages)
+\end{itemize}
 \end{abstract}
 
 \tableofcontents
@@ -246,11 +257,23 @@ We use the strictest settings:
 
 \subsection{Structure of This Document}
 
+This is a \textbf{master overview} providing a broad introduction. For detailed proofs and analysis, see the individual papers:
+
 \begin{enumerate}
   \item \textbf{Part I: The Mathematics} --- What is proven
   \item \textbf{Part II: The Observations} --- What is noticed (but not proven)
   \item \textbf{Part III: Discussion} --- Open questions and honesty
 \end{enumerate}
+
+\subsection{The Paper Series}
+
+\begin{itemize}
+  \item \textbf{FD-01: Genesis \& $K_4$ Uniqueness} --- Proves why exactly 4 distinctions are forced, why $K_3$ fails, why $K_5$ is unnecessary
+  \item \textbf{FD-02: The Fine Structure Constant} --- Derives $\alpha^{-1} = 137.036\overline{036}$ from $K_4$ spectral structure
+  \item \textbf{FD-03: Dimension 3+1} --- Shows eigenvalue structure $(0,4,4,4)$ corresponds to spacetime signature
+  \item \textbf{FD-04: Particle Mass Ratios} --- Derives proton, muon, tau masses from $K_4$ combinatorics
+  \item \textbf{FD-05: Time from Asymmetry} --- Proves Minkowski signature $(-,+,+,+)$ from genesis asymmetry
+\end{itemize}
 
 % ============================================================================
 \part{The Mathematics (Proven)}
@@ -291,6 +314,8 @@ The unit type $\top$ with its single inhabitant \texttt{tt} \textit{is} the form
 \section{Forced Emergence: From \texorpdfstring{$D_0$}{D0} to \texorpdfstring{$K_4$}{K4}}
 \label{sec:emergence}
 % ============================================================================
+
+\textit{For complete genesis proof with captures relation and memory saturation, see FD-01.}
 
 \subsection{The Genesis Chain}
 
@@ -530,10 +555,13 @@ Only $K_4$ satisfies this identity.
 
 All claims in Part I are formalized in:
 \begin{itemize}
-  \item \texttt{FirstDistinction.agda} (15,000+ lines)
+  \item \texttt{FirstDistinction.agda} (7,938 lines)
   \item Compiles with \texttt{agda --safe --without-K}
+  \item Zero axioms, zero postulates
   \item Available at: \url{https://github.com/de-johannes/FirstDistinction}
 \end{itemize}
+
+\textbf{Paper PDFs:} All five papers (FD-01 through FD-05) are available in the \texttt{pdf/} directory of the repository.
 
 \subsection{How to Verify}
 
@@ -570,6 +598,8 @@ The following section notes numerical coincidences. \textbf{These are not theore
 \label{sec:obs-dim}
 % ============================================================================
 
+\textit{For complete eigenvalue analysis and uniqueness proof, see FD-03.}
+
 \begin{observation}
 The $K_4$ eigenspace dimension is 3.
 
@@ -602,6 +632,8 @@ Physical observation: The Einstein field equation uses $\kappa = 8\pi G/c^4$, wh
 \section{Fine Structure Coincidence}
 \label{sec:obs-alpha}
 % ============================================================================
+
+\textit{For complete derivation with four-part validation, see FD-02.}
 
 \begin{observation}
 The spectral formula yields:
@@ -644,6 +676,8 @@ The $+1$ represents the topological closure needed for the discrete-to-continuou
 \label{sec:obs-mass}
 % ============================================================================
 
+\textit{For complete derivation with exclusivity proofs, see FD-04.}
+
 \begin{observation}
 \begin{center}
 \begin{tabular}{lccc}
@@ -667,6 +701,8 @@ Physical observation: These match proton/electron, muon/electron, and tau/electr
 \section{Signature Coincidence}
 \label{sec:obs-signature}
 % ============================================================================
+
+\textit{For complete derivation of Minkowski signature, see FD-05.}
 
 \begin{observation}
 $K_4$ has:
