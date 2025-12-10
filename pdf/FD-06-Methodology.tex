@@ -761,7 +761,7 @@ All four components are implementable as formal type-checked records:
 record Validation (Result : Type) : Type where
   field
     consistency    : MultiPath Result
-    exclusivity    : (r : Result) → (r ≠ Result) → ⊥
+    exclusivity    : (r : Result) -> (r != Result) -> Bot
     robustness     : Stable Result Perturbations
     crossConstr    : Interconnected Result OtherResults
 \end{verbatim}
