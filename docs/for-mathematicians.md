@@ -22,6 +22,43 @@ Every object exists only if constructed. No axioms, no postulates, no holes.
 
 ---
 
+## Why `refl` Is Not Trivial
+
+A common criticism: "All your proofs are just `theorem-X : Y == Z; theorem-X = refl`. That's circular!"
+
+**This misunderstands what `refl` does.**
+
+When Agda accepts `refl`, it has **computed both sides to identical normal forms**. The complexity lies in the computation chain, not the final equality.
+
+**What would be circular (NOT in the file):**
+```agda
+alpha : Q
+alpha = 137  -- just set it
+
+theorem : alpha == 137
+theorem = refl  -- trivial, circular
+```
+
+**What actually happens (in the file):**
+```agda
+-- Build K4 from Genesis (~2000 lines of construction)
+-- Compute Laplacian from K4 adjacency
+-- Compute eigenvalues from Laplacian  
+-- Extract spectral ratio
+
+alpha-from-laplacian : Q
+alpha-from-laplacian = [long computation chain]
+
+theorem : alpha-from-laplacian approx 137.036
+theorem = refl  -- Agda computed both sides, they match
+```
+
+The `refl` is the **verification**, not the content. The content is the 2000+ line computation chain.
+
+See [DEPENDENCY_CHAIN.md](https://github.com/de-johannes/FirstDistinction/blob/main/DEPENDENCY_CHAIN.md) for the complete trace.
+
+---
+
 ## The Single Premise
 
 ```agda
@@ -223,6 +260,30 @@ theorem-signature = refl
 
 ---
 
+## The Four-Part Proof Pattern
+
+Each major value (3D space, 1D time, alpha) is proven via four independent constraints:
+
+| Part | Purpose | Example for d=3 |
+|------|---------|-----------------|
+| **Consistency** | Multiple derivations agree | Eigenspace dim = vertex degree = 3 |
+| **Exclusivity** | Other values impossible | d=2 breaks K4 embedding |
+| **Robustness** | Value survives perturbation | d=3 stable under edge removal |
+| **CrossConstraints** | Matches independent predictions | d=3 matches Clifford algebra dim |
+
+```agda
+record DimensionTheorems : Set where
+  field
+    consistency       : DimensionConsistency
+    exclusivity       : DimensionExclusivity  
+    robustness        : DimensionRobustness
+    cross-constraints : DimensionCrossConstraints
+```
+
+This pattern appears 10 times in the codebase, covering: dimension, time, signature, kappa, alpha, g-factor, mass ratios, and more.
+
+---
+
 ## The Alpha Formula
 
 Two independent derivations produce the same number.
@@ -264,9 +325,10 @@ The same result from operad structure:
 
 | Metric | Value |
 |--------|-------|
-| Total lines | 7,029 |
-| Named theorems | 911 |
-| Proofs by refl | 626 |
+| Total lines | 7,938 |
+| Named theorems | ~700 |
+| Four-part proof structures | 10 |
+| Forcing theorems | 4 |
 | Postulates | 0 |
 | Holes | 0 |
 
