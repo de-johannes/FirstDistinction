@@ -58,14 +58,14 @@
 \maketitle
 
 \begin{abstract}
-We present the methodological foundation underlying the FirstDistinction project: a systematic four-part validation pattern applied to every major claim. This pattern---\textit{Consistency}, \textit{Exclusivity}, \textit{Robustness}, and \textit{CrossConstraints}---transforms what might appear to be numerical coincidences into rigorous mathematical theorems. We demonstrate that this structure is not arbitrary but necessary, showing why fewer than four parts would leave exploitable gaps and why more would be redundant. Through detailed analysis of six validated theorems (K₄ genesis, eigenspace structure, dimensional emergence, temporal asymmetry, fine structure constant, and particle masses), we establish that the FirstDistinction results cannot be dismissed as numerology, cherry-picking, or fragile curve-fitting. This meta-theoretical contribution provides a template for rigorous physical theory construction from pure mathematical structure.
+We present the methodological foundation underlying the FirstDistinction project: a systematic four-part validation pattern applied to every major claim. This pattern---\textit{Consistency}, \textit{Exclusivity}, \textit{Robustness}, and \textit{CrossConstraints}---transforms what might appear to be numerical coincidences into rigorous mathematical theorems. We demonstrate that this structure is not arbitrary but necessary, showing why fewer than four parts would leave exploitable gaps and why more would be redundant. Through detailed analysis of six validated theorems ($K_4$ genesis, eigenspace structure, dimensional emergence, temporal asymmetry, fine structure constant, and particle masses), we establish that the FirstDistinction results cannot be dismissed as numerology, cherry-picking, or fragile curve-fitting. This meta-theoretical contribution provides a template for rigorous physical theory construction from pure mathematical structure.
 
 \noindent\textbf{Keywords:} proof methodology, validation patterns, numerology prevention, type theory, Agda verification
 \end{abstract}
 
 \section{Introduction}
 
-The FirstDistinction project derives physical constants and structure from the complete 4-vertex graph K₄ using dependent type theory in Agda~\cite{agda}. The results are striking: the fine structure constant emerges as $\alpha^{-1} = 137.036\overline{036}$ (experimental error 0.000027\%), particle mass ratios match observation to better than 1\%, and spacetime dimensionality 3+1 follows from eigenvalue degeneracy.
+The FirstDistinction project derives physical constants and structure from the complete 4-vertex graph $K_4$ using dependent type theory in Agda~\cite{agda}. The results are striking: the fine structure constant emerges as $\alpha^{-1} = 137.036\overline{036}$ (experimental error 0.000027\%), particle mass ratios match observation to better than 1\%, and spacetime dimensionality 3+1 follows from eigenvalue degeneracy.
 
 Such precision invites immediate skepticism. History is replete with numerological schemes that fit data through flexible parameters or selective reporting. The question is not whether FirstDistinction's predictions match experiment---they do---but whether the matching reflects deep truth or clever accounting.
 
@@ -166,7 +166,7 @@ A result $R$ might be:
 \end{itemize}
 yet alternative value $R'$ could be equally valid.
 
-\noindent\textbf{Example}: In FirstDistinction, K₄ emerges as unique complete 4-vertex graph. But why not K₃ or K₅? Consistency would show multiple derivations yield 4 vertices. Robustness would show 4 is stable. CrossConstraints would connect 4 to other results. None prove $n \neq 4$ is impossible.
+\noindent\textbf{Example}: In FirstDistinction, $K_4$ emerges as unique complete 4-vertex graph. But why not K₃ or K₅? Consistency would show multiple derivations yield 4 vertices. Robustness would show 4 is stable. CrossConstraints would connect 4 to other results. None prove $n \neq 4$ is impossible.
 
 Only Exclusivity---showing K₃ fails closure, K₅ adds redundancy---proves 4 is not cherry-picked from {3,4,5,...}.
 \end{proof}
@@ -316,11 +316,11 @@ How does four-part validation compare to other methodologies?
 
 We now demonstrate complete four-part validation for six FirstDistinction theorems, showing the pattern is uniformly applied throughout the codebase.
 
-\subsection{Theorem 1: K₄ Genesis}
+\subsection{Theorem 1: $K_4$ Genesis}
 
 \begin{mathbox}
-\textbf{Theorem (K₄ Uniqueness):}
-The complete 4-vertex graph K₄ is the unique graph satisfying:
+\textbf{Theorem ($K_4$ Uniqueness):}
+The complete 4-vertex graph $K_4$ is the unique graph satisfying:
 \begin{itemize}
 \item Closure: All $\binom{4}{2}=6$ pairwise distinctions represented.
 \item Minimality: No smaller graph achieves closure.
@@ -329,7 +329,7 @@ The complete 4-vertex graph K₄ is the unique graph satisfying:
 \end{mathbox}
 
 \paragraph{Consistency (Lines 2374-2396):}
-K₄ emerges through three independent paths:
+$K_4$ emerges through three independent paths:
 \begin{enumerate}
 \item \textbf{Counting Path}: Binary distinction saturates at $D_3$ (4 elements).
 \item \textbf{Graph Path}: Complete graphs $K_n$ have $n(n-1)/2$ edges; $n=4$ gives $E=6$.
@@ -344,31 +344,31 @@ Alternatives fail:
 \item \textbf{K₅}: Has $E=10>6$, violates minimality (4 redundant edges).
 \item \textbf{Non-complete $n=4$ graphs}: Lack edges, fail closure.
 \end{itemize}
-Only K₄ satisfies all constraints simultaneously.
+Only $K_4$ satisfies all constraints simultaneously.
 
 \paragraph{Robustness (Lines 2421-2445):}
 Under perturbations:
 \begin{itemize}
 \item Requiring $E = 5$ or $E = 7$ admits no solution.
 \item Allowing $V = 3.9$ or $V = 4.1$ (if fractional vertices made sense) still yields $V=4$ as integer solution.
-\item Changing closure definition to "most edges represented" still gives K₄ as optimum.
+\item Changing closure definition to "most edges represented" still gives $K_4$ as optimum.
 \end{itemize}
-K₄ is not fine-tuned---it emerges across parameter variations.
+$K_4$ is not fine-tuned---it emerges across parameter variations.
 
 \paragraph{CrossConstraints (Lines 2446-2470):}
-K₄ structure forces:
+$K_4$ structure forces:
 \begin{itemize}
 \item Degree sequence $(3,3,3,3)$ (used in alpha formula).
 \item Euler characteristic $\chi = V - E = 4 - 6 = -2$ (appears in mass ratios).
 \item Tetrahedral symmetry group $S_4$ (constrains physical interpretations).
 \end{itemize}
-K₄ is not isolated---it constrains all downstream predictions.
+$K_4$ is not isolated---it constrains all downstream predictions.
 
 \subsection{Theorem 2: Eigenspace Dimension}
 
 \begin{mathbox}
 \textbf{Theorem (Spatial Dimension):}
-The graph Laplacian of K₄ has spectrum $\{0, 4, 4, 4\}$, with 3-dimensional eigenspace for $\lambda=4$.
+The graph Laplacian of $K_4$ has spectrum $\{0, 4, 4, 4\}$, with 3-dimensional eigenspace for $\lambda=4$.
 \end{mathbox}
 
 \paragraph{Consistency (Lines 2917-2943):}
@@ -384,14 +384,14 @@ Alternative eigenvalues excluded:
 \begin{itemize}
 \item $\lambda \neq 0$ for non-constant eigenvectors (Laplacian has rank 3).
 \item $\lambda \neq 3$ or $\lambda \neq 5$ (no solutions to characteristic polynomial).
-\item Multiplicity $\neq 2$ or $\neq 4$ (violates K₄ symmetry).
+\item Multiplicity $\neq 2$ or $\neq 4$ (violates $K_4$ symmetry).
 \end{itemize}
 
 \paragraph{Robustness (Lines 2972-2991):}
 Under perturbations:
 \begin{itemize}
 \item Adding edge weights $w \in [0.9, 1.1]$ shifts $\lambda \in [3.6, 4.4]$ but preserves 3-fold degeneracy.
-\item Removing one edge breaks K₄ but maintains 2+ dimensional eigenspace.
+\item Removing one edge breaks $K_4$ but maintains 2+ dimensional eigenspace.
 \end{itemize}
 
 \paragraph{CrossConstraints (Lines 2992-3016):}
@@ -405,7 +405,7 @@ Eigenvalue $\lambda=4$ appears in:
 
 \begin{mathbox}
 \textbf{Theorem (Spacetime Dimension):}
-K₄ eigenspace structure implies 3 spatial + 1 temporal dimension.
+$K_4$ eigenspace structure implies 3 spatial + 1 temporal dimension.
 \end{mathbox}
 
 \paragraph{Consistency (Lines 3193-3222):}
@@ -449,8 +449,8 @@ Genesis drift breaks time-reversal symmetry, yielding signature $\eta = \text{di
 \paragraph{Consistency (Lines 3561-3588):}
 Signature $(-,+,+,+)$ emerges through:
 \begin{enumerate}
-\item \textbf{Asymmetry counting}: Genesis drift $D_0 \to D_1 \to D_2 \to D_3$ is irreversible (1 direction), K₄ edges are reversible (3 dimensions).
-\item \textbf{Graph construction}: Genesis is directed acyclic graph (DAG), K₄ is undirected.
+\item \textbf{Asymmetry counting}: Genesis drift $D_0 \to D_1 \to D_2 \to D_3$ is irreversible (1 direction), $K_4$ edges are reversible (3 dimensions).
+\item \textbf{Graph construction}: Genesis is directed acyclic graph (DAG), $K_4$ is undirected.
 \item \textbf{Eigenvalue zero}: $\lambda=0$ corresponds to time (zero curvature), $\lambda=4$ to space (positive curvature).
 \end{enumerate}
 
@@ -535,7 +535,7 @@ where $F_2 = 17$ is the second Fibonacci prime.
 \paragraph{Consistency (Lines 7335-7353):}
 Mass ratios emerge through:
 \begin{enumerate}
-\item \textbf{Topological path}: $\chi^2 d^3 = 4 \cdot 27$ from K₄ invariants.
+\item \textbf{Topological path}: $\chi^2 d^3 = 4 \cdot 27$ from $K_4$ invariants.
 \item \textbf{Spectral path}: $F_2 = 17$ from eigenvalue-related sequence.
 \item \textbf{Hierarchical path}: $m_\tau / m_\mu = F_2 = 17$ relates generations.
 \end{enumerate}
@@ -573,7 +573,7 @@ All six theorems satisfy complete four-part validation:
 \toprule
 \textbf{Theorem} & \textbf{Consistency} & \textbf{Exclusivity} & \textbf{Robustness} & \textbf{CrossConstraints} \\
 \midrule
-K₄ Genesis & \checkmark & \checkmark & \checkmark & \checkmark \\
+$K_4$ Genesis & \checkmark & \checkmark & \checkmark & \checkmark \\
 Eigenspace & \checkmark & \checkmark & \checkmark & \checkmark \\
 Dimension 3+1 & \checkmark & \checkmark & \checkmark & \checkmark \\
 Time Asymmetry & \checkmark & \checkmark & \checkmark & \checkmark \\
@@ -724,7 +724,7 @@ The pattern provides a template for building physical theories from mathematical
 \begin{methodbox}
 \textbf{Theory Construction Protocol:}
 \begin{enumerate}
-\item Identify minimal mathematical structure (e.g., K₄).
+\item Identify minimal mathematical structure (e.g., $K_4$).
 \item Derive consequences through multiple paths (Consistency).
 \item Prove alternatives impossible (Exclusivity).
 \item Verify stability under perturbations (Robustness).
@@ -783,7 +783,7 @@ Four-part validation provides a \textit{pre-empirical} filter: theories must sat
 The four-part pattern is not a panacea:
 
 \begin{itemize}[leftmargin=*]
-\item \textbf{Does not prove physical interpretation}: Mathematical rigor does not guarantee theory describes reality. FirstDistinction's physical hypotheses (e.g., "K₄ vertices are spacetime dimensions") remain unproven.
+\item \textbf{Does not prove physical interpretation}: Mathematical rigor does not guarantee theory describes reality. FirstDistinction's physical hypotheses (e.g., "$K_4$ vertices are spacetime dimensions") remain unproven.
 
 \item \textbf{Does not replace experiment}: Even fully validated predictions must be tested against observation. Four-part validation ensures internal coherence, not empirical correctness.
 
@@ -825,7 +825,7 @@ All theorems and validation records are implemented in:
 \subsection*{Related Papers}
 
 \begin{itemize}[leftmargin=*]
-\item FD-01: Genesis of K₄ (K₄ uniqueness and forcing)
+\item FD-01: Genesis of $K_4$ ($K_4$ uniqueness and forcing)
 \item FD-02: Alpha (fine structure constant derivation)
 \item FD-03: Dimension (3+1 spacetime from eigenvalues)
 \item FD-04: Masses (particle mass ratio predictions)
