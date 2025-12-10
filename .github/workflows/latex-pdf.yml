@@ -30,8 +30,12 @@ jobs:
           working_directory: pdf
           latexmk_use_lualatex: false
           root_file: |
+            FD-01-Genesis.tex
+            FD-02-Alpha.tex
+            FD-03-Dimension.tex
+            FD-04-Masses.tex
+            FD-05-Time.tex
             FirstDistinction_Summary.tex
-            FirstDistinction_Summary_DE.tex
 
       - name: List generated PDFs
         run: ls -la pdf/*.pdf 2>/dev/null || echo "No PDFs generated yet"
