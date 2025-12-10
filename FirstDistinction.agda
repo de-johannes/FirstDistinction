@@ -3004,36 +3004,38 @@ theorem-time-from-asymmetry = record
   ; minus-from-asymmetry = tt
   }
 
+-- TIME DIMENSION: Computed from K₄ structure
+-- K₄ has 4 vertices (from Genesis).
+-- The Laplacian eigenspace has dimension 3 (spatial embedding).
+-- The remaining dimension is temporal: 4 - 3 = 1
 time-dimensions : ℕ
-time-dimensions = 1
+time-dimensions = K4-V ∸ EmbeddingDimension
 
-t-from-drift-ordering : ℕ
-t-from-drift-ordering = 1
+theorem-time-is-1 : time-dimensions ≡ 1
+theorem-time-is-1 = refl
 
-t-from-forced-emergence : ℕ
-t-from-forced-emergence = 1
-
-t-from-signature-minus : ℕ
-t-from-signature-minus = 1
-
+-- Alternative derivations (all compute to the same value)
 t-from-spacetime-split : ℕ
 t-from-spacetime-split = 4 ∸ EmbeddingDimension
 
+-- CONSISTENCY: Multiple derivations all compute to the same value
 record TimeConsistency : Set where
   field
-    from-drift-ordering   : t-from-drift-ordering ≡ 1
-    from-forced-emergence : t-from-forced-emergence ≡ 1
-    from-signature-minus  : t-from-signature-minus ≡ 1
+    -- Primary: computed from K₄ structure
+    from-K4-structure     : time-dimensions ≡ (K4-V ∸ EmbeddingDimension)
+    -- Alternative: explicit subtraction
     from-spacetime-split  : t-from-spacetime-split ≡ 1
-    all-match             : time-dimensions ≡ 1
+    -- They match
+    both-give-1           : time-dimensions ≡ 1
+    -- And they're the same computation
+    splits-match          : time-dimensions ≡ t-from-spacetime-split
 
 theorem-t-consistency : TimeConsistency
 theorem-t-consistency = record
-  { from-drift-ordering   = refl
-  ; from-forced-emergence = refl
-  ; from-signature-minus  = refl
-  ; from-spacetime-split  = refl
-  ; all-match             = refl
+  { from-K4-structure    = refl
+  ; from-spacetime-split = refl
+  ; both-give-1          = refl
+  ; splits-match         = refl
   }
 
 record TimeExclusivity : Set where
