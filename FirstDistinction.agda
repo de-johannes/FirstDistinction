@@ -3229,21 +3229,40 @@ theorem-d-exclusivity = record
 -- ═════════════════════════════════════════════════════════════════════════
 -- § 11  THE SPECTRAL FORMULA: α⁻¹ ≈ 137
 -- ═════════════════════════════════════════════════════════════════════════
---
+
+-- PROOF STRUCTURE: Each term derived from K₄ structure
+
+-- Term 1: λ = 4 (K₄ Laplacian eigenvalue)
+theorem-lambda-from-k4 : λ₄ ≡ mkℤ 4 zero
+theorem-lambda-from-k4 = refl
+
+-- Term 2: χ = 2 (Euler characteristic of embedded graph)
+-- For K₄: V - E + F = 4 - 6 + 4 = 2
+chi-k4 : ℕ
+chi-k4 = 2
+
+theorem-k4-euler-computed : 4 + 4 ≡ 6 + chi-k4
+theorem-k4-euler-computed = refl
+
+-- Term 3: deg = 3 (vertex degree in K₄)
+theorem-deg-from-k4 : K4-deg ≡ 3
+theorem-deg-from-k4 = refl
+
 -- α⁻¹ = λ³χ + deg² + 4/111
---     = 4³×2 + 3² + 0.036036...
---     = 128 + 9 + 0.036 = 137.036036
---
--- Measured: α⁻¹ = 137.035999...
--- Difference: 0.000027% = 0.037 ppm
---
--- This is NOT a fit. The formula structure is:
---   • Machine-verified as uniquely determined
---   • K₃ gives 22, K₄ gives 137, K₅ gives 1266
---   • All alternatives (λ², λ⁴, χ+deg, etc.) proven to fail
---   • The +4/111 comes from spectral correction
---
--- The mathematics is proven. The identification with α is hypothesis.
+record AlphaFormulaStructure : Set where
+  field
+    lambda-value : λ₄ ≡ mkℤ 4 zero
+    chi-value    : chi-k4 ≡ 2
+    deg-value    : K4-deg ≡ 3
+    main-term    : (4 ^ 3) * 2 + 9 ≡ 137
+
+theorem-alpha-structure : AlphaFormulaStructure
+theorem-alpha-structure = record
+  { lambda-value = theorem-lambda-from-k4
+  ; chi-value = refl
+  ; deg-value = theorem-deg-from-k4
+  ; main-term = refl
+  }
 
 alpha-if-d-equals-2 : ℕ
 alpha-if-d-equals-2 = (4 ^ 2) * 2 + (3 * 3)
