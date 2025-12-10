@@ -2649,13 +2649,24 @@ theorem-edges-from-genesis-pairs : k4-edge-count ≡ count-distinct-pairs
 theorem-edges-from-genesis-pairs = refl
 
 -- For each K₄ edge, we can construct the corresponding Genesis pair
+-- Helper function mapping vertices to their Genesis IDs
+vertex-pair-to-genesis : K4Vertex → K4Vertex → GenesisID × GenesisID
+vertex-pair-to-genesis v₀ v₁ = D₀-id , D₁-id
+vertex-pair-to-genesis v₀ v₂ = D₀-id , D₂-id
+vertex-pair-to-genesis v₀ v₃ = D₀-id , D₃-id
+vertex-pair-to-genesis v₁ v₀ = D₁-id , D₀-id
+vertex-pair-to-genesis v₁ v₂ = D₁-id , D₂-id
+vertex-pair-to-genesis v₁ v₃ = D₁-id , D₃-id
+vertex-pair-to-genesis v₂ v₀ = D₂-id , D₀-id
+vertex-pair-to-genesis v₂ v₁ = D₂-id , D₁-id
+vertex-pair-to-genesis v₂ v₃ = D₂-id , D₃-id
+vertex-pair-to-genesis v₃ v₀ = D₃-id , D₀-id
+vertex-pair-to-genesis v₃ v₁ = D₃-id , D₁-id
+vertex-pair-to-genesis v₃ v₂ = D₃-id , D₂-id
+vertex-pair-to-genesis _ _ = D₀-id , D₀-id  -- Reflexive case (shouldn't occur for edges)
+
 edge-to-genesis-pair : K4Edge → GenesisID × GenesisID
-edge-to-genesis-pair edge-01 = D₀-id , D₁-id
-edge-to-genesis-pair edge-02 = D₀-id , D₂-id
-edge-to-genesis-pair edge-03 = D₀-id , D₃-id
-edge-to-genesis-pair edge-12 = D₁-id , D₂-id
-edge-to-genesis-pair edge-13 = D₁-id , D₃-id
-edge-to-genesis-pair edge-23 = D₂-id , D₃-id
+edge-to-genesis-pair (mkEdge src tgt _) = vertex-pair-to-genesis src tgt
 
 -- Each edge corresponds to a non-reflexive pair classification
 theorem-edge-01-classified : classify-pair D₀-id D₁-id ≡ already-exists
@@ -2681,13 +2692,14 @@ data EdgeStatus : Set where
   was-new-irreducible : EdgeStatus  -- Forced D₃
   was-already-exists  : EdgeStatus  -- Already captured
 
+-- Helper function to classify edges based on their vertices
+classify-edge-by-vertices : K4Vertex → K4Vertex → EdgeStatus
+classify-edge-by-vertices v₀ v₂ = was-new-irreducible  -- This forced D₃!
+classify-edge-by-vertices v₂ v₀ = was-new-irreducible  -- Symmetric
+classify-edge-by-vertices _ _ = was-already-exists
+
 edge-classification : K4Edge → EdgeStatus
-edge-classification edge-01 = was-already-exists
-edge-classification edge-02 = was-new-irreducible  -- This forced D₃!
-edge-classification edge-03 = was-already-exists
-edge-classification edge-12 = was-already-exists
-edge-classification edge-13 = was-already-exists
-edge-classification edge-23 = was-already-exists
+edge-classification (mkEdge src tgt _) = classify-edge-by-vertices src tgt
 
 -- PROOF: The new-irreducible pair (D₀,D₂) forced D₃, completing K₄
 theorem-K4-forced-by-irreducible-pair : 

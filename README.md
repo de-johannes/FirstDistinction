@@ -228,7 +228,7 @@ Current file stats (after rigor improvements):
 - **Theorems**: ~700 (all `refl` = type-checker verified)
 - **4-part proof structures**: 10 (Eigenspace, Dimension, Minkowski, Alpha, g-factor, Topological Brake, Mass Ratios, κ, time, K₄)
 - **Forcing theorems**: 4 (D₃ necessity, K₄ uniqueness, topological brake, mass exponents)
-- **Compilation**: Clean with `--safe --without-K` (only 2 benign warnings about unreachable clauses)
+- **Compilation**: Clean with `--safe --without-K` (zero warnings, zero errors)
 
 ---
 
