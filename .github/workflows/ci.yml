@@ -40,40 +40,5 @@ jobs:
           agda --safe --without-K --no-libraries FirstDistinction.agda
           echo "✅ FirstDistinction.agda compiles successfully"
 
-  validation-tests:
-    name: Run validation tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install Python dependencies
-        run: pip install numpy
-
-      - name: Run K₄ validation
-        run: |
-          python src/python/validate_K4.py
-          echo "✅ K₄ validation passed"
-
-      - name: Run Lambda validation
-        run: |
-          python src/python/validate_lambda.py
-          echo "✅ Lambda validation passed"
-
-      - name: Run Alpha validation
-        run: |
-          python src/python/validate_alpha.py
-          echo "✅ Alpha validation passed"
-
-      - name: Report test results
-        run: |
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "✅ All validation tests passed!"
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  # validation-tests job removed - src/python no longer exists
+  # All verification now done through Agda compilation with --safe --without-K

@@ -7,8 +7,6 @@ on:
       - '!main'  # Exclude main (release-ci handles that)
     paths:
       - 'FirstDistinction.agda'
-      - 'src/python/*.py'
-      - 'src/agda/**/*.agda'
       - '.github/workflows/test-ci.yml'
 
 permissions:
@@ -31,14 +29,6 @@ jobs:
         with:
           agda-version: '2.7.0.1'
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install Python dependencies
-        run: pip install numpy
-
       - name: Compile FirstDistinction.agda
         run: |
           echo "⏳ Compiling FirstDistinction.agda (--safe --without-K --no-libraries)..."
@@ -55,30 +45,6 @@ jobs:
             echo "✅ No holes found!"
           fi
 
-      - name: Run K₄ validation
-        run: |
-          echo "🧮 Running validate_K4.py..."
-          python src/python/validate_K4.py
-          echo "✅ K₄ tests passed!"
-
-      - name: Run α validation
-        run: |
-          echo "🧮 Running validate_alpha.py..."
-          python src/python/validate_alpha.py
-          echo "✅ α tests passed!"
-
-      - name: Run Λ validation
-        run: |
-          echo "🧮 Running validate_lambda.py..."
-          python src/python/validate_lambda.py
-          echo "✅ Λ tests passed!"
-
-      - name: Run cosmic age validation
-        run: |
-          echo "🧮 Running validate_cosmic_age.py..."
-          python src/python/validate_cosmic_age.py
-          echo "✅ Cosmic age tests passed!"
-
       - name: Summary
         if: always()
         run: |
@@ -87,7 +53,6 @@ jobs:
             echo "🎉 Test CI passed!"
             echo "   ✅ FirstDistinction.agda compiles (--safe --without-K)"
             echo "   ✅ No holes detected"
-            echo "   ✅ K₄, α, Λ, cosmic age validations"
           else
             echo "❌ Test CI failed!"
           fi

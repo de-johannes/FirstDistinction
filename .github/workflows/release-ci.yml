@@ -29,14 +29,6 @@ jobs:
         with:
           agda-version: '2.7.0.1'
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install Python dependencies
-        run: pip install numpy
-
       - name: Compile FirstDistinction.agda
         run: |
           echo "🚀 Compiling FirstDistinction.agda for release verification..."
@@ -79,29 +71,13 @@ jobs:
             echo "✅ No holes found!"
           fi
 
-      - name: Run K₄ validation
+      - name: Verification complete
         run: |
-          echo "🧮 Running validate_K4.py..."
-          python src/python/validate_K4.py
-          echo "✅ K₄ tests passed!"
-
-      - name: Run α validation
-        run: |
-          echo "🧮 Running validate_alpha.py..."
-          python src/python/validate_alpha.py
-          echo "✅ α tests passed!"
-
-      - name: Run Λ validation
-        run: |
-          echo "🧮 Running validate_lambda.py..."
-          python src/python/validate_lambda.py
-          echo "✅ Λ tests passed!"
-
-      - name: Run cosmic age validation
-        run: |
-          echo "🧮 Running validate_cosmic_age.py..."
-          python src/python/validate_cosmic_age.py
-          echo "✅ Cosmic age tests passed!"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "✅ All verification steps passed:"
+          echo "   ✅ FirstDistinction.agda compiles (--safe --without-K)"
+          echo "   ✅ No holes detected"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
   release:
     name: Create release on success
