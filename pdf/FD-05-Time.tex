@@ -154,8 +154,8 @@ By construction (FD-01), $K_4$ edges are defined as unordered pairs. The adjacen
 
 Formal verification (lines 3386--3387):
 \begin{verbatim}
-theorem-k4-edges-bidirectional : ∀ (e : K4Edge) → 
-  k4-edge-symmetric ≡ symmetric
+theorem-k4-edges-bidirectional : forall (e : K4Edge) ->
+  k4-edge-symmetric == symmetric
 theorem-k4-edges-bidirectional _ = refl
 \end{verbatim}
 \end{proof}
@@ -193,7 +193,7 @@ Lines 3389--3393:
 data DriftDirection : Set where
   genesis-to-k4 : DriftDirection
 
-theorem-drift-unidirectional : drift-asymmetric ≡ asymmetric
+theorem-drift-unidirectional : drift-asymmetric == asymmetric
 theorem-drift-unidirectional = refl
 \end{verbatim}
 \end{proof}
@@ -219,9 +219,9 @@ Map reversibility to metric signature:
 \begin{proof}[Implementation]
 Lines 3378--3380:
 \begin{verbatim}
-signature-from-reversibility : Reversibility → ℤ
-signature-from-reversibility symmetric  = 1ℤ
-signature-from-reversibility asymmetric = -1ℤ
+signature-from-reversibility : Reversibility → Z
+signature-from-reversibility symmetric  = 1Z
+signature-from-reversibility asymmetric = -1Z
 \end{verbatim}
 \end{proof}
 
@@ -250,7 +250,7 @@ signature-from-reversibility asymmetric = -1ℤ
 Define four indices for spacetime coordinates:
 \begin{verbatim}
 data SpacetimeIndex : Set where
-  τ-idx : SpacetimeIndex  -- temporal
+  tau-idx : SpacetimeIndex  -- temporal
   x-idx : SpacetimeIndex  -- spatial
   y-idx : SpacetimeIndex  -- spatial
   z-idx : SpacetimeIndex  -- spatial
@@ -284,7 +284,7 @@ Assign reversibility to each index:
 Lines 3413--3417:
 \begin{verbatim}
 index-reversibility : SpacetimeIndex → Reversibility
-index-reversibility τ-idx = asymmetric
+index-reversibility tau-idx = asymmetric
 index-reversibility x-idx = symmetric
 index-reversibility y-idx = symmetric
 index-reversibility z-idx = symmetric
@@ -315,31 +315,31 @@ Explicitly:
 \begin{proof}
 Lines 3419--3431 implement the metric:
 \begin{verbatim}
-minkowskiSignature : SpacetimeIndex → SpacetimeIndex → ℤ
-minkowskiSignature i j with i ≟-idx j
-... | false = 0ℤ
+minkowskiSignature : SpacetimeIndex → SpacetimeIndex → Z
+minkowskiSignature i j with i ?=-idx j
+... | false = 0Z
 ... | true  = signature-from-reversibility (index-reversibility i)
 \end{verbatim}
 
 Verification of diagonal components (lines 3433--3445):
 \begin{verbatim}
-verify-η-ττ : minkowskiSignature τ-idx τ-idx ≡ -1ℤ
-verify-η-ττ = refl
+verify-eta-tautau : minkowskiSignature tau-idx tau-idx == -1Z
+verify-eta-tautau = refl
 
-verify-η-xx : minkowskiSignature x-idx x-idx ≡ 1ℤ
-verify-η-xx = refl
+verify-eta-xx : minkowskiSignature x-idx x-idx == 1Z
+verify-eta-xx = refl
 
-verify-η-yy : minkowskiSignature y-idx y-idx ≡ 1ℤ
-verify-η-yy = refl
+verify-eta-yy : minkowskiSignature y-idx y-idx == 1Z
+verify-eta-yy = refl
 
-verify-η-zz : minkowskiSignature z-idx z-idx ≡ 1ℤ
-verify-η-zz = refl
+verify-eta-zz : minkowskiSignature z-idx z-idx == 1Z
+verify-eta-zz = refl
 \end{verbatim}
 
 Off-diagonal components are zero (lines 3447--3448):
 \begin{verbatim}
-verify-η-τx : minkowskiSignature τ-idx x-idx ≡ 0ℤ
-verify-η-τx = refl
+verify-eta-taux : minkowskiSignature tau-idx x-idx == 0Z
+verify-eta-taux = refl
 \end{verbatim}
 \end{proof}
 
@@ -358,13 +358,13 @@ The trace of the metric is:
 \begin{proof}
 Lines 3450--3456:
 \begin{verbatim}
-signatureTrace : ℤ
-signatureTrace = ((minkowskiSignature τ-idx τ-idx +ℤ 
-                   minkowskiSignature x-idx x-idx) +ℤ
-                   minkowskiSignature y-idx y-idx) +ℤ
+signatureTrace : Z
+signatureTrace = ((minkowskiSignature tau-idx tau-idx +Z 
+                   minkowskiSignature x-idx x-idx) +Z
+                   minkowskiSignature y-idx y-idx) +Z
                    minkowskiSignature z-idx z-idx
 
-theorem-signature-trace : signatureTrace ≃ℤ mkℤ 2 zero
+theorem-signature-trace : signatureTrace ~~ mkZ 2 zero
 theorem-signature-trace = refl
 \end{verbatim}
 \end{proof}
@@ -397,10 +397,10 @@ d_{\text{time}} = 4 - 3 = 1
 \begin{proof}
 Lines 3551--3555:
 \begin{verbatim}
-time-dimensions : ℕ
-time-dimensions = K4-V ∸ EmbeddingDimension
+time-dimensions : N
+time-dimensions = K4-V minus EmbeddingDimension
 
-theorem-time-is-1 : time-dimensions ≡ 1
+theorem-time-is-1 : time-dimensions == 1
 theorem-time-is-1 = refl
 \end{verbatim}
 \end{proof}
@@ -427,8 +427,8 @@ Lines 3524--3535:
 \begin{verbatim}
 record TemporalUniquenessProof : Set where
   field
-    drift-is-linear : ⊤
-    single-emergence : ⊤
+    drift-is-linear : Top
+    single-emergence : Top
     signature : LorentzSignatureStructure
     
 theorem-temporal-uniqueness : TemporalUniquenessProof
@@ -459,15 +459,15 @@ Lines 3588--3604:
 \begin{verbatim}
 record TimeExclusivity : Set where
   field
-    not-0D         : ¬ (time-dimensions ≡ 0)
-    not-2D         : ¬ (time-dimensions ≡ 2)
-    exactly-1D     : time-dimensions ≡ 1
-    signature-3-1  : EmbeddingDimension + time-dimensions ≡ 4
+    not-0D         : not (time-dimensions == 0)
+    not-2D         : not (time-dimensions == 2)
+    exactly-1D     : time-dimensions == 1
+    signature-3-1  : EmbeddingDimension + time-dimensions == 4
 
-lemma-1-not-0 : ¬ (1 ≡ 0)
+lemma-1-not-0 : not (1 == 0)
 lemma-1-not-0 ()
 
-lemma-1-not-2 : ¬ (1 ≡ 2)
+lemma-1-not-2 : not (1 == 2)
 lemma-1-not-2 ()
 
 theorem-t-exclusivity : TimeExclusivity
@@ -500,10 +500,10 @@ Lines 3461--3473:
 \begin{verbatim}
 record MinkowskiStructure : Set where
   field
-    one-asymmetric   : drift-asymmetric ≡ asymmetric
-    three-symmetric  : k4-edge-symmetric ≡ symmetric
-    spatial-count    : EmbeddingDimension ≡ 3
-    trace-value      : signatureTrace ≃ℤ mkℤ 2 zero
+    one-asymmetric   : drift-asymmetric == asymmetric
+    three-symmetric  : k4-edge-symmetric == symmetric
+    spatial-count    : EmbeddingDimension == 3
+    trace-value      : signatureTrace ~~ mkZ 2 zero
 
 theorem-minkowski-structure : MinkowskiStructure
 theorem-minkowski-structure = record
@@ -518,10 +518,10 @@ Additional consistency checks (lines 3564--3586):
 \begin{verbatim}
 record TimeConsistency : Set where
   field
-    from-K4-structure     : time-dimensions ≡ (K4-V ∸ EmbeddingDimension)
-    from-spacetime-split  : t-from-spacetime-split ≡ 1
-    both-give-1           : time-dimensions ≡ 1
-    splits-match          : time-dimensions ≡ t-from-spacetime-split
+    from-K4-structure     : time-dimensions == (K4-V minus EmbeddingDimension)
+    from-spacetime-split  : t-from-spacetime-split == 1
+    both-give-1           : time-dimensions == 1
+    splits-match          : time-dimensions == t-from-spacetime-split
 
 theorem-t-consistency : TimeConsistency
 theorem-t-consistency = record
