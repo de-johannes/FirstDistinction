@@ -1,6 +1,8 @@
-# Dependency Chain: From Genesis to Physical Constants
+# Dependency Chain: From Genesis to Observed Values
 
 This document traces how values are **computed** (not set) in FirstDistinction.agda.
+
+**Language note:** We say K₄ values "match observed constants" or "correspond to measured values" — NOT "are" or "prove" physics. The mathematical computation is proven. That it matches physical reality is a hypothesis.
 
 ## Why This Matters
 
@@ -74,15 +76,17 @@ theorem-time-is-1 = refl  -- computes: (4 ∸ 3) ≡ 1 ✓
 ```
 **Not set**: Computed as "total vertices minus spatial dimensions".
 
-### 3. **Fine Structure Constant α⁻¹ ≈ 137**
+### 3. **Spectral Ratio ≈ 137**
 ```agda
 alpha-from-laplacian : ℚ
-alpha-from-laplacian = [complex eigenvalue calculation from Laplacian spectrum]
+alpha-from-laplacian = [eigenvalue ratio from Laplacian spectrum]
 
 theorem-alpha-from-laplacian-real : alpha-from-laplacian ≈ 137.036
 theorem-alpha-from-laplacian-real = refl  -- numerical computation matches
 ```
 **Not circular**: The Laplacian is computed from K₄ adjacency. The eigenvalue ratio is computed from that matrix. The final `refl` just verifies the numerical result.
+
+**That this ratio matches α⁻¹ = 137.035999... is a hypothesis** — the math is proven, the physics interpretation is conjectured.
 
 ## The Pattern: Consistency × Exclusivity × Robustness × CrossConstraints
 
@@ -130,15 +134,20 @@ theorem = refl  -- Agda computed both sides, they match
 
 ## The Critical Question
 
-The validity hinges on Genesis (§9): **Is the forcing of exactly 4 distinctions legitimate?**
+The validity hinges on two claims:
+
+1. **Mathematical**: Is the Genesis → K₄ forcing legitimate?
+2. **Physical**: Do K₄ invariants correspond to observed reality?
 
 If Genesis is accepted, then:
 - K₄ follows necessarily
-- Its Laplacian has specific eigenvalues
-- Those eigenvalues encode specific ratios
+- Its Laplacian has specific eigenvalues  
+- Those eigenvalues compute to specific ratios
 - `refl` just confirms the arithmetic
 
-If Genesis is rejected, the entire chain collapses—but not because the proofs are trivial, because the **premise** is wrong.
+**But**: That these computed values **match physical observations** (α⁻¹, mass ratios, cosmic age) is a separate hypothesis. The math is proven. The physics is conjectured.
+
+If Genesis is rejected, the chain collapses—but not because proofs are trivial, because the **premise** is wrong.
 
 ## Recent Improvements (Commits)
 
