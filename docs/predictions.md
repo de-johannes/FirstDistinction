@@ -35,7 +35,7 @@ All parameters are K4 invariants:
 |---|------|
 | Predicted | 137.036 |
 | Measured | 137.035999084(21) |
-| Agreement | ~0.0001% |
+| Agreement | 0.0007% (tree+1-loop) |
 
 Calculation:
 
@@ -71,7 +71,7 @@ Source: Symmetric edges = positive, asymmetric drift = negative.
 |---|------|
 | Predicted | 1836 |
 | Measured | 1836.15267343(11) |
-| Agreement | ~0.01% |
+| Agreement | 0.008% |
 
 Formula:
 
@@ -130,8 +130,8 @@ Machine-verified in FirstDistinction.agda § 27-29 (~1100 lines).
 | | Value |
 |---|------|
 | Predicted | 13.8 Gyr |
-| Measured | 13.797(23) Gyr |
-| Agreement | ~0.02% |
+| Measured | 13.787(20) Gyr |
+| Agreement | 0.44% |
 
 Derived from Hubble expansion rate and K4 parameters.
 
