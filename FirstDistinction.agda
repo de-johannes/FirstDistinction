@@ -10091,8 +10091,16 @@ ln1plus x =
 -- Natural logarithm (approximate)
 -- For x > 1: write x = (1+y) and use ln(1+y)
 -- For x < 1: use ln(x) = -ln(1/x)
+--
+-- WARNING: This implementation is APPROXIMATE and only accurate for x ≈ 1
+-- For x >> 1 (like mass ratios 207, 17), the Taylor series converges slowly
+-- In practice, we use this symbolically to show the log-structure exists
+-- Full implementation would need:
+--   1. Range reduction: ln(x) = ln(x/2^k) + k×ln(2) for appropriate k
+--   2. Continued fraction for better convergence
+--   3. Validated error bounds
 lnℚ : ℚ → ℚ
-lnℚ x = ln1plus (x -ℚ 1ℚ)  -- Simplified, assumes x close to 1
+lnℚ x = ln1plus (x -ℚ 1ℚ)  -- Simplified, valid only for |x-1| < 1
 
 -- log₁₀(x) = ln(x) / ln(10)
 -- ln(10) ≈ 2.302585
