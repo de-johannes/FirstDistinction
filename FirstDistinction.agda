@@ -765,6 +765,17 @@ negℤ-distribˡ-*ℤ (mkℤ a b) (mkℤ c d) =
 -- ─────────────────────────────────────────────────────────────────────────
 -- ℝ as completion of ℚ: Cauchy sequences modulo equivalence
 --
+-- *** UNIVERSAL FOUNDATION FOR ALL CONTINUUM TRANSITIONS ***
+--
+-- This section (ℕ → ℝ via Cauchy sequences) is the mathematical foundation for:
+--   • § 21: Geometric continuum limit (spacetime/gravity)
+--     R_continuum = lim_{N→∞} R_discrete/N forms a Cauchy sequence
+--   • § 29c: Particle continuum transition (masses/QFT)
+--     PDG = lim_{ε→small} K₄ × (1-ε) forms a Cauchy sequence
+--
+-- MATHEMATICAL UNITY: Both use ℕ → ℝ transition from this section
+-- PHYSICAL DIVERSITY: § 21 (classical averaging) vs § 29c (quantum loops)
+--
 -- This allows us to represent continuous values like:
 --   - PDG masses: 206.768, 16.82, 125.10
 --   - Logarithms: log₁₀(207) = 2.315970...
@@ -9184,6 +9195,11 @@ theorem-discrete-einstein = theorem-einstein-symmetric
 --
 -- This explains observations: LIGO measures R ~ 10^-79 at macro scale,
 -- consistent with averaging discrete structure over enormous cell count.
+--
+-- FOUNDATION: Uses § 7c (ℕ → ℝ via Cauchy sequences)
+--   {R_d, R_d/2, R_d/3, ...} → 0 forms Cauchy sequence
+--   Mathematical basis: Same as § 29c (both use § 7c)
+--   Physical mechanism: Statistical averaging (1/N), different from § 29c
 
 record ContinuumGeometry : Set where
   field
@@ -10560,16 +10576,23 @@ theorem-continuum-transition-proof-structure = record
 -- § 21: Geometric continuum limit (TRUE continuum for spacetime)
 --   • Averaging: R_continuum = R_discrete / N
 --   • N → ∞: discrete curvature → smooth geometry
+--   • FOUNDATION: § 7c (ℕ → ℝ via Cauchy sequences)
 --   • Domain: Gravity, GR, spacetime
+--   • Physics: Classical averaging (1/N)
 --   • Emergent: Einstein equations
 --
 -- § 29c: Particle continuum (TRUE continuum for masses, THIS section)
+--   • Loop corrections: PDG = K₄ × (1 - ε/1000)
 --   • Algebraic: K₄(ℕ) → ℚ → ℝ via loop corrections
+--   • FOUNDATION: § 7c (ℕ → ℝ via Cauchy sequences)
 --   • Bare → dressed via QFT renormalization
 --   • Domain: Particle physics, masses, couplings
+--   • Physics: Quantum corrections (log(m))
 --   • Emergent: Standard Model measurements
 --
--- TWO continuum mechanisms (§21, §29c), ONE closure operator (§18)
+-- TWO continuum mechanisms (§21, §29c) share § 7c foundation, ONE closure operator (§18)
+-- MATHEMATICAL UNITY: Both use ℕ → ℝ transition from § 7c
+-- PHYSICAL DIVERSITY: § 21 (classical 1/N) vs § 29c (quantum log(m))
 
 
 -- PREDICTION: Future measurements will confirm
