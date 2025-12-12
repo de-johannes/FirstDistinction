@@ -850,6 +850,10 @@ _-ℝ_ : ℝ → ℝ → ℝ
 x -ℝ y = x +ℝ (-ℝ y)
 
 -- KEY: Embed PDG measurements as real numbers
+-- α⁻¹ = 137.035999177 (CODATA 2022)
+pdg-alpha-inverse : ℝ
+pdg-alpha-inverse = ℚtoℝ ((mkℤ 137035999177 zero) / suc⁺ (suc⁺ (suc⁺ (suc⁺ (suc⁺ (suc⁺ (suc⁺ (suc⁺ (suc⁺ one⁺)))))))))  -- 1000000000
+
 -- μ/e = 206.768283 (PDG 2024)
 pdg-muon-electron : ℝ
 pdg-muon-electron = ℚtoℝ ((mkℤ 206768283 zero) / suc⁺ (suc⁺ (suc⁺ (suc⁺ (suc⁺ (suc⁺ one⁺))))))  -- 1000000
@@ -863,14 +867,19 @@ pdg-higgs : ℝ
 pdg-higgs = ℚtoℝ ((mkℤ 12510 zero) / suc⁺ (suc⁺ one⁺))  -- 100
 
 -- K₄ bare values as reals (for comparison)
+-- α⁻¹ = 137 + 4/111 = (137×111 + 4)/111 = 15211/111 = 137.036036...
+k4-alpha-inverse : ℝ
+k4-alpha-inverse = ℚtoℝ ((mkℤ 15211 zero) / suc⁺ (suc⁺ (suc⁺ (suc⁺ (suc⁺ (suc⁺ (suc⁺ (suc⁺ (suc⁺ (suc⁺ one⁺))))))))))  -- 111
+
 k4-muon-electron : ℝ
 k4-muon-electron = ℚtoℝ ((mkℤ 207 zero) / one⁺)
 
 k4-tau-muon : ℝ
 k4-tau-muon = ℚtoℝ ((mkℤ 17 zero) / one⁺)
 
+-- Higgs = F₃/2 = 257/2 = 128.5 GeV (K₄ bare)
 k4-higgs : ℝ
-k4-higgs = ℚtoℝ ((mkℤ 128 zero) / one⁺)
+k4-higgs = ℚtoℝ ((mkℤ 257 zero) / suc⁺ one⁺)  -- 257/2 = 128.5
 
 -- ─────────────────────────────────────────────────────────────────────────
 -- § 7d  RATIONAL ARITHMETIC PROPERTIES (continued)
@@ -9853,21 +9862,22 @@ bare-tau-muon : ℕ
 bare-tau-muon = 17
 
 bare-higgs : ℕ
-bare-higgs = 128
+bare-higgs = 128  -- Note: Exact K₄ is 128.5 = F₃/2, rounded to ℕ
 
 -- Correction factors (in promille, ‰)
--- μ/e: (207 - 206.768) / 207 = 0.0011 = 1.1‰
--- τ/μ: (17 - 16.82) / 17 = 0.0106 = 10.6‰
--- Higgs: (128 - 125.1) / 128 = 0.0227 = 22.7‰
+-- α⁻¹: (137.036 - 137.036) / 137.036 = 0.0003‰ (perfect match!)
+-- μ/e: (207 - 206.768) / 207 = 1.1‰
+-- τ/μ: (17 - 16.82) / 17 = 10.8‰
+-- Higgs: (128.5 - 125.1) / 128.5 = 26.5‰ (using correct K₄ = 128.5)
 
 correction-muon-promille : ℕ
 correction-muon-promille = 1  -- 1.1‰ ≈ 1‰
 
 correction-tau-promille : ℕ
-correction-tau-promille = 11  -- 10.6‰ ≈ 11‰
+correction-tau-promille = 11  -- 10.8‰ ≈ 11‰
 
 correction-higgs-promille : ℕ
-correction-higgs-promille = 23  -- 22.7‰ ≈ 23‰
+correction-higgs-promille = 27  -- 26.5‰ ≈ 27‰ (K₄ = 128.5)
 
 -- The KEY THEOREM: Corrections are SYSTEMATIC, not random
 --
@@ -9972,13 +9982,13 @@ theorem-universal-correction : UniversalCorrectionHypothesis
 theorem-universal-correction = record
   { muon-small = 0
   ; tau-small = 0
-  ; higgs-small = 3
+  ; higgs-small = 3  -- 26.5‰ rounds to 3% (27/10 = 2.7%)
   ; all-less-than-3-percent = (z≤n , z≤n , s≤s (s≤s (s≤s z≤n)))
   ; muon-positive = ≤-refl
   ; tau-positive = ≤-refl
   ; higgs-positive = ≤-step (≤-step (≤-step ≤-refl))
-  ; scaling-with-mass = (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step ≤-refl)))))))))))) , 
-                         ≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step ≤-refl)))))))))
+  ; scaling-with-mass = (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (≤-refl)))))))))))))))))) , 
+                         (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (≤-refl)))))))))))
   ; all-reproducible = true
   }
 
@@ -10172,9 +10182,10 @@ theorem-epsilon-formula = record
 -- PART 1: OFFSET A FROM K₄ GEOMETRY
 --
 -- Observation: All bare values exceed dressed values
+--   137.036 > 137.036 (α⁻¹, ε ≈ 0)
 --   207 > 206.768 (μ/e)
 --   17 > 16.82 (τ/μ)
---   128 > 125.10 (Higgs)
+--   128.5 > 125.10 (Higgs, using F₃/2)
 --
 -- This means ε > 0 always (positive corrections).
 -- At reference mass m = 1, ε(1) = A + 0 = A
@@ -10370,9 +10381,10 @@ theorem-parameters-derived = record
 -- where ε(m) = -14.58 + 6.96 log₁₀(m/mₑ) in promille (‰)
 --
 -- EVIDENCE:
+--   α⁻¹: 137.036 → 137.036 (ε ≈ 0‰, perfect match!)
 --   μ/e: 207 → 206.768 (ε = 1.1‰)
 --   τ/μ: 17  → 16.82   (ε = 10.8‰)
---   H:   128 → 125.10  (ε = 22.7‰)
+--   H:   128.5 → 125.10  (ε = 26.5‰, using K₄ = F₃/2 = 128.5)
 --
 -- All corrections follow the SAME formula → Universal!
 -- ─────────────────────────────────────────────────────────────────────────
@@ -10433,12 +10445,12 @@ tau-transition = record
   ; correction-is-small = true
   }
 
--- Higgs transition: 128 → 125.10
+-- Higgs transition: 128.5 → 125.10 (K₄ bare is F₃/2 = 257/2)
 higgs-transition : ContinuumTransition
 higgs-transition = record
-  { k4-bare = 128
+  { k4-bare = 128  -- Rounded from 128.5 for ℕ; exact is in k4-higgs : ℝ
   ; pdg-measured = pdg-higgs
-  ; epsilon = observed-epsilon-higgs  -- 22.7‰
+  ; epsilon = observed-epsilon-higgs  -- 26.5‰ (using K₄ = 128.5)
   ; epsilon-is-universal = true
   ; is-smooth = true
   ; correction-is-small = true
@@ -10656,7 +10668,7 @@ theorem-higgs-yukawa-complete = record
 --   ✓ Proton χ² = spin structure (4 components), forced
 --   ✓ Proton d³ = QCD volume (3 quarks × 3 colors × 3D), forced
 --   ✓ Muon d² = 2D surface (2nd generation → 2D structure), forced
---   ✓ K₄ gives INTEGERS: μ/e=207, τ/μ=17, m_H=128 GeV
+--   ✓ K₄ gives INTEGERS: μ/e=207, τ/μ=17, m_H=128.5 GeV (F₃/2)
 --
 -- WHAT IS HYPOTHESIS (physics):
 --   ? K₄ structure corresponds to spacetime substrate
@@ -10664,7 +10676,7 @@ theorem-higgs-yukawa-complete = record
 --   ? d = 3 corresponds to spatial dimensions
 --   ? Discrete integers → continuum via renormalization/running
 --   ? Mass ratios 207, 17 approximate observed 206.768, 16.82
---   ? Higgs 128 GeV approximates observed 125 GeV
+--   ? Higgs 128.5 GeV approximates observed 125.1 GeV (2.7% error)
 --
 -- OBSERVATIONAL STATUS:
 --   • Numerical matches are REMARKABLE (0.000027% for α)
@@ -10676,7 +10688,7 @@ theorem-higgs-yukawa-complete = record
 --
 -- THE DISCRETE → CONTINUUM TRANSITION:
 --   Observer measures expectation values ⟨ψ|M|ψ⟩, not discrete eigenvalues
---   - Discrete K₄ eigenvalues: 207, 17, 128 (exact integers)
+--   - Discrete K₄ eigenvalues: 207, 17, 128.5 (exact integers/half-integers)
 --   - Observed continuum: 206.768, 16.82, 125.10 (renormalized)
 --   - Difference from: quantum corrections, running couplings, loops
 --   - Similar to Lattice QCD: discrete → continuum requires a → 0 limit
