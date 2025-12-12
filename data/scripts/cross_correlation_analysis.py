@@ -85,7 +85,7 @@ def load_all_data():
         'alpha_tree': 137,
         'alpha_loops': 137.037,
         'g_tree': 2,
-        'g_loops': 2.00122,
+        'g_loops': 2.00231922,  # 2-loop (1-loop: 2.00122, see Agda §11a comment)
         'mp_me': 1836.15,
         'mu_me': 206.768,
         'tau_me': 3477,

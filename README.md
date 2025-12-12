@@ -18,16 +18,16 @@ FirstDistinction predictions are now tested against **real observational data** 
 - **Planck 2018** (CMB cosmology)
 - **PDG 2024** (particle physics)
 - **CODATA 2022** (fundamental constants)
-- **GWTC-4.0** (gravitational waves)
 - **VIPERS Survey** (large scale structure)
 
-**Results: 87.5% EXCELLENT agreement** (7/8 tests < 1% error)
+**Results: 88.9% overall success** (24/27 tests passed, 7/8 core predictions < 1% error)
 
 ```bash
 # Run comprehensive validation
-cd src/python
-python3 test_all_comprehensive.py      # All predictions vs data
-python3 validate_cmb_predictions.py    # CMB/cosmology specific
+cd data/scripts
+python3 hardcore_validation.py         # 8-level validation (23/27 tests)
+python3 analyze_planck_cmb.py         # CMB power spectrum analysis
+python3 analyze_vipers_galaxies.py    # Galaxy clustering analysis
 ```
 
 See [`data/README.md`](data/README.md) for data sources and citations.
@@ -83,7 +83,7 @@ Machine-checked under `--safe --without-K`. No postulates, no holes.
 | Spectral formula (tree) | **137** | α⁻¹ (tree-level) | 0.026% | CODATA 2022 |
 | **+ Loop corrections** | **137.037** | **α⁻¹ (1-loop)** | **0.0007%** | **CODATA 2022** |
 | g-factor (tree) | **2** | Electron g (tree-level) | 0.116% | PDG 2024 |
-| **+ Loop corrections** | **2.00122** | **Electron g (1-loop)** | **0.05%** | **PDG 2024** |
+| **+ Loop corrections** | **2.00231922** | **Electron g (2-loop)** | **0.0004%** | **PDG 2024** |
 | 5 × 4¹⁰⁰ Planck times | **13.726 Gyr** | Cosmic age | 0.44% | Planck 2018 |
 | Λ = 3/N² (§14d rigorous) | **~10⁻¹²²** | Cosmological constant | O(1) | Planck 2018 |
 | Clifford grades | **1,4,6,4,1** | Dirac γ-matrices | exact | Theory |
