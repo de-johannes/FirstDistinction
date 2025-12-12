@@ -474,7 +474,7 @@ alpha-inverse = 137 + V / (deg * (E^2 + 1))
 
 | Source | Value |
 |--------|-------|
-| FD (First Distinction) | 137.036036... |
+| FD (First Distinction) | 137.036036... (fractional) |
 | CODATA 2018 | 137.035999084(21) |
 | Deviation | 0.000027% |
 

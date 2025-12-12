@@ -260,9 +260,9 @@ If any of these are found, the framework fails.
 |----------|----------|----------------|-------|
 | d (spatial) | 3 | 3 | Exact |
 | t (temporal) | 1 | 1 | Exact |
-| alpha-inverse | 137.036 | 137.036 | 0.0001% |
-| m_p/m_e | 1836 | 1836.15 | 0.01% |
-| tau | 13.8 Gyr | 13.8 Gyr | 0.1% |
+| alpha-inverse | 137.036 | 137.036 | 0.000027% |
+| m_p/m_e | 1836 | 1836.15 | 0.008% |
+| tau | 13.726 Gyr | 13.787 Gyr | 0.44% |
 
 ---
 

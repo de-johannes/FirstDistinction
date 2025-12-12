@@ -232,7 +232,9 @@ alpha-inverse (CODATA) = 137.035999177(21)
 
 Predicted: 137 + 4/111 = 137.036036...
 
-Agreement: **0.000027%** (the denominator 111 = deg × (E²+1) is derived)
+Agreement: **0.000027%** (fractional part)
+
+*Note: With 1-loop corrections (137.037), agreement is 0.0007%.*
 
 ```agda
 theorem-alpha-integer : integer-part alpha == 137
@@ -305,13 +307,13 @@ Approximate: 70 km/s/Mpc
 ## Predictions Summary
 
 | Observable | Predicted | Measured |
-|------------|-----------|----------|
+|------------|-----------|----------| 
 | Spatial dimensions | 3 | 3 |
 | Time dimension | 1 | 1 |
 | Metric signature | (-, +, +, +) | (-, +, +, +) |
 | alpha-inverse | 137.036 | 137.036 |
 | m_p/m_e | 1836 | 1836.15 |
-| tau (age) | 13.8 Gyr | 13.8 Gyr |
+| tau (age) | 13.726 Gyr | 13.787 Gyr |
 
 ---
 

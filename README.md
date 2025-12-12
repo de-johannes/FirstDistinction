@@ -215,7 +215,7 @@ Every term derived, none fitted.
 
 **7. Mass Ratios (lines 7194-7400):**  
    - Proton: χ²×d³×F₂ = 4×27×17 = 1836 (observed: 1836.15)
-   - Muon: d²×23 = 9×23 = 207 (observed: 206.77)
+   - Muon: d²×23 = 9×23 = 207 (observed: 206.768)
    - Exclusivity: Only χ²×d³ works (χ¹×d³ = 918, χ³×d² = 1224, etc.)
 
 ### Verification (§16a-17, rigor improvement #11)
