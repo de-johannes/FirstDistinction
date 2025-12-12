@@ -35,7 +35,7 @@ All parameters are K4 invariants:
 |---|------|
 | Predicted | 137.036 |
 | Measured | 137.035999084(21) |
-| Agreement | 0.00007% |
+| Agreement | ~0.0001% |
 
 Calculation:
 
@@ -71,7 +71,7 @@ Source: Symmetric edges = positive, asymmetric drift = negative.
 |---|------|
 | Predicted | 1836 |
 | Measured | 1836.15267343(11) |
-| Agreement | 0.008% |
+| Agreement | ~0.01% |
 
 Formula:
 
@@ -85,10 +85,10 @@ m_p/m_e = alpha-inverse * f(lambda, deg)
 
 | Ratio | K₄ Integer | Observed | Correction ε | Formula Match |
 |-------|-----------|----------|--------------|---------------|
-| μ/e | **207** | 206.768 | 1.1‰ | 1.5‰ (0.4‰ error) |
-| τ/μ | **17** (F₂) | 16.82 | 10.6‰ | 10.1‰ (0.5‰ error) |
+| μ/e | **207** | 206.768 | 1.1‰ | ~1‰ (pattern) |
+| τ/μ | **17** (F₂) | 16.82 | 10.6‰ | ~11‰ (pattern) |
 | τ/e | **3519** | 3477.2 | 11.9‰ | (composition) |
-| Higgs | **128 GeV** | 125.10 | 22.7‰ | 22.9‰ (0.2‰ error) |
+| Higgs | **128.5 GeV** (F₃/2) | 125.10 | 27‰ | ~27‰ (pattern) |
 
 **Universal Correction Formula (§29a-d):**
 
@@ -120,7 +120,7 @@ m_p/m_e = alpha-inverse * f(lambda, deg)
 - ✓ Higgs field: φ = 1/√2 from deg/E = 3/6 (exact, no parameters)
 - ✓ 3 generations: From eigenvalue degeneracy {4,4,4} (no 4th possible)
 - ✓ Fermat primes: F₀=3, F₁=5, F₂=17, F₃=257 (mass hierarchy)
-- ✓ **No free parameters**: A and B derived from (E,χ,V) and (αₛ,β₀)
+- ✓ **Zero tunable parameters once K₄ is fixed**: A and B derived from (E,χ,V) and (αₛ,β₀)
 - ✓ **Predictive**: Formula extends to any new particle mass
 
 Machine-verified in FirstDistinction.agda § 27-29 (~1100 lines).
@@ -131,7 +131,7 @@ Machine-verified in FirstDistinction.agda § 27-29 (~1100 lines).
 |---|------|
 | Predicted | 13.8 Gyr |
 | Measured | 13.797(23) Gyr |
-| Agreement | 0.02% |
+| Agreement | ~0.02% |
 
 Derived from Hubble expansion rate and K4 parameters.
 
@@ -166,7 +166,7 @@ The integer part 137 is robust against derivation path.
 
 ## Testable Claims
 
-### Claim 1: No free parameters
+### Claim 1: Zero tunable parameters once K₄ is fixed
 
 Every number in the derivation comes from K4.
 
