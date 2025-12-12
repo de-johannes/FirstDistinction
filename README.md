@@ -20,7 +20,8 @@ FirstDistinction predictions are now tested against **real observational data** 
 - **CODATA 2022** (fundamental constants)
 - **VIPERS Survey** (large scale structure)
 
-**Results: 100% validation success** (27/27 tests passed, 7/8 core predictions < 1% error, median error 0.1%)
+**Results: 27/27 integrity checks passed** (no fitting, no tuning, no manipulation)
+**Physical predictions**: 7/8 < 1% error (median 0.1%, max 2.7%)
 
 ```bash
 # Run comprehensive validation
@@ -103,9 +104,9 @@ K₄ computes **bare masses** (Planck scale, no loops). PDG measures **dressed m
 
 | Particle | K₄ Integer | Continuum (obs) | Correction ε | Formula Prediction |
 |----------|------------|-----------------|--------------|--------------------|
-| **Higgs mass** | **128 GeV** (F₃/2) | 125.10 GeV | 22.7‰ | 22.9‰ (0.2‰ error) |
-| **μ/e ratio** | **207** | 206.768 | 1.1‰ | 1.5‰ (0.4‰ error) |
-| **τ/μ ratio** | **17** (F₂) | 16.82 | 10.6‰ | 10.1‰ (0.5‰ error) |
+| **Higgs mass** | **128.5 GeV** (F₃/2) | 125.10 GeV | 27‰ | ~27‰ (pattern) |
+| **μ/e ratio** | **207** (9×23) | 206.768 | 1.1‰ | ~1‰ (pattern) |
+| **τ/μ ratio** | **17** (F₂) | 16.82 | 10.9‰ | ~11‰ (pattern) |
 | **τ/e ratio** | **3519** (207×17) | 3477.2 | 11.9‰ | (composition) |
 | Proton/electron | **1836** (χ²d³F₂) | 1836.15 | 0.8‰ | Combinatorial |
 
@@ -226,7 +227,7 @@ Compilation with `--safe --without-K` enforces:
 - No postulates (no unproven assumptions)
 - No univalence (no choice principles)
 
-**Every constant computes from K₄ invariants. Zero free parameters.**
+**Every constant computes from K₄ invariants. Zero tunable parameters once K₄ is fixed.**
 
 ---
 
