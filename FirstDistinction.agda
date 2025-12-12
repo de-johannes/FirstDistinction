@@ -8943,18 +8943,21 @@ theorem-derivation-chain = record
 
 
 -- ─────────────────────────────────────────────────────────────────────────
--- § 18  ONE-POINT COMPACTIFICATION
+-- § 18  ONE-POINT COMPACTIFICATION (Closure Operator, NOT Continuum)
 -- ─────────────────────────────────────────────────────────────────────────
 --
--- MATHEMATICAL PRINCIPLE: Discrete → Continuous requires closure
+-- MATHEMATICAL PRINCIPLE: Adds limit point to finite sets
 --
 -- For finite set X with n elements, X* = X ∪ {∞} has n+1 elements.
+-- This is DISCRETE → DISCRETE (both ℕ), NOT discrete → continuous!
+--
 -- The ∞ point represents:
 --   • Topological closure (limit point)
 --   • Invariant fixed point under symmetry group
 --   • Free/asymptotic state (no interaction)
 --
--- THEOREM: This +1 appears systematically in K₄-derived structures
+-- PURPOSE: Explains the +1 in K₄-derived formulas (α, Fermat primes)
+-- NOT ABOUT: Smooth continuum (see §21 for geometry, §29c for particles)
 
 data OnePointCompactification (A : Set) : Set where
   finite : A → OnePointCompactification A
@@ -9097,6 +9100,9 @@ theorem-compactification-proof-structure = record
 --   • Exclusivity: +0 (not closed), +1 (unique), +2 (ambiguous)
 --   • Robustness: Same pattern for vertices, spinors, couplings
 --   • CrossConstraints: Connects α, Fermat primes, symmetry, QFT
+--
+-- NOTE: This is a CLOSURE OPERATOR (discrete→discrete), NOT a continuum
+-- mechanism (discrete→smooth). For continuum, see §21 (geometry) and §29c (particles).
 
 
 -- ─────────────────────────────────────────────────────────────────────────
@@ -10543,10 +10549,27 @@ theorem-continuum-transition-proof-structure = record
 --   • Robustness: All three predictions within 1‰ of observations
 --   • CrossConstraints: A from geometry, B from QFT, connects §7c,18,21,29d
 
--- THREE DISTINCT CONTINUUM MECHANISMS:
---   § 18: Topological closure (X → X* = X ∪ {∞})
---   § 21: Geometric averaging (R_d/N → R_c)
---   § 29c: Algebraic completion (ℕ → ℚ → ℝ via QFT corrections)
+-- RELATION TO OTHER DISCRETE→CONTINUOUS TRANSITIONS:
+--
+-- § 18: One-point compactification (NOT a continuum mechanism!)
+--   • Adds limit point: X → X* = X ∪ {∞}
+--   • Discrete → discrete: 4→5, 16→17, 36→37 (all ℕ)
+--   • Explains +1 in formulas (α denominator, Fermat primes)
+--   • Physical: asymptotic/free state, NOT smoothing
+--
+-- § 21: Geometric continuum limit (TRUE continuum for spacetime)
+--   • Averaging: R_continuum = R_discrete / N
+--   • N → ∞: discrete curvature → smooth geometry
+--   • Domain: Gravity, GR, spacetime
+--   • Emergent: Einstein equations
+--
+-- § 29c: Particle continuum (TRUE continuum for masses, THIS section)
+--   • Algebraic: K₄(ℕ) → ℚ → ℝ via loop corrections
+--   • Bare → dressed via QFT renormalization
+--   • Domain: Particle physics, masses, couplings
+--   • Emergent: Standard Model measurements
+--
+-- TWO continuum mechanisms (§21, §29c), ONE closure operator (§18)
 
 
 -- PREDICTION: Future measurements will confirm

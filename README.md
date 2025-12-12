@@ -132,6 +132,11 @@ K₄ computes **bare masses** (Planck scale, no loops). PDG measures **dressed m
 **§27 proves**: Higgs field φ = 1/√2 from deg/E = 3/6 (exact), 3 generations from {4,4,4} eigenvalues  
 **§29a-d prove**: Universal correction from K₄ topology + QFT renormalization group
 
+**Note on discrete→continuous transitions:**
+- **§18**: One-point compactification (adds ∞, NOT continuum) — explains +1 in formulas
+- **§21**: Geometric continuum (R_d/N → R_c) — gravity, spacetime
+- **§29c**: Particle continuum (ℕ→ℚ→ℝ via loops) — masses, couplings
+
 **The K₄ computations are proven. The quantum corrections are derived. The predictions match observations.**
 
 ---
