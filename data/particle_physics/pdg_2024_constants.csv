@@ -1,0 +1,28 @@
+# Particle Data Group 2024 - Fundamental Constants
+# Source: https://pdg.lbl.gov/
+# Retrieved: December 2025
+# License: Free for academic use
+
+Constant,Symbol,Value,Uncertainty,Unit,Reference
+Fine structure constant (inverse),α⁻¹,137.035999177,0.000000021,dimensionless,CODATA 2022
+Electron g-factor,g_e,2.00231930436256,0.00000000000035,dimensionless,PDG 2024
+Proton-to-electron mass ratio,m_p/m_e,1836.15267343,0.00000011,dimensionless,CODATA 2022
+Muon-to-electron mass ratio,m_μ/m_e,206.768283,0.000000,dimensionless,PDG 2024
+Tau-to-electron mass ratio,m_τ/m_e,3477.23,0.23,dimensionless,PDG 2024
+Electron mass,m_e,0.51099895000,0.00000000015,MeV,CODATA 2022
+Muon mass,m_μ,105.6583755,0.0000023,MeV,PDG 2024
+Tau mass,m_τ,1776.86,0.12,MeV,PDG 2024
+Proton mass,m_p,938.27208816,0.00000029,MeV,CODATA 2022
+Neutron mass,m_n,939.56542052,0.00000054,MeV,CODATA 2022
+W boson mass,M_W,80.377,0.012,GeV,PDG 2024
+Z boson mass,M_Z,91.1876,0.0021,GeV,PDG 2024
+Higgs boson mass,M_H,125.10,0.14,GeV,ATLAS+CMS 2022
+Top quark mass,m_t,172.57,0.29,GeV,PDG 2024
+Bottom quark mass,m_b,4.18,0.03,GeV,PDG 2024
+Charm quark mass,m_c,1.27,0.02,GeV,PDG 2024
+Strange quark mass,m_s,0.093,0.011,GeV,PDG 2024
+Down quark mass,m_d,0.00467,0.00048,GeV,PDG 2024
+Up quark mass,m_u,0.00216,0.00049,GeV,PDG 2024
+Strong coupling constant,α_s(M_Z),0.1179,0.0010,dimensionless,PDG 2024
+Weak mixing angle,sin²θ_W,0.23122,0.00004,dimensionless,PDG 2024
+Fermi constant,G_F,1.1663787e-5,0.0000006e-5,GeV⁻²,CODATA 2022

@@ -1,0 +1,22 @@
+# Planck 2018 Cosmological Parameters
+# Source: Planck Collaboration 2020, A&A 641, A6
+# URL: https://www.aanda.org/articles/aa/abs/2020/09/aa33880-18/aa33880-18.html
+# Data: TT,TE,EE+lowE+lensing (baseline)
+
+Parameter,Symbol,Value,Uncertainty_lower,Uncertainty_upper,Unit,Description
+Age of Universe,t_0,13.787,0.020,0.020,Gyr,Current age from Big Bang
+Hubble constant,H_0,67.66,0.42,0.42,km/s/Mpc,Expansion rate today
+Baryon density,Ω_b h²,0.02242,0.00014,0.00014,dimensionless,Physical baryon density
+Cold dark matter density,Ω_c h²,0.11933,0.00091,0.00091,dimensionless,Physical CDM density
+Matter density,Ω_m,0.3111,0.0056,0.0056,dimensionless,Total matter density parameter
+Dark energy density,Ω_Λ,0.6889,0.0056,0.0056,dimensionless,Cosmological constant density
+Curvature density,Ω_K,0.0007,0.0019,0.0019,dimensionless,Spatial curvature (consistent with 0)
+Optical depth,τ,0.0561,0.0071,0.0071,dimensionless,Reionization optical depth
+Scalar spectral index,n_s,0.9665,0.0038,0.0038,dimensionless,Primordial power spectrum tilt
+Scalar amplitude,ln(10¹⁰ A_s),3.047,0.014,0.014,dimensionless,Primordial fluctuation amplitude
+Derived redshift,z_*,1089.80,0.21,0.21,dimensionless,Redshift of recombination
+Derived age at decoupling,t_*,372330,1090,1090,years,Age at recombination
+Sound horizon,r_s,144.43,0.26,0.26,Mpc,Sound horizon at drag epoch
+Angular diameter distance,D_A,13.807,0.028,0.028,Gpc,Angular diameter distance to CMB
+Redshift at reionization,z_re,7.82,0.71,0.71,dimensionless,Midpoint reionization redshift
+Sigma_8,σ_8,0.8118,0.0089,0.0089,dimensionless,Amplitude of matter fluctuations at 8 Mpc/h

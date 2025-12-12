@@ -1,0 +1,26 @@
+# VIPERS Survey Summary Data
+# VIMOS Public Extragalactic Redshift Survey
+# Source: Guzzo et al. (2014), Scodeggio et al. (2018)
+# URL: http://vipers.inaf.it/
+# Coverage: Two fields (W1, W4) in CFHTLS Wide
+
+Dataset,Value,Uncertainty,Unit,Description,Reference
+Total galaxies,89022,0,count,Spectroscopic redshifts measured,VIPERS PDR-2
+Redshift range min,0.4,0.0,dimensionless,Lower redshift limit,Survey design
+Redshift range max,1.2,0.0,dimensionless,Upper redshift limit,Survey design
+Median redshift,0.72,0.02,dimensionless,Median of sample,Scodeggio+2018
+Survey area,23.5,0.1,deg²,Total sky coverage (W1+W4),Survey design
+Comoving volume,5.0e7,0.2e7,Mpc³/h³,Total survey volume,Calculated
+Sampling rate,0.35,0.02,dimensionless,Target sampling fraction,Survey design
+Success rate,0.90,0.01,dimensionless,Redshift measurement success,Quality control
+
+# Clustering Measurements
+Correlation_function_r0,5.48,0.16,Mpc/h,Correlation length at z~0.7,de la Torre+2013
+Bias_parameter,1.51,0.07,dimensionless,Galaxy bias at z~0.7,Marulli+2013
+Growth_rate_fσ8,0.47,0.08,dimensionless,RSD measurement at z~0.85,Pezzotta+2017
+BAO_scale,101.0,2.1,Mpc,Baryon acoustic oscillation at z~0.7,Granett+2015
+
+# Compared to ΛCDM predictions
+LCDM_fσ8_predicted,0.473,0.008,dimensionless,Planck ΛCDM at z~0.85,Planck 2018
+Agreement,0.95,0.10,sigma,Difference in sigma units,Deviation
+LCDM_bias_predicted,1.48,0.05,dimensionless,Expected bias at z~0.7,Halo model

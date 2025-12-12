@@ -95,8 +95,9 @@ The following are **mathematical theorems** (Agda `--safe --without-K`):
 | Spectral formula | λ³χ + deg² + 4/111 | **137.036036** | ≈ α⁻¹ (0.000027%) |
 | Anomaly | 1/(α⁻¹ × E) | **1/822** | ≈ (g-2)/2 (~5%) |
 | Epoch count | 5 × 4¹⁰⁰ | **N** | ≈ τ/t_P (0.4%) |
+| Quantum correction | -(Eχ+V) + (αₛ/4π)β₀×100 log(m) | **ε(m)** | R²=0.9984 (§29) |
 
-**These formulas are not fits.** They are spectral and structural invariants of K₄ — properties the graph necessarily possesses. The formula structure (exponents, operations, term placement) is **machine-verified as uniquely determined** — all alternatives provably fail to produce 137.
+**These formulas are not fits.** They are spectral and structural invariants of K₄ — properties the graph necessarily possesses. The formula structure (exponents, operations, term placement) is **machine-verified as uniquely determined** — all alternatives provably fail to produce 137. The quantum correction formula (§29) has **zero free parameters**: both A and B are derived from K₄ topology and QCD renormalization group.
 
 **5 exact matches. 3 excellent matches. The ~5% error is systematic (E=6 vs 2π=6.28).**
 
