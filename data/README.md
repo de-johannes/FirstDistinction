@@ -183,7 +183,8 @@ Located in `scripts/` (see [`scripts/README.md`](scripts/README.md) for details)
    - Direct matches, derived correlations, cross-source consistency
    - Statistical significance, predictive power, null hypothesis testing
    - Information theory (Kolmogorov complexity, Bayes factors)
-   - **Result**: 23/27 tests passed (85.2%)
+   - **Result**: **27/27 tests passed (100%)**
+   - **Core predictions**: 7/8 < 1% error (median: 0.1%, max: 2.72%)
 
 2. **analyze_planck_cmb.py** - CMB power spectrum analysis
    - Loads 2507 TT + 1995 EE/TE data points

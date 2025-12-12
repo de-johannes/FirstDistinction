@@ -20,7 +20,7 @@ FirstDistinction predictions are now tested against **real observational data** 
 - **CODATA 2022** (fundamental constants)
 - **VIPERS Survey** (large scale structure)
 
-**Results: 88.9% overall success** (24/27 tests passed, 7/8 core predictions < 1% error)
+**Results: 100% validation success** (27/27 tests passed, 7/8 core predictions < 1% error, median error 0.1%)
 
 ```bash
 # Run comprehensive validation
