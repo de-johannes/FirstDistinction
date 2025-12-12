@@ -8148,7 +8148,7 @@ theorem-winding-3 = refl
 -- PROOF STRUCTURE: Mass ratios from K₄ topology
 --
 -- Proton: m_p/m_e = χ² × d³ × F₂ = 4 × 27 × 17 = 1836 (observed: 1836.15)
--- Muon:   m_μ/m_e = d² × 23 = 9 × 23 = 207 (observed: 206.77)
+-- Muon:   m_μ/m_e = d² × 23 = 9 × 23 = 207 (observed: 206.768283)
 --
 -- DERIVATION (from MassRatios-Derivation.agda):
 --
@@ -9672,8 +9672,8 @@ theorem-higgs-mechanism-consistency = record
 -- NUMERICAL VALIDATION: 0.4% average error (k4_eigenmodes_v4_exponents.py)
 --
 -- Key Results:
---   • μ/e = (F₁/F₀)^10.44 ≈ 207  (observed: 206.77, error: 0.14%)
---   • τ/μ = F₂ = 17              (observed: 16.82,  error: 1.1%)
+--   • μ/e = (F₁/F₀)^10.44 ≈ 207  (observed: 206.768, error: 0.11%)
+--   • τ/μ = F₂ = 17              (observed: 16.8170, error: 1.09%)
 --   • τ/e = 207 × 17 = 3519      (observed: 3477.2, error: 1.2%)
 --
 -- Discovery:
