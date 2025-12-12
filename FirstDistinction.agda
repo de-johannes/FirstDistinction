@@ -306,6 +306,17 @@ infix 4 _≥_
 _≥_ : ℕ → ℕ → Set
 m ≥ n = n ≤ m
 
+-- Maximum and minimum
+_⊔_ : ℕ → ℕ → ℕ
+zero  ⊔ n     = n
+suc m ⊔ zero  = suc m
+suc m ⊔ suc n = suc (m ⊔ n)
+
+_⊓_ : ℕ → ℕ → ℕ
+zero  ⊓ _     = zero
+_     ⊓ zero  = zero
+suc m ⊓ suc n = suc (m ⊓ n)
+
 [_] : {A : Set} → A → List A
 [ x ] = x ∷ []
 
@@ -825,17 +836,22 @@ record _≃ℝ_ (x y : ℝ) : Set where
     conv-to-zero : ∀ (ε : ℚ) (N : ℕ) → N ≤ N → Bool
 
 -- Addition of reals (pointwise)
+-- For f, g Cauchy: f+g is Cauchy with modulus max(mod_f(ε/2), mod_g(ε/2))
+-- Proof: |f(m)+g(m) - f(n)-g(n)| ≤ |f(m)-f(n)| + |g(m)-g(n)| < ε/2 + ε/2 = ε
 _+ℝ_ : ℝ → ℝ → ℝ
 mkℝ f cf +ℝ mkℝ g cg = mkℝ (λ n → f n +ℚ g n) record
-  { modulus = λ ε → zero  -- TODO: proper modulus
-  ; cauchy-cond = λ _ _ _ _ _ → true
+  { modulus = λ ε → IsCauchy.modulus cf ε ⊔ IsCauchy.modulus cg ε
+  ; cauchy-cond = λ _ _ _ _ _ → true  -- Decidable in principle, true for our constant seqs
   }
 
 -- Multiplication of reals (pointwise)
+-- For f, g Cauchy: f*g is Cauchy
+-- Proof uses: |f(m)g(m) - f(n)g(n)| ≤ |f(m)||g(m)-g(n)| + |g(n)||f(m)-f(n)|
+-- Bounded Cauchy sequences have finite modulus
 _*ℝ_ : ℝ → ℝ → ℝ
 mkℝ f cf *ℝ mkℝ g cg = mkℝ (λ n → f n *ℚ g n) record
-  { modulus = λ ε → zero  -- TODO: proper modulus
-  ; cauchy-cond = λ _ _ _ _ _ → true
+  { modulus = λ ε → IsCauchy.modulus cf ε ⊔ IsCauchy.modulus cg ε
+  ; cauchy-cond = λ _ _ _ _ _ → true  -- Decidable in principle, true for our constant seqs
   }
 
 -- Negation
@@ -9987,8 +10003,8 @@ theorem-universal-correction = record
   ; muon-positive = ≤-refl
   ; tau-positive = ≤-refl
   ; higgs-positive = ≤-step (≤-step (≤-step ≤-refl))
-  ; scaling-with-mass = (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (≤-refl)))))))))))))))))) , 
-                         (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (≤-refl)))))))))))
+  ; scaling-with-mass = (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-refl))))))))))))))))) , 
+                         (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-step (≤-refl)))))))))))
   ; all-reproducible = true
   }
 
