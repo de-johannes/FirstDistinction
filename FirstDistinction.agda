@@ -9130,7 +9130,7 @@ record MassRatioConsistency : Set where
   field
     proton-from-chi2-d3 : proton-mass-formula ≡ 1836
     muon-from-d2       : muon-mass-formula ≡ 207
-    neutron-from-proton : neutron-mass-formula ≡ 1838
+    neutron-from-proton : neutron-mass-formula ≡ 1839
     chi-d-identity     : eulerChar-computed * degree-K4 ≡ edgeCountK4
 
 theorem-mass-consistent : MassRatioConsistency
@@ -9253,7 +9253,7 @@ theorem-baryon-winding = refl
 record MassConsistency : Set where
   field
     proton-is-1836   : proton-mass-formula ≡ 1836
-    neutron-is-1838  : neutron-mass-formula ≡ 1838
+    neutron-is-1839  : neutron-mass-formula ≡ 1839
     muon-is-207      : muon-mass-formula ≡ 207
     tau-is-3519      : tau-mass-formula ≡ 3519
     top-is-337842    : top-mass-formula ≡ 337842
@@ -9262,7 +9262,7 @@ record MassConsistency : Set where
 theorem-mass-consistency : MassConsistency
 theorem-mass-consistency = record
   { proton-is-1836   = refl
-  ; neutron-is-1838  = refl
+  ; neutron-is-1839  = refl
   ; muon-is-207      = refl
   ; tau-is-3519      = refl
   ; top-is-337842    = refl
@@ -9339,7 +9339,7 @@ record CrossConstraints : Set where
   field
     tau-muon-ratio    : tau-mass-formula ≡ F₂ * muon-mass-formula
     
-    neutron-proton    : neutron-mass-formula ≡ proton-mass-formula + eulerChar-computed
+    neutron-proton    : neutron-mass-formula ≡ proton-mass-formula + eulerChar-computed + reciprocal-euler
     
     proton-factorizes : proton-mass-formula ≡ spin-factor * winding-factor 3 * F₂
 
