@@ -32,8 +32,14 @@ jobs:
       - name: Compile FirstDistinction.agda
         run: |
           echo "🚀 Compiling FirstDistinction.agda for release verification..."
-          agda --safe --without-K --no-libraries FirstDistinction.agda 2>&1 | tee agda-compile.log
-          echo "✅ FirstDistinction.agda compiled successfully!"
+          set -e
+          if agda --safe --without-K --no-libraries FirstDistinction.agda 2>&1 | tee agda-compile.log; then
+            echo "✅ FirstDistinction.agda compiled successfully!"
+          else
+            echo "❌ Compilation FAILED!"
+            cat agda-compile.log
+            exit 1
+          fi
 
       - name: Create verification manifest
         run: |
