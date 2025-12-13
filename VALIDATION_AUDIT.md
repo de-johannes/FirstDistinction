@@ -155,4 +155,4 @@ All predictions follow from:
 
 **Audited by**: GitHub Copilot  
 **Verification**: Independent Python calculations  
-**Reproducible**: `cd data/scripts && python3 hardcore_validation.py`
+**Reproducible**: `cd data/scripts && python3 statistical_validation.py`

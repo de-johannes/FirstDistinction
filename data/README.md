@@ -122,7 +122,7 @@ data/
 │
 ├── scripts/                      # Validation scripts
 │   ├── README.md                 (script documentation)
-│   ├── hardcore_validation.py    (8-level framework)
+│   ├── statistical_validation.py    (8-level framework)
 │   ├── analyze_planck_cmb.py     (CMB analysis)
 │   ├── analyze_vipers_galaxies.py (galaxy survey)
 │   └── cross_correlation_analysis.py (legacy 4-level)
@@ -187,7 +187,7 @@ data/
 
 Located in `scripts/` (see [`scripts/README.md`](scripts/README.md) for details):
 
-1. **hardcore_validation.py** - 8-level validation framework
+1. **statistical_validation.py** - 8-level validation framework
    - Direct matches, derived correlations, cross-source consistency
    - Statistical significance, predictive power, null hypothesis testing
    - Information theory (Kolmogorov complexity, Bayes factors)
@@ -215,7 +215,7 @@ Located in `scripts/` (see [`scripts/README.md`](scripts/README.md) for details)
 cd data/scripts
 
 # Full 8-level validation
-python3 hardcore_validation.py
+python3 statistical_validation.py
 
 # CMB analysis with plots
 python3 analyze_planck_cmb.py
@@ -244,7 +244,7 @@ Both available in PNG (high-res) and PDF (publication quality).
 cd src/python
 
 # Full 8-level validation
-python3 hardcore_validation.py
+python3 statistical_validation.py
 
 # CMB analysis with plots
 python3 analyze_planck_cmb.py

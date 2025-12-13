@@ -10,7 +10,7 @@ pip install numpy matplotlib scipy
 
 ## Scripts
 
-### 1. `hardcore_validation.py` - Complete 8-Level Validation
+### 1. `statistical_validation.py` - Complete 8-Level Validation
 
 **What it does**: Runs all 27 tests across 8 increasingly rigorous levels.
 
@@ -108,7 +108,7 @@ High quality (zflg > 2): 439 (90%)
 
 ### 4. `cross_correlation_analysis.py` - Multi-Level Framework (Legacy)
 
-**What it does**: Original 4-level validation (superseded by `hardcore_validation.py`).
+**What it does**: Original 4-level validation (superseded by `statistical_validation.py`).
 
 **Usage**:
 ```bash
@@ -117,7 +117,7 @@ python3 cross_correlation_analysis.py
 
 **Output**: Levels 1-4 only (85.7% success rate)
 
-**Note**: Use `hardcore_validation.py` for complete 8-level analysis.
+**Note**: Use `statistical_validation.py` for complete 8-level analysis.
 
 ---
 
@@ -126,7 +126,7 @@ python3 cross_correlation_analysis.py
 From this directory:
 ```bash
 # Full 8-level validation
-python3 hardcore_validation.py
+python3 statistical_validation.py
 
 # CMB analysis with plots
 python3 analyze_planck_cmb.py
@@ -138,7 +138,7 @@ python3 analyze_vipers_galaxies.py
 Or from repository root:
 ```bash
 cd data/scripts
-python3 hardcore_validation.py
+python3 statistical_validation.py
 cd ../..
 ```
 
@@ -176,7 +176,7 @@ pip install numpy matplotlib scipy
 Make sure you're in the `data/scripts/` directory:
 ```bash
 cd data/scripts
-python3 hardcore_validation.py
+python3 statistical_validation.py
 ```
 
 Or adjust paths in scripts to use absolute paths.

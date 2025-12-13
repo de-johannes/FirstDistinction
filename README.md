@@ -26,7 +26,7 @@ FirstDistinction predictions are now tested against **real observational data** 
 ```bash
 # Run comprehensive validation
 cd data/scripts
-python3 hardcore_validation.py         # 8-level validation (23/27 tests)
+python3 statistical_validation.py         # 8-level validation (23/27 tests)
 python3 analyze_planck_cmb.py         # CMB power spectrum analysis
 python3 analyze_vipers_galaxies.py    # Galaxy clustering analysis
 ```

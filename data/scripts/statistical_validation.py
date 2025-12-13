@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-HARDCORE VALIDATION: Verschärfte Cross-Korrelationen
+STATISTICAL VALIDATION: Rigorous Cross-Correlations
 
-Neue Tests:
+8-level testing framework:
 - Statistical significance (χ² tests)
 - Predictive power (can K₄ predict unknown values?)
 - Null hypothesis testing (could this be random?)
 - Information-theoretic measures (mutual information)
 - Bayesian model comparison
 
-Wenn K₄ falsch ist, sollten diese Tests FAIL sein.
+If K₄ is wrong, these tests should FAIL.
 """
 
 import numpy as np
@@ -488,12 +488,12 @@ def test_level8_information_theory(data):
 # MASTER TEST
 # ============================================================================
 
-def run_hardcore_validation():
-    """Run all hardcore tests"""
+def run_statistical_validation():
+    """Run all statistical validation tests"""
     
     print()
     print("=" * 80)
-    print(" " * 12 + "HARDCORE VALIDATION: VERSCHÄRFTE TESTS")
+    print(" " * 12 + "STATISTICAL VALIDATION: RIGOROUS TESTING")
     print("=" * 80)
     print()
     
@@ -518,7 +518,7 @@ def run_hardcore_validation():
     
     print()
     print("=" * 80)
-    print(" " * 25 + "HARDCORE SUMMARY")
+    print(" " * 25 + "VALIDATION SUMMARY")
     print("=" * 80)
     print()
     
@@ -575,5 +575,5 @@ def run_hardcore_validation():
     return overall_pct >= 85
 
 if __name__ == "__main__":
-    success = run_hardcore_validation()
+    success = run_statistical_validation()
     sys.exit(0 if success else 1)
