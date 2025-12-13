@@ -327,7 +327,7 @@ def main():
     print()
     
     data_dir = Path(__file__).parent.parent  # data/ is one level up
-    vipers_file = data_dir / "VIPERS_W1_SPECTRO_PDR2.txt"
+    vipers_file = data_dir / "cosmology" / "VIPERS_W1_SPECTRO_PDR2.txt"
     
     if not vipers_file.exists():
         print(f"ERROR: VIPERS data not found: {vipers_file}")
