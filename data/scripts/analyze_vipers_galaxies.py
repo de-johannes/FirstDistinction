@@ -406,7 +406,7 @@ def main():
     print("Generating VIPERS analysis plots...")
     fig = plot_vipers_analysis(data)
     
-    figures_dir = Path(__file__).parent.parent.parent / "figures"
+    figures_dir = Path(__file__).parent.parent / "figures"
     figures_dir.mkdir(exist_ok=True)
     
     output_file = figures_dir / "vipers_galaxy_analysis.png"

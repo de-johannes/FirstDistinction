@@ -395,7 +395,7 @@ def main():
     print("Generating CMB analysis plots...")
     fig = plot_cmb_power_spectra()
     
-    figures_dir = Path(__file__).parent.parent.parent / "figures"
+    figures_dir = Path(__file__).parent.parent / "figures"
     figures_dir.mkdir(exist_ok=True)
     
     output_file = figures_dir / "planck_cmb_analysis.png"
