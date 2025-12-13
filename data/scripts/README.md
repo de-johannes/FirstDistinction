@@ -16,7 +16,7 @@ pip install numpy matplotlib scipy
 
 **Usage**:
 ```bash
-python3 hardcore_validation.py
+python3 statistical_validation.py
 ```
 
 **Output**:
