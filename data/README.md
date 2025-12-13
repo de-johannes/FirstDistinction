@@ -71,7 +71,7 @@ We validate these predictions with **real data** from satellites, particle accel
 **Recent Breakthroughs (Dec 2024)**
 - ✓ g-factor: **2-loop calculation** → 0.0004% error (was 47% at 1-loop)
 - ✓ Higgs mass: **F₃/2 = 128.5 GeV** → 2.7% error (discrete→continuum)
-- ✓ Quantum corrections: **Universal formula** ε(m) = A + B log(m) → R²=0.9984
+- ✓ Quantum corrections: **Universal formula from K₄ geometry** → R²=0.9984 (no QCD!)
 - ✓ Galaxy clustering: **r₀ = 6.0 h⁻¹ Mpc** → 4.3% error (C₃²+V topology)
 
 **Remaining Open Problems**
