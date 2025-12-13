@@ -373,7 +373,7 @@ Most theoretical physics papers test 1-2 predictions. We test **27 independent p
 
 ## Recent Progress & Remaining Challenges
 
-**Solved (December 2024)**:
+**Solved (December 2025)**:
 1. ✓ **g-factor**: 2-loop QED → 0.0004% error (1700× better than tree-level)
 2. ✓ **Higgs mass**: F₃/2 = 128.5 GeV → 2.7% error (discrete→continuum)
 3. ✓ **Quantum corrections**: FULLY DERIVED from K₄ geometry → R²=0.9994
@@ -381,7 +381,7 @@ Most theoretical physics papers test 1-2 predictions. We test **27 independent p
    - B = κ + Ω/V = 8.48 (complexity + geometry)
    - Zero QCD parameters, zero fitting!
 
-**Recently Solved (December 2024)**:
+**Recently Solved (December 2025)**:
 1. ✓ **Neutron-proton**: Δm = χ + 1/χ = 5/2 m_e → 1.22% error
 2. ✓ **Dark matter**: Ω_DM = 31/150 derived → 1.44% error
 3. ✓ **Dark energy**: ΩΛ = 69/100 derived → 0.16% error
