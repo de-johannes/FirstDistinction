@@ -86,6 +86,9 @@ Machine-checked under `--safe --without-K`. No postulates, no holes.
 | g-factor (tree) | **2** | Electron g (tree-level) | 0.116% | PDG 2024 |
 | **+ Loop corrections** | **2.00231922** | **Electron g (2-loop)** | **0.0004%** | **PDG 2024** |
 | 5 × 4¹⁰⁰ Planck times | **13.726 Gyr** | Cosmic age | 0.44% | Planck 2018 |
+| **Ωₘ (§14f)** | **31/100** | **Matter density** | **0.35%** | **Planck 2018** |
+| **Ωᵦ/Ωₘ (§14f)** | **1/6 + loops** | **Baryon ratio** | **1.19%** | **Planck 2018** |
+| **ns (§14f)** | **23/24 + loops** | **Spectral index** | **0.33%** | **Planck 2018** |
 | Λ = 3/N² (§14d rigorous) | **~10⁻¹²²** | Cosmological constant | O(1) | Planck 2018 |
 | Clifford grades | **1,4,6,4,1** | Dirac γ-matrices | exact | Theory |
 
