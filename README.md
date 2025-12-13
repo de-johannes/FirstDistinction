@@ -90,7 +90,7 @@ Machine-checked under `--safe --without-K`. No postulates, no holes.
 | **Ωᵦ/Ωₘ (§14f)** | **1/6 + loops** | **Baryon ratio** | **1.19%** | **Planck 2018** |
 | **ns (§14f)** | **23/24 + loops** | **Spectral index** | **0.33%** | **Planck 2018** |
 | **r₀ (§14g)** | **6.0 h⁻¹ Mpc** | **Galaxy clustering** | **4.3%** | **VIPERS+SDSS** |
-| Λ = 3/N² (§14d rigorous) | **~10⁻¹²²** | Cosmological constant | O(1) | Planck 2018 |
+| Λ = 3/N² (§14d rigorous) | **~10⁻¹²²** | Cosmological constant | ~factor 3 | Planck 2018 |
 | Clifford grades | **1,4,6,4,1** | Dirac γ-matrices | exact | Theory |
 
 **Key Innovation (§11a):** Loop corrections come from K₄ subgraph structure:

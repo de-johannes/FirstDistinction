@@ -152,7 +152,7 @@ Derived from Hubble expansion rate and K4 parameters.
 | **Ωᵦ/Ωₘ** | 1/E (with triangles) | 0.1556 | 0.1574 | 1.19% |
 | **ns** | 1 - 1/(V×E) + 12/(V×E×100) | 0.9633 | 0.9665 ± 0.0038 | 0.33% |
 | **r₀** | (c/H₀) × (C₃²+V) / capacity² | 6.0 h⁻¹ Mpc | 5.8 h⁻¹ Mpc | 4.3% |
-| **Λ** | 3/N² (§14d) | ~10⁻¹²² | ~10⁻¹²¹·⁵ | O(1) |
+| **Λ** | 3/N² (§14d) | ~10⁻¹²² | ~10⁻¹²¹·⁵ | factor ~3 |
 
 **Derivation Pattern:**
 - **Bare values**: Pure K₄ ratios (3/10, 1/6, 23/24)

@@ -66,7 +66,7 @@ We validate these predictions with **real data** from satellites, particle accel
 - ✓ Baryon ratio: **Ωᵦ/Ωₘ = 1/6** (obs: 0.1574, error: **1.19%** with loops)
 - ✓ Spectral index: **ns = 23/24 + loops** (obs: 0.9665, error: **0.33%**)
 - ✓ Galaxy clustering: **r₀ = 6.0 h⁻¹ Mpc** (obs: 5.8, error: **4.3%**)
-- ✓ Cosmological constant: **Λ = 3/N²** (obs: ~10⁻¹²¹·⁵, **O(1)** match)
+- ✓ Cosmological constant: **Λ = 3/N²** (obs: ~10⁻¹²¹·⁵, **same order of magnitude**, factor ~3)
 
 **Recent Breakthroughs (Dec 2024)**
 - ✓ g-factor: **2-loop calculation** → 0.0004% error (was 47% at 1-loop)
