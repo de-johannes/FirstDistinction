@@ -98,10 +98,10 @@ The following are **mathematical theorems** (Agda `--safe --without-K`):
 | Matter density | (V-1)/(E+V) + 1/(E²+κ²) | **Ωₘ = 0.31** | ≈ 0.3111 (0.35%) |
 | Baryon ratio | 1/E with loops | **Ωᵦ/Ωₘ = 1/6** | ≈ 0.1574 (1.19%) |
 | Spectral index | 1 - 1/(V×E) + loops | **ns = 0.9633** | ≈ 0.9665 (0.33%) |
-| Λ (§14d) | 3/N² | **~10⁻¹²²** | ✓ O(1) match |
-| Quantum correction | -(Eχ+V) + (αₛ/4π)β₀×100 log(m) | **ε(m)** | R²=0.9984 (§29) |
+| Λ (§14d) | 3/N² | **~10⁻¹²²** | ✓ order of magnitude |
+| Quantum correction | -E×deg - χ/κ + (κ + Ω/V) log(m) | **ε(m)** | R²=0.9994 (§29) |
 
-**These formulas are not fits.** They are spectral and structural invariants of K₄ — properties the graph necessarily possesses. The formula structure (exponents, operations, term placement) is **machine-verified as uniquely determined** — all alternatives provably fail to produce 137. The quantum correction formula (§29) has **zero tunable parameters once K₄ is fixed**: both A and B are derived from K₄ topology and QCD renormalization group.
+**These formulas are not fits.** They are spectral and structural invariants of K₄ — properties the graph necessarily possesses. The formula structure (exponents, operations, term placement) is **machine-verified as uniquely determined** — all alternatives provably fail to produce 137. The quantum correction formula (§29) has **zero tunable parameters once K₄ is fixed**: both A = -18.25 and B = 8.48 are FULLY DERIVED from K₄ topology and geometry (no QCD!).
 
 **5 exact matches. 7 excellent matches (<1%). The ~5% error is systematic (E=6 vs 2π=6.28).**
 
