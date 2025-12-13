@@ -65,12 +65,14 @@ We validate these predictions with **real data** from satellites, particle accel
 - ✓ Matter density: **Ωₘ = 31/100** (obs: 0.3111, error: **0.35%**)
 - ✓ Baryon ratio: **Ωᵦ/Ωₘ = 1/6** (obs: 0.1574, error: **1.19%** with loops)
 - ✓ Spectral index: **ns = 23/24 + loops** (obs: 0.9665, error: **0.33%**)
+- ✓ Galaxy clustering: **r₀ = 6.0 h⁻¹ Mpc** (obs: 5.8, error: **4.3%**)
 - ✓ Cosmological constant: **Λ = 3/N²** (obs: ~10⁻¹²¹·⁵, **O(1)** match)
 
 **Recent Breakthroughs (Dec 2024)**
 - ✓ g-factor: **2-loop calculation** → 0.0004% error (was 47% at 1-loop)
 - ✓ Higgs mass: **F₃/2 = 128.5 GeV** → 2.7% error (discrete→continuum)
 - ✓ Quantum corrections: **Universal formula** ε(m) = A + B log(m) → R²=0.9984
+- ✓ Galaxy clustering: **r₀ = 6.0 h⁻¹ Mpc** → 4.3% error (C₃²+V topology)
 
 **Remaining Open Problems**
 - ✗ Neutron-proton mass: m_n - m_p prediction needs refinement
@@ -127,7 +129,9 @@ data/
 ├── scripts/                      # Validation scripts
 │   ├── README.md                 (script documentation)
 │   ├── statistical_validation.py    (8-level framework)
-│   ├── test_k4_cosmology.py      (§14f parameter tests - NEW)
+│   ├── test_k4_cosmology.py      (§14f parameter tests)
+│   ├── test_k4_clustering.py     (§14g clustering length - NEW)
+│   ├── visualize_k4_clustering.py (r₀ figure generation - NEW)
 │   ├── analyze_planck_cmb.py     (CMB analysis)
 │   ├── analyze_vipers_galaxies.py (galaxy survey)
 │   └── cross_correlation_analysis.py (legacy 4-level)
@@ -137,7 +141,9 @@ data/
     ├── planck_cmb_analysis.png   (1.1 MB, 5 panels)
     ├── planck_cmb_analysis.pdf   (265 KB)
     ├── vipers_galaxy_analysis.png (1.4 MB, 4 panels)
-    └── vipers_galaxy_analysis.pdf (123 KB)
+    ├── vipers_galaxy_analysis.pdf (123 KB)
+    ├── k4_clustering_length.png  (607 KB, 6 panels - NEW)
+    └── k4_clustering_length.pdf  (74 KB - NEW)
 ```
 
 ---

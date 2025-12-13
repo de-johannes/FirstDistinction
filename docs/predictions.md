@@ -151,6 +151,7 @@ Derived from Hubble expansion rate and K4 parameters.
 | **Ωₘ** | (V-1)/(E+V) + 1/(E²+κ²) | 0.31 | 0.3111 ± 0.0056 | 0.35% |
 | **Ωᵦ/Ωₘ** | 1/E (with triangles) | 0.1556 | 0.1574 | 1.19% |
 | **ns** | 1 - 1/(V×E) + 12/(V×E×100) | 0.9633 | 0.9665 ± 0.0038 | 0.33% |
+| **r₀** | (c/H₀) × (C₃²+V) / capacity² | 6.0 h⁻¹ Mpc | 5.8 h⁻¹ Mpc | 4.3% |
 | **Λ** | 3/N² (§14d) | ~10⁻¹²² | ~10⁻¹²¹·⁵ | O(1) |
 
 **Derivation Pattern:**
@@ -163,12 +164,14 @@ Derived from Hubble expansion rate and K4 parameters.
 - Ωₘ: Matter fills (V-1)/(E+V) of structure + 1% capacity correction
 - Ωᵦ/Ωₘ: Baryons are 1/E = 1/6 of matter (6 edges = 6 quark flavors?)
 - ns: Spectral tilt from discrete→continuum transition
+- r₀: Clustering scale from C₃² (triangle topology) + V (vertex centers)
 - Λ: Dilution 1/N² from spacetime averaging (§14d rigorous)
 
 **Validation:**
-- All 4 tests pass (test_k4_cosmology.py)
-- Errors 0.33%-1.19% (comparable to α⁻¹ 0.0007%)
-- Machine-verified in FirstDistinction.agda §14f (+270 lines)
+- All 5 tests pass (test_k4_cosmology.py, test_k4_clustering.py)
+- Errors 0.33%-4.3% (comparable to α⁻¹ 0.0007%)
+- Machine-verified in FirstDistinction.agda §14f-g (+490 lines)
+- Visualization: k4_clustering_length.png/pdf
 
 ---
 
