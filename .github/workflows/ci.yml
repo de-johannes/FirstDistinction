@@ -31,14 +31,24 @@ jobs:
       - name: Compile FD-minimal.agda
         run: |
           echo "⏳ Compiling FD-minimal.agda (--safe --without-K)..."
-          agda --safe --without-K FD-minimal.agda
-          echo "✅ FD-minimal.agda compiles successfully"
+          set -e
+          if agda --safe --without-K FD-minimal.agda; then
+            echo "✅ FD-minimal.agda compiles successfully"
+          else
+            echo "❌ Compilation FAILED!"
+            exit 1
+          fi
 
       - name: Compile FirstDistinction.agda
         run: |
           echo "⏳ Compiling FirstDistinction.agda (--safe --without-K --no-libraries)..."
-          agda --safe --without-K --no-libraries FirstDistinction.agda
-          echo "✅ FirstDistinction.agda compiles successfully"
+          set -e
+          if agda --safe --without-K --no-libraries FirstDistinction.agda; then
+            echo "✅ FirstDistinction.agda compiles successfully"
+          else
+            echo "❌ Compilation FAILED!"
+            exit 1
+          fi
 
   # validation-tests job removed - src/python no longer exists
   # All verification now done through Agda compilation with --safe --without-K

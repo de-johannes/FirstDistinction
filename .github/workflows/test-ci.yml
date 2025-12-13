@@ -32,8 +32,13 @@ jobs:
       - name: Compile FirstDistinction.agda
         run: |
           echo "⏳ Compiling FirstDistinction.agda (--safe --without-K --no-libraries)..."
-          agda --safe --without-K --no-libraries FirstDistinction.agda
-          echo "✅ FirstDistinction.agda compiled successfully!"
+          set -e
+          if agda --safe --without-K --no-libraries FirstDistinction.agda; then
+            echo "✅ FirstDistinction.agda compiled successfully!"
+          else
+            echo "❌ Compilation FAILED!"
+            exit 1
+          fi
 
       - name: Check for holes
         run: |
