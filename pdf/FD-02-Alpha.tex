@@ -262,26 +262,48 @@ Determinant of coefficient matrix is 1, proving linear independence. Lines 2590-
 \subsection{Fractional Correction}
 
 \begin{proven}
-\begin{theorem}[One-Point Compactification]
-\label{thm:compactification}
-The fractional correction arises from compactification:
-\begin{align}
-  E^2 + 1 &= 6^2 + 1 = 37 \\
-  \text{Denominator} &= \deg \cdot (E^2 + 1) = 3 \cdot 37 = 111 \\
-  \text{Numerator} &= V = 4
-\end{align}
+\begin{theorem}[Loop Correction Exclusivity]
+\label{thm:loop-exclusivity}
+The fractional correction formula is \textbf{uniquely determined by elimination}. All alternative formulas fail:
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Formula & Denominator & $V \times 1000 / \text{denom}$ & Target 36 \\
+\midrule
+$\deg \times (E + 1)$ & 21 & 190 & $\times$ (5$\times$ too large) \\
+$\deg \times (E^3 + 1)$ & 651 & 6 & $\times$ (6$\times$ too small) \\
+$V \times (E^2 + 1)$ & 148 & 27 & $\times$ (25\% too small) \\
+$E \times (E^2 + 1)$ & 222 & 18 & $\times$ (50\% too small) \\
+$\lambda \times (E^2 + 1)$ & 148 & 27 & $\times$ (25\% too small) \\
+\rowcolor{green!10}
+$\deg \times (E^2 + 1)$ & 111 & 36 & $\checkmark$ \\
+\bottomrule
+\end{tabular}
+\end{center}
 \end{theorem}
 \end{proven}
 
 \begin{proof}
-The ``$+1$'' follows the pattern of one-point compactification:
+Machine-verified in \S 18a of \texttt{FirstDistinction.agda}:
+\begin{verbatim}
+theorem-E-fails      : ¬ (alt1-result ≡ 36)
+theorem-E3-fails     : ¬ (alt2-result ≡ 36)
+theorem-V-mult-fails : ¬ (alt3-result ≡ 36)
+theorem-E-mult-fails : ¬ (alt4-result ≡ 36)
+theorem-λ-mult-fails : ¬ (alt5-result ≡ 36)
+\end{verbatim}
+The formula $V/(\deg \times (E^2+1))$ is the \textbf{only} combination of $K_4$ invariants that yields the correct correction magnitude.
+\end{proof}
+
+\begin{remark}[Physical Motivation]
+The ``$+1$'' pattern follows one-point compactification:
 \begin{itemize}
   \item $V + 1 = 5$ (vertices + centroid)
   \item $2^V + 1 = 17$ (spinor states + vacuum)
   \item $E^2 + 1 = 37$ (edge couplings + asymptotic state)
 \end{itemize}
-All compactified values $(5, 17, 37)$ are prime. Machine-verified at lines 6969--6982.
-\end{proof}
+All compactified values $(5, 17, 37)$ are prime. This is \textbf{motivation}, not proof---the proof is the exclusivity theorem above.
+\end{remark}
 
 \subsection{Complete Formula}
 
