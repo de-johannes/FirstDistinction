@@ -286,11 +286,11 @@ $\deg \times (E^2 + 1)$ & 111 & 36 & $\checkmark$ \\
 \begin{proof}
 Machine-verified in \S 18a of \texttt{FirstDistinction.agda}:
 \begin{verbatim}
-theorem-E-fails      : ¬ (alt1-result ≡ 36)
-theorem-E3-fails     : ¬ (alt2-result ≡ 36)
-theorem-V-mult-fails : ¬ (alt3-result ≡ 36)
-theorem-E-mult-fails : ¬ (alt4-result ≡ 36)
-theorem-λ-mult-fails : ¬ (alt5-result ≡ 36)
+theorem-E-fails      : not (alt1-result == 36)
+theorem-E3-fails     : not (alt2-result == 36)
+theorem-V-mult-fails : not (alt3-result == 36)
+theorem-E-mult-fails : not (alt4-result == 36)
+theorem-lambda-fails : not (alt5-result == 36)
 \end{verbatim}
 The formula $V/(\deg \times (E^2+1))$ is the \textbf{only} combination of $K_4$ invariants that yields the correct correction magnitude.
 \end{proof}
