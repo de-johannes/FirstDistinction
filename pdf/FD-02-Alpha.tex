@@ -5,7 +5,7 @@
 \usepackage{amsmath,amsthm,amssymb}
 \usepackage{mathtools}
 \usepackage{geometry}
-\usepackage{xcolor}
+\usepackage[table]{xcolor}
 \usepackage{hyperref}
 \usepackage{cleveref}
 \usepackage{enumitem}
@@ -71,12 +71,12 @@
 \maketitle
 
 \begin{abstract}
-We present a machine-verified derivation of the fine structure constant's inverse, $\alpha^{-1} \approx 137.036$, from the spectral properties of the complete graph $K_4$. Starting from a self-referential distinction in constructive type theory, we prove that exactly four fundamental distinctions are forced into existence, forming $K_4$. The graph Laplacian's eigenvalues yield a formula: $\alpha^{-1} = \lambda^3 \chi + \deg^2 + \frac{V}{\deg(E^2+1)}$, where all terms are $K_4$ invariants. Substituting $\lambda=4$, $\chi=2$, $\deg=3$, $V=4$, $E=6$ gives $137 + \frac{4}{111} = 137.\overline{036}$, matching the experimental value $137.035\,999\,177(21)$ to within 0.000027\%. The mathematical derivation is machine-verified in Agda under \texttt{--safe --without-K} (zero axioms, 7,938 lines). Whether this match indicates a deep connection between graph theory and physics, or is coincidental, remains an open question.
+We present a machine-verified derivation of the fine structure constant's inverse, $\alpha^{-1} \approx 137.036$, from the spectral properties of the complete graph $K_4$. Starting from a self-referential distinction in constructive type theory, we prove that exactly four fundamental distinctions are forced into existence, forming $K_4$. The graph Laplacian's eigenvalues yield a formula: $\alpha^{-1} = \lambda^3 \chi + \deg^2 + \frac{V}{\deg(E^2+1)}$, where all terms are $K_4$ invariants. Substituting $\lambda=4$, $\chi=2$, $\deg=3$, $V=4$, $E=6$ gives $137 + \frac{4}{111} = 137.\overline{036}$, matching the experimental value $137.035\,999\,177(21)$ (CODATA 2022) to within 0.000027\%. The mathematical derivation is machine-verified in Agda under \texttt{--safe --without-K} (zero axioms, 7,938 lines). Whether this match indicates a deep connection between graph theory and physics, or is coincidental, remains an open question.
 \end{abstract}
 
 \section{Introduction}
 
-The fine structure constant $\alpha \approx 1/137.036$ characterizes the strength of electromagnetic interaction. Despite a century of measurement refinement \cite{codata2022}, no first-principles derivation exists within the Standard Model. The constant is input, not output.
+The fine structure constant $\alpha \approx 1/137.036$ characterizes the strength of electromagnetic interaction. Despite a century of measurement refinement, no first-principles derivation exists within the Standard Model. The constant is input, not output.
 
 This paper presents an alternative approach: we derive $\alpha^{-1}$ from the spectral properties of the complete graph $K_4$, which itself emerges necessarily from the concept of distinction in constructive type theory. The result is a formula yielding $137.\overline{036}$, matching experiment to 0.000027\%.
 
@@ -92,7 +92,7 @@ This paper presents an alternative approach: we derive $\alpha^{-1}$ from the sp
 
 \subsection{Methodology}
 
-All mathematical proofs are formalized in Agda \cite{agda}, a dependently-typed proof assistant, under the strictest settings:
+All mathematical proofs are formalized in Agda, a dependently-typed proof assistant, under the strictest settings:
 \begin{itemize}
   \item \texttt{--safe}: No axioms, postulates, or unsafe pragmas
   \item \texttt{--without-K}: No uniqueness of identity proofs
@@ -357,7 +357,7 @@ Only $\lambda^3$ (matching eigenspace dimension $d=3$) produces 137.
 \textbf{Source} & \textbf{Value} & \textbf{Uncertainty} \\
 \midrule
 $K_4$ formula & $137.\overline{036}$ & exact (rational) \\
-CODATA 2022 \cite{codata2022} & $137.035\,999\,177$ & $\pm 21 \times 10^{-9}$ \\
+CODATA 2022 & $137.035\,999\,177$ & $\pm 21 \times 10^{-9}$ \\
 \midrule
 Difference & $3.7 \times 10^{-5}$ & --- \\
 Relative error & $0.000027\%$ & --- \\
@@ -423,10 +423,10 @@ The mathematical proofs are falsifiable by finding errors in the Agda code.
 \section{Related Work}
 
 \begin{itemize}
-  \item \textbf{Spencer-Brown (1969):} \emph{Laws of Form} \cite{spencerbrown}---distinction as primitive concept
+  \item \textbf{Spencer-Brown (1969):} \emph{Laws of Form}---distinction as primitive concept
   \item \textbf{Eddington (1929):} First attempt to derive $\alpha^{-1} \approx 137$ from pure reasoning (later refuted)
-  \item \textbf{Spectral graph theory:} Chung \cite{chung1997}---relation between eigenvalues and graph structure
-  \item \textbf{Homotopy type theory:} \cite{hott2013}---constructive foundations similar to our approach
+  \item \textbf{Spectral graph theory:} Chung (1997)---relation between eigenvalues and graph structure
+  \item \textbf{Homotopy type theory:} Univalent Foundations Program (2013)---constructive foundations similar to our approach
 \end{itemize}
 
 Our work differs: the derivation is machine-verified with zero axioms, and produces not just 137 but the fractional correction $4/111$.
