@@ -18,6 +18,11 @@
 --   is a precondition for identity, difference, or existence.
 --   Any such denial necessarily uses the very notion it rejects.
 --
+-- NOTE:
+--   This does not claim to be physics.
+--   It claims to describe what must already be in place
+--   for physics to be possible at all.
+--
 -- Type checker verifies. No axioms. No postulates. --safe --without-K
 --
 -- ═══════════════════════════════════════════════════════════════════════════
