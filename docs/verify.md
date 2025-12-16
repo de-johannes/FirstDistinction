@@ -120,7 +120,7 @@ The file is self-contained and derives everything inline:
 6. Genesis process (D0 through D3)
 7. K4 graph structure
 8. Eigenvalue calculations
-9. Physical predictions
+9. Derived physical values
 
 All 17 field axioms for rationals are proven:
 

@@ -269,7 +269,7 @@ Each major value (3D space, 1D time, alpha) is proven via four independent const
 | **Consistency** | Multiple derivations agree | Eigenspace dim = vertex degree = 3 |
 | **Exclusivity** | Other values impossible | d=2 breaks K4 embedding |
 | **Robustness** | Value survives perturbation | d=3 stable under edge removal |
-| **CrossConstraints** | Matches independent predictions | d=3 matches Clifford algebra dim |
+| **CrossConstraints** | Matches independent derivations | d=3 matches Clifford algebra dim |
 
 ```agda
 record DimensionTheorems : Set where

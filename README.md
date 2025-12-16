@@ -14,14 +14,14 @@
 
 ## 🎯 **NEW: Validated Against Real Data**
 
-FirstDistinction predictions are now tested against **real observational data** from:
+FirstDistinction derived values are now tested against **real observational data** from:
 - **Planck 2018** (CMB cosmology)
 - **PDG 2024** (particle physics)
 - **CODATA 2022** (fundamental constants)
 - **VIPERS Survey** (large scale structure)
 
 **Results: 27/27 integrity checks passed** (no fitting, no tuning, no manipulation)
-**Physical predictions**: 7/8 < 1% error (median 0.1%, max 2.7%)
+**Physical consistency tests**: 7/8 < 1% error (median 0.1%, max 2.7%)
 
 ```bash
 # Run comprehensive validation
@@ -57,7 +57,7 @@ A single Agda file (`FirstDistinction.agda`, **~10,400 lines**, compiled `--safe
 3. **Derives** radiative corrections from K₄ loop structure (§11a, 240 lines)
 4. **Proves** Λ-dilution mechanism rigorously (§14d, 229 lines)
 5. **Derives** universal quantum correction formula from K₄ topology + QCD (§29a-d, ~600 lines)
-6. **Validates** all predictions against real observational data
+6. **Validates** all derived values against real observational data
 
 ```
 D₀ exists (distinction)
@@ -75,7 +75,7 @@ Machine-checked under `--safe --without-K`. No postulates, no holes.
 
 ## The Numbers (Validated Against Real Data)
 
-### Core Predictions (Tree-Level + Radiative Corrections)
+### Core Derived Values (Tree-Level + Radiative Corrections)
 
 | K₄ Computation | Result | Physical Match | Error | Data Source |
 |----------------|--------|----------------|-------|-------------|
@@ -106,7 +106,7 @@ Machine-checked under `--safe --without-K`. No postulates, no holes.
 
 K₄ computes **bare masses** (discrete lattice, Planck scale). PDG measures **dressed masses** (continuum observation, lab scale). The correction is **universal** and **derived from pure K₄ geometry** (no QCD input!).
 
-| Particle | K₄ Integer | Continuum (obs) | Correction ε | Formula Prediction |
+| Particle | K₄ Integer | Continuum (obs) | Correction ε | Formula Match |
 |----------|------------|-----------------|--------------|--------------------|
 | **Higgs mass** | **128.5 GeV** (F₃/2) | 125.10 GeV | 27‰ | ~27‰ (pattern) |
 | **μ/e ratio** | **207** (9×23) | 206.768 | 1.1‰ | ~1‰ (pattern) |
@@ -147,7 +147,7 @@ K₄ computes **bare masses** (discrete lattice, Planck scale). PDG measures **d
 - **§21**: Geometric continuum (R_d/N → R_c) — gravity, spacetime
 - **§29c**: Particle continuum (ℕ→ℚ→ℝ via loops) — masses, couplings
 
-**The K₄ computations are proven. The quantum corrections are derived. The predictions match observations.**
+**The K₄ computations are proven. The quantum corrections are derived. The derivations match observations.**
 
 ---
 
@@ -322,7 +322,7 @@ FirstDistinction/
 | The full website | [de-johannes.github.io/FirstDistinction](https://de-johannes.github.io/FirstDistinction) |
 | Physical interpretation | [For Physicists](https://de-johannes.github.io/FirstDistinction/for-physicists) |
 | Mathematical details | [For Mathematicians](https://de-johannes.github.io/FirstDistinction/for-mathematicians) |
-| All numerical matches | [Predictions](https://de-johannes.github.io/FirstDistinction/predictions) |
+| All numerical matches | [Derived Values](https://de-johannes.github.io/FirstDistinction/derived-values) |
 | The source | [FirstDistinction.agda](FirstDistinction.agda) |
 
 ---

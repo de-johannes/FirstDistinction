@@ -18,7 +18,7 @@ From a single binary distinction, we derive:
 3. 1 time dimension (drift irreversibility)
 4. Metric signature (-, +, +, +)
 5. Einstein field equations (Ricci = Laplacian)
-6. A prediction for alpha inverse: 137.036
+6. A derivation of alpha inverse: 137.036
 
 ---
 
@@ -245,7 +245,7 @@ theorem-alpha-integer = refl
 
 ## Mass Ratios
 
-The graph also predicts mass relationships.
+The graph also yields mass relationships.
 
 ### Proton/Electron
 
@@ -336,4 +336,4 @@ Complete formal proof: [FirstDistinction.agda](https://github.com/de-johannes/Fi
 
 ---
 
-[Back](./) | [Predictions](predictions)
+[Back](./) | [Derived Values](derived-values)

@@ -91,7 +91,7 @@ The following are **mathematical theorems** (Agda `--safe --without-K`):
 | Time | Drift asymmetry | **1** | ✓ 1 temporal |
 | Signature | Symmetric/asymmetric | **(−,+,+,+)** | ✓ matches GR |
 | Coupling | dim × χ | **κ = 8** | ✓ matches 8πG |
-| Gyromagnetic | \|Bool\| | **g = 2** | ✓ Dirac prediction |
+| Gyromagnetic | \|Bool\| | **g = 2** | ✓ Dirac value |
 | Spectral formula | λ³χ + deg² + 4/111 | **137.036036** | ≈ α⁻¹ (0.0007%) |
 | Anomaly | 1/(α⁻¹ × E) | **1/822** | ≈ (g-2)/2 (~5%) |
 | Epoch count | 5 × 4¹⁰⁰ | **N** | ≈ τ/t_P (0.44%) |
@@ -107,7 +107,7 @@ The following are **mathematical theorems** (Agda `--safe --without-K`):
 
 **The mathematical computations are proven. That they correspond to physical reality is a hypothesis supported by remarkable numerical agreement.**
 
-[→ All predictions](predictions)
+[→ All derived values](derived-values)
 
 ---
 
@@ -172,7 +172,7 @@ Dirac derived this structure empirically over 4 years. We observe: **the same di
 
 And K₄ comes from D₀ = {φ, ¬φ} = "yes or no".
 
-**The equation that predicts antimatter follows from the simplest possible distinction.**
+**The equation that yields antimatter follows from the simplest possible distinction.**
 
 [→ Full derivation](for-mathematicians#the-clifford-algebra-from-k₄)
 
@@ -262,5 +262,5 @@ This work was created over 12 months by one person using six different AI system
 <div class="footer-links">
   <a href="https://github.com/de-johannes/FirstDistinction">GitHub</a>
   <a href="verify">Verify</a>
-  <a href="predictions">Predictions</a>
+  <a href="derived-values">Derived Values</a>
 </div>

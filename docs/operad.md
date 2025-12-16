@@ -536,4 +536,4 @@ agda --safe --without-K FirstDistinction.agda
 
 ---
 
-[Back to Predictions](predictions) | [Home](./)
+[Back to Derived Values](derived-values) | [Home](./)

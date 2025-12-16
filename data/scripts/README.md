@@ -1,6 +1,6 @@
 # Validation Scripts
 
-These scripts test K₄ topology predictions against real observational data.
+These scripts test K₄ topology derivations against real observational data.
 
 ## Requirements
 
@@ -46,7 +46,7 @@ P(random) < 10⁻¹⁵
 **What it does**: 
 - Loads 2507 TT + 1995 EE + 1995 TE CMB data points
 - Finds acoustic peaks
-- Tests d=3 spatial dimension prediction
+- Tests d=3 spatial dimension derivation
 - Calculates cosmic age from K₄
 
 **Usage**:
@@ -67,7 +67,7 @@ python3 analyze_planck_cmb.py
 ```
 Loaded 2507 CMB TT data points
 Found 17 acoustic peaks
-K₄ age prediction: 13.726 Gyr
+K₄ age derivation: 13.726 Gyr
 Planck observed: 13.787 ± 0.020 Gyr
 Error: 0.44% ✓
 ```
@@ -78,7 +78,7 @@ Error: 0.44% ✓
 
 **What it does**:
 - Loads 487 VIPERS spectroscopic galaxies
-- Tests 3D spatial structure prediction
+- Tests 3D spatial structure derivation
 - Analyzes redshift distribution
 - Creates sky coverage maps
 
@@ -223,7 +223,7 @@ If you use these scripts, cite:
   author={de-johannes and contributors},
   year={2024},
   url={https://github.com/de-johannes/FirstDifference},
-  note={8-level validation framework for K₄ topology predictions}
+  note={8-level validation framework for K₄ topology derivations}
 }
 ```
 

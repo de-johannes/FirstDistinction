@@ -1,10 +1,10 @@
 # FirstDifference: Validation Against Real Data
 
-This repository contains **real observational data** used to test K₄ topology predictions against measurements from particle physics, cosmology, and astrophysics.
+This repository contains **real observational data** used to test K₄ topology derivations against measurements from particle physics, cosmology, and astrophysics.
 
 ## What We Test
 
-**K₄ topology predicts discrete integers. Observers measure continuum values.**
+**K₄ topology yields discrete integers. Observers measure continuum values.**
 
 FirstDistinction theory derives fundamental constants from K₄ (complete graph on 4 vertices):
 - Fine structure constant: α⁻¹ = λ³ × χ + deg² + 4/111 = **137.036** (0.0007% error)
@@ -22,13 +22,13 @@ FirstDistinction theory derives fundamental constants from K₄ (complete graph 
 - §21 proves: discrete curvature R_d/N → continuum R_c as N → ∞
 - Error ~1-2% from finite quantum corrections (not free parameters!)
 
-We validate these predictions with **real data** from satellites, particle accelerators, and telescopes.
+We validate these derivations with **real data** from satellites, particle accelerators, and telescopes.
 
 ---
 
 ## Validation Results
 
-### Core Predictions (Machine-Verified in FirstDistinction.agda)
+### Core Derived Values (Machine-Verified in FirstDistinction.agda)
 
 **Topological Constraints (5/5 EXACT)**
 - ✓ K₄ vertices: V = **4** (cannot be tuned)
@@ -203,16 +203,16 @@ Located in `scripts/` (see [`scripts/README.md`](scripts/README.md) for details)
 
 1. **statistical_validation.py** - 8-level validation framework
    - Direct matches, derived correlations, cross-source consistency
-   - Statistical significance, predictive power, null hypothesis testing
+   - Statistical significance, derivation power, null hypothesis testing
    - Information theory (Kolmogorov complexity, Bayes factors)
    - **Integrity audit**: 27/27 checks passed (no fitting, no tuning)
-   - **Physical predictions**: 7/8 < 1% error (median: 0.1%, max: 2.72%)
+   - **Physical consistency tests**: 7/8 < 1% error (median: 0.1%, max: 2.72%)
    - **Critical**: Audit validates *process*, not physical truth
 
 2. **analyze_planck_cmb.py** - CMB power spectrum analysis
    - Loads 2507 TT + 1995 EE/TE data points
    - Acoustic peak detection, d=3 verification
-   - Age prediction: 13.726 Gyr (0.44% error)
+   - Age derivation: 13.726 Gyr (0.44% error)
    - **Output**: `figures/planck_cmb_analysis.png`
 
 3. **analyze_vipers_galaxies.py** - Galaxy clustering analysis
@@ -349,7 +349,7 @@ All data is **publicly available**:
 
 ## What Makes This Different
 
-Most theoretical physics papers test 1-2 predictions. We test **27 independent predictions** across:
+Most theoretical physics papers test 1-2 derived values. We test **27 independent derived values** across:
 
 1. **Particle physics** (microscopic) - α, masses, g-factors
 2. **Cosmology** (macroscopic) - age, expansion, structure
@@ -363,7 +363,7 @@ Most theoretical physics papers test 1-2 predictions. We test **27 independent p
 - **Level 3**: Cross-source consistency (age from 3 sources)
 - **Level 4**: Topological constraints (5 exact, 0 free parameters)
 - **Level 5**: Statistical significance (χ² tests, probabilities)
-- **Level 6**: Predictive power (neutron mass, W/Z ratio)
+- **Level 6**: Derivation power (neutron mass, W/Z ratio)
 - **Level 7**: Null hypothesis testing (only K₄ works)
 - **Level 8**: Information theory (compression, Bayes factors)
 
@@ -387,7 +387,7 @@ Most theoretical physics papers test 1-2 predictions. We test **27 independent p
 3. ✓ **Dark energy**: ΩΛ = 69/100 derived → 0.16% error
 
 **Remaining Open Problems**:
-- ✗ **Cosmological constant**: Λ ~ 10⁻¹²² predicted, needs rigorous derivation from K₄ structure
+- ✗ **Cosmological constant**: Λ ~ 10⁻¹²² derived, needs rigorous derivation from K₄ structure
 - ? **Neutrino masses**: 3-fold degeneracy suggests pattern, not yet calculated
 
 This is **real science**, not curve-fitting. Theory continues to improve.

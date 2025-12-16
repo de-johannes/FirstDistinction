@@ -34,7 +34,7 @@ Three workflows, one proof.
 
 ```
 FirstDistinction.agda  # Complete proof: D₀ → G_μν = 8T_μν
-validate_K4.py         # K₄ eigenvalues, Königsklasse predictions (7 tests)
+validate_K4.py         # K₄ eigenvalues, Königsklasse derivations (7 tests)
 validate_lambda.py     # Λ-dilution derivation, 10^{-122} problem (7 tests)
 ```
 

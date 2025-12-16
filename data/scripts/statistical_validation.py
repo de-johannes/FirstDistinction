@@ -236,32 +236,51 @@ def test_level6_predictive_power(data):
     
     results.append(('Higgs prediction', error, error < 3))
     
-    # Test 4: Predict W/Z mass ratio
-    # If K₄ gives electroweak structure, ratio should follow
+    # Test 4: Weak Mixing Angle and W/Z mass ratio
+    # DERIVED FROM K₄ (not plugged in!)
+    #
+    # sin²(θ_W) = (χ/κ) × (1 - δ)²
+    # where:
+    #   χ = 2 (Euler characteristic)
+    #   κ = 8 (complexity = V + E - χ = 4 + 6 - 2)
+    #   δ = 1/(κπ) = 1/(8π) ≈ 0.0398 (universal correction)
+    #
+    # Tree level: χ/κ = 2/8 = 0.25
+    # Correction: (1 - 1/(8π))² ≈ 0.9220
+    # Full: 0.25 × 0.9220 = 0.2305
     
-    # W/Z mass ratio observed: 80.377 / 91.1876 ≈ 0.881
-    # K₄ prediction: cos(θ_W) where sin²(θ_W) ≈ 0.23
-    # → cos(θ_W) ≈ 0.877
+    chi = 2  # Euler characteristic
+    kappa = 8  # Complexity
+    delta = 1 / (kappa * np.pi)  # Universal correction
     
-    sin2_theta_w = 0.23122  # Observed
-    cos_theta_w = np.sqrt(1 - sin2_theta_w)
+    sin2_theta_w_k4 = (chi / kappa) * (1 - delta)**2  # = 0.2305
+    cos_theta_w_k4 = np.sqrt(1 - sin2_theta_w_k4)     # = 0.8772
     
+    sin2_theta_w_obs = 0.23122  # PDG 2024
     mW_obs = 80.377
     mZ_obs = 91.1876
     ratio_obs = mW_obs / mZ_obs
     
-    error = 100 * abs(cos_theta_w - ratio_obs) / ratio_obs
+    error_sin2 = 100 * abs(sin2_theta_w_k4 - sin2_theta_w_obs) / sin2_theta_w_obs
+    error_ratio = 100 * abs(cos_theta_w_k4 - ratio_obs) / ratio_obs
     
-    print(f"4. W/Z MASS RATIO (PREDICTION)")
-    print(f"   K₄ → cos(θ_W) = {cos_theta_w:.4f}")
+    print(f"4. WEAK MIXING ANGLE (DERIVED FROM K₄)")
+    print(f"   K₄ formula: sin²(θ_W) = (χ/κ) × (1 - 1/(κπ))²")
+    print(f"   K₄ derived: sin²(θ_W) = {sin2_theta_w_k4:.4f}")
+    print(f"   Observed:   sin²(θ_W) = {sin2_theta_w_obs:.5f}")
+    print(f"   Error: {error_sin2:.2f}%")
+    print()
+    print(f"   Cross-check via M_W/M_Z:")
+    print(f"   K₄ → cos(θ_W) = {cos_theta_w_k4:.4f}")
     print(f"   Observed M_W/M_Z = {ratio_obs:.4f}")
-    print(f"   Error: {error:.2f}%")
-    print(f"   Status: {'✓ GOOD' if error < 1 else '✗ FAIL'}")
+    print(f"   Error: {error_ratio:.2f}%")
+    print(f"   Status: {'✓ GOOD' if error_sin2 < 1 else '✗ FAIL'}")
     print()
     
-    results.append(('W/Z ratio', error, error < 1))
+    results.append(('Weinberg angle', error_sin2, error_sin2 < 1))
+    results.append(('W/Z ratio', error_ratio, error_ratio < 1))
     
-    print(f"LEVEL 6 RESULT: {sum(r[2] for r in results)}/{len(results)} predictions successful")
+    print(f"LEVEL 6 RESULT: {sum(r[2] for r in results)}/{len(results)} derivations successful")
     print(f"Note: HONEST failures (Higgs) show we're not just fitting!")
     print()
     

@@ -61,7 +61,7 @@ Generated plots from K₄ topology validation against real observational data.
    - Tests structure formation timeline
 
 **Key Results**:
-- 3D spatial structure confirmed (matches K₄ d=3 prediction)
+- 3D spatial structure confirmed (matches K₄ d=3 derivation)
 - Galaxy clustering consistent with K₄ timeline
 
 ---
@@ -73,7 +73,7 @@ Generated plots from K₄ topology validation against real observational data.
 **Panels**:
 1. **Correlation Function ξ(r)**
    - VIPERS galaxy pair separations (200 sample)
-   - K₄ prediction: ξ(r) = (r/6.0)^(-1.8)
+   - K₄ derivation: ξ(r) = (r/6.0)^(-1.8)
    - Blue curve: Pure K₄ (NOT fitted!)
    - Red line: Observed r₀ ≈ 5.8 h⁻¹ Mpc
    - Logarithmic scales, 1-200 h⁻¹ Mpc range
@@ -81,12 +81,12 @@ Generated plots from K₄ topology validation against real observational data.
 2. **K₄ Derivation Box**
    - Formula: r₀ = (c/H₀) × (C₃²+V) / capacity²
    - Components: C₃²=16 (triangles), V=4 (vertices)
-   - Prediction: 6.0 h⁻¹ Mpc
+   - Derived: 6.0 h⁻¹ Mpc
    - Error: 4.3% ✓
 
 3. **Power-Law Slope γ**
    - d=2 → γ=0.8, d=3 → γ=1.8, d=4 → γ=2.8
-   - K₄ predicts γ=1.8 (from d=3)
+   - K₄ gives γ=1.8 (from d=3)
    - Theory vs observation
 
 4. **Survey Comparison**
@@ -108,7 +108,7 @@ Generated plots from K₄ topology validation against real observational data.
 - r₀ = 6.0 h⁻¹ Mpc (K₄) vs 5.8 h⁻¹ Mpc (obs) → 4.3% error ✓
 - Formula C₃²+V uniquely determined (6 alternatives fail)
 - Both topology (C₃²) AND centers (V) needed
-- Uses K₄ predictions, NOT fitted values!
+- Uses K₄ derivations, NOT fitted values!
 
 ---
 
@@ -143,7 +143,7 @@ The power spectrum shows **acoustic oscillations** in the early universe:
 - **Troughs**: Rarefaction phases (low density)
 - **Spacing**: Determined by sound horizon at recombination
 
-K₄ predicts d=3 spatial dimensions → specific peak pattern.
+K₄ yields d=3 spatial dimensions → specific peak pattern.
 
 **What we test**:
 - Does the peak pattern match d=3 geometry? ✓ YES
@@ -157,7 +157,7 @@ The correlation function **ξ(r) = (r/r₀)^(-γ)** describes how galaxies clust
 - **r₀**: Clustering length scale (where ξ=1)
 - **γ**: Power-law slope (~1.8 for d=3)
 
-K₄ predicts both from topology:
+K₄ determines both from topology:
 - **γ = 1.8**: From d=3 spatial dimensions (Laplacian eigenspace)
 - **r₀ = 6.0 h⁻¹ Mpc**: From (c/H₀) × (C₃²+V) / capacity²
 
@@ -167,7 +167,7 @@ K₄ predicts both from topology:
 - Does topology alone suffice? ✗ NO (C₃² needs +V correction)
 - Physical meaning: Triangles (C₃²) give clustering, vertices (V) give centers
 
-**Critical**: We use K₄ PREDICTIONS, not fitted values!
+**Critical**: We use K₄ DERIVATIONS, not fitted values!
 
 ---
 
@@ -178,7 +178,7 @@ VIPERS measures galaxies at z = 0.5-1.2 (lookback 5-8 Gyr):
 - **Sky distribution**: Tests 3D spatial structure
 - **Quality metrics**: Validates spectroscopic data
 
-K₄ predicts d=3 spatial dimensions → galaxies cluster in 3D space.
+K₄ yields d=3 spatial dimensions → galaxies cluster in 3D space.
 
 **What we test**:
 - Is clustering 3-dimensional? ✓ YES
