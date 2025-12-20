@@ -3,6 +3,7 @@
 *.agdai
 !FirstDistinction.agdai
 !FD-minimal.agdai
+!Physics-challenge.agdai
 
 # macOS cruft
 .DS_Store
