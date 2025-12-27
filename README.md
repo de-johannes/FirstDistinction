@@ -22,27 +22,41 @@ Most physical and mathematical theories operate within a framework of **Postulat
 
 ---
 
-## 2. The Chain of Emergence (Constructive Path)
+## 2. Codebase Navigation: Mapping the 14,000+ Lines
 
-The project follows a rigorous derivation where each stage is the unique **Relational Closure** of the previous one:
+The entire derivation is contained in a single, machine-verified file: `FirstDistinction.agda`. To navigate this complexity, the file is structured into five logical parts:
 
-### Step 1: D₀ (The First Distinction)
-A system that identifies itself must distinguish itself from "not-itself." This forces the existence of a non-singleton state: `data Distinction = φ | ¬φ`.
+### Part I: Foundations & Arithmetic (§1 – §7)
+*Lines 1 – 2,950*
+- **Genesis of Logic:** Formal proof of the unavoidability of distinction.
+- **Emergent Mathematics:** Construction of ℕ, ℤ, ℚ, and ℝ (via Cauchy sequences) from the first distinction.
+- **Transcendental Constants:** The derivation of π as a topological requirement.
 
-### Step 2: K₄ (Structural Saturation)
-Once distinction exists, relations emerge. We have formally proven that the **Klein Four-group structure (K₄)** is the unique stable configuration where all internal relations are witnessed. 
-- **K₃** is insufficient (unwitnessed pairs).
-- **K₅** is redundant (requires non-forced information).
-- **K₄** represents **Structural Saturation**—the point where the logic of distinction closes into a complete graph (the tetrahedron).
+### Part II: Constructive Ontology & Genesis (§8 – §9)
+*Lines 2,951 – 4,400*
+- **The Forcing Theorem:** Proof that D₀ (distinction) uniquely forces the emergence of K₄ (the tetrahedron).
+- **Relational Closure:** Why the relational loop must saturate at exactly 4 vertices.
 
-### Step 3: Spectral Invariants (The Numbers)
-The values we call "physical constants" are not inputs; they are the **spectral properties** of the K₄ lattice.
-- **Dimensions:** The Laplacian eigenspace of K₄ has exactly 3 non-zero eigenvalues (3D space) and a unidirectional drift (1D time).
-- **Constants:** The Fine Structure Constant ($\alpha^{-1} \approx 137$) and mass ratios emerge as the unique topological invariants of this specific graph.
+### Part III: Spectral Analysis & Spacetime (§10 – §13)
+*Lines 4,401 – 8,480*
+- **Dimensionality:** Why the Laplacian eigenspace of K₄ forces 3 spatial dimensions and 1 time dimension.
+- **The Spectral Formula:** Derivation of the Fine Structure Constant ($\alpha^{-1} \approx 137$) from K₄ invariants.
+- **Signature & Spin:** Emergence of the Minkowski signature and the gyromagnetic ratio (g=2).
+
+### Part IV: Cosmological Dynamics (§14)
+*Lines 8,481 – 11,075*
+- **The Topological Brake:** A derivation of the cosmological constant (Λ) and the dark sector ratios.
+- **Entropy & Information:** The relationship between K₄ recursion and black hole entropy.
+
+### Part V: Particle Physics & Mass Derivations (§15 – §31)
+*Lines 11,076 – 14,288*
+- **Mass Ratios:** Derivation of the proton/electron ratio and fermion generations.
+- **Universal Verification:** The "Pragmatic Verification" of mass corrections against PDG data.
+- **Continuum Limit:** The formal isomorphism between the discrete K₄ lattice and the Einstein field equations.
 
 ---
 
-## 3. Scientific Honesty: Pragmatic Approximation
+## 3. Scientific Honesty: Pragmatic Verification
 
 We distinguish between **Logical Necessity** and **Computational Intractability**. 
 
