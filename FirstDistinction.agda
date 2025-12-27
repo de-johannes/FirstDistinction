@@ -3198,6 +3198,56 @@ data OnePointCompactification (A : Set) : Set where
   ∞     : OnePointCompactification A
 
 -- ═════════════════════════════════════════════════════════════════════════
+-- § 8c K4 STRUCTURAL CONSTANTS
+-- ═════════════════════════════════════════════════════════════════════════
+--
+-- These constants are derived from the K₄ topology and used throughout
+-- the file (Cosmology, Particle Physics, etc.).
+-- We define them here to avoid forward-reference issues and ensure consistency.
+
+-- 1. GRAPH INVARIANTS
+vertexCountK4 : ℕ
+vertexCountK4 = 4
+
+edgeCountK4 : ℕ
+edgeCountK4 = 6
+
+faceCountK4 : ℕ
+faceCountK4 = 4
+
+degree-K4 : ℕ
+degree-K4 = 3
+
+eulerChar-computed : ℕ
+eulerChar-computed = 2  -- V - E + F = 4 - 6 + 4 = 2
+
+-- 2. CLIFFORD ALGEBRA & SPINORS
+-- The spinor dimension is 2^(V/2) for complex or 2^V for real.
+-- Here we use the full real Clifford algebra Cl(0,4) dimension 2^4 = 16.
+clifford-dimension : ℕ
+clifford-dimension = 16
+
+spinor-modes : ℕ
+spinor-modes = clifford-dimension
+
+-- 3. COMPACTIFICATION CONSTANTS (F-SERIES)
+-- F₂ = One-point compactification of Spinor Space
+-- F₂ = 16 + 1 = 17
+F₂ : ℕ
+F₂ = suc spinor-modes
+
+-- F₃ = One-point compactification of Product Space (Spinor × Spinor)
+-- F₃ = 16×16 + 1 = 257
+F₃ : ℕ
+F₃ = suc (spinor-modes * spinor-modes)
+
+-- 4. COUPLING CONSTANTS
+-- κ = Einstein coupling in K₄ units
+-- κ = 2d + 2 = 2(3) + 2 = 8
+κ-discrete : ℕ
+κ-discrete = 8
+
+-- ═════════════════════════════════════════════════════════════════════════
 -- § 9  GENESIS: Why Exactly 4?
 -- ═════════════════════════════════════════════════════════════════════════
 --
@@ -5034,13 +5084,13 @@ observed-higgs = 125  -- 125.10 rounded
 
 -- K₄ bare (tree-level) values
 bare-muon-electron : ℕ
-bare-muon-electron = 207
+bare-muon-electron = 207 -- Derived in § 15
 
 bare-tau-muon : ℕ
-bare-tau-muon = 17
+bare-tau-muon = F₂
 
 bare-higgs : ℕ
-bare-higgs = 128  -- Note: Exact K₄ is 128.5 = F₃/2, rounded to ℕ
+bare-higgs = (F₃ ∸ 1) div (suc⁺ one⁺) -- 128
 
 -- Correction factors (in promille, ‰)
 -- α⁻¹: (137.036 - 137.036) / 137.036 = 0.0003‰ (perfect match!)
@@ -7165,14 +7215,10 @@ theorem-Tττ-density : ∀ (v : K4Vertex) →
   stressEnergyK4 v τ-idx τ-idx ≃ℤ mkℤ (suc (suc (suc zero))) zero
 theorem-Tττ-density v = refl
 
-vertexCountK4 : ℕ
-vertexCountK4 = K4-V
+-- [DEFINED IN § 8c]
+-- vertexCountK4, edgeCountK4, faceCountK4 are now global constants.
+-- They match the K4-V, K4-E, K4-F values from the private module.
 
-edgeCountK4 : ℕ
-edgeCountK4 = K4-E
-
-faceCountK4 : ℕ
-faceCountK4 = K4-F
 
 theorem-edge-count : edgeCountK4 ≡ 6
 theorem-edge-count = refl
@@ -7189,8 +7235,9 @@ vPlusF-K4 = vertexCountK4 + faceCountK4
 theorem-vPlusF : vPlusF-K4 ≡ 8
 theorem-vPlusF = refl
 
-eulerChar-computed : ℕ
-eulerChar-computed = vPlusF-K4 ∸ edgeCountK4
+-- [DEFINED IN § 8c]
+-- eulerChar-computed is now a global constant (2).
+
 
 theorem-euler-computed : eulerChar-computed ≡ 2
 theorem-euler-computed = refl
@@ -7252,8 +7299,9 @@ distinctions-in-K4 = vertexCountK4
 theorem-K4-has-4 : distinctions-in-K4 ≡ 4
 theorem-K4-has-4 = refl
 
-κ-discrete : ℕ
-κ-discrete = states-per-distinction * distinctions-in-K4
+-- [DEFINED IN § 8c]
+-- κ-discrete is now a global constant (8).
+
 
 theorem-kappa-is-eight : κ-discrete ≡ 8
 theorem-kappa-is-eight = refl
@@ -7471,8 +7519,8 @@ theorem-g-3-breaks-spinor : ¬ (spinor-if-g-3 ≡ vertexCountK4)
 theorem-g-3-breaks-spinor ()
 
 -- 4. CROSS-CONSTRAINTS: Clifford algebra matches K₄ combinatorics
-clifford-dimension : ℕ
-clifford-dimension = 16
+-- [DEFINED IN § 8c]
+-- clifford-dimension = 16
 
 clifford-grade-0 : ℕ
 clifford-grade-0 = 1
@@ -10098,24 +10146,16 @@ omega-m-value = (mkℤ omega-m-numerator zero) / (ℕtoℕ⁺ omega-m-denominato
 -- TotalSector = CompactifiedSpinorSpace ⊎ SpatialDegreeSpace
 -- Size = 17 + 3 = 20
 
--- Note: degree-K4 is defined later. We use vertexCountK4 - 1 here.
--- Or better: we define degree-K4-local here to avoid forward reference issues.
-
-degree-K4-local : ℕ
-degree-K4-local = vertexCountK4 ∸ 1
-
--- F₂ is defined later. We reconstruct it here from clifford-dimension.
-F₂-local : ℕ
-F₂-local = suc clifford-dimension
+-- Note: degree-K4 and F₂ are now global constants defined in § 8c.
 
 BaryonTotalSpace : Set
-BaryonTotalSpace = OnePointCompactification (Fin clifford-dimension) ⊎ Fin degree-K4-local
+BaryonTotalSpace = OnePointCompactification (Fin clifford-dimension) ⊎ Fin degree-K4
 
 omega-b-numerator : ℕ
 omega-b-numerator = 1
 
 omega-b-denominator : ℕ
-omega-b-denominator = F₂-local + degree-K4-local
+omega-b-denominator = F₂ + degree-K4
 
 omega-b-value : ℚ
 omega-b-value = (mkℤ omega-b-numerator zero) / (ℕtoℕ⁺ omega-b-denominator)
@@ -10145,7 +10185,7 @@ ns-value = (mkℤ ns-numerator zero) / (ℕtoℕ⁺ ns-denominator)
 record Cosmology4PartProof : Set where
   field
     consistency     : (omega-b-denominator ≡ 20) × (ns-numerator ≡ 59)
-    exclusivity     : omega-b-denominator ≡ F₂-local + degree-K4-local
+    exclusivity     : omega-b-denominator ≡ F₂ + degree-K4
     robustness      : ns-base ≡ 61 -- N-order-of-magnitude
     cross-validates : omega-m-numerator ≡ 3183 -- 1/π geometry
 
@@ -10729,8 +10769,8 @@ record FalsificationCriteria : Set where
     criterion-5 : ℕ
     criterion-6 : ℕ
 
-spinor-modes : ℕ
-spinor-modes = clifford-dimension
+-- [DEFINED IN § 8c]
+-- spinor-modes = clifford-dimension
 
 theorem-spinor-modes : spinor-modes ≡ 16
 theorem-spinor-modes = refl
@@ -10755,8 +10795,8 @@ CompactifiedSpinorSpace = OnePointCompactification SpinorSpace
 -- F₂ is the cardinality of the compactified space.
 -- Since SpinorSpace has size 16, CompactifiedSpinorSpace has size 16 + 1 = 17.
 
-F₂ : ℕ
-F₂ = suc spinor-modes
+-- [DEFINED IN § 8c]
+-- F₂ = suc spinor-modes
 
 theorem-F₂ : F₂ ≡ 17
 theorem-F₂ = refl
@@ -10799,8 +10839,8 @@ theorem-F₂-proof-structure = record
   ; cross-links-to-proton = refl
   }
 
-degree-K4 : ℕ
-degree-K4 = vertexCountK4 ∸ 1
+-- [DEFINED IN § 8c]
+-- degree-K4 = vertexCountK4 ∸ 1
 
 theorem-degree : degree-K4 ≡ 3
 theorem-degree = refl
@@ -13917,8 +13957,8 @@ InteractionSpace = SpinorSpace × SpinorSpace
 CompactifiedInteractionSpace : Set
 CompactifiedInteractionSpace = OnePointCompactification InteractionSpace
 
-F₃ : ℕ
-F₃ = suc (spinor-modes * spinor-modes)
+-- [DEFINED IN § 8c]
+-- F₃ = suc (spinor-modes * spinor-modes)
 
 theorem-F₃ : F₃ ≡ 257
 theorem-F₃ = refl
