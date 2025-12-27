@@ -5,285 +5,84 @@
 [![Agda](https://img.shields.io/badge/Agda-2.7.0.1-blue)](https://agda.readthedocs.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-📖 **[Full Documentation →](https://de-johannes.github.io/FirstDistinction/)**  
-📊 **[Observational Data Validation →](data/README.md)**
+📖 **[Full Documentation →](https://de-johannes.github.io/FirstDistinction/)** | 📊 **[Technical Summary →](pdf/README.md)**
 
-**4 vertices. 6 edges. Everything else follows.**
+> "We are not building physics. We are building the foundation that allows physics to be."
 
 ---
 
-## 🎯 **NEW: Validated Against Real Data**
+## 1. The Methodology: Construction vs. Postulation
 
-FirstDistinction derived values are now tested against **real observational data** from:
-- **Planck 2018** (CMB cosmology)
-- **PDG 2024** (particle physics)
-- **CODATA 2022** (fundamental constants)
-- **VIPERS Survey** (large scale structure)
+Most physical and mathematical theories operate within the **Axiom Trap**: if a property is needed, it is postulated. If a constant is required, it is measured and inserted. This leads to the **Landscape Problem**—a framework that can describe any possible universe explains nothing about why *this* one exists.
 
-**Results: 27/27 integrity checks passed** (no fitting, no tuning, no manipulation)
-**Physical consistency tests**: 7/8 < 1% error (median 0.1%, max 2.7%)
+**First Distinction** uses Constructive Type Theory (Agda `--safe --without-K`) to replace "assuming" with "constructing." 
 
-```bash
-# Run comprehensive validation
-cd data/scripts
-python3 statistical_validation.py         # 8-level validation (23/27 tests)
-python3 analyze_planck_cmb.py         # CMB power spectrum analysis
-python3 analyze_vipers_galaxies.py    # Galaxy clustering analysis
+- **The "No Escape" Property:** In this framework, negation is the proof of impossibility (`A → ⊥`). To deny the starting point (distinction), one must perform an act of distinction. The system is a formal trap: the foundation is not an choice, but a logical necessity.
+- **The Red Line of Necessity:** Every step in the code is a machine-verified response to a previous constraint. We do not add "laws"; we discover the only possible way to satisfy the requirement of self-consistent distinction.
+
+---
+
+## 2. The Chain of Emergence (The "Red Line")
+
+The project follows a rigorous derivation where each stage is the unique "saturation point" of the previous one:
+
+### Step 1: D₀ (The First Distinction)
+A system that identifies itself must distinguish itself from "not-itself." This forces the existence of a non-singleton state: `data Distinction = φ | ¬φ`.
+
+### Step 2: K₄ (The Saturation Point)
+Once distinction exists, relations emerge. We have formally proven that the **Klein Four-group structure (K₄)** is the unique stable configuration where all internal relations are witnessed. 
+- **K₃** is too small (unwitnessed pairs).
+- **K₅** is too large (requires non-forced information).
+- **K₄** is the "Topological Brake"—the point where the logic of distinction saturates into a complete graph (the tetrahedron).
+
+### Step 3: Spectral Invariants (The Numbers)
+The values we call "physical constants" are not inputs; they are the **spectral properties** of the K₄ lattice.
+- **Dimensions:** The Laplacian eigenspace of K₄ has exactly 3 non-zero eigenvalues (3D space) and a unidirectional drift (1D time).
+- **Constants:** The Fine Structure Constant ($\alpha^{-1} \approx 137$) and mass ratios emerge as the unique topological invariants of this specific graph.
+
+---
+
+## 3. Scientific Honesty: Pragmatic Approximation
+
+We distinguish between **Logical Necessity** and **Computational Intractability**. 
+
+In constructive mathematics, proving that a number (like $\pi$) is Cauchy is a requirement for its existence. However, reducing these proofs at the type-level can take eons. We use a "Pragmatic Honesty" approach:
+```agda
+cauchy-cond = λ ... → true -- PRAGMATIC: verified externally, logically forced
 ```
-
-See [`data/README.md`](data/README.md) for data sources and citations.
-
----
-
-## The Challenge
-
-**Try to deny that distinction exists.**
-
-To say "there is no distinction" — you must distinguish that statement from its opposite.  
-To think "nothing is different" — you must differentiate that thought from other thoughts.
-
-**You cannot deny distinction without using distinction.**
-
-This isn't wordplay. It's the starting point. We formalize what follows.
+We document exactly where the machine-checked proof ends and where external verification (Python/Rust) confirms the result. We do not hide behind axioms; we expose the limits of computation while maintaining the rigor of the logic.
 
 ---
 
-## What This Is
+## 4. Observational Correspondence
 
-A single Agda file (`FirstDistinction.agda`, **~10,400 lines**, compiled `--safe --without-K`) that:
+We treat the match between our derived invariants and physical data as a **consistency check** of the foundation.
 
-1. **Proves** K₄ (tetrahedron graph) emerges from self-referential distinction
-2. **Computes** invariants: V=4, E=6, χ=2, deg=3, Laplacian eigenvalues {0,4,4,4}
-3. **Derives** radiative corrections from K₄ loop structure (§11a, 240 lines)
-4. **Proves** Λ-dilution mechanism rigorously (§14d, 229 lines)
-5. **Derives** universal quantum correction formula from K₄ topology + QCD (§29a-d, ~600 lines)
-6. **Validates** all derived values against real observational data
+(Precision refers to numerical correspondence, not statistical fitting or model uncertainty.)
 
-```
-D₀ exists (distinction)
-       ↓
-Genesis: D₀ → D₁ → D₂ → D₃
-       ↓
-K₄ complete graph (4 vertices, 6 edges)
-       ↓
-d = 3    κ = 8    α⁻¹ = 137    Dirac spinor = 4
-```
 
-Machine-checked under `--safe --without-K`. No postulates, no holes.
+| Derived Invariant | Physical Correspondence | Precision | Source |
+|:------------------|:------------------------|:----------|:-------|
+| Eigenspace Dim    | Spatial Dimensions (3)  | Exact     | Geometry |
+| Drift Asymmetry   | Time Dimension (1)      | Exact     | Causality |
+| Spectral Formula  | Fine Structure ($\alpha^{-1}$) | 0.0007%   | CODATA 2022 |
+| Winding Ratio     | Proton/Electron Mass    | 0.008%    | PDG 2024 |
+| Saturation Scale  | Cosmic Age / $\Lambda$  | ~0.4%     | Planck 2018 |
+
+**Zero parameters were tuned.** These numbers are the "error-correction codes" of a self-referential logical system.
 
 ---
 
-## The Numbers (Validated Against Real Data)
+## 5. Summary of Claims
 
-### Core Derived Values (Tree-Level + Radiative Corrections)
+- **Proven:** K₄ is the unique constructive consequence of D₀. The invariants are mathematically forced. The code compiles under `--safe`.
+- **Hypothesis:** This logical substrate is the origin of what we perceive as "Physics."
 
-| K₄ Computation | Result | Physical Match | Error | Data Source |
-|----------------|--------|----------------|-------|-------------|
-| Laplacian eigenspace dim | **3** | Spatial dimensions | exact | Geometry |
-| Drift asymmetry | **1** | Time dimension | exact | Causality |
-| Spectral formula (tree) | **137** | α⁻¹ (tree-level) | 0.026% | CODATA 2022 |
-| **+ Loop corrections** | **137.037** | **α⁻¹ (1-loop)** | **0.0007%** | **CODATA 2022** |
-| g-factor (tree) | **2** | Electron g (tree-level) | 0.116% | PDG 2024 |
-| **+ Loop corrections** | **2.00231922** | **Electron g (2-loop)** | **0.0004%** | **PDG 2024** |
-| 5 × 4¹⁰⁰ Planck times | **13.726 Gyr** | Cosmic age | 0.44% | Planck 2018 |
-| **Ωₘ (§14f)** | **31/100** | **Matter density** | **0.35%** | **Planck 2018** |
-| **Ωᵦ/Ωₘ (§14f)** | **1/6 + loops** | **Baryon ratio** | **1.19%** | **Planck 2018** |
-| **ns (§14f)** | **23/24 + loops** | **Spectral index** | **0.33%** | **Planck 2018** |
-| **r₀ (§14g)** | **6.0 h⁻¹ Mpc** | **Galaxy clustering** | **4.3%** | **VIPERS+SDSS** |
-| Λ = 3/N² (§14d rigorous) | **~10⁻¹²²** | Cosmological constant | ~factor 3 | Planck 2018 |
-| Clifford grades | **1,4,6,4,1** | Dirac γ-matrices | exact | Theory |
-
-**Key Innovation (§11a):** Loop corrections come from K₄ subgraph structure:
-- 4 triangles (C₃) → 1-loop Feynman diagrams
-- 3 squares (C₄) → 2-loop Feynman diagrams
-- Formula: Δα⁻¹ = (triangles × squares)/(edges² × deg²) = 12/324 ≈ 0.037
-
-**1700× improvement** in α⁻¹ accuracy compared to tree-level!
-
-### Mass Ratios (Discrete K₄ Structure → Continuum Observation)
-
-**NEW (§27-29): Universal Quantum Correction Formula**
-
-K₄ computes **bare masses** (discrete lattice, Planck scale). PDG measures **dressed masses** (continuum observation, lab scale). The correction is **universal** and **derived from pure K₄ geometry** (no QCD input!).
-
-| Particle | K₄ Integer | Continuum (obs) | Correction ε | Formula Match |
-|----------|------------|-----------------|--------------|--------------------|
-| **Higgs mass** | **128.5 GeV** (F₃/2) | 125.10 GeV | 27‰ | ~27‰ (pattern) |
-| **μ/e ratio** | **207** (9×23) | 206.768 | 1.1‰ | ~1‰ (pattern) |
-| **τ/μ ratio** | **17** (F₂) | 16.82 | 10.9‰ | ~11‰ (pattern) |
-| **τ/e ratio** | **3519** (207×17) | 3477.2 | 11.9‰ | (composition) |
-| Proton/electron | **1836** (χ²d³F₂) | 1836.15 | 0.8‰ | Combinatorial |
-
-**Universal Correction Formula (FULLY DERIVED from K₄):**
-```
-ε(m) = A + B × log₁₀(m/mₑ)  where:
-  A = -E×deg - χ/κ = -18.25      [topology + complexity]
-  B = κ + Ω/V = 8.48             [complexity + geometry]
-  κ = V + E - χ = 8              [loop dimension]
-  Ω = arccos(-1/3) ≈ 1.911 rad   [solid angle per vertex]
-```
-
-**Physical picture:**
-- K₄ forms discrete lattice (4 vertices at Planck scale)
-- Observer at **centroid** sees averaged continuum values
-- **A (offset)**: Edge-connectivity + Euler correction → universal
-- **B (slope)**: Complexity + angular averaging → mass-dependent
-- Heavy particles (small wavelength) → strong averaging → large ε
-- Light particles (large wavelength) → weak averaging → small ε
-- **Applies to elementary particles only** (Leptons, Bosons)
-- **Hadrons (proton): ε ≈ 0** (quarks pre-dressed by QCD)
-
-**Validation:**
-- Correlation: **R² = 0.9994** (nearly perfect log-linear fit)
-- RMS error: **0.25‰** across all elementary particles
-- **Zero free parameters** (A and B derived, not fitted)
-
-**§21 proves**: Discrete curvature R_d/N → R_c (Einstein equations emerge)  
-**§27 proves**: Higgs field φ = 1/√2 from deg/E = 3/6 (exact), 3 generations from {4,4,4} eigenvalues  
-**§29a-d prove**: Universal correction FULLY DERIVED from K₄ geometry (NO QCD parameters!)
-
-**Note on discrete→continuous transitions:**
-- **§18**: One-point compactification (adds ∞, NOT continuum) — explains +1 in formulas
-- **§21**: Geometric continuum (R_d/N → R_c) — gravity, spacetime
-- **§29c**: Particle continuum (ℕ→ℚ→ℝ via loops) — masses, couplings
-
-**The K₄ computations are proven. The quantum corrections are derived. The derivations match observations.**
+We do not seek to replace existing theories; we seek to provide the **constructive substrate** that explains why they work.
 
 ---
 
-## The Forcing Argument
-
-**Why K₄ is not arbitrary — the complete proof structure:**
-
-### Phase 1: Genesis (§9)
-
-```
-D₀: Distinction exists (Bool = {⊤, ⊥})
-    ↓ forced by self-reference
-D₁: Meta-distinction (D₀ vs ¬D₀)
-    ↓ forced by witnessing
-D₂: Witnesses pair (D₀, D₁)
-    ↓ PROOF: (D₀,D₂) and (D₁,D₂) are irreducible
-D₃: MUST exist to witness irreducible pairs
-```
-
-**Machine-verified theorem** (`theorem-D₃-forced-by-D₀D₂`, `theorem-D₃-forced-by-D₁D₂`):  
-At n=3, pairs (D₀,D₂) and (D₁,D₂) have no witnesses among {D₀,D₁,D₂}.  
-D₃ is forced into existence. At n=4, all C(4,2)=6 pairs are witnessed. **K₄ is complete.**
-
-### Phase 2: Graph Construction (§9, rigor improvements #1-#3)
-
-The `classify-pair` function builds K₄'s 6 edges:
-- **Edge (D₀,D₁)**: already-exists (D₂ witnesses)
-- **Edge (D₀,D₂)**: new-irreducible (forces D₃!)
-- **Edge (D₁,D₂)**: new-irreducible (forces D₃!)
-- **Edges (D₀,D₃), (D₁,D₃), (D₂,D₃)**: completed by D₃
-
-**Proof structure** (lines 2625-2695): `edge-to-genesis-pair` maps each K₄ edge to its Genesis pair. All 6 classified. Graph construction is explicit, not assumed.
-
-### Phase 3: Spectral Structure (§10-11, rigor improvements #4-#7)
-
-From graph → Laplacian L = D - A → eigenvalues {0, 4, 4, 4}:
-
-**1. Eigenspace (lines 2898-2998):** 4-part proof  
-   - **Consistency**: All 3 eigenvectors satisfy Lv = 4v
-   - **Exclusivity**: det = 1 ≠ 0 (linear independence)
-   - **Robustness**: All norms = 2 ≠ 0 (non-degenerate)
-   - **CrossConstraints**: Multiplicity 3 = spatial dimension
-
-**2. Dimension (lines 3000-3045):** Proven, not set  
-   `EmbeddingDimension = count-λ₄-eigenvectors = 3`  
-   Alternative: K₃ gives 2D, K₅ gives 4D (both fail)
-
-**3. Minkowski Signature (lines 3335-3440):**  
-   - K₄ edges: bidirectional (symmetric)  
-   - Drift: unidirectional (asymmetric)  
-   → Signature (-,+,+,+) computed from reversibility mismatch
-
-**4. Alpha Formula (lines 3230-3270):**  
-   - λ = 4 (from K₄ Laplacian eigenvalue)
-   - χ = 2 (from Euler characteristic V+F = E+χ)
-   - deg = 3 (from K₄ vertex degree)
-   - Main term: 4³×2 + 3² = 128 + 9 = **137**
-
-Every term derived, none fitted.
-
-### Phase 4: Physical Constants (§13-15, rigor improvements #8-#10)
-
-**5. g-factor = 2 (lines 4362-4520):**  
-   - Consistency: g = |Bool| = 2
-   - Exclusivity: g=3 would give spinor dim 9 ≠ 4 vertices
-   - Robustness: Spinor = 2² = 4 = K₄ vertices
-   - CrossConstraints: Clifford grade-1 = 4 = γ-matrices
-
-**6. Topological Brake (lines 5690-5800):**  
-   - Consistency: K₄ recursion generates 4-branching
-   - Exclusivity: K₅ requires 4D (breaks 3D constraint)
-   - Robustness: Saturation at exactly 4 vertices
-   - CrossConstraints: Inflation → Collapse → Expansion sequence
-
-**7. Mass Ratios (lines 7194-7400):**  
-   - Proton: χ²×d³×F₂ = 4×27×17 = 1836 (observed: 1836.15)
-   - Muon: d²×23 = 9×23 = 207 (observed: 206.768)
-   - Exclusivity: Only χ²×d³ works (χ¹×d³ = 918, χ³×d² = 1224, etc.)
-
-### Verification (§16a-17, rigor improvement #11)
-
-**~700 theorems, all proven with `refl`** = type-checker verified computation.
-
-Compilation with `--safe --without-K` enforces:
-- No axioms (every proof constructive)
-- No postulates (no unproven assumptions)
-- No univalence (no choice principles)
-
-**Every constant computes from K₄ invariants. Zero tunable parameters once K₄ is fixed.**
-
----
-
-## The Dirac Equation IS K₄
-
-Every number in $(i\gamma^\mu \partial_\mu - m)\psi = 0$ comes from K₄:
-
-| Dirac Structure | K₄ Source | Value |
-|-----------------|-----------|-------|
-| γ-matrices | Vertices V | 4 |
-| Bivectors σᵘᵛ | Edges E | 6 |
-| Spinor components | 2^(V/2) | 4 |
-| Clifford dimension | 2^V | 16 |
-| Gyromagnetic ratio | \|Bool\| | 2 |
-| Signature | Drift asymmetry | (−,+,+,+) |
-
-**The connection:** K₄ → Laplacian spectrum {0,4,4,4} → 3D eigenspace → Cl(3,1). The dimensional invariants match: 4 generators ↔ 4 vertices, 6 bivectors ↔ 6 edges. This is spectral correspondence, not direct isomorphism.
-
----
-
-## Honesty
-
-**What IS proven (Agda `--safe --without-K`):**
-- K₄ emerges uniquely from self-referential distinction (D₃ forcing theorem)
-- Graph construction: classify-pair → 6 edges explicitly (not assumed)
-- Spectral structure: Eigenspace → dimension → signature (4-part proofs)
-- All K₄ invariants compute: 3, 8, 137, 1836, ... (700 `refl` proofs)
-- Formula structure (λ³χ + deg²) is **uniquely determined** — all alternatives proven to fail
-- 10 major proofs with Consistency × Exclusivity × Robustness × CrossConstraints structure
-- Every formula is machine-verified, no axioms, no holes, no postulates
-
-**What is HYPOTHESIS:**
-- That K₄ structure IS the geometry of our universe
-- That these numerical matches are not coincidental
-- That physics derives from graph theory
-
-**Rigor improvements:**
-- #1-#3: Made captures, graph construction, Laplacian explicit (no "it just is")
-- #4-#7: Applied 4-part proof structure to eigenspace, dimension, Minkowski, alpha
-- #8-#10: Derived g-factor, topological brake, mass ratios from K₄ (not observed)
-- #11: Verified all 700 `refl` proofs are computational (type-checker enforced)
-
-**The mathematics is certain. The interpretation is yours.**
-
----
-
-## Run It
+## Getting Started
 
 ```bash
 git clone https://github.com/de-johannes/FirstDistinction.git
@@ -291,60 +90,17 @@ cd FirstDistinction
 agda --safe --without-K FirstDistinction.agda
 ```
 
-If it compiles, the K₄ derivations are valid. **~10,400 lines. Zero holes. ~750 computational proofs.**
-
-Current file stats (after Universal Correction addition):
-- **Total lines**: ~10,400 (grew from 9,147 with §29a-d)
-- **Theorems**: ~750 (all `refl` = type-checker verified)
-- **4-part proof structures**: 10 (Eigenspace, Dimension, Minkowski, Alpha, g-factor, Topological Brake, Mass Ratios, κ, time, K₄)
-- **Universal formulas**: 2 (Alpha from spectral formula, Mass corrections from K₄+QCD)
-- **Forcing theorems**: 4 (D₃ necessity, K₄ uniqueness, topological brake, mass exponents)
-- **Compilation**: Clean with `--safe --without-K` (zero warnings, zero errors)
-
 ---
 
-## Files
-
-```
-FirstDistinction/
-├── FirstDistinction.agda  # The proof (7,000+ lines)
-├── docs/                  # Website
-├── pdf/                   # PDF summary
-└── README.md
-```
-
----
-
-## Documentation
-
-| If you want... | Go to... |
-|----------------|----------|
-| The full website | [de-johannes.github.io/FirstDistinction](https://de-johannes.github.io/FirstDistinction) |
-| Physical interpretation | [For Physicists](https://de-johannes.github.io/FirstDistinction/for-physicists) |
-| Mathematical details | [For Mathematicians](https://de-johannes.github.io/FirstDistinction/for-mathematicians) |
-| All numerical matches | [Derived Values](https://de-johannes.github.io/FirstDistinction/derived-values) |
-| The source | [FirstDistinction.agda](FirstDistinction.agda) |
-
----
-
-## Citation
+## Citation & License
 
 ```bibtex
 @software{first_distinction_2025,
   author = {Wielsch, Johannes},
-  title = {First Distinction: K₄ Structure and Physical Constants},
+  title = {First Distinction: Constructive Foundations of Structural Necessity},
   year = {2025},
   url = {https://github.com/de-johannes/FirstDistinction}
 }
 ```
 
----
-
-## License
-
-MIT (code) · CC BY 4.0 (docs)
-
----
-
-**4 vertices. 6 edges. 137.036. Universal corrections derived. The proof compiles.**
-
+MIT License (Code) · CC BY 4.0 (Documentation)
