@@ -13,27 +13,27 @@
 
 ## 1. The Methodology: Construction vs. Postulation
 
-Most physical and mathematical theories operate within the **Axiom Trap**: if a property is needed, it is postulated. If a constant is required, it is measured and inserted. This leads to the **Landscape Problem**—a framework that can describe any possible universe explains nothing about why *this* one exists.
+Most physical and mathematical theories operate within a framework of **Postulational Arbitrariness**: if a property is needed, it is axiomatized. If a constant is required, it is measured and inserted. This leads to the **Landscape Problem**—a framework that can describe any possible universe explains nothing about why *this* specific one exists.
 
 **First Distinction** uses Constructive Type Theory (Agda `--safe --without-K`) to replace "assuming" with "constructing." 
 
-- **The "No Escape" Property:** In this framework, negation is the proof of impossibility (`A → ⊥`). To deny the starting point (distinction), one must perform an act of distinction. The system is a formal trap: the foundation is not an choice, but a logical necessity.
-- **The Red Line of Necessity:** Every step in the code is a machine-verified response to a previous constraint. We do not add "laws"; we discover the only possible way to satisfy the requirement of self-consistent distinction.
+- **Logical Inevitability:** In this framework, negation is the proof of impossibility (`A → ⊥`). To deny the starting point (distinction), one must perform an act of distinction. The system demonstrates that the foundation is not a choice, but a logical necessity.
+- **The Chain of Necessity:** Every step in the code is a machine-verified response to a previous constraint. We do not add "laws"; we discover the unique configuration required to satisfy the requirement of self-consistent distinction.
 
 ---
 
-## 2. The Chain of Emergence (The "Red Line")
+## 2. The Chain of Emergence (Constructive Path)
 
-The project follows a rigorous derivation where each stage is the unique "saturation point" of the previous one:
+The project follows a rigorous derivation where each stage is the unique **Relational Closure** of the previous one:
 
 ### Step 1: D₀ (The First Distinction)
 A system that identifies itself must distinguish itself from "not-itself." This forces the existence of a non-singleton state: `data Distinction = φ | ¬φ`.
 
-### Step 2: K₄ (The Saturation Point)
+### Step 2: K₄ (Structural Saturation)
 Once distinction exists, relations emerge. We have formally proven that the **Klein Four-group structure (K₄)** is the unique stable configuration where all internal relations are witnessed. 
-- **K₃** is too small (unwitnessed pairs).
-- **K₅** is too large (requires non-forced information).
-- **K₄** is the "Topological Brake"—the point where the logic of distinction saturates into a complete graph (the tetrahedron).
+- **K₃** is insufficient (unwitnessed pairs).
+- **K₅** is redundant (requires non-forced information).
+- **K₄** represents **Structural Saturation**—the point where the logic of distinction closes into a complete graph (the tetrahedron).
 
 ### Step 3: Spectral Invariants (The Numbers)
 The values we call "physical constants" are not inputs; they are the **spectral properties** of the K₄ lattice.
@@ -46,20 +46,17 @@ The values we call "physical constants" are not inputs; they are the **spectral 
 
 We distinguish between **Logical Necessity** and **Computational Intractability**. 
 
-In constructive mathematics, proving that a number (like $\pi$) is Cauchy is a requirement for its existence. However, reducing these proofs at the type-level can take eons. We use a "Pragmatic Honesty" approach:
+In constructive mathematics, proving that a number (like $\pi$) is Cauchy is a requirement for its existence. However, reducing these proofs at the type-level can be computationally prohibitive. We use a **Pragmatic Verification** approach:
 ```agda
 cauchy-cond = λ ... → true -- PRAGMATIC: verified externally, logically forced
 ```
-We document exactly where the machine-checked proof ends and where external verification (Python/Rust) confirms the result. We do not hide behind axioms; we expose the limits of computation while maintaining the rigor of the logic.
+We document exactly where the machine-checked proof ends and where external verification (Python/Rust) confirms the result. We do not rely on axioms; we expose the limits of computation while maintaining the rigor of the underlying logic.
 
 ---
 
 ## 4. Observational Correspondence
 
 We treat the match between our derived invariants and physical data as a **consistency check** of the foundation.
-
-(Precision refers to numerical correspondence, not statistical fitting or model uncertainty.)
-
 
 | Derived Invariant | Physical Correspondence | Precision | Source |
 |:------------------|:------------------------|:----------|:-------|
@@ -69,7 +66,7 @@ We treat the match between our derived invariants and physical data as a **consi
 | Winding Ratio     | Proton/Electron Mass    | 0.008%    | PDG 2024 |
 | Saturation Scale  | Cosmic Age / $\Lambda$  | ~0.4%     | Planck 2018 |
 
-**Zero parameters were tuned.** These numbers are the "error-correction codes" of a self-referential logical system.
+**Zero parameters were tuned.** These numbers are the **Relational Constraints** of a self-referential logical system.
 
 ---
 
