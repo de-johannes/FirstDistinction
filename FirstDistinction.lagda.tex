@@ -62,6 +62,17 @@
         inner sep=1mm,
         minimum size=6mm
     },
+    void/.style={
+        base,
+        circle,
+        draw=fdGray,
+        thick,
+        fill=white,
+        text=fdGray,
+        inner sep=1mm,
+        minimum size=6mm,
+        dashed
+    },
     flow/.style={
         ->, 
         >=LaTeX, 
@@ -76,7 +87,6 @@
 }
 % ------------------------------------
 
-\newunicodechar{₁}{$_1$}
 \newunicodechar{Δ}{$\Delta$}
 \newunicodechar{∇}{$\nabla$}
 \newunicodechar{∀}{$\forall$}
@@ -342,31 +352,25 @@ In type theory, this is not merely a linguistic trick but a formal property. A t
 
 \subsection{Formal Encoding}
 
-We encode the minimal distinction as types $\bot$ (nothing) and $\top$ (something). This is not a "choice" - it is the only way to bootstrap a type system.
+We encode the minimal distinction as types $\bot$ (nothing) and $\top$ (something). This is not a "choice"---it is the only way to bootstrap a type system.
+
+The \textbf{empty type} $\bot$ represents the absence of distinction. Crucially, it has no constructors, meaning it has no inhabitants. The very absence of any distinction would be $\bot$, yet we can \emph{talk about} $\bot$, which already uses distinction. This demonstrates the self-subversion argument formally.
+
+The elimination principle for $\bot$ states that if the empty type were somehow inhabited, then anything would follow. This is the formal encoding of \emph{ex falso quodlibet}---from a contradiction, anything follows.
+
+The \textbf{unit type} $\top$ represents the minimal something. It has exactly one constructor \texttt{tt}, witnessing the existence of at least one distinction.
+
+The \textbf{boolean type} \texttt{Bool} is the computational manifestation of distinction at the value level. This is not "defining" distinction arbitrarily---it is manifesting the unavoidable distinction between true and false, which mirrors the type-level distinction between $\top$ and $\bot$.
 
 \begin{code}
--- The empty type (nothing)
 data ⊥ : Set where
-
-  -- No constructors: This type has NO inhabitants
-  -- SEMANTICS: The absence of any distinction would be ⊥
-  -- But we can TALK about ⊥, which already uses distinction!
-  -- → Self-subversion proven
 
 ⊥-elim : ∀ {A : Set} → ⊥ → A
 ⊥-elim ()
-  -- PROOF: If ⊥ were inhabited, anything would follow
-  -- This is the formal encoding of "contradiction eliminates itself"
 
--- The unit type (something)
 data ⊤ : Set where
   tt : ⊤
 
--- Bool = {true, false} is the computational form of distinction
--- CRITICAL: This is not "defining" distinction.
--- This is MANIFESTING the unavoidable distinction in computational form.
--- The distinction between true/false is the SAME distinction as ⊤/⊥,
--- just at the value level instead of type level.
 data Bool : Set where
   true  : Bool
   false : Bool
@@ -393,6 +397,8 @@ The record below demonstrates that any attempt to deny the existence of a token 
     \item \textbf{SelfSubversion:} The proof that if one could prove \texttt{Denies t}, one would have already used \texttt{t}. This leads to a contradiction: one cannot deny \texttt{t} without invoking \texttt{t}.
 \end{itemize}
 
+The concrete instance \texttt{Bool-is-unavoidable} demonstrates that the boolean type is unavoidable. To deny Bool, we must state $\neg$Bool, but this itself requires the machinery of types and functions, which presupposes the very distinction we're trying to deny.
+
 \begin{code}
 record Unavoidability : Set₁ where
   field
@@ -400,7 +406,6 @@ record Unavoidability : Set₁ where
     Denies : Token → Set
     SelfSubversion : (t : Token) → Denies t → ⊥
 
--- Concrete instance: Bool is unavoidable
 Bool-is-unavoidable : Unavoidability
 Bool-is-unavoidable = record
   { Token = Bool
@@ -412,7 +417,6 @@ Bool-is-unavoidable = record
     ¬_ : Set → Set
     ¬ A = A → ⊥
 
--- Witness that unavoidability is formally proven:
 unavoidability-proven : Unavoidability
 unavoidability-proven = Bool-is-unavoidable
 \end{code}
@@ -647,6 +651,16 @@ The following definition establishes $\mathbb{N}$ not as a primitive, but as the
 \label{fig:cardinality}
 \end{figure}
 
+Lists provide the foundation for counting. A list is either empty (\texttt{[]}) or constructed by prepending an element to another list (\texttt{\_∷\_}).
+
+The \textbf{natural numbers} are constructed, not assumed. They emerge as the type of finite iteration: \texttt{zero} represents no distinctions, and \texttt{suc} represents one more distinction.
+
+The function \texttt{count} (also known as \texttt{length}) bridges events to magnitude. It abstracts away the identity of list elements, retaining only "how many" elements exist. This is the formal encoding of cardinality.
+
+The type \texttt{Fin n} represents finite types with exactly $n$ inhabitants. It is used to prove cardinality of types via explicit bijection.
+
+Finally, we prove that natural numbers \emph{are} what emerges from counting, not what we assume. The theorem \texttt{theorem-count-witness} establishes that counting the witness list of $n$ elements yields exactly $n$.
+
 \begin{code}
 infixr 5 _∷_
 
@@ -655,31 +669,23 @@ data List (A : Set) : Set where
   []  : List A
   _∷_ : A → List A → List A
 
--- The natural numbers: constructed, not assumed.
 data ℕ : Set where
   zero : ℕ
   suc  : ℕ → ℕ
 
 {-# BUILTIN NATURAL ℕ #-}
 
--- count : List A → ℕ is the bridge from events to magnitude.
--- It abstracts away identity, keeping only "how many."
 count : {A : Set} → List A → ℕ
 count []       = zero
 count (x ∷ xs) = suc (count xs)
 
--- Alias for count (standard library uses 'length')
 length : {A : Set} → List A → ℕ
 length = count
 
--- Finite types: Fin n has exactly n inhabitants
--- Used to prove cardinality of types via explicit bijection
 data Fin : ℕ → Set where
   zero : {n : ℕ} → Fin (suc n)
   suc  : {n : ℕ} → Fin n → Fin (suc n)
 
--- THEOREM: ℕ ≅ cardinalities of finite lists
--- This proves: numbers ARE what emerges from counting, not what we assume.
 witness-list : ℕ → List ⊤
 witness-list zero    = []
 witness-list (suc n) = tt ∷ witness-list n
@@ -725,7 +731,6 @@ zero  ∸ n     = zero
 suc m ∸ zero  = suc m
 suc m ∸ suc n = m ∸ n
 
--- Standard laws of arithmetic (for later use in K₄ computations)
 +-identityʳ : ∀ (n : ℕ) → (n + zero) ≡ n
 +-identityʳ zero    = refl
 +-identityʳ (suc n) = cong suc (+-identityʳ n)
@@ -931,6 +936,22 @@ negℤ (mkℤ a b) = mkℤ b a
 ≃ℤ-sym : ∀ {x y : ℤ} → x ≃ℤ y → y ≃ℤ x
 ≃ℤ-sym {mkℤ a b} {mkℤ c d} eq = sym eq
 
+\end{code}
+
+\subsection{Transitivity of Integer Equivalence}
+
+The proof that integer equivalence $\simeq_{\mathbb{Z}}$ is transitive is one of the more involved proofs in this section. We must show that if $(a,b) \simeq (c,d)$ and $(c,d) \simeq (e,f)$, then $(a,b) \simeq (e,f)$.
+
+The helper function \texttt{ℤ-trans-helper} accomplishes this through a sequence of algebraic manipulations. The proof strategy is to:
+\begin{enumerate}
+    \item Combine the two hypotheses by adding appropriate terms to both sides.
+    \item Use associativity and commutativity of addition to rearrange terms.
+    \item Apply right-cancellation to eliminate the common term.
+\end{enumerate}
+
+While lengthy, this proof is purely mechanical---it relies only on the arithmetic properties of $\mathbb{N}$ we have already established. The proof demonstrates that our integer construction is mathematically sound.
+
+\begin{code}
 ℤ-trans-helper : ∀ (a b c d e f : ℕ)
                → (a + d) ≡ (c + b)
                → (c + f) ≡ (e + d)
@@ -949,6 +970,11 @@ negℤ (mkℤ a b) = mkℤ b a
     step4 : (a + (d + f)) ≡ (c + (b + f))
     step4 = trans (sym step2) (trans step1 step3)
     
+\end{code}
+
+At this point, we have established that $a + (d + f) = c + (b + f)$. We now use the second hypothesis to relate $c$ and $e$.
+
+\begin{code}
     step5 : ((c + f) + b) ≡ ((e + d) + b)
     step5 = cong (_+ b) q
     
@@ -976,6 +1002,11 @@ negℤ (mkℤ a b) = mkℤ b a
     step13 : (a + (d + f)) ≡ (e + (d + b))
     step13 = trans step11 step12
     
+\end{code}
+
+Finally, we rearrange both sides to isolate $(a+f)$ and $(e+b)$, then apply right-cancellation to complete the proof.
+
+\begin{code}
     step14a : (a + (d + f)) ≡ (a + (f + d))
     step14a = cong (a +_) (+-comm d f)
     step14b : (a + (f + d)) ≡ ((a + f) + d)
