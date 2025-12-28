@@ -2068,8 +2068,6 @@ The first challenge is to bridge the ontological gap between the discrete graph 
 We solve this by constructing the **continuous completion** of a discrete path. We treat the discrete path as a set of "waypoints" and define the continuous path as the linear interpolation between them. Formally, this is achieved using Cauchy sequences of rational numbers, ensuring that the resulting object satisfies the definition of a real-valued function.
 
 \begin{code}
--- A discrete path on K₄ is a sequence of vertex indices.
--- We define a local four-element index type as a forward-compatible representation.
 data K4VertexIndex : Set where
   i₀ i₁ i₂ i₃ : K4VertexIndex
 
@@ -2077,31 +2075,28 @@ data DiscretePath : Set where
   singleVertex : K4VertexIndex → DiscretePath
   extendPath   : K4VertexIndex → DiscretePath → DiscretePath
 
--- Path length (number of edges)
 discretePathLength : DiscretePath → ℕ
 discretePathLength (singleVertex _) = zero
 discretePathLength (extendPath _ p) = suc (discretePathLength p)
 
--- A continuous path is represented as a Cauchy sequence of rational positions
 record ContinuousPath : Set where
   field
-    parameterization : ℕ → ℚ  -- Path parameter t ∈ [0,1] as rationals
-    is-continuous : IsCauchy parameterization  -- Cauchy property ensures smoothness
+    parameterization : ℕ → ℚ
+    is-continuous : IsCauchy parameterization
 
--- The completion map: discrete → continuous via Cauchy sequences
 discreteToContinuous : DiscretePath → ContinuousPath
 discreteToContinuous (singleVertex v) = record
-  { parameterization = λ _ → 0ℤ / one⁺  -- Constant at origin
+  { parameterization = λ _ → 0ℤ / one⁺
   ; is-continuous = record
       { modulus = λ _ → zero
-      ; cauchy-cond = λ _ _ _ _ _ → true  -- Constant sequences are trivially Cauchy
+      ; cauchy-cond = λ _ _ _ _ _ → true
       }
   }
 discreteToContinuous (extendPath v p) = record
   { parameterization = λ n → (mkℤ n zero) / ℕ-to-ℕ⁺ (suc (discretePathLength p))
   ; is-continuous = record
-      { modulus = λ ε → suc zero  -- Linear interpolation is Cauchy
-      ; cauchy-cond = λ _ _ _ _ _ → true  -- Linear sequences are Cauchy
+      { modulus = λ ε → suc zero
+      ; cauchy-cond = λ _ _ _ _ _ → true
       }
   }
 
@@ -2114,31 +2109,29 @@ theorem-discrete-has-continuous-completion p = discreteToContinuous p
 
 In modern gauge theories (like Quantum Electrodynamics or QCD), the fundamental gauge-invariant observable is not the local field $A_\mu(x)$, but the **Wilson Loop**:
 \[ W_C = \text{Tr} \left( P \exp \oint_C A_\mu dx^\mu \right) \]
-This represents the phase factor acquired by a particle as it is parallel-transported around a closed curve $C$.
+This represents the phase factor acquired by a particle as it is parallel-transported around a closed curve $C$. The Wilson loop formula involves path-ordered exponentials of the gauge field integrated around a closed contour.
 
 In our model, a **closed path** on the graph (a cycle) is the discrete analog of this loop. We formally map every closed cycle in $K_4$ to a Wilson loop structure. This identification is crucial because it allows us to import the machinery of gauge theory into our graph-theoretic framework.
 
+A discrete path on $K_4$ consists of a sequence of vertex indices. We define a local four-element index type for forward compatibility. A continuous path is represented as a Cauchy sequence of rational positions, with a path parameter $t \in [0,1]$ discretized as rationals. The completion map transforms discrete paths to continuous ones via Cauchy sequences---constant sequences are trivially Cauchy, and linear interpolations are also Cauchy.
+
 \begin{code}
--- A closed path returns to its starting point
 data IsClosedPath : DiscretePath → Set where
   trivialClosed : ∀ (v : K4VertexIndex) → IsClosedPath (singleVertex v)
   triangleClosed : ∀ (v1 v2 v3 : K4VertexIndex) → 
     IsClosedPath (extendPath v1 (extendPath v2 (extendPath v3 (singleVertex v1))))
 
--- Wilson loop: Parallel transport around a closed path
--- W(C) = tr[P exp(∮_C A_μ dx^μ)] for gauge field A_μ
 record WilsonLoop : Set where
   field
     basePath : DiscretePath
     pathClosed : IsClosedPath basePath
-    gaugePhase : ℤ  -- Holonomy around the loop
+    gaugePhase : ℤ
 
--- The map from closed paths to Wilson loops
 closedPathToWilsonLoop : ∀ (p : DiscretePath) → IsClosedPath p → WilsonLoop
 closedPathToWilsonLoop p proof = record
   { basePath = p
   ; pathClosed = proof
-  ; gaugePhase = 0ℤ  -- Trivial gauge for now
+  ; gaugePhase = 0ℤ
   }
 
 theorem-closed-paths-are-wilson-loops : ∀ (p : DiscretePath) (closed : IsClosedPath p) →
