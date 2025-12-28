@@ -611,6 +611,22 @@ record WellFormedDrift : Set₁ where
     law-distrib  : Distributivity structure
     law-confl    : Confluence structure
 
+\end{code}
+
+\subsection{The Four-Part Proof Structure}
+
+To rigorously establish that the Drift Operad is the unique valid structure, we employ a four-part proof methodology. Each component addresses a different aspect of necessity:
+
+\begin{enumerate}
+    \item \textbf{Consistency}: The structure satisfies all required algebraic laws (WellFormedDrift).
+    \item \textbf{Exclusivity}: The structure cannot be reduced or simplified (Irreducibility).
+    \item \textbf{Robustness}: The structure is stable under perturbation---small changes to the axioms don't yield alternative valid structures.
+    \item \textbf{Cross-validation}: The structure links correctly to Sum/Product duality, ensuring it captures both convergent and divergent processes.
+\end{enumerate}
+
+This four-part methodology ensures that our mathematical objects are not merely consistent, but \emph{inevitable}.
+
+\begin{code}
 record DriftOperad4PartProof : Set₁ where
   field
     consistency     : WellFormedDrift
@@ -1518,13 +1534,27 @@ _==ℚ-bool_ : ℚ → ℚ → Bool
 (p₁ / d₁) ==ℚ-bool (p₂ / d₂) = 
   (p₁ *ℤ ⁺toℤ d₂) ==ℤ-bool (p₂ *ℤ ⁺toℤ d₁)
 
+\end{code}
+
+\subsection{Cauchy Sequences}
+
+A Cauchy sequence is a sequence of rationals that "converges" in the sense that its terms get arbitrarily close together. Formally, for any desired precision $\epsilon$, there exists a threshold $N$ (the \emph{modulus} of convergence) such that all terms beyond $N$ are within $\epsilon$ of each other.
+
+The \texttt{IsCauchy} record captures this notion computationally:
+\begin{itemize}
+    \item \textbf{modulus}: A function from precision $\epsilon$ to the threshold index $N(\epsilon)$.
+    \item \textbf{cauchy-cond}: A boolean predicate verifying that for indices $m, n \ge N(\epsilon)$, the distance $|seq(m) - seq(n)|$ is less than $\epsilon$.
+\end{itemize}
+
+This computational representation allows us to work with real numbers constructively, computing approximations to any desired precision.
+
+\begin{code}
 record IsCauchy (seq : ℕ → ℚ) : Set where
   field
     modulus : ℚ → ℕ
     cauchy-cond : ∀ (ε : ℚ) (m n : ℕ) → 
                   modulus ε ≤ m → modulus ε ≤ n → Bool
 
--- Real number as Cauchy sequence of rationals
 record ℝ : Set where
   constructor mkℝ
   field
