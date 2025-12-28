@@ -13,6 +13,7 @@
 *.log
 *.out
 *.toc
+*.ptb
 *.fls
 *.fdb_latexmk
 *.synctex.gz

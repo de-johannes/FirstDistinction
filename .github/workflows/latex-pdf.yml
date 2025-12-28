@@ -1,51 +1,64 @@
-name: Build PDFs from LaTeX
+name: Build Paper PDF
 
 on:
   push:
     branches: [ main ]
     paths:
-      - 'pdf/*.tex'
+      - 'FirstDistinction.lagda.tex'
+      - 'agda.sty'
   pull_request:
     branches: [ main ]
     paths:
-      - 'pdf/*.tex'
-  workflow_dispatch:  # Allow manual trigger
+      - 'FirstDistinction.lagda.tex'
+      - 'agda.sty'
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build-pdfs:
-    name: Compile LaTeX to PDF
+  build-paper:
+    name: Build FirstDistinction.pdf
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Compile PDFs
+      - name: Install Agda
+        uses: wenkokke/setup-agda@v2
+        with:
+          agda-version: '2.7.0.1'
+
+      - name: Generate LaTeX from Agda
+        run: |
+          echo "📦 Generating LaTeX..."
+          agda --safe --without-K --latex FirstDistinction.lagda.tex
+          # Agda generates latex/FirstDistinction.tex
+          # We also need agda.sty in the latex directory if it exists in root
+          if [ -f agda.sty ]; then
+            cp agda.sty latex/
+          fi
+
+      - name: Compile LaTeX to PDF
         uses: xu-cheng/latex-action@v3
         with:
-          working_directory: pdf
-          latexmk_use_lualatex: false
-          root_file: |
-            FD-01-Genesis.tex
-            FD-02-Alpha.tex
-            FD-03-Dimension.tex
-            FD-04-Masses.tex
-            FD-05-Time.tex
-            FD-06-Methodology.tex
-            FirstDistinction_Summary.tex
+          working_directory: latex
+          root_file: FirstDistinction.tex
+          latexmk_use_xelatex: true
+          # We need to ensure we have the necessary packages
+          extra_system_packages: "texlive-xetex texlive-science texlive-fonts-extra"
 
-      - name: List generated PDFs
-        run: ls -la pdf/*.pdf 2>/dev/null || echo "No PDFs generated yet"
+      - name: Move PDF to root
+        run: |
+          mv latex/FirstDistinction.pdf ./FirstDistinction.pdf
+          echo "✅ PDF moved to root"
 
-      - name: Commit PDFs
+      - name: Commit PDF
         if: github.event_name == 'push'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add pdf/*.pdf
-          git diff --staged --quiet || git commit -m "🤖 Auto-build PDFs from LaTeX changes"
-          git push
+          git add FirstDistinction.pdf
+          git diff --staged --quiet || (git commit -m "🤖 Auto-build PDF from Literate Agda" && git push)

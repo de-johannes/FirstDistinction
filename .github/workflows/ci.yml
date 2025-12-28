@@ -39,12 +39,12 @@ jobs:
             exit 1
           fi
 
-      - name: Compile FirstDistinction.agda
+      - name: Compile FirstDistinction.lagda.tex
         run: |
-          echo "⏳ Compiling FirstDistinction.agda (--safe --without-K --no-libraries)..."
+          echo "⏳ Compiling FirstDistinction.lagda.tex (--safe --without-K --no-libraries)..."
           set -e
-          if agda --safe --without-K --no-libraries FirstDistinction.agda; then
-            echo "✅ FirstDistinction.agda compiles successfully"
+          if agda --safe --without-K --no-libraries FirstDistinction.lagda.tex; then
+            echo "✅ FirstDistinction.lagda.tex compiles successfully"
           else
             echo "❌ Compilation FAILED!"
             exit 1
