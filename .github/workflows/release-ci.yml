@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'FirstDistinction.agda'
+      - 'FirstDistinction.lagda.tex'
 
 permissions:
   contents: write
@@ -29,12 +29,12 @@ jobs:
         with:
           agda-version: '2.7.0.1'
 
-      - name: Compile FirstDistinction.agda
+      - name: Compile FirstDistinction.lagda.tex
         run: |
-          echo "🚀 Compiling FirstDistinction.agda for release verification..."
+          echo "🚀 Compiling FirstDistinction.lagda.tex for release verification..."
           set -e
-          if agda --safe --without-K --no-libraries FirstDistinction.agda 2>&1 | tee agda-compile.log; then
-            echo "✅ FirstDistinction.agda compiled successfully!"
+          if agda --safe --without-K --no-libraries FirstDistinction.lagda.tex 2>&1 | tee agda-compile.log; then
+            echo "✅ FirstDistinction.lagda.tex compiled successfully!"
           else
             echo "❌ Compilation FAILED!"
             cat agda-compile.log
@@ -54,7 +54,7 @@ jobs:
             cat agda-compile.log
             echo ""
             echo "=== FILE CHECKSUMS ==="
-            sha256sum FirstDistinction.agda
+            sha256sum FirstDistinction.lagda.tex
             sha256sum FirstDistinction.agdai 2>/dev/null || echo "No .agdai generated"
           } > verification-manifest.txt
 
@@ -70,7 +70,7 @@ jobs:
       - name: Check for holes
         run: |
           echo "🔍 Checking for holes {!!}..."
-          if grep -n '{!.*!}' FirstDistinction.agda; then
+          if grep -n '{!.*!}' FirstDistinction.lagda.tex; then
             echo "❌ Holes found - cannot release!"
             exit 1
           else
@@ -81,7 +81,7 @@ jobs:
         run: |
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           echo "✅ All verification steps passed:"
-          echo "   ✅ FirstDistinction.agda compiles (--safe --without-K)"
+          echo "   ✅ FirstDistinction.lagda.tex compiles (--safe --without-K)"
           echo "   ✅ No holes detected"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
@@ -139,7 +139,7 @@ jobs:
             echo ""
             echo "---"
             echo ""
-            echo "**Verify:** \`agda --safe --without-K --no-libraries FirstDistinction.agda\`"
+            echo "**Verify:** \`agda --safe --without-K --no-libraries FirstDistinction.lagda.tex\`"
           } > CHANGELOG.md
 
       - name: Create source archive
