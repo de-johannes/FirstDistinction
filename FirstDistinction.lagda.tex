@@ -611,13 +611,12 @@ record WellFormedDrift : Set₁ where
     law-distrib  : Distributivity structure
     law-confl    : Confluence structure
 
--- 4-PART PROOF: The Drift Operad is the unique valid structure
 record DriftOperad4PartProof : Set₁ where
   field
     consistency     : WellFormedDrift
     exclusivity     : Irreducibility (WellFormedDrift.structure consistency)
-    robustness      : WellFormedDrift → Set       -- Structure is stable
-    cross-validates : WellFormedDrift → Set       -- Links to Sum/Product
+    robustness      : WellFormedDrift → Set
+    cross-validates : WellFormedDrift → Set
 
 \end{code}
 
@@ -793,12 +792,10 @@ data _≤_ : ℕ → ℕ → Set where
 ≤-step z≤n = z≤n
 ≤-step (s≤s p) = s≤s (≤-step p)
 
--- Greater-than-or-equal (flipped ≤)
 infix 4 _≥_
 _≥_ : ℕ → ℕ → Set
 m ≥ n = n ≤ m
 
--- Maximum and minimum
 _⊔_ : ℕ → ℕ → ℕ
 zero  ⊔ n     = n
 suc m ⊔ zero  = suc m
@@ -826,6 +823,8 @@ We define the \emph{signature} of an operation by its input and output arity.
 
 This structural isomorphism suggests that the "Sum vs. Product" distinction in physics is a reflection of the "Convergent vs. Divergent" nature of the underlying distinction process. This duality will reappear in Section 11, where the fine-structure constant $\alpha^{-1}$ is derived from a formula mixing additive terms (Euler characteristic) and multiplicative terms (Laplacian eigenvalues).
 
+The theorems \texttt{theorem-drift-convergent} and \texttt{theorem-codrift-divergent} formalize that Drift is sum-like (convergent) and CoDrift is product-like (divergent).
+
 \begin{code}
 record Signature : Set where
   field
@@ -838,15 +837,12 @@ record Signature : Set where
 ∇-sig : Signature
 ∇-sig = record { inputs = 1 ; outputs = 2 }
 
--- Theorem: Drift is convergent (Sum-like)
 theorem-drift-convergent : suc (Signature.outputs Δ-sig) ≤ Signature.inputs Δ-sig
 theorem-drift-convergent = s≤s (s≤s z≤n)
 
--- Theorem: CoDrift is divergent (Product-like)
 theorem-codrift-divergent : suc (Signature.inputs ∇-sig) ≤ Signature.outputs ∇-sig
 theorem-codrift-divergent = s≤s (s≤s z≤n)
 
--- 4-PART PROOF: Arithmetic Duality is structurally necessary
 record SumProduct4PartProof : Set where
   field
     consistency     : (Signature.inputs Δ-sig ≡ 2) × (Signature.outputs Δ-sig ≡ 1)
@@ -1173,7 +1169,6 @@ Finally, we rearrange both sides to isolate $(a+f)$ and $(e+b)$, then apply righ
 +ℤ-inverseˡ : (x : ℤ) → (negℤ x +ℤ x) ≃ℤ 0ℤ
 +ℤ-inverseˡ (mkℤ a b) = trans (+-identityʳ (b + a)) (+-comm b a)
 
--- x + (-x) ≃ 0  (cancellation law)
 +ℤ-negℤ-cancel : ∀ (x : ℤ) → (x +ℤ negℤ x) ≃ℤ 0ℤ
 +ℤ-negℤ-cancel (mkℤ a b) = trans (+-identityʳ (a + b)) (+-comm a b)
 
@@ -1465,10 +1460,15 @@ A sequence is Cauchy if for all $\epsilon > 0$, there exists $N$ such that for a
 \paragraph{Note on Verification Methodology}
 We define what Cauchy means, but the verification requires computing actual distances. For eventually-constant sequences, this is trivial (distance = 0), but the boolean return type used here for efficiency doesn't capture the full proof witness.
 
+\paragraph{Absolute Value and Distance}
+The absolute value of an integer $(p,n)$ representing $p-n$ can be computed as $\max(p,n) - \min(p,n)$. This gives us the magnitude without sign. We provide two equivalent implementations: \texttt{absℤ} uses arithmetic manipulation, while \texttt{absℤ'} uses explicit max and min functions.
+
+The distance between two rationals is then defined as the absolute value of their difference, a fundamental operation for defining Cauchy sequences.
+
+\paragraph{Comparison and Equality}
+To verify convergence conditions computationally, we provide boolean comparison operators for natural numbers, integers, and rationals. For integers represented as $(a,b)$ meaning $a-b$, the comparison $x < y$ becomes $(a-b) < (c-d)$, which simplifies to $a+d < c+b$.
+
 \begin{code}
--- Absolute value for ℤ (represented as mkℤ pos neg = pos - neg)
--- |pos - neg| = if pos ≥ neg then pos - neg else neg - pos
--- We represent this by swapping if needed
 absℤ : ℤ → ℤ
 absℤ (mkℤ p n) = mkℤ (p + n) (min p n + min n p)
   where
@@ -1477,9 +1477,6 @@ absℤ (mkℤ p n) = mkℤ (p + n) (min p n + min n p)
     min _ zero = zero
     min (suc m) (suc n) = suc (min m n)
 
--- Actually simpler: |p - n| can be computed as max(p,n) - min(p,n)
--- But for our purposes, we can use: mkℤ (max p n) (min p n)
--- This is equivalent to |p - n|
 absℤ' : ℤ → ℤ
 absℤ' (mkℤ p n) = mkℤ (max p n) (min p n)
   where
@@ -1492,52 +1489,40 @@ absℤ' (mkℤ p n) = mkℤ (max p n) (min p n)
     min _ zero = zero
     min (suc m) (suc n) = suc (min m n)
 
--- Distance between rationals (absolute difference)
 distℚ : ℚ → ℚ → ℚ
 distℚ (n₁ / d₁) (n₂ / d₂) = absℤ' ((n₁ *ℤ ⁺toℤ d₂) +ℤ negℤ (n₂ *ℤ ⁺toℤ d₁)) / (d₁ *⁺ d₂)
 
--- Comparison helper for ℕ
 _<ℕ-bool_ : ℕ → ℕ → Bool
 zero <ℕ-bool zero = false
 zero <ℕ-bool (suc _) = true
 (suc _) <ℕ-bool zero = false
 (suc m) <ℕ-bool (suc n) = m <ℕ-bool n
 
--- Comparison helper for ℤ (mkℤ a b represents a - b)
--- x < y ⟺ (a - b) < (c - d) ⟺ a + d < c + b
 _<ℤ-bool_ : ℤ → ℤ → Bool
 (mkℤ a b) <ℤ-bool (mkℤ c d) = (a + d) <ℕ-bool (c + b)
 
--- Comparison: is p < q?
 _<ℚ-bool_ : ℚ → ℚ → Bool
 (p₁ / d₁) <ℚ-bool (p₂ / d₂) = 
   (p₁ *ℤ ⁺toℤ d₂) <ℤ-bool (p₂ *ℤ ⁺toℤ d₁)
 
--- Equality check for ℕ
 _==ℕ-bool_ : ℕ → ℕ → Bool
 zero ==ℕ-bool zero = true
 zero ==ℕ-bool (suc _) = false
 (suc _) ==ℕ-bool zero = false
 (suc m) ==ℕ-bool (suc n) = m ==ℕ-bool n
 
--- Equality check for ℤ
 _==ℤ-bool_ : ℤ → ℤ → Bool
 (mkℤ a b) ==ℤ-bool (mkℤ c d) = (a + d) ==ℕ-bool (c + b)
 
--- Equality check for ℚ
 _==ℚ-bool_ : ℚ → ℚ → Bool
 (p₁ / d₁) ==ℚ-bool (p₂ / d₂) = 
   (p₁ *ℤ ⁺toℤ d₂) ==ℤ-bool (p₂ *ℤ ⁺toℤ d₁)
 
--- IsCauchy: The cauchy-cond field is now COMPUTED (not just "true")
--- For all uses: cauchy-cond returns distℚ (seq m) (seq n) <ℚ-bool ε
 record IsCauchy (seq : ℕ → ℚ) : Set where
   field
-    modulus : ℚ → ℕ  -- For each ε, gives N
+    modulus : ℚ → ℕ
     cauchy-cond : ∀ (ε : ℚ) (m n : ℕ) → 
                   modulus ε ≤ m → modulus ε ≤ n → Bool
-  -- For verification: cauchy-cond should equal the computed distance check
-  -- cauchy-cond ε m n _ _ ≡ (distℚ (seq m) (seq n) <ℚ-bool ε)
 
 -- Real number as Cauchy sequence of rationals
 record ℝ : Set where
