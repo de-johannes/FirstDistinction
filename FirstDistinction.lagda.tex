@@ -6,6 +6,20 @@
 \usepackage{amssymb}
 \usepackage{unicode-math}
 \usepackage{newunicodechar}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{positioning, shapes.geometric, calc}
+
+\definecolor{proof-blue}{RGB}{70,130,180}
+\definecolor{box-bg}{RGB}{245,248,250}
+
+\tcbuselibrary{skins,breakable}
+
+\newtcolorbox{proven}[1][]{
+  colback=box-bg, colframe=proof-blue, fonttitle=\bfseries,
+  title={Machine-Verified}, breakable, #1
+}
 
 % Basic setup for Agda code
 \usepackage{catchfilebetweentags}
@@ -79,6 +93,19 @@ We begin by establishing that distinction is not an arbitrary assumption but the
 
 \subsubsection{The Self-Subversion Argument}
 Consider the proposition "distinction does not exist." To state this proposition, one must distinguish between the concept of "existence" and "non-existence," and between the subject "distinction" and the predicate "does not exist." The very act of denying distinction relies on the mechanism of distinction. Thus, the denial is self-refuting.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+  \node[draw, rounded corners, fill=box-bg, text width=6cm, align=center] (claim) at (0,0) {Claim: "Distinction does not exist"};
+  \node[draw, rounded corners, fill=proof-blue!20, text width=6cm, align=center] (presupposition) at (0,-2) {Presupposition: Distinguishing "Existence" from "Non-Existence"};
+  
+  \draw[->, thick] (claim) -- node[right] {Requires} (presupposition);
+  \draw[->, thick, dashed, bend left=45] (presupposition) to node[left] {Contradicts} (claim);
+\end{tikzpicture}
+\caption{The logical loop of self-subversion: denying distinction requires using distinction.}
+\label{fig:unavoidability}
+\end{figure}
 
 In type theory, this is not merely a linguistic trick but a formal property. A type system without distinction collapses into triviality where all types are inhabited or all are empty, rendering it useless for logic or computation.
 
@@ -12461,6 +12488,30 @@ The selection of $K_4$ is the result of a closed constraint chain:
     \item \textbf{Saturation ($N = 4$):} The graph is fully saturated. The number of edges ($E=6$) matches the degrees of freedom of a 3D frame (3 rotations + 3 boosts, or 6 bivectors).
     \item \textbf{Fragmentation ($N > 4$):} $K_5$ requires 10 edges. This exceeds the 6-dimensional capacity of the emergent space. The graph cannot be embedded without self-intersection (non-planarity), leading to fragmentation into a stable $K_4$ core and a decoupled $v_5$.
 \end{itemize}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=2]
+  % K4 vertices (Tetrahedron projection)
+  \node[circle, fill=proof-blue, inner sep=2pt, label=above:$D_0$] (A) at (0,1) {};
+  \node[circle, fill=proof-blue, inner sep=2pt, label=left:$D_1$] (B) at (-0.866,-0.5) {};
+  \node[circle, fill=proof-blue, inner sep=2pt, label=right:$D_2$] (C) at (0.866,-0.5) {};
+  \node[circle, fill=proof-blue, inner sep=2pt, label=below:$D_3$] (D) at (0,0) {};
+
+  % Edges
+  \draw[thick] (A) -- (B);
+  \draw[thick] (B) -- (C);
+  \draw[thick] (C) -- (A);
+  \draw[thick] (A) -- (D);
+  \draw[thick] (B) -- (D);
+  \draw[thick] (C) -- (D);
+
+  % Annotations
+  \node at (0,-1) {\textbf{Saturation ($N=4$):} 4 Vertices, 6 Edges};
+\end{tikzpicture}
+\caption{The Complete Graph $K_4$ representing the saturated state of distinction.}
+\label{fig:k4-saturation}
+\end{figure}
 
 This ensures that $K_4$ is the \emph{only} stable configuration.
 
