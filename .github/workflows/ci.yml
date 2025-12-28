@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   agda-verification:
-    name: Verify FirstDistinction.agda compiles
+    name: Verify FirstDistinction.lagda.tex compiles
     runs-on: ubuntu-latest
     timeout-minutes: 15
 

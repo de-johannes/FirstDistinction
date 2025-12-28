@@ -6,7 +6,7 @@ on:
       - '**'
       - '!main'  # Exclude main (release-ci handles that)
     paths:
-      - 'FirstDistinction.agda'
+      - 'FirstDistinction.lagda.tex'
       - '.github/workflows/test-ci.yml'
 
 permissions:
@@ -29,12 +29,12 @@ jobs:
         with:
           agda-version: '2.7.0.1'
 
-      - name: Compile FirstDistinction.agda
+      - name: Compile FirstDistinction.lagda.tex
         run: |
-          echo "⏳ Compiling FirstDistinction.agda (--safe --without-K --no-libraries)..."
+          echo "⏳ Compiling FirstDistinction.lagda.tex (--safe --without-K --no-libraries)..."
           set -e
-          if agda --safe --without-K --no-libraries FirstDistinction.agda; then
-            echo "✅ FirstDistinction.agda compiled successfully!"
+          if agda --safe --without-K --no-libraries FirstDistinction.lagda.tex; then
+            echo "✅ FirstDistinction.lagda.tex compiled successfully!"
           else
             echo "❌ Compilation FAILED!"
             exit 1
@@ -43,7 +43,7 @@ jobs:
       - name: Check for holes
         run: |
           echo "🔍 Checking for holes {!!}..."
-          if grep -n '{!.*!}' FirstDistinction.agda; then
+          if grep -n '{!.*!}' FirstDistinction.lagda.tex; then
             echo "❌ Holes found!"
             exit 1
           else
@@ -56,7 +56,7 @@ jobs:
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           if [ "${{ job.status }}" == "success" ]; then
             echo "🎉 Test CI passed!"
-            echo "   ✅ FirstDistinction.agda compiles (--safe --without-K)"
+            echo "   ✅ FirstDistinction.lagda.tex compiles (--safe --without-K)"
             echo "   ✅ No holes detected"
           else
             echo "❌ Test CI failed!"
