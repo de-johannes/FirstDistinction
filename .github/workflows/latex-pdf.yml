@@ -48,7 +48,7 @@ jobs:
           root_file: FirstDistinction.tex
           latexmk_use_xelatex: true
           # We need to ensure we have the necessary packages
-          extra_system_packages: "texlive-xetex texlive-science texlive-fonts-extra"
+          extra_system_packages: "texlive-xetex texlive-mathscience"
 
       - name: Move PDF to root
         run: |
