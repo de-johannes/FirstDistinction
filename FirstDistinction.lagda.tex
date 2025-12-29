@@ -1702,8 +1702,10 @@ x -ℝ y = x +ℝ (-ℝ y)
 
 \end{code}
 
+\subsection{Proof Layer Markers}
+We explicitly tag the proof layer used for each component to ensure methodological clarity (see Section 2).
+
 \begin{code}
--- Proof layer markers (see Section 2 for methodology)
 data ProofLayer : Set where
   natural-layer  : ProofLayer
   rational-layer : ProofLayer
@@ -2001,8 +2003,11 @@ The solid angle of a regular tetrahedron is $\Omega = \arccos(-1/3) \approx 1.91
 π-seq (suc zero)        = (mkℤ 31 zero) / ℕ-to-ℕ⁺ 9
 π-seq (suc (suc zero))  = (mkℤ 314 zero) / ℕ-to-ℕ⁺ 99
 π-seq (suc (suc (suc n))) = (mkℤ 3142 zero) / ℕ-to-ℕ⁺ 999
+\end{code}
 
--- π-seq is eventually constant (= 3142/1000 for n ≥ 3), hence Cauchy
+The sequence is eventually constant ($3142/1000$ for $n \ge 3$), which trivially satisfies the Cauchy condition.
+
+\begin{code}
 π-is-cauchy : IsCauchy π-seq
 π-is-cauchy = record
   { modulus = λ ε → 3
@@ -8899,10 +8904,6 @@ theorem-g-factor-complete = record
 \end{code}
 
 \begin{code}
--- Redundant definition removed
--- gyromagnetic-g : ℕ
--- gyromagnetic-g = states-per-distinction
-
 theorem-g-from-bool : gyromagnetic-g ≡ 2
 theorem-g-from-bool = refl
 \end{code}
@@ -12271,9 +12272,13 @@ omega-m-denominator = 10000
 
 omega-m-value : ℚ
 omega-m-value = (mkℤ omega-m-numerator zero) / (ℕ-to-ℕ⁺ omega-m-denominator)
+\end{code}
 
--- The structural origin: 1/π from tetrahedron solid angle
--- arccos(-1/3) / 4π × 4 vertices × 2 (dual) ≈ 1/π
+\paragraph{Structural Origin}
+The value $1/\pi$ arises from the ratio of the tetrahedron's solid angle to the sphere's solid angle, accounting for the 4 vertices and duality:
+\[ \frac{4 \times \arccos(-1/3)}{4\pi} \times 2 \approx \frac{1}{\pi} \]
+
+\begin{code}
 tetrahedron-solid-angle-10000 : ℕ
 tetrahedron-solid-angle-10000 = 19106  -- arccos(-1/3) in units of 10⁻⁴ sr
 
