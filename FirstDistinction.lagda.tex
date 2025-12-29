@@ -2013,10 +2013,19 @@ theorem-loops-from-K4 = record
   ; dressed-from-loops = true
   }
 
--- LOOP EXPANSION IN K₄:
---   L₀ (tree-level)    = bare K₄ integers {1,2,3,4,6,12}
---   L₁ (1-loop)        = triangle cycles (4 types)
---   L₂ (2-loop)        = square cycles (3 types)
+\end{code}
+
+\paragraph{Loop Expansion Structure}
+The loop expansion in $K_4$ has a clear hierarchy:
+\begin{itemize}
+\item $L_0$ (tree-level): Bare $K_4$ integers $\{1,2,3,4,6,12\}$
+\item $L_1$ (1-loop): Triangle cycles (4 types)
+\item $L_2$ (2-loop): Square cycles (3 types)
+\end{itemize}
+
+This hierarchical structure provides the framework for quantum corrections, with each level contributing increasingly fine corrections to the bare values.
+
+\begin{code}
 \end{code}
 
 \section{Formal Proof: K4 Triangles to QFT One-Loop Integrals}
@@ -7958,24 +7967,24 @@ theorem-einstein-factor-derivation = record
   ; robustness-any-metric = true
   ; robustness-any-dimension = true
   
-  ; cross-euler = K4-chi , refl  -- χ = 2
-  ; cross-factor-from-euler = true  -- f = 1/χ = 1/2
-  ; cross-noether = true  -- Noether: energy conservation
-  ; cross-hilbert = true  -- Hilbert action variation
+  ; cross-euler = K4-chi , refl
+  ; cross-factor-from-euler = true
+  ; cross-noether = true
+  ; cross-hilbert = true
   }
 
--- K₄ DERIVATION OF THE FACTOR:
--- The denominator 2 comes from K₄'s Euler characteristic:
---   χ(K₄) = V - E + F = 4 - 6 + 4 = 2
--- This is the ONLY topological invariant of K₄ that equals 2.
--- Therefore: f = 1/χ = 1/2 is DERIVED from K₄ topology.
+\end{code}
 
+\subsection{K₄ Derivation of the Einstein Factor}
+
+The factor of $1/2$ in the Einstein field equations is not arbitrary but arises directly from $K_4$ topology. The denominator 2 comes from $K_4$'s Euler characteristic: $\chi(K_4) = V - E + F = 4 - 6 + 4 = 2$. This is the ONLY topological invariant of $K_4$ that equals 2, making the relationship $f = 1/\chi = 1/2$ structurally determined rather than phenomenologically tuned.
+
+\begin{code}
 theorem-factor-from-euler : K4-chi ≡ 2
 theorem-factor-from-euler = refl
 
--- The factor 1/2 as a rational number
 einstein-factor : ℚ
-einstein-factor = 1ℤ / suc⁺ one⁺  -- 1/2
+einstein-factor = 1ℤ / suc⁺ one⁺
 
 theorem-factor-is-half : einstein-factor ≃ℚ ½ℚ
 theorem-factor-is-half = ≃ℤ-refl (1ℤ *ℤ ⁺toℤ (suc⁺ one⁺))
@@ -7993,17 +8002,17 @@ G_{ii} &= 4 - \frac{1}{2}(3)(12) = 4 - 18 = -14
 \end{align*}
 This non-zero vacuum energy is a direct consequence of the discrete topology.
 
+The helper function \texttt{divℤ2} divides integers by 2 (valid only for even inputs). For odd inputs, truncation occurs: $1/2 = 0$ in integer division.
+
 \begin{code}
--- Helper: divide ℤ by 2 (only valid when input is even!)
 divℤ2 : ℤ → ℤ
 divℤ2 (mkℤ p n) = mkℤ (divℕ2 p) (divℕ2 n)
   where
   divℕ2 : ℕ → ℕ
   divℕ2 zero = zero
-  divℕ2 (suc zero) = zero  -- 1/2 = 0 (truncated)
-  divℕ2 (suc (suc n)) = suc (divℕ2 n)  -- (n+2)/2 = 1 + n/2
+  divℕ2 (suc zero) = zero
+  divℕ2 (suc (suc n)) = suc (divℕ2 n)
 
--- The correct Einstein tensor with factor 1/2
 einsteinTensorK4 : K4Vertex → SpacetimeIndex → SpacetimeIndex → ℤ
 einsteinTensorK4 v μ ν = 
   let R_μν = spectralRicci v μ ν
@@ -8052,10 +8061,6 @@ theorem-Tττ-density : ∀ (v : K4Vertex) →
   stressEnergyK4 v τ-idx τ-idx ≃ℤ mkℤ (suc (suc (suc zero))) zero
 theorem-Tττ-density v = refl
 
--- [DEFINED IN EARLIER SECTION]
--- vertexCountK4, edgeCountK4, faceCountK4 are now global constants.
--- They match the K4-V, K4-E, K4-F values from the private module.
-
 
 theorem-edge-count : edgeCountK4 ≡ 6
 theorem-edge-count = refl
@@ -8071,9 +8076,6 @@ vPlusF-K4 = vertexCountK4 + faceCountK4
 
 theorem-vPlusF : vPlusF-K4 ≡ 8
 theorem-vPlusF = refl
-
--- [DEFINED IN EARLIER SECTION]
--- eulerChar-computed is now a global constant (2).
 
 theorem-euler-computed : eulerChar-computed ≡ 2
 theorem-euler-computed = refl
