@@ -2415,32 +2415,30 @@ The Taylor series for $\arcsin(x)$ is given by:
 \arcsin(x) = \sum_{n=0}^{\infty} \frac{(2n)!}{2^{2n} (n!)^2 (2n+1)} x^{2n+1}
 \]
 Crucially, all coefficients in this series are rational numbers. This means $\arcsin$ 
-is a constructive map $\mathbb{Q} \to \mathbb{R}$.
+is a constructive map $\mathbb{Q} \to \mathbb{R}$. The coefficients are computed from the formula $c_n = \frac{(2n)!}{2^{2n} \cdot (n!)^2 \cdot (2n+1)}$, giving us: $c_0 = 1$, $c_1 = 1/6$, $c_2 = 3/40$, $c_3 = 5/112$, $c_4 = 35/1152$.
+
+We truncate the series to 5 terms for computational efficiency while maintaining sufficient accuracy for our purposes.
 
 \begin{code}
--- Taylor coefficients for arcsin
--- c_n = (2n)! / (2^(2n) · (n!)² · (2n+1))
 arcsin-coeff-0 : ℚ
-arcsin-coeff-0 = 1ℤ / one⁺                -- c_0 = 1
+arcsin-coeff-0 = 1ℤ / one⁺
 
 arcsin-coeff-1 : ℚ  
-arcsin-coeff-1 = 1ℤ / ℕ-to-ℕ⁺ 6           -- c_1 = 1/6
+arcsin-coeff-1 = 1ℤ / ℕ-to-ℕ⁺ 6
 
 arcsin-coeff-2 : ℚ
-arcsin-coeff-2 = (mkℤ 3 zero) / ℕ-to-ℕ⁺ 40    -- c_2 = 3/40
+arcsin-coeff-2 = (mkℤ 3 zero) / ℕ-to-ℕ⁺ 40
 
 arcsin-coeff-3 : ℚ
-arcsin-coeff-3 = (mkℤ 5 zero) / ℕ-to-ℕ⁺ 112   -- c_3 = 5/112
+arcsin-coeff-3 = (mkℤ 5 zero) / ℕ-to-ℕ⁺ 112
 
 arcsin-coeff-4 : ℚ
-arcsin-coeff-4 = (mkℤ 35 zero) / ℕ-to-ℕ⁺ 1152 -- c_4 = 35/1152
+arcsin-coeff-4 = (mkℤ 35 zero) / ℕ-to-ℕ⁺ 1152
 
--- Power function for rationals (defined here for arcsin)
 power-ℚ : ℚ → ℕ → ℚ
 power-ℚ x zero = 1ℤ / one⁺
 power-ℚ x (suc n) = x *ℚ (power-ℚ x n)
 
--- Arcsin series (truncated to 5 terms for computational efficiency)
 arcsin-series-5 : ℚ → ℚ
 arcsin-series-5 x = 
   let x1 = x
@@ -2454,11 +2452,9 @@ arcsin-series-5 x =
    +ℚ x7 *ℚ arcsin-coeff-3
    +ℚ x9 *ℚ arcsin-coeff-4
 
--- Compute arcsin(1/3) ≈ 0.33984 rad
 arcsin-1/3 : ℚ
 arcsin-1/3 = arcsin-series-5 (1ℤ / ℕ-to-ℕ⁺ 3)
 
--- arcsin is an odd function: arcsin(-x) = -arcsin(x)
 arcsin-minus-1/3 : ℚ
 arcsin-minus-1/3 = -ℚ arcsin-1/3
 \end{code}
@@ -2472,6 +2468,8 @@ we employ a direct integral definition:
 This integral can be computed numerically using rational arithmetic, without any prior knowledge 
 of $\pi$. We approximate the integrand using a Taylor expansion for $1/\sqrt{1-t^2}$ and use 
 a midpoint rule for integration.
+
+The arcsin function is odd: $\arcsin(-x) = -\arcsin(x)$, which we use to compute $\arcsin(-1/3)$ from $\arcsin(1/3)$.
 
 \subsection{Numerical Integration for Arccos}
 
