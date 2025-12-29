@@ -12312,8 +12312,15 @@ theorem-baryon-4part = record
 \paragraph{Spectral Index Derivation}
 The spectral index $n_s$ is derived from the breaking of scale invariance due to the discrete $K_4$ structure.
 \begin{itemize}
-    \item \textbf{Bare Value:} $n_s = 1 - 1/(V \times E) = 1 - 1/24 \approx 0.9583$.
-    \item \textbf{Loop Correction:} The loop structure (triangles $\times$ degree) adds a correction of $12/2400 = 0.005$.
+    \item \textbf{Bare Value:} $n_s = 1 - 1/(V \times E) = 1 - 1/24 \approx 0.9583$. Since $n_s$ cannot be represented exactly as a natural number, we encode it as the ratio $(24-1)/24 = 23/24$.
+    \item \textbf{Loop Correction:} The $K_4$ loop structure involves triangles $\times$ degree $= 4 \times 3 = 12$. Here's why we use degree:
+    \begin{itemize}
+        \item Triangles ($C_3$) = 4: count of 1-loop diagrams
+        \item Degree = 3: propagators per vertex (3 neighbors in $K_4$)
+        \item Product = 12: total 1-loop $\times$ propagator structure
+    \end{itemize}
+    Note that $K_4$ has NO $C_4$ subgraphs since it's complete---every 4-cycle has diagonals. The factor 3 comes from vertex degree, not from "squares."
+    \item \textbf{Physical Meaning:} The discrete $K_4$ structure breaks perfect scale invariance. The deviation $\varepsilon \sim 1/(\text{K}_4\text{ size})$ measures this departure from $n_s=1$.
     \item \textbf{Result:} The derived value is $0.9633$, which is within $0.33\%$ of the Planck 2018 value ($0.9665$).
 \end{itemize}
 
@@ -12324,8 +12331,6 @@ ns-capacity = K₄-vertices-count * K₄-edges-count
 theorem-ns-capacity : ns-capacity ≡ 24
 theorem-ns-capacity = refl
 
--- ns = 1 - 1/24 cannot be represented exactly in ℕ
--- We encode as: ns = (24-1)/24 = 23/24
 ns-bare-num : ℕ
 ns-bare-num = ns-capacity ∸ 1
 
@@ -12335,24 +12340,12 @@ ns-bare-denom = ns-capacity
 theorem-ns-bare : (ns-bare-num ≡ 23) × (ns-bare-denom ≡ 24)
 theorem-ns-bare = refl , refl
 
--- Loop correction
--- K₄ loop structure: Triangles × Degree = 4 × 3 = 12
--- WHY DEGREE?
---   Triangles (C₃) = 4:  count of 1-loop diagrams
---   Degree = 3:          propagators per vertex (3 neighbors)
---   Product = 12:        total 1-loop×propagator structure
---
--- NOTE: K₄ has NO C₄ subgraphs (it's complete, every 4-cycle has diagonals)
--- The factor 3 comes from vertex degree, not from "squares"
-
 loop-product : ℕ
 loop-product = K₄-triangles * K₄-degree-count
 
 theorem-loop-product-12 : loop-product ≡ 12
 theorem-loop-product-12 = refl
 
--- Physical meaning: Discrete K₄ structure breaks perfect scale invariance
--- ε ~ 1/(K₄ size) measures deviation from ns=1
 record SpectralIndexDerivation : Set where
   field
     capacity-24     : ns-capacity ≡ 24
@@ -13853,11 +13846,10 @@ theorem-vertex-compactification = refl
 \label{fig:compactification_pattern}
 \end{figure}
 
-\begin{code}
+\paragraph{Spinor Space Compactification}
+The spinor space has $2^V = 16$ states. The compactification adds a point at infinity: $(2^V)^* = 16 + 1 = 17$. This infinity point represents the VACUUM---the ground state that is Lorentz-invariant.
 
--- OBSERVATION 2: Spinor space compactification
--- 2^V = 16 spinor states → (2^V)* = 16 + 1 = 17
--- The ∞ is the VACUUM (ground state, Lorentz-invariant)
+\begin{code}
 
 SpinorCount : ℕ
 SpinorCount = 2 ^ K4-V
@@ -13896,14 +13888,12 @@ AlphaDenominator = K4-deg * suc EdgePairCount
 theorem-alpha-denominator : AlphaDenominator ≡ 111
 theorem-alpha-denominator = refl
 
--- THEOREM: The +1 pattern is universal
 record CompactificationPattern : Set where
   field
     vertex-space : suc K4-V ≡ 5
     spinor-space : suc (2 ^ K4-V) ≡ 17
     coupling-space : suc (K4-E * K4-E) ≡ 37
     
-    -- All are prime (cannot be proven constructively, but observable)
     prime-emergence : ⊤
 
 theorem-compactification-pattern : CompactificationPattern
@@ -13915,6 +13905,9 @@ theorem-compactification-pattern = record
   }
 
 \end{code}
+
+\paragraph{The +1 Compactification Pattern}
+The universal pattern of adding $+1$ emerges throughout the theory: vertex space $(V^* = 5)$, spinor space $(2^V)^* = 17$, and coupling space $(E^2)^* = 37$. Remarkably, all these compactified values are prime numbers. While primality cannot be proven constructively in type theory, it is empirically observable in each case.
 
 \subsection{Loop Correction Exclusivity}
 
