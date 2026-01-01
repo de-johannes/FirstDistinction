@@ -120,7 +120,30 @@
 \renewcommand{\AgdaCodeStyle}{\small}
 
 \usepackage{tikz}
-\usetikzlibrary{positioning,arrows.meta,calc}
+\usetikzlibrary{positioning,arrows.meta,calc,backgrounds,shadows,decorations.pathreplacing,decorations.pathmorphing}
+
+% Color Palette for TikZ diagrams
+\definecolor{fdBlue}{RGB}{70,130,180}
+\definecolor{fdRed}{RGB}{180,100,100}
+\definecolor{fdGray}{RGB}{50,50,60}
+\definecolor{fdLight}{RGB}{245,248,250}
+\definecolor{fdAccent}{RGB}{180,100,100}
+
+% TikZ Styles
+\tikzset{
+    base/.style={font=\sffamily, align=center},
+    concept/.style={base, rectangle, rounded corners=2mm, draw=fdBlue, thick, 
+                    fill=fdLight, text=fdBlue, inner sep=3mm,
+                    drop shadow={opacity=0.1, shadow xshift=1mm, shadow yshift=-1mm}},
+    operator/.style={base, circle, draw=fdRed, thick, fill=white, text=fdRed, inner sep=1mm},
+    unit/.style={base, circle, draw=fdBlue, thick, fill=white, text=fdBlue, 
+                 inner sep=1mm, minimum size=6mm},
+    void/.style={base, circle, draw=fdGray, thick, fill=white, text=fdGray, 
+                 inner sep=1mm, minimum size=6mm, dashed},
+    flow/.style={->, >=LaTeX, thick, color=fdGray},
+    label/.style={font=\small\sffamily\color{fdGray}, fill=white, inner sep=1pt}
+}
+
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue}
 \usepackage{titlesec}
@@ -486,6 +509,22 @@ a distinction (between true and false).
 \AgdaInductiveConstructor{●}\<%
 \end{code}
 
+The logical structure of this argument can be visualized:
+
+\begin{center}
+\begin{tikzpicture}
+  \node[concept, text width=5cm] (claim) at (0,0) {Claim:\\"Distinction does not exist"};
+  \node[concept, text width=5cm] (presupposition) at (0,-3) {Presupposition:\\Distinguishing "Existence"\\from "Non-Existence"};
+  
+  \draw[flow] (claim) -- node[label, right] {Requires} (presupposition);
+  \draw[flow, dashed, bend left=60] (presupposition) to node[label, left] {Contradicts} (claim);
+\end{tikzpicture}
+\end{center}
+
+The denial of distinction is self-subverting: it requires the very operation 
+it claims does not exist. This is not a rhetorical trick---it is formalized 
+in the type \texttt{distinction-unavoidable}.
+
 \chapter{Equality}
 
 When are two things the same?
@@ -786,6 +825,32 @@ We now establish additional properties of $D_0$ that demonstrate its self-ground
 
 The type $D_2$ has exactly two elements: $\text{here}$ and $\text{there}$. 
 This is the same structure as the Boolean type, the type of truth values.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  % D2 as two points
+  \begin{scope}[xshift=0cm]
+    \node[circle, fill=fdBlue, inner sep=5pt, label=above:{\texttt{here}}] (here) at (0,0) {};
+    \node[circle, fill=fdRed, inner sep=5pt, label=above:{\texttt{there}}] (there) at (2,0) {};
+    \draw[fdGray, thick, <->] (here) -- (there);
+    \node[below=0.5cm of here, xshift=1cm] {$D_2$};
+  \end{scope}
+  
+  % Isomorphism arrow
+  \draw[<->, very thick, fdAccent] (3.5,0) -- node[above] {$\cong$} (5.5,0);
+  
+  % Bool as two points
+  \begin{scope}[xshift=7cm]
+    \node[circle, fill=fdBlue, inner sep=5pt, label=above:{\texttt{true}}] (true) at (0,0) {};
+    \node[circle, fill=fdRed, inner sep=5pt, label=above:{\texttt{false}}] (false) at (2,0) {};
+    \draw[fdGray, thick, <->] (true) -- (false);
+    \node[below=0.5cm of true, xshift=1cm] {Bool};
+  \end{scope}
+\end{tikzpicture}
+\caption{Booleans emerge from distinction. $D_2$ and Bool are isomorphic—truth is forced, not postulated.}
+\label{fig:bool-emergence}
+\end{figure}
 
 We make this correspondence explicit.
 
@@ -1123,6 +1188,38 @@ must build a calculus of combination.
 The question is: given two types $A$ and $B$, how can they interact? Can we have 
 $A$ \emph{and} $B$ simultaneously? Can we have $A$ \emph{or} $B$ as alternatives? 
 Can we have $B$ \emph{depending on} $A$?
+
+These operations correspond to two fundamental transformations: \emph{merge} 
+($\Delta$, taking two things into one) and \emph{split} ($\nabla$, taking one 
+thing into two).
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm]
+  % Merge diagram
+  \node[unit] (a) at (0,0) {$a$};
+  \node[unit] (b) at (2,0) {$b$};
+  \node[operator] (delta) at (1,-1.3) {$\Delta$};
+  \node[unit] (res) at (1,-2.6) {$a \times b$};
+
+  \draw[flow] (a) -- (delta);
+  \draw[flow] (b) -- (delta);
+  \draw[flow] (delta) -- (res);
+
+  \node[label] at (1,0.5) {Merge (Product)};
+
+  % Split diagram
+  \node[unit] (x) at (5.5,0) {$a \uplus b$};
+  \node[operator] (nabla) at (5.5,-1.3) {$\nabla$};
+  \node[unit] (x1) at (4.5,-2.6) {$a$};
+  \node[unit] (x2) at (6.5,-2.6) {$b$};
+
+  \draw[flow] (x) -- (nabla);
+  \draw[flow] (nabla) -- (x1);
+  \draw[flow] (nabla) -- (x2);
+
+  \node[label] at (5.5,0.5) {Split (Sum)};
+\end{tikzpicture}
+\end{center}
 
 These are not just syntactic conveniences. They are the fundamental modes by which 
 structures compose. In a constructive setting, each has precise computational content: 
@@ -2518,6 +2615,42 @@ no gaps, no infinite descending chains. The structure is discrete, atomic, and c
 \AgdaSymbol{\#-\}}\<%
 \end{code}
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[node distance=1.5cm]
+  % The void
+  \node[void] (void) {$\varnothing$};
+  \node[below=0.3cm of void, font=\scriptsize] {void};
+  
+  % Zero
+  \node[unit, right=of void] (zero) {\texttt{zero}};
+  \node[below=0.3cm of zero, font=\scriptsize] {$0$};
+  
+  % Successor chain
+  \node[unit, right=of zero] (one) {\texttt{suc zero}};
+  \node[below=0.3cm of one, font=\scriptsize] {$1$};
+  
+  \node[unit, right=of one] (two) {\texttt{suc (suc zero)}};
+  \node[below=0.3cm of two, font=\scriptsize] {$2$};
+  
+  \node[right=of two, font=\Large] (dots) {$\cdots$};
+  
+  % Arrows
+  \draw[flow] (void) -- node[above, font=\scriptsize] {base} (zero);
+  \draw[flow] (zero) -- node[above, font=\scriptsize] {suc} (one);
+  \draw[flow] (one) -- node[above, font=\scriptsize] {suc} (two);
+  \draw[flow] (two) -- (dots);
+  
+  % Annotation
+  \node[below=1.2cm of one, text width=8cm, align=center, font=\small\itshape] {
+    The natural numbers emerge from void by iterated application of \texttt{suc}.\\
+    Each number is constructed, not postulated.
+  };
+\end{tikzpicture}
+\caption{Emergence of $\mathbb{N}$. The Peano construction generates all natural numbers from nothing.}
+\label{fig:peano-emergence}
+\end{figure}
+
 The pragma \texttt{\{-\# BUILTIN NATURAL ℕ \#-\}} is not an import or external dependency—it 
 is a compiler directive that allows decimal notation (e.g., \texttt{137}) as syntactic sugar 
 for the corresponding Peano construction (\texttt{suc (suc ... zero)}). Without it, every 
@@ -2586,6 +2719,54 @@ four elements, which we will later use to index the vertices of the graph $K_4$.
 This type is essential for finite combinatorics. It allows us to speak precisely 
 about structures with a fixed number of components, to define finite sums and products, 
 and to perform calculations that must terminate.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  % Fin(0) - empty
+  \begin{scope}[xshift=0cm]
+    \draw[fdGray, thick] (0,0) circle (0.5);
+    \node[below] at (0,-0.7) {$\mathrm{Fin}(0)$};
+    \node[below] at (0,-1.1) {\small empty};
+  \end{scope}
+  
+  % Fin(1) - one element
+  \begin{scope}[xshift=2.5cm]
+    \draw[fdGray, thick] (0,0) circle (0.5);
+    \fill[fdBlue] (0,0) circle (4pt);
+    \node[below] at (0,-0.7) {$\mathrm{Fin}(1)$};
+    \node[below] at (0,-1.1) {\small $\{0\}$};
+  \end{scope}
+  
+  % Fin(2) - two elements
+  \begin{scope}[xshift=5cm]
+    \draw[fdGray, thick] (0,0) circle (0.5);
+    \fill[fdBlue] (-0.2,0) circle (4pt);
+    \fill[fdBlue] (0.2,0) circle (4pt);
+    \node[below] at (0,-0.7) {$\mathrm{Fin}(2)$};
+    \node[below] at (0,-1.1) {\small $\{0,1\}$};
+  \end{scope}
+  
+  % Fin(4) - four elements (K4 vertices)
+  \begin{scope}[xshift=8cm]
+    \draw[fdAccent, thick] (0,0) circle (0.6);
+    \fill[fdAccent] (0,0.35) circle (4pt);
+    \fill[fdAccent] (-0.35,0) circle (4pt);
+    \fill[fdAccent] (0.35,0) circle (4pt);
+    \fill[fdAccent] (0,-0.35) circle (4pt);
+    \node[below] at (0,-0.8) {$\mathrm{Fin}(4)$};
+    \node[below] at (0,-1.2) {\small $K_4$ vertices};
+  \end{scope}
+  
+  % Arrow sequence
+  \draw[->, fdGray] (0.7,0) -- (1.8,0);
+  \draw[->, fdGray] (3.2,0) -- (4.3,0);
+  \draw[->, fdGray] (5.7,0) -- (7.2,0);
+  \node at (6.5,0.3) {\small $\cdots$};
+\end{tikzpicture}
+\caption{Finite types $\mathrm{Fin}(n)$. Each has exactly $n$ elements. $\mathrm{Fin}(4)$ indexes the vertices of $K_4$.}
+\label{fig:fin-types}
+\end{figure}
 
 \begin{code}%
 \>[0]\AgdaKeyword{data}\AgdaSpace{}%
@@ -3230,6 +3411,35 @@ algebraic structure is the foundation for all further arithmetic.
 The natural numbers possess an intrinsic ordering. We do not impose this from outside; 
 it arises from their inductive structure. Zero is less than or equal to every number. 
 If $m \le n$, then $\mathrm{suc}(m) \le \mathrm{suc}(n)$.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.9]
+  % Hasse diagram for ordering
+  \node[circle, fill=fdBlue, inner sep=3pt, label=below:{$0$}] (n0) at (0,0) {};
+  \node[circle, fill=fdBlue, inner sep=3pt, label=below:{$1$}] (n1) at (1.5,0.8) {};
+  \node[circle, fill=fdBlue, inner sep=3pt, label=below:{$2$}] (n2) at (3,1.6) {};
+  \node[circle, fill=fdBlue, inner sep=3pt, label=below:{$3$}] (n3) at (4.5,2.4) {};
+  \node at (5.5,3) {$\cdots$};
+  
+  % Ordering arrows
+  \draw[->, fdGray, thick] (n0) -- node[above left, font=\scriptsize] {$\le$} (n1);
+  \draw[->, fdGray, thick] (n1) -- node[above left, font=\scriptsize] {$\le$} (n2);
+  \draw[->, fdGray, thick] (n2) -- node[above left, font=\scriptsize] {$\le$} (n3);
+  \draw[->, fdGray, thick] (n3) -- (5.3,2.8);
+  
+  % Proof witness
+  \node[right=2cm of n3, text width=4.5cm, align=left] {
+    \textbf{Proof as Witness}\\[0.3em]
+    $m \le n$ is a \emph{type}.\\
+    An inhabitant is a proof.\\[0.2em]
+    \texttt{z≤n}: $0 \le n$ always\\
+    \texttt{s≤s}: $m \le n \Rightarrow Sm \le Sn$
+  };
+\end{tikzpicture}
+\caption{Order emerges from induction. Each inequality carries its proof—not just that, but why.}
+\label{fig:order-relation}
+\end{figure}
 
 \section{The Relation $\le$}
 
@@ -3904,6 +4114,54 @@ that this relation is reflexive, symmetric, and transitive—that it truly is an
 \\
 \>[0]\<%
 \end{code}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.9]
+  % Grid of pairs
+  \foreach \x in {0,1,2,3,4} {
+    \foreach \y in {0,1,2,3,4} {
+      \fill[fdGray, opacity=0.1] (\x,\y) circle (0.15);
+    }
+  }
+  
+  % Equivalence class for 2 (diagonal: 2-0, 3-1, 4-2)
+  \fill[fdBlue] (2,0) circle (0.2);
+  \fill[fdBlue] (3,1) circle (0.2);
+  \fill[fdBlue] (4,2) circle (0.2);
+  \draw[fdBlue, thick, dashed] (1.8,-0.2) -- (4.2,2.2);
+  \node[fdBlue, right] at (4.3,2) {\small $[+2]$};
+  
+  % Equivalence class for 0 (diagonal: 0-0, 1-1, 2-2, 3-3, 4-4)
+  \fill[fdGray] (0,0) circle (0.2);
+  \fill[fdGray] (1,1) circle (0.2);
+  \fill[fdGray] (2,2) circle (0.2);
+  \fill[fdGray] (3,3) circle (0.2);
+  \fill[fdGray] (4,4) circle (0.2);
+  \draw[fdGray, thick, dashed] (-0.2,-0.2) -- (4.2,4.2);
+  \node[fdGray, right] at (4.3,4) {\small $[0]$};
+  
+  % Equivalence class for -1 (diagonal: 0-1, 1-2, 2-3, 3-4)
+  \fill[fdRed] (0,1) circle (0.2);
+  \fill[fdRed] (1,2) circle (0.2);
+  \fill[fdRed] (2,3) circle (0.2);
+  \fill[fdRed] (3,4) circle (0.2);
+  \draw[fdRed, thick, dashed] (-0.2,0.8) -- (3.2,4.2);
+  \node[fdRed, right] at (3.3,4) {\small $[-1]$};
+  
+  % Axes labels
+  \node[below] at (2,-0.5) {$a$ (positive part)};
+  \node[left, rotate=90] at (-0.5,2) {$b$ (negative part)};
+  
+  % Annotation
+  \node[below=1cm of current bounding box.south, text width=10cm, align=center, font=\small\itshape] {
+    The Grothendieck construction: $(a,b) \sim (c,d) \Leftrightarrow a+d = c+b$.\\
+    Each diagonal is an equivalence class—a single integer.
+  };
+\end{tikzpicture}
+\caption{Integers as equivalence classes. The integer $+2$ is the class $\{(2,0), (3,1), (4,2), \ldots\}$.}
+\label{fig:grothendieck-integers}
+\end{figure}
 
 \section{Addition and Multiplication}
 
@@ -7337,6 +7595,47 @@ holds definitionally. We prove that this map is injective and that it never retu
 We have reached the integers, a complete ring. But the integers lack an essential property: 
 density. Between any two distinct integers lies… nothing. The number line has gaps.
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  % Integer number line (discrete)
+  \begin{scope}[yshift=1.5cm]
+    \draw[->, fdGray, thick] (-4,0) -- (4,0);
+    \foreach \x in {-3,-2,-1,0,1,2,3} {
+      \fill[fdBlue] (\x,0) circle (4pt);
+      \node[below] at (\x,-0.3) {\small $\x$};
+    }
+    \node[left] at (-4.2,0) {$\mathbb{Z}$};
+    
+    % Gap indicator
+    \draw[fdRed, thick, <->] (0.15,0.3) -- (0.85,0.3);
+    \node[fdRed, above] at (0.5,0.3) {\scriptsize gap};
+  \end{scope}
+  
+  % Arrow
+  \draw[->, very thick, fdAccent] (0,0.8) -- node[right] {\small quotients} (0,0.2);
+  
+  % Rational number line (dense)
+  \begin{scope}[yshift=-1cm]
+    \draw[->, fdGray, thick] (-4,0) -- (4,0);
+    \foreach \x in {-3,-2,-1,0,1,2,3} {
+      \fill[fdBlue] (\x,0) circle (3pt);
+    }
+    % Add rationals between
+    \foreach \x in {-2.5,-1.5,-0.5,0.5,1.5,2.5} {
+      \fill[fdGray] (\x,0) circle (2pt);
+    }
+    \foreach \x in {-2.33,-1.33,-0.33,0.33,0.67,1.33,1.67,2.33,2.67} {
+      \fill[fdGray, opacity=0.5] (\x,0) circle (1.5pt);
+    }
+    \node[left] at (-4.2,0) {$\mathbb{Q}$};
+    \node[below] at (0,-0.4) {\small dense: between any two, another};
+  \end{scope}
+\end{tikzpicture}
+\caption{From integers to rationals. Quotients fill the gaps—the line becomes dense.}
+\label{fig:rationals-dense}
+\end{figure}
+
 To measure continuously, to define limits, to compute eigenvalues of matrices (which 
 will be central in Part IV), we need the \emph{rational numbers} $\mathbb{Q}$.
 
@@ -8735,6 +9034,59 @@ of increasing precision.
 \AgdaDatatype{Bool}\<%
 \end{code}
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  % Axes
+  \draw[->, fdGray] (0,0) -- (10,0) node[right] {$n$};
+  \draw[->, fdGray] (0,-1.5) -- (0,2) node[above] {$q_n$};
+  
+  % Limit line
+  \draw[fdBlue, thick, dashed] (0,0.5) -- (10,0.5);
+  \node[fdBlue, left] at (0,0.5) {$L$};
+  
+  % Epsilon tube
+  \fill[fdBlue, opacity=0.1] (4,-0.3) rectangle (10,1.3);
+  \draw[fdBlue, dotted] (0,1.3) -- (10,1.3);
+  \draw[fdBlue, dotted] (0,-0.3) -- (10,-0.3);
+  \node[fdBlue, right] at (10,1.0) {\scriptsize $L+\varepsilon$};
+  \node[fdBlue, right] at (10,0) {\scriptsize $L-\varepsilon$};
+  
+  % N marker
+  \draw[fdRed, thick] (4,-0.1) -- (4,0.1);
+  \node[fdRed, below] at (4,-0.2) {$N$};
+  
+  % Sequence points (converging)
+  \fill[fdGray] (0.5,1.8) circle (2pt);
+  \fill[fdGray] (1.0,-0.8) circle (2pt);
+  \fill[fdGray] (1.5,1.4) circle (2pt);
+  \fill[fdGray] (2.0,-0.2) circle (2pt);
+  \fill[fdGray] (2.5,1.1) circle (2pt);
+  \fill[fdGray] (3.0,0.1) circle (2pt);
+  \fill[fdGray] (3.5,0.9) circle (2pt);
+  
+  % Inside epsilon (after N)
+  \fill[fdBlue] (4.5,0.3) circle (2pt);
+  \fill[fdBlue] (5.0,0.7) circle (2pt);
+  \fill[fdBlue] (5.5,0.4) circle (2pt);
+  \fill[fdBlue] (6.0,0.6) circle (2pt);
+  \fill[fdBlue] (6.5,0.45) circle (2pt);
+  \fill[fdBlue] (7.0,0.55) circle (2pt);
+  \fill[fdBlue] (7.5,0.48) circle (2pt);
+  \fill[fdBlue] (8.0,0.52) circle (2pt);
+  \fill[fdBlue] (8.5,0.49) circle (2pt);
+  \fill[fdBlue] (9.0,0.51) circle (2pt);
+  
+  % Annotation
+  \node[below=0.8cm of current bounding box.south, text width=10cm, align=center, font=\small\itshape] {
+    Cauchy convergence: for any $\varepsilon > 0$, there exists $N$ such that\\
+    all terms beyond $N$ lie within the $\varepsilon$-tube around the limit.
+  };
+\end{tikzpicture}
+\caption{Cauchy completion of $\mathbb{Q}$. Real numbers are algorithms producing convergent rational sequences.}
+\label{fig:cauchy-convergence}
+\end{figure}
+
 \section{Operations on Reals}
 
 Arithmetic on real numbers is defined pointwise on their representing sequences. To add 
@@ -8996,6 +9348,41 @@ But this remains, so far, pure mathematics. The question we now explore is: \emp
 structure correspond to the physical world? Could the dimensionless constants of nature—the 
 fine-structure constant $\alpha$, the mass ratios of leptons, the Higgs field vacuum 
 expectation value—be structural properties of $K_4$ rather than arbitrary parameters?
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[node distance=1.8cm]
+  % Ontological chain
+  \node[void] (d0) {$\mathcal{D}_0$};
+  \node[below=0.3cm of d0, font=\scriptsize] {Distinction};
+  
+  \node[unit, right=of d0] (d1) {$\mathcal{D}_1$};
+  \node[below=0.3cm of d1, font=\scriptsize] {Mark};
+  
+  \node[unit, right=of d1] (d2) {$\mathcal{D}_2$};
+  \node[below=0.3cm of d2, font=\scriptsize] {Types};
+  
+  \node[operator, right=of d2] (k4) {$K_4$};
+  \node[below=0.3cm of k4, font=\scriptsize] {Graph};
+  
+  \node[concept, right=of k4] (phys) {Physics};
+  \node[below=0.3cm of phys, font=\scriptsize] {$\alpha, m_e, ...$};
+  
+  % Arrows
+  \draw[flow] (d0) -- node[above, font=\scriptsize] {self-ref} (d1);
+  \draw[flow] (d1) -- node[above, font=\scriptsize] {logic} (d2);
+  \draw[flow] (d2) -- node[above, font=\scriptsize] {minimal} (k4);
+  \draw[flow] (k4) -- node[above, font=\scriptsize] {spectrum} (phys);
+  
+  % Annotation
+  \node[below=1.5cm of d2, text width=10cm, align=center, font=\small\itshape] {
+    The ontological chain: from pure distinction to measurable constants.\\
+    Each arrow is forced—no free parameters.
+  };
+\end{tikzpicture}
+\caption{Derivation chain from ontology to physics. The constants are computed, not postulated.}
+\label{fig:ontology-chain}
+\end{figure}
 
 To investigate this correspondence, we compare mathematical predictions with experimental 
 measurements.
@@ -9500,6 +9887,48 @@ The complete graph $K_4$ has a natural embedding in three-dimensional space as a
 tetrahedron. The vertices form the simplest non-planar configuration: four points, each 
 connected to the other three.
 
+\begin{center}
+\begin{tikzpicture}[scale=2.5, line join=round, line cap=round]
+    % Coordinates for Tetrahedron
+    \coordinate (A) at (0,1,0);
+    \coordinate (B) at (-0.94, -0.33, 0);
+    \coordinate (C) at (0.47, -0.33, 0.81);
+    \coordinate (D) at (0.47, -0.33, -0.81);
+
+    % Faces (light fill)
+    \fill[fdBlue!5, opacity=0.8] (A) -- (B) -- (C) -- cycle;
+    \fill[fdBlue!10, opacity=0.8] (A) -- (C) -- (D) -- cycle;
+    
+    % Hidden edge (dashed)
+    \draw[dashed, fdGray] (B) -- (D);
+
+    % Visible edges
+    \draw[thick, fdBlue] (A) -- (B);
+    \draw[thick, fdBlue] (A) -- (C);
+    \draw[thick, fdBlue] (A) -- (D);
+    \draw[thick, fdBlue] (B) -- (C);
+    \draw[thick, fdBlue] (C) -- (D);
+
+    % Vertices
+    \fill[fdRed] (A) circle (2pt) node[above] {1};
+    \fill[fdRed] (B) circle (2pt) node[left] {2};
+    \fill[fdRed] (C) circle (2pt) node[right] {3};
+    \fill[fdRed] (D) circle (2pt) node[right] {4};
+
+    % Angle annotation
+    \node[label] at (0,0.15,0) {$\theta = \arccos(-1/3)$};
+    
+    % Invariants box
+    \node[concept, right=1.5cm of C, text width=3.5cm] {
+        \textbf{$K_4$ Invariants}\\[2pt]
+        Vertices $V=4$\\
+        Edges $E=6$\\
+        Degree $d=3$\\
+        Euler $\chi=2$
+    };
+\end{tikzpicture}
+\end{center}
+
 A tetrahedron has angles: the solid angle subtended at each vertex (approximately $0.551$ 
 steradians) and the dihedral edge angle (approximately $70.5^\circ$). These angles involve 
 $\pi$ in their exact expressions.
@@ -9941,6 +10370,59 @@ measure it, we do not derive it.
 
 Our claim is that $\alpha$ is \emph{not} free. It is determined by the geometry of $K_4$.
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.85]
+  % 4x4 Laplacian matrix
+  \draw[thick] (0,0) grid (4,4);
+  
+  % Diagonal entries (degree = 3)
+  \node at (0.5,3.5) {\textbf{3}};
+  \node at (1.5,2.5) {\textbf{3}};
+  \node at (2.5,1.5) {\textbf{3}};
+  \node at (3.5,0.5) {\textbf{3}};
+  
+  % Off-diagonal entries (-1 for edges)
+  \node[fdRed] at (1.5,3.5) {$-1$};
+  \node[fdRed] at (2.5,3.5) {$-1$};
+  \node[fdRed] at (3.5,3.5) {$-1$};
+  
+  \node[fdRed] at (0.5,2.5) {$-1$};
+  \node[fdRed] at (2.5,2.5) {$-1$};
+  \node[fdRed] at (3.5,2.5) {$-1$};
+  
+  \node[fdRed] at (0.5,1.5) {$-1$};
+  \node[fdRed] at (1.5,1.5) {$-1$};
+  \node[fdRed] at (3.5,1.5) {$-1$};
+  
+  \node[fdRed] at (0.5,0.5) {$-1$};
+  \node[fdRed] at (1.5,0.5) {$-1$};
+  \node[fdRed] at (2.5,0.5) {$-1$};
+  
+  % Labels
+  \node[above] at (0.5,4) {$v_0$};
+  \node[above] at (1.5,4) {$v_1$};
+  \node[above] at (2.5,4) {$v_2$};
+  \node[above] at (3.5,4) {$v_3$};
+  
+  \node[left] at (0,3.5) {$v_0$};
+  \node[left] at (0,2.5) {$v_1$};
+  \node[left] at (0,1.5) {$v_2$};
+  \node[left] at (0,0.5) {$v_3$};
+  
+  % Eigenvalue annotation
+  \node[right=1.5cm of current bounding box.east, text width=5cm, align=left] {
+    \textbf{Laplacian $L_{K_4}$}\\[0.5em]
+    $L_{ij} = \begin{cases} 3 & i=j \\ -1 & i \neq j \end{cases}$\\[0.5em]
+    Eigenvalues: $\lambda_0 = 0$\\
+    \hphantom{Eigenvalues:} $\lambda_{1,2,3} = 4$\\[0.5em]
+    \textit{The 3-fold degeneracy gives 3D space.}
+  };
+\end{tikzpicture}
+\caption{Laplacian matrix of $K_4$. Diagonal: degree 3. Off-diagonal: $-1$ (complete connectivity).}
+\label{fig:laplacian-matrix}
+\end{figure}
+
 \section{The Delta Parameter}
 
 The explicit formula involves a parameter $\delta$, which encodes the "depth" of coupling 
@@ -10216,6 +10698,54 @@ not merely a numerical coincidence but a structural necessity.
 \\
 \>[0]\<%
 \end{code}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[node distance=1.8cm]
+  % Central result
+  \node[concept, fill=fdBlue!15, text width=3cm, align=center] (alpha) {
+    $\alpha^{-1} \approx 137$\\[0.3em]
+    \small Fine-structure\\constant
+  };
+
+  % Volume term
+  \node[operator, above left=1.5cm and 1cm of alpha, text width=2.5cm, align=center] (vol) {
+    $\lambda^{\text{deg}} \cdot \chi$\\[0.2em]
+    \small $4^3 \times 2 = 128$
+  };
+
+  % Surface term  
+  \node[operator, above right=1.5cm and 1cm of alpha, text width=2.5cm, align=center] (surf) {
+    $\text{deg}^2$\\[0.2em]
+    \small $3^2 = 9$
+  };
+
+  % Component nodes
+  \node[unit, above=0.8cm of vol] (lambda) {$\lambda=4$};
+  \node[unit, left=0.3cm of lambda] (chi) {$\chi=2$};
+  \node[unit, above=0.8cm of surf] (deg) {deg $=3$};
+
+  % Arrows
+  \draw[flow] (lambda) -- (vol);
+  \draw[flow] (chi) -- (vol);
+  \draw[flow] (deg) -- (vol);
+  \draw[flow] (deg) -- (surf);
+  \draw[flow] (vol) -- (alpha);
+  \draw[flow] (surf) -- (alpha);
+
+  % Plus sign
+  \node at ($(vol)!0.5!(surf)$) {\Large $+$};
+
+  % Labels
+  \node[above=0.3cm of lambda, font=\scriptsize] {Eigenvalue};
+  \node[above=0.3cm of chi, font=\scriptsize] {Euler char.};
+  \node[above=0.3cm of deg, font=\scriptsize] {Vertex degree};
+  \node[left=0.3cm of vol, font=\scriptsize\itshape] {Volume};
+  \node[right=0.3cm of surf, font=\scriptsize\itshape] {Surface};
+\end{tikzpicture}
+\caption{Derivation of $\alpha^{-1} = 137$. The integer is a spectral invariant: $\lambda^{\text{deg}} \cdot \chi + \text{deg}^2 = 4^3 \cdot 2 + 9$.}
+\label{fig:alpha-derivation}
+\end{figure}
 
 \chapter{Causality}
 
@@ -10582,6 +11112,69 @@ squares). This number 7 will reappear in the normalization of the QFT loop expan
 \AgdaInductiveConstructor{refl}\<%
 \end{code}
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.85]
+  % K4 with triangles highlighted
+  \begin{scope}[xshift=0cm]
+    \node[circle, fill=fdBlue, inner sep=3pt, label=above:{$v_0$}] (A) at (0,2.5) {};
+    \node[circle, fill=fdBlue, inner sep=3pt, label=left:{$v_1$}] (B) at (-1.5,0) {};
+    \node[circle, fill=fdBlue, inner sep=3pt, label=right:{$v_2$}] (C) at (1.5,0) {};
+    \node[circle, fill=fdBlue, inner sep=3pt, label=below:{$v_3$}] (D) at (0,1) {};
+    
+    % All edges
+    \draw[fdGray, thick] (A) -- (B);
+    \draw[fdGray, thick] (A) -- (C);
+    \draw[fdGray, thick] (A) -- (D);
+    \draw[fdGray, thick] (B) -- (C);
+    \draw[fdGray, thick] (B) -- (D);
+    \draw[fdGray, thick] (C) -- (D);
+    
+    % Highlight one triangle
+    \fill[fdAccent, opacity=0.3] (A.center) -- (B.center) -- (C.center) -- cycle;
+    \draw[fdAccent, very thick] (A) -- (B) -- (C) -- (A);
+    
+    \node[below=0.5cm of B] {\textbf{4 Triangles}};
+    \node[below=1cm of B, font=\small] {1-loop diagrams};
+  \end{scope}
+  
+  % K4 with squares highlighted
+  \begin{scope}[xshift=5.5cm]
+    \node[circle, fill=fdBlue, inner sep=3pt] (A2) at (0,2.5) {};
+    \node[circle, fill=fdBlue, inner sep=3pt] (B2) at (-1.5,0) {};
+    \node[circle, fill=fdBlue, inner sep=3pt] (C2) at (1.5,0) {};
+    \node[circle, fill=fdBlue, inner sep=3pt] (D2) at (0,1) {};
+    
+    % All edges
+    \draw[fdGray, thick] (A2) -- (B2);
+    \draw[fdGray, thick] (A2) -- (C2);
+    \draw[fdGray, thick] (A2) -- (D2);
+    \draw[fdGray, thick] (B2) -- (C2);
+    \draw[fdGray, thick] (B2) -- (D2);
+    \draw[fdGray, thick] (C2) -- (D2);
+    
+    % Highlight one square (4-cycle)
+    \draw[fdRed, very thick] (A2) -- (B2) -- (C2) -- (D2) -- (A2);
+    
+    \node[below=0.5cm of B2] {\textbf{3 Squares}};
+    \node[below=1cm of B2, font=\small] {2-loop diagrams};
+  \end{scope}
+  
+  % Sum
+  \begin{scope}[xshift=10.5cm]
+    \node[concept, text width=2.5cm, align=center] at (0,1.2) {
+      $4 + 3 = 7$\\[0.3em]
+      \small Total cycles
+    };
+    \node[below=0.3cm, font=\small\itshape, text width=3cm, align=center] at (0,-0.3) {
+      Loop expansion\\normalization
+    };
+  \end{scope}
+\end{tikzpicture}
+\caption{Cycle structure of $K_4$. Triangles contribute at 1-loop order, squares at 2-loop order.}
+\label{fig:k4-cycles}
+\end{figure}
+
 \section{QFT Loop Structure}
 
 We define the loop structure of Quantum Field Theory (QFT) as emerging from the K4 cycles.
@@ -10802,6 +11395,59 @@ arbitrary dimensionful parameters.
 The lattice $K_4$ is discrete. Space and time are quantized at the Planck scale. But the 
 world we observe is continuous—or at least appears so at macroscopic scales. How does 
 continuity emerge from discreteness?
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.85]
+  % Discrete lattice (left)
+  \begin{scope}[xshift=0cm]
+    \foreach \x in {0,1,2,3} {
+      \foreach \y in {0,1,2} {
+        \fill[fdBlue] (\x*0.8, \y*0.8) circle (2pt);
+      }
+    }
+    \foreach \x in {0,1,2} {
+      \foreach \y in {0,1,2} {
+        \draw[fdBlue, thick] (\x*0.8, \y*0.8) -- (\x*0.8+0.8, \y*0.8);
+      }
+    }
+    \foreach \x in {0,1,2,3} {
+      \foreach \y in {0,1} {
+        \draw[fdBlue, thick] (\x*0.8, \y*0.8) -- (\x*0.8, \y*0.8+0.8);
+      }
+    }
+    \node[below] at (1.2,-0.3) {\textbf{Discrete}};
+    \node[below] at (1.2,-0.8) {\small $N$ cells};
+  \end{scope}
+  
+  % Arrow with limit
+  \draw[->, very thick, fdAccent] (3.5,0.8) -- node[above] {$N \to \infty$} (5.5,0.8);
+  
+  % Continuous spacetime (right)
+  \begin{scope}[xshift=7cm]
+    \fill[fdGray, opacity=0.15] (0,0) rectangle (2.4,1.6);
+    \draw[fdGray, thick] (0,0) rectangle (2.4,1.6);
+    
+    % Smooth curve
+    \draw[fdBlue, very thick, domain=0:2.4, samples=50] plot (\x, {0.8 + 0.3*sin(\x*180)});
+    
+    % Coordinate labels
+    \draw[->, fdGray] (-0.2,0) -- (2.8,0) node[right] {\small $x$};
+    \draw[->, fdGray] (0,-0.2) -- (0,2) node[above] {\small $t$};
+    
+    \node[below] at (1.2,-0.3) {\textbf{Continuous}};
+    \node[below] at (1.2,-0.8) {\small $\mathbb{R}^{3,1}$};
+  \end{scope}
+  
+  % Annotation
+  \node[below=1.5cm of current bounding box.south, text width=10cm, align=center, font=\small\itshape] {
+    The continuum limit: as lattice cells multiply, discrete structure\\
+    becomes smooth spacetime. Einstein's equations emerge.
+  };
+\end{tikzpicture}
+\caption{Discrete to continuous. The $K_4$ lattice approximates smooth spacetime in the limit $N \to \infty$.}
+\label{fig:continuum-limit}
+\end{figure}
 
 \section{Paths and Parametrization}
 
@@ -11342,6 +11988,54 @@ equals the path length. The UV cutoff is built-in via the lattice spacing.
 \AgdaInductiveConstructor{refl}\<%
 \end{code}
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[node distance=2.5cm]
+  % Wilson Loop (left)
+  \begin{scope}[xshift=0cm]
+    \node[operator, text width=2.5cm, align=center] (wilson) {
+      \textbf{Wilson Loop}\\[0.2em]
+      \small Gauge phase\\
+      $e^{i\oint A \cdot dx}$
+    };
+    
+    % K4 triangle below
+    \node[circle, fill=fdBlue, inner sep=2pt] (w1) at (-0.8,-1.8) {};
+    \node[circle, fill=fdBlue, inner sep=2pt] (w2) at (0.8,-1.8) {};
+    \node[circle, fill=fdBlue, inner sep=2pt] (w3) at (0,-2.8) {};
+    \draw[fdBlue, thick, ->] (w1) -- (w2);
+    \draw[fdBlue, thick, ->] (w2) -- (w3);
+    \draw[fdBlue, thick, ->] (w3) -- (w1);
+    \node[below=0.2cm of w3, font=\scriptsize] {Discrete path on $K_4$};
+  \end{scope}
+  
+  % Arrow
+  \draw[->, very thick, fdAccent] (2.5,-1.5) -- node[above, font=\small] {\texttt{wilsonToFeynman}} (5,-1.5);
+  
+  % Feynman Loop (right)
+  \begin{scope}[xshift=7.5cm]
+    \node[operator, text width=2.5cm, align=center] (feynman) {
+      \textbf{Feynman Loop}\\[0.2em]
+      \small Momentum integral\\
+      $\int \frac{d^4k}{(2\pi)^4}$
+    };
+    
+    % Feynman diagram below
+    \draw[fdRed, thick] (0,-2.3) circle (0.7);
+    \draw[fdRed, thick, ->] (0.5,-1.8) arc (45:135:0.7);
+    \node[below=1.1cm of feynman, font=\scriptsize] {1-loop QFT correction};
+  \end{scope}
+  
+  % Annotation
+  \node[below=3.5cm of wilson, xshift=3.75cm, text width=10cm, align=center, font=\small\itshape] {
+    The discrete structure of $K_4$ provides a natural UV cutoff.\\
+    No renormalization infinities—the lattice spacing is the Planck length.
+  };
+\end{tikzpicture}
+\caption{Wilson loops map to Feynman loops. Gauge holonomy becomes loop momentum integral.}
+\label{fig:wilson-to-feynman}
+\end{figure}
+
 \section{Minimal Loops}
 
 The shortest closed path on $K_4$ is a triangle: three vertices and three edges. There is 
@@ -11522,6 +12216,58 @@ at high energies (the ultraviolet, or UV, region).
 Standard approaches introduce an arbitrary cutoff $\Lambda$, then take $\Lambda \to \infty$ 
 while subtracting infinities in a systematic way (renormalization). But the cutoff is 
 ad hoc—there is no physical principle that fixes its value.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.9]
+  % Standard QFT: divergent
+  \begin{scope}[xshift=0cm]
+    \draw[->, fdGray] (0,0) -- (0,3.5) node[above] {$\int d^4k$};
+    \draw[->, fdGray] (0,0) -- (3,0) node[right] {$k$};
+    
+    % Divergent curve
+    \draw[fdRed, very thick, domain=0.3:2.5, samples=50] plot (\x, {0.8/(\x*\x) + 0.5*\x});
+    \node[fdRed] at (2.8,3) {$\to \infty$};
+    
+    % Lambda cutoff (arbitrary)
+    \draw[fdGray, dashed, thick] (1.8,0) -- (1.8,3);
+    \node[fdGray, below] at (1.8,0) {$\Lambda$?};
+    
+    \node[below=0.5cm of current bounding box.south, xshift=-0.5cm, font=\small] {\textbf{Standard QFT}};
+    \node[below=1cm of current bounding box.south, xshift=-0.5cm, font=\small\itshape] {Arbitrary cutoff};
+  \end{scope}
+  
+  % Arrow
+  \node at (4.5,1.5) {\Large $\Rightarrow$};
+  
+  % Lattice: natural cutoff
+  \begin{scope}[xshift=6.5cm]
+    \draw[->, fdGray] (0,0) -- (0,3.5) node[above] {$\int d^4k$};
+    \draw[->, fdGray] (0,0) -- (3,0) node[right] {$k$};
+    
+    % Bounded curve
+    \draw[fdBlue, very thick, domain=0.3:2.2, samples=50] plot (\x, {0.8/(\x*\x) + 0.3});
+    \draw[fdBlue, very thick] (2.2,0.46) -- (2.2,0);
+    
+    % Planck cutoff (fixed)
+    \draw[fdBlue, thick] (2.2,0) -- (2.2,3);
+    \fill[fdBlue, opacity=0.1] (2.2,0) rectangle (3,3);
+    \node[fdBlue, below] at (2.2,0) {$\pi/\ell_P$};
+    
+    \node[below=0.5cm of current bounding box.south, xshift=-0.5cm, font=\small] {\textbf{Lattice $K_4$}};
+    \node[below=1cm of current bounding box.south, xshift=-0.5cm, font=\small\itshape] {Planck cutoff};
+  \end{scope}
+  
+  % Annotation
+  \node[right=1cm of current bounding box.east, text width=4cm, align=left, font=\small] {
+    The lattice spacing $a = \ell_P$ fixes the UV cutoff.\\[0.3em]
+    No infinities.\\
+    No free parameters.
+  };
+\end{tikzpicture}
+\caption{UV regularization. Left: Standard QFT with arbitrary cutoff. Right: $K_4$ lattice with natural Planck-scale cutoff.}
+\label{fig:uv-regularization}
+\end{figure}
 
 \section{Lattice as Natural Cutoff}
 
@@ -25373,6 +26119,38 @@ The $K_4$ graph, representing the simplest non-planar graph, encodes the fundame
 
 The sequence $D_0 \to D_1 \to D_2 \to D_3$ is not arbitrary. Each distinction arises from the inability of previous distinctions to capture certain interactions.
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[node distance=2cm]
+  % Genesis sequence
+  \node[void] (d0) {$D_0$};
+  \node[unit, right=of d0] (d1) {$D_1$};
+  \node[unit, right=of d1] (d2) {$D_2$};
+  \node[unit, right=of d2] (d3) {$D_3$};
+  
+  % Labels
+  \node[below=0.3cm of d0, font=\scriptsize] {break};
+  \node[below=0.3cm of d1, font=\scriptsize] {polarity};
+  \node[below=0.3cm of d2, font=\scriptsize] {pair};
+  \node[below=0.3cm of d3, font=\scriptsize] {closure};
+  
+  % Arrows with reasons
+  \draw[flow] (d0) -- node[above, font=\scriptsize] {self-ref} (d1);
+  \draw[flow] (d1) -- node[above, font=\scriptsize] {interact} (d2);
+  \draw[flow] (d2) -- node[above, font=\scriptsize] {complete} (d3);
+  
+  % K4 result
+  \draw[->, fdAccent, thick] (d3) -- ++(1.5,0) node[right, concept] {$K_4$};
+  
+  % Stop marker
+  \node[below=1.2cm of d1, xshift=1cm, text width=8cm, align=center, font=\small\itshape] {
+    Four distinctions, no more: $K_3$ is incomplete, $K_5$ cannot embed in 3D.
+  };
+\end{tikzpicture}
+\caption{The genesis sequence. Four distinctions arise necessarily, forming the vertices of $K_4$.}
+\label{fig:genesis-sequence}
+\end{figure}
+
 $D_0$ is the first distinction---the minimal break in symmetry.
 $D_1$ is the distinction of polarity---$D_0$ distinguished from itself.
 $D_2$ captures the pair $(D_0, D_1)$, which was irreducible at lower levels.
@@ -31112,6 +31890,36 @@ Mapping this back to the graph vertices:
 
 To do physics, we need a metric. In graph theory, the metric structure is encoded in the Laplacian matrix. We begin by defining equality and adjacency on the vertices.
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.9]
+  % Laplacian eigenvalue spectrum
+  \draw[->, fdGray, thick] (0,0) -- (6,0) node[right] {$\lambda$};
+  \draw[->, fdGray, thick] (0,0) -- (0,3) node[above] {mult};
+  
+  % Eigenvalues
+  \draw[fdBlue, very thick] (0.5,0) -- (0.5,2);
+  \node[below] at (0.5,0) {$0$};
+  \node[right, font=\scriptsize] at (0.5,1.8) {$\times 1$};
+  
+  \draw[fdAccent, very thick] (4,0) -- (4,2.5);
+  \node[below] at (4,0) {$4$};
+  \node[right, font=\scriptsize] at (4,2.3) {$\times 3$};
+  
+  % Interpretation
+  \node[below=1.5cm, text width=6cm, align=center] at (3,0) {
+    $K_4$ Laplacian: $\lambda_0 = 0$ (connectedness),\\
+    $\lambda_{1,2,3} = 4$ (curvature $= 12$)
+  };
+  
+  % Arrow to dimension
+  \draw[->, fdBlue, thick] (5.5,2) -- (7,2);
+  \node[right] at (7,2) {$d = 3$};
+\end{tikzpicture}
+\caption{Spectral geometry of $K_4$. The eigenvalue spectrum determines both curvature and dimension.}
+\label{fig:spectral-geometry}
+\end{figure}
+
 \begin{code}%
 \>[0]\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}≟-vertex\AgdaUnderscore{}}}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -32241,6 +33049,45 @@ We collect these results into a consistency record.
 \section{Dimensionality and Independence}
 
 To prove that these three eigenvectors form a basis for a 3-dimensional space, we must show they are linearly independent. We do this by calculating the determinant of the matrix formed by their components.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.3, z={(0.7,0.35)}]
+  % Axes
+  \draw[->, fdGray, thick] (0,0,0) -- (2.5,0,0) node[right] {$x$ ($e_1$)};
+  \draw[->, fdGray, thick] (0,0,0) -- (0,2.5,0) node[above] {$y$ ($e_2$)};
+  \draw[->, fdGray, thick] (0,0,0) -- (0,0,2.5) node[below left] {$z$ ($e_3$)};
+
+  % Tetrahedron vertices in eigenspace
+  \coordinate (v0) at (1.2,1.2,1.2);
+  \coordinate (v1) at (1.2,-1,-1);
+  \coordinate (v2) at (-1,1.2,-1);
+  \coordinate (v3) at (-1,-1,1.2);
+
+  % Edges
+  \draw[thick, fdBlue] (v0) -- (v1);
+  \draw[thick, fdBlue] (v0) -- (v2);
+  \draw[thick, fdBlue] (v0) -- (v3);
+  \draw[thick, fdBlue, dashed] (v1) -- (v2);
+  \draw[thick, fdBlue] (v2) -- (v3);
+  \draw[thick, fdBlue, dashed] (v3) -- (v1);
+
+  % Vertices
+  \fill[fdRed] (v0) circle (2.5pt) node[above right] {\small $v_0$};
+  \fill[fdRed] (v1) circle (2.5pt) node[below right] {\small $v_1$};
+  \fill[fdRed] (v2) circle (2.5pt) node[left] {\small $v_2$};
+  \fill[fdRed] (v3) circle (2.5pt) node[below left] {\small $v_3$};
+
+  % Annotation
+  \node[right=2cm of v0, text width=5cm, align=left] {
+    \textbf{Spectral Embedding}\\[0.3em]
+    The 3-fold degenerate eigenvalue $\lambda=4$ spans a 3D eigenspace.\\[0.3em]
+    \textit{Space is not a container—it is the symmetry of the graph.}
+  };
+\end{tikzpicture}
+\caption{Emergence of 3D space. The three degenerate eigenvectors embed $K_4$ as a tetrahedron in $\mathbb{R}^3$.}
+\label{fig:spectral-3d}
+\end{figure}
 
 \begin{code}%
 \>[0]\AgdaFunction{dot-product}\AgdaSpace{}%
@@ -35995,6 +36842,34 @@ We also provide standard rational approximations for convenience.
 
 We now define the central result of this chapter: a linear relationship between the logarithm of the mass ratio and the renormalization correction $\epsilon$.
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.85]
+  % Axes
+  \draw[->, fdGray, thick] (0,0) -- (8,0) node[right] {$\log_{10}(m/m_e)$};
+  \draw[->, fdGray, thick] (0,-2) -- (0,2) node[above] {$\epsilon$};
+  
+  % Linear correction line
+  \draw[fdBlue, very thick, domain=0:7, samples=2] plot (\x, {-1.5 + 0.4*\x});
+  
+  % Data points
+  \fill[fdRed] (0,-1.5) circle (4pt) node[left, xshift=-0.3cm] {\small $e$};
+  \fill[fdRed] (2.3,-0.58) circle (4pt) node[above right] {\small $\mu$};
+  \fill[fdRed] (3.5,-0.1) circle (4pt) node[above right] {\small $\tau$};
+  \fill[fdRed] (5.4,0.66) circle (4pt) node[above right] {\small $H$};
+  
+  % Formula
+  \node[concept, right=1cm of current bounding box.east, text width=4cm] {
+    $\epsilon = \epsilon_0 + \beta \log_{10}\frac{m}{m_e}$\\[0.5em]
+    \small $\epsilon_0 \approx -0.015$\\
+    \small $\beta \approx 0.007$\\[0.3em]
+    \footnotesize Derived from $K_4$
+  };
+\end{tikzpicture}
+\caption{Universal correction formula. Mass corrections follow a logarithmic law with $K_4$-derived parameters.}
+\label{fig:universal-correction}
+\end{figure}
+
 \section{Linear Logarithmic Formula}
 
 The formula is:
@@ -36371,6 +37246,46 @@ We verify that the observed values fall within the predicted intervals.
 
 The offset $\epsilon_0$ and slope $\beta$ in the universal correction formula are not free parameters adjusted to fit data.
 They are mathematically derived from the properties of the $K_4$ graph.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.9]
+  % K4 graph properties
+  \begin{scope}[xshift=0cm]
+    \node[circle, fill=fdBlue, inner sep=3pt] (A) at (0,1.5) {};
+    \node[circle, fill=fdBlue, inner sep=3pt] (B) at (-1,0) {};
+    \node[circle, fill=fdBlue, inner sep=3pt] (C) at (1,0) {};
+    \node[circle, fill=fdBlue, inner sep=3pt] (D) at (0,0.6) {};
+    \draw[fdBlue, thick] (A) -- (B) -- (C) -- (A) -- (D) -- (B);
+    \draw[fdBlue, thick] (C) -- (D);
+    \node[below=0.3cm of B, xshift=1cm] {$K_4$};
+  \end{scope}
+  
+  % Arrow to properties
+  \draw[->, fdGray, thick] (1.8,0.7) -- (3,0.7);
+  
+  % Properties box
+  \node[operator, right=3.5cm, text width=3cm, align=left] at (0,0.7) {
+    $V = 4$\\
+    $E = 6$\\
+    $\chi = 2$\\
+    deg $= 3$\\
+    $\tau = 16$
+  };
+  
+  % Arrow to parameters
+  \draw[->, fdAccent, thick] (6,0.7) -- (7.5,0.7);
+  
+  % Parameters box
+  \node[concept, right=8cm, text width=3cm, align=center] at (0,0.7) {
+    $\epsilon_0 = -\frac{\chi}{\tau}$\\[0.3em]
+    $\beta = \frac{V}{E \cdot d}$\\[0.3em]
+    \footnotesize No free parameters
+  };
+\end{tikzpicture}
+\caption{Parameter derivation. $\epsilon_0$ and $\beta$ are computed from $K_4$ graph invariants—not fitted.}
+\label{fig:parameter-derivation}
+\end{figure}
 
 \section{Offset from Graph Complexity}
 
@@ -38165,6 +39080,39 @@ We summarize the complete derivation of the Weinberg angle.
 \section{The Emergence of Time}
 
 We have derived the structure of space ($K_4$) and the forces within it. But what about time? Time emerges not as a dimension like the others, but as a property of the *process* of genesis.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.9]
+  % Space: symmetric edges
+  \begin{scope}[xshift=0cm]
+    \node[circle, fill=fdBlue, inner sep=3pt] (A) at (0,1) {};
+    \node[circle, fill=fdBlue, inner sep=3pt] (B) at (0,-1) {};
+    \draw[fdBlue, thick, <->] (A) -- node[right, font=\scriptsize] {symmetric} (B);
+    \node[below=1.5cm of B] {\textbf{Space}};
+    \node[below=2cm of B, font=\small] {Edges: $\eta_{ij} = +1$};
+  \end{scope}
+  
+  % vs
+  \node at (3,0) {\Large vs};
+  
+  % Time: asymmetric drift
+  \begin{scope}[xshift=6cm]
+    \node[void] (past) at (0,1) {past};
+    \node[concept] (future) at (0,-1) {future};
+    \draw[fdAccent, very thick, ->] (past) -- node[right, font=\scriptsize] {irreversible} (future);
+    \node[below=0.8cm of future] {\textbf{Time}};
+    \node[below=1.3cm of future, font=\small] {Drift: $\eta_{00} = -1$};
+  \end{scope}
+  
+  % Metric signature
+  \node[right=3cm of future, concept, text width=3cm, align=center] {
+    Minkowski:\\$(-,+,+,+)$
+  };
+\end{tikzpicture}
+\caption{Space vs. Time. Symmetric edges give positive signature; asymmetric drift gives negative signature.}
+\label{fig:time-emergence}
+\end{figure}
 
 Space is defined by the edges of the graph, which are symmetric relations. Time is defined by the drift of the genesis sequence, which is inherently asymmetric.
 
@@ -40763,6 +41711,31 @@ In contrast, the geometric Ricci tensor (derived from the connection) vanishes i
 \\
 \>[0]\<%
 \end{code}
+
+\subsection{The Ricci Scalar}
+
+The Ricci scalar $R = 12$ emerges from the spectral geometry of $K_4$. This is the intrinsic curvature of a single Planck cell. At macroscopic scales, curvature averages over $\sim 10^{120}$ cells, but the coupling constant $\kappa = 8$ remains fixed.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.8]
+  % Curvature sources
+  \node[concept, text width=3cm] (laplacian) at (0,0) {Laplacian\\$\lambda = 4$};
+  \node[concept, text width=3cm] (ricci) at (5,0) {Ricci\\$R = 3\lambda = 12$};
+  \node[concept, text width=3cm] (einstein) at (10,0) {Einstein\\$G_{\mu\nu}$};
+  
+  % Arrows
+  \draw[flow] (laplacian) -- node[above, font=\scriptsize] {$\times 3$} (ricci);
+  \draw[flow] (ricci) -- node[above, font=\scriptsize] {$-\frac{1}{2}Rg$} (einstein);
+  
+  % Constants below
+  \node[below=1cm of laplacian, font=\small] {from $K_4$ spectrum};
+  \node[below=1cm of ricci, font=\small] {$\kappa = 8$};
+  \node[below=1cm of einstein, font=\small] {$\Lambda = 3$};
+\end{tikzpicture}
+\caption{From Laplacian to Einstein tensor. All constants derive from $K_4$ invariants.}
+\label{fig:ricci-scalar}
+\end{figure}
 
 \section{Christoffel Symbols and Geodesics}
 
@@ -45913,6 +46886,44 @@ We define the Pauli matrices explicitly and verify their anticommutation relatio
 
 The symmetry group of the $K_4$ pairings is the Klein four-group $V_4 \cong \mathbb{Z}_2 \times \mathbb{Z}_2$, which is isomorphic to the group generated by the Pauli matrices (modulo phases).
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.9]
+  % Klein four-group structure
+  \node[operator] (e) at (0,2) {$e$};
+  \node[operator] (sx) at (-2,0) {$\sigma_x$};
+  \node[operator] (sy) at (0,0) {$\sigma_y$};
+  \node[operator] (sz) at (2,0) {$\sigma_z$};
+  
+  % Group relations
+  \draw[fdBlue, thick] (e) -- (sx);
+  \draw[fdBlue, thick] (e) -- (sy);
+  \draw[fdBlue, thick] (e) -- (sz);
+  \draw[fdGray, thick] (sx) -- (sy);
+  \draw[fdGray, thick] (sy) -- (sz);
+  \draw[fdGray, thick] (sz) -- (sx);
+  
+  % Labels
+  \node[below=0.5cm of sy] {$V_4 \cong \mathbb{Z}_2 \times \mathbb{Z}_2$};
+  
+  % K4 correspondence
+  \draw[->, fdAccent, thick] (3.5,1) -- node[above, font=\small] {$\cong$} (5.5,1);
+  
+  % K4 vertex pairings
+  \begin{scope}[xshift=7.5cm, yshift=1cm]
+    \node[circle, fill=fdBlue, inner sep=2pt] (v0) at (0,0.8) {};
+    \node[circle, fill=fdBlue, inner sep=2pt] (v1) at (-0.8,-0.4) {};
+    \node[circle, fill=fdBlue, inner sep=2pt] (v2) at (0.8,-0.4) {};
+    \node[circle, fill=fdBlue, inner sep=2pt] (v3) at (0,0) {};
+    \draw[fdBlue, thick] (v0) -- (v1) -- (v2) -- (v0) -- (v3) -- (v1);
+    \draw[fdBlue, thick] (v2) -- (v3);
+    \node[below=0.5cm of v3] {$K_4$ swaps};
+  \end{scope}
+\end{tikzpicture}
+\caption{Klein four-group from $K_4$ pairings. Three involutions correspond to three Pauli matrices.}
+\label{fig:klein-four}
+\end{figure}
+
 \begin{code}%
 \>[0]\AgdaKeyword{record}\AgdaSpace{}%
 \AgdaRecord{KleinFourGroup}\AgdaSpace{}%
@@ -50199,6 +51210,35 @@ We define the linearized Riemann and Ricci tensors, as well as the trace-reverse
 
 \section{Wave Equation and Gravitational Waves}
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.85]
+  % Gravitational wave propagation
+  \draw[->, fdGray, thick] (0,0) -- (8,0) node[right] {$x$};
+  \draw[->, fdGray, thick] (0,-1.5) -- (0,1.5) node[above] {$h_{\mu\nu}$};
+  
+  % Wave
+  \draw[fdBlue, very thick, domain=0:7.5, samples=100] plot (\x, {sin(\x*180/1.5)*exp(-\x/6)});
+  
+  % Plus and cross polarizations
+  \begin{scope}[xshift=9.5cm, yshift=0.5cm]
+    \draw[fdBlue, thick] (-0.5,0) -- (0.5,0);
+    \draw[fdBlue, thick] (0,-0.5) -- (0,0.5);
+    \node[below] at (0,-0.7) {$h_+$};
+  \end{scope}
+  \begin{scope}[xshift=11cm, yshift=0.5cm]
+    \draw[fdRed, thick] (-0.35,-0.35) -- (0.35,0.35);
+    \draw[fdRed, thick] (-0.35,0.35) -- (0.35,-0.35);
+    \node[below] at (0,-0.7) {$h_\times$};
+  \end{scope}
+  
+  % Equation
+  \node[below=1.5cm of current bounding box.south, font=\small] {$\square \bar{h}_{\mu\nu} = 0$ (vacuum) or $\square \bar{h}_{\mu\nu} = -16\pi T_{\mu\nu}$};
+\end{tikzpicture}
+\caption{Gravitational waves. The wave equation emerges from the linearized Einstein tensor on $K_4$.}
+\label{fig:gravitational-waves}
+\end{figure}
+
 We derive the wave equation for the metric perturbation in the harmonic gauge.
 
 \begin{code}%
@@ -50708,6 +51748,51 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 
 General relativity describes spacetime as a smooth manifold with continuous curvature.
 But at the Planck scale, smoothness breaks down. Spacetime becomes discrete.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.9]
+  % Smooth manifold
+  \begin{scope}[xshift=0cm]
+    \draw[fdGray, thick] (0,0) .. controls (0.5,0.8) and (1.5,0.8) .. (2,0);
+    \draw[fdGray, thick] (0,0) .. controls (0.5,-0.3) and (1.5,-0.3) .. (2,0);
+    \draw[fdGray, thick] (0,0) .. controls (-0.3,0.3) and (-0.3,-0.3) .. (0,0);
+    \draw[fdGray, thick] (2,0) .. controls (2.3,0.3) and (2.3,-0.3) .. (2,0);
+    \node[below=0.8cm] at (1,0) {\textbf{Smooth}};
+    \node[below=1.3cm, font=\small] at (1,0) {$R_{\mu\nu}$ everywhere};
+  \end{scope}
+  
+  % Arrow
+  \draw[->, fdAccent, very thick] (3.5,0) -- node[above, font=\small] {discretize} (5.5,0);
+  
+  % Simplicial complex
+  \begin{scope}[xshift=8cm]
+    % Triangles
+    \coordinate (A) at (0,1.2);
+    \coordinate (B) at (-1,-0.6);
+    \coordinate (C) at (1,-0.6);
+    \coordinate (D) at (0,0);
+    
+    \fill[fdBlue, opacity=0.2] (A) -- (B) -- (D) -- cycle;
+    \fill[fdBlue, opacity=0.3] (A) -- (C) -- (D) -- cycle;
+    \fill[fdBlue, opacity=0.15] (B) -- (C) -- (D) -- cycle;
+    
+    \draw[fdBlue, thick] (A) -- (B) -- (C) -- (A);
+    \draw[fdBlue, thick] (A) -- (D);
+    \draw[fdBlue, thick] (B) -- (D);
+    \draw[fdBlue, thick] (C) -- (D);
+    
+    % Deficit angle marker
+    \draw[fdRed, thick, ->] (D) ++(0.3,0.2) arc (30:150:0.35);
+    \node[fdRed, above right] at (D) {\scriptsize $\delta$};
+    
+    \node[below=0.8cm] at (0,-0.6) {\textbf{Regge}};
+    \node[below=1.3cm, font=\small] at (0,-0.6) {$R \sim \delta$ at edges};
+  \end{scope}
+\end{tikzpicture}
+\caption{Regge calculus. Curvature concentrates at edges as deficit angles; flat patches meet with mismatched angles.}
+\label{fig:regge-calculus}
+\end{figure}
 
 \emph{Regge calculus} provides a rigorous framework for discrete curvature. Instead of smooth metrics, we assign conformal factors $\phi^2$ to patches. The curvature is concentrated at edges, where patches meet with a deficit angle.
 
@@ -51361,6 +52446,42 @@ Gauge symmetry is the foundation of the Standard Model. Electromagnetic, weak, a
 
 On a lattice, gauge fields are defined on edges. A gauge transformation shifts the phase at each vertex. The physical observable is the \emph{Wilson loop}: the phase accumulated around a closed path.
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1]
+  % Wilson loop
+  \coordinate (A) at (0,0);
+  \coordinate (B) at (2.5,0);
+  \coordinate (C) at (2.5,1.8);
+  \coordinate (D) at (0,1.8);
+  
+  % Vertices
+  \foreach \pt in {A,B,C,D} {
+    \fill[fdBlue] (\pt) circle (3pt);
+  }
+  
+  % Edges with arrows (gauge links)
+  \draw[->, fdBlue, very thick] (A) -- node[below, font=\small] {$U_1$} (B);
+  \draw[->, fdBlue, very thick] (B) -- node[right, font=\small] {$U_2$} (C);
+  \draw[->, fdBlue, very thick] (C) -- node[above, font=\small] {$U_3$} (D);
+  \draw[->, fdBlue, very thick] (D) -- node[left, font=\small] {$U_4$} (A);
+  
+  % Area
+  \fill[fdBlue, opacity=0.1] (A) -- (B) -- (C) -- (D) -- cycle;
+  \node at (1.25,0.9) {$A$};
+  
+  % Holonomy equation
+  \node[right=2cm, text width=5cm] at (C) {
+    \textbf{Holonomy:}\\[0.3em]
+    $W(C) = \text{Tr}(U_1 U_2 U_3 U_4)$\\[0.5em]
+    Abelian: $\sum_i \phi_i$\\[0.2em]
+    Non-Abelian: ordered product
+  };
+\end{tikzpicture}
+\caption{Wilson loop on a lattice. The holonomy measures the total phase around a closed path.}
+\label{fig:wilson-loop}
+\end{figure}
+
 \section{Wilson Phase and Holonomy}
 
 For an Abelian gauge theory (like QED), the Wilson phase is simply the sum of gauge links along the path.
@@ -51739,6 +52860,54 @@ We define confinement and the gauge phase.
 \AgdaDatatype{GaugePhase}\AgdaSpace{}%
 \AgdaBound{config}\<%
 \end{code}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.9]
+  % Area law (confined)
+  \begin{scope}[xshift=0cm]
+    \draw[fdBlue, very thick] (0,0) rectangle (2.5,2.5);
+    \fill[fdBlue, opacity=0.15] (0,0) rectangle (2.5,2.5);
+    \node at (1.25,1.25) {\large $A$};
+    \draw[->, thick, fdBlue] (0.2,0) -- (2.3,0);
+    \draw[->, thick, fdBlue] (2.5,0.2) -- (2.5,2.3);
+    \draw[->, thick, fdBlue] (2.3,2.5) -- (0.2,2.5);
+    \draw[->, thick, fdBlue] (0,2.3) -- (0,0.2);
+    \node[below] at (1.25,-0.3) {$\langle W \rangle \sim e^{-\sigma A}$};
+    \node[below, font=\bfseries] at (1.25,-0.9) {Confined};
+    \node[below, font=\small\itshape] at (1.25,-1.4) {(Quarks bound)};
+  \end{scope}
+  
+  % Perimeter law (deconfined)
+  \begin{scope}[xshift=5cm]
+    \draw[fdGray, very thick] (0,0) rectangle (2.5,2.5);
+    \draw[->, thick, fdGray] (0.2,0) -- (2.3,0);
+    \draw[->, thick, fdGray] (2.5,0.2) -- (2.5,2.3);
+    \draw[->, thick, fdGray] (2.3,2.5) -- (0.2,2.5);
+    \draw[->, thick, fdGray] (0,2.3) -- (0,0.2);
+    \node at (1.25,1.25) {\large $L$};
+    \node[below] at (1.25,-0.3) {$\langle W \rangle \sim e^{-\mu L}$};
+    \node[below, font=\bfseries] at (1.25,-0.9) {Deconfined};
+    \node[below, font=\small\itshape] at (1.25,-1.4) {(Free quarks)};
+  \end{scope}
+  
+  % K4 confinement
+  \begin{scope}[xshift=10cm]
+    \node[circle, fill=fdAccent, inner sep=3pt] (A) at (0,2.2) {};
+    \node[circle, fill=fdAccent, inner sep=3pt] (B) at (-1,0.5) {};
+    \node[circle, fill=fdAccent, inner sep=3pt] (C) at (1,0.5) {};
+    \fill[fdAccent, opacity=0.25] (A.center) -- (B.center) -- (C.center) -- cycle;
+    \draw[fdAccent, very thick, ->] (A) -- (B);
+    \draw[fdAccent, very thick, ->] (B) -- (C);
+    \draw[fdAccent, very thick, ->] (C) -- (A);
+    \node[below] at (0,-0.3) {$\sigma = \lambda = 4$};
+    \node[below, font=\bfseries] at (0,-0.9) {$K_4$ Result};
+    \node[below, font=\small\itshape] at (0,-1.4) {(Area law holds)};
+  \end{scope}
+\end{tikzpicture}
+\caption{Confinement criterion. Area law (left) confines quarks; perimeter law (center) does not. $K_4$ enforces area law with string tension $\sigma = 4$.}
+\label{fig:area-vs-perimeter}
+\end{figure}
 
 We provide an example gauge configuration and calculate the holonomy for some loops.
 
@@ -54373,6 +55542,42 @@ We model the growth of the graph structure recursively and investigate stability
 
 We define the phases of cosmological evolution, including inflation, collapse, and expansion, driven by the saturation of the graph structure.
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.85]
+  % Timeline
+  \draw[->, fdGray, thick] (0,0) -- (12,0) node[right] {$t$};
+  
+  % Phase 1: Genesis
+  \fill[fdBlue, opacity=0.2] (0,-1) rectangle (2,1);
+  \node at (1,0) {Genesis};
+  \node[below] at (1,-1.3) {\scriptsize $D_0 \to K_4$};
+  
+  % Phase 2: Inflation
+  \fill[fdAccent, opacity=0.2] (2,-1) rectangle (4.5,1);
+  \draw[fdAccent, very thick] (2,0) .. controls (3,-0.5) and (4,0.8) .. (4.5,1);
+  \node at (3.25,0) {Inflation};
+  \node[below] at (3.25,-1.3) {\scriptsize $4^N$ growth};
+  
+  % Phase 3: Saturation/Collapse  
+  \fill[fdRed, opacity=0.2] (4.5,-1) rectangle (6.5,1);
+  \node at (5.5,0) {Collapse};
+  \node[below] at (5.5,-1.3) {\scriptsize $K_5$ blocked};
+  
+  % Phase 4: Expansion
+  \fill[fdBlue, opacity=0.15] (6.5,-1) rectangle (11.5,1);
+  \draw[fdBlue, thick] (6.5,0.3) -- (11.5,0.1);
+  \node at (9,0) {Expansion};
+  \node[below] at (9,-1.3) {\scriptsize Standard cosmology};
+  
+  % Now marker
+  \draw[fdGray, thick, dashed] (10,1.2) -- (10,-1.5);
+  \node[above] at (10,1.2) {\scriptsize now};
+\end{tikzpicture}
+\caption{Cosmological phases. The $K_4$ saturation triggers collapse; expansion follows.}
+\label{fig:cosmological-phases}
+\end{figure}
+
 \begin{code}%
 \>[0]\AgdaKeyword{data}\AgdaSpace{}%
 \AgdaDatatype{CollapseReason}\AgdaSpace{}%
@@ -56678,6 +57883,66 @@ A black hole is defined by its event horizon—the boundary beyond which escape 
 impossible. In classical general relativity, a horizon is a geometric surface in continuous 
 spacetime. But if spacetime is fundamentally discrete at the Planck scale, what is a horizon?
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.9]
+  % Black hole schematic
+  \begin{scope}[xshift=0cm]
+    % Horizon circle
+    \draw[fdGray, very thick] (0,0) circle (2);
+    \fill[black, opacity=0.8] (0,0) circle (1.8);
+    
+    % Area labels
+    \draw[fdBlue, thick, <->] (2.3,0) arc (0:90:2.3);
+    \node[fdBlue, right] at (2.5,1.2) {$A$};
+    
+    % Entropy arrow
+    \draw[->, fdAccent, very thick] (0,-2.5) -- (0,-3.5);
+    \node[below] at (0,-3.5) {$S = \frac{A}{4\ell_P^2}$};
+    
+    \node[above=2.3cm] {\textbf{Continuous}};
+  \end{scope}
+  
+  % Arrow
+  \node at (4,0) {\Large $\Leftrightarrow$};
+  
+  % K4 discrete horizon
+  \begin{scope}[xshift=8cm]
+    % K4 tetrahedron as horizon
+    \node[circle, fill=fdBlue, inner sep=3pt] (A) at (0,1.5) {};
+    \node[circle, fill=fdBlue, inner sep=3pt] (B) at (-1.3,-0.5) {};
+    \node[circle, fill=fdBlue, inner sep=3pt] (C) at (1.3,-0.5) {};
+    \node[circle, fill=fdBlue, inner sep=3pt] (D) at (0,0.3) {};
+    
+    % All 6 edges
+    \draw[fdBlue, thick] (A) -- (B);
+    \draw[fdBlue, thick] (A) -- (C);
+    \draw[fdBlue, thick] (A) -- (D);
+    \draw[fdBlue, thick] (B) -- (C);
+    \draw[fdBlue, thick] (B) -- (D);
+    \draw[fdBlue, thick] (C) -- (D);
+    
+    % Boundary count
+    \node[fdBlue, right] at (1.8,0.5) {6 edges};
+    \node[fdBlue, right] at (1.8,0) {4 vertices};
+    
+    % Discrete entropy
+    \draw[->, fdAccent, very thick] (0,-2) -- (0,-3);
+    \node[below] at (0,-3) {$S \propto E = 6$};
+    
+    \node[above=1.8cm] {\textbf{Discrete $K_4$}};
+  \end{scope}
+  
+  % Annotation
+  \node[below=4cm, text width=10cm, align=center, font=\small\itshape] at (4,-0.5) {
+    Bekenstein-Hawking entropy from horizon area.\\
+    In $K_4$: boundary edges count as discrete area units.
+  };
+\end{tikzpicture}
+\caption{Black hole entropy. Left: continuous horizon with area $A$. Right: discrete $K_4$ horizon with 6 boundary edges.}
+\label{fig:black-hole-entropy}
+\end{figure}
+
 In the $K_4$ framework, a horizon is a \emph{drift boundary}: a region where drift operations 
 (which add structure) cannot propagate outward past a certain limit. The minimal such boundary 
 in $K_4$ has:
@@ -56890,6 +58155,10 @@ additional microstates.
 %
 \>[21]\AgdaInductiveConstructor{z≤n}\AgdaSymbol{))))))))))))))))))))))))))))))))))))))))))))}\<%
 \end{code}
+
+\subsection{Discrete Black Hole Entropy}
+
+The Bekenstein-Hawking entropy $S = A/4\ell_P^2$ counts the number of Planck-area pixels on the horizon. In our discrete framework, the horizon is a $K_4$ boundary with 6 edges. The discrete entropy exceeds the classical value---suggesting additional microstates from the graph structure.
 
 \begin{code}%
 \>[0]\AgdaKeyword{module}\AgdaSpace{}%
@@ -58675,6 +59944,14 @@ additional microstates.
 \>[2]\AgdaSymbol{\}}\<%
 \end{code}
 
+\section{Algebraic Structure of Physical Laws}
+
+Why do physical laws have the algebraic form they do? Why addition for energies, multiplication for probabilities? The answer lies in the categorical structure of $K_4$.
+
+Convergent processes (like energy conservation) use additive combination.
+Divergent processes (like probability amplitudes) use multiplicative combination.
+The $K_4$ structure determines which is which.
+
 \begin{code}%
 \>[0]\AgdaKeyword{data}\AgdaSpace{}%
 \AgdaDatatype{SignatureType}\AgdaSpace{}%
@@ -59234,6 +60511,46 @@ additional microstates.
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{refl}\<%
 \end{code}
+
+\section{The Cosmological Constant Problem}
+
+The cosmological constant $\Lambda$ is one of the most puzzling quantities in physics.
+Quantum field theory predicts a value $10^{122}$ times larger than observed.
+This is the largest discrepancy between theory and experiment in all of science.
+
+Our framework offers a resolution. The ``bare'' cosmological constant from $K_4$ is $\Lambda_0 = 3$ (the degree of the graph). But this value applies at the Planck scale. At cosmological scales, it is diluted by the enormous number of Planck-sized cells in the observable universe:
+\[
+\Lambda_{\text{obs}} = \Lambda_0 \times N^{-2} \approx 3 \times 10^{-122}
+\]
+where $N \approx 10^{61}$ is the ratio of the cosmic horizon to the Planck length.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.8]
+  % Scale comparison
+  \draw[->, fdGray, thick] (0,0) -- (12,0) node[right] {$\log_{10}(L/\ell_P)$};
+  
+  % Planck scale
+  \fill[fdBlue] (0.5,0) circle (4pt);
+  \node[above] at (0.5,0.3) {$\ell_P$};
+  \node[below, font=\scriptsize] at (0.5,-0.3) {$\Lambda = 3$};
+  
+  % Cosmic scale
+  \fill[fdRed] (10.5,0) circle (4pt);
+  \node[above] at (10.5,0.3) {$L_H$};
+  \node[below, font=\scriptsize] at (10.5,-0.3) {$\Lambda \sim 10^{-122}$};
+  
+  % Dilution arrow
+  \draw[<->, fdAccent, thick] (0.5,-1) -- node[below] {$N \approx 10^{61}$} (10.5,-1);
+  
+  % Formula
+  \node[below=2cm, text width=10cm, align=center] at (5.5,0) {
+    Dilution: $\Lambda_{\text{obs}} = \Lambda_0 / N^2 = 3 / (10^{61})^2 = 3 \times 10^{-122}$
+  };
+\end{tikzpicture}
+\caption{Cosmological constant dilution. The bare value $\Lambda_0 = 3$ is diluted by $N^2$ Planck cells.}
+\label{fig:lambda-dilution}
+\end{figure}
 
 \begin{code}%
 \>[0]\AgdaKeyword{module}\AgdaSpace{}%
@@ -61583,6 +62900,21 @@ additional microstates.
 \AgdaNumber{1}\<%
 \end{code}
 
+\subsection{Testing Alternative Formulas}
+
+A critical question: Is the formula $\alpha^{-1} = \chi \lambda^3 + d^2$ unique?
+Perhaps other combinations of $K_4$ invariants also yield 137?
+
+We systematically test alternatives:
+\begin{itemize}
+\item $2^V \cdot \chi + d \cdot D = 16 \cdot 2 + 3 \cdot 3 = 41$ \quad (wrong)
+\item $E \cdot V \cdot \chi + V + 1 = 6 \cdot 4 \cdot 2 + 5 = 53$ \quad (wrong)
+\item $\chi \lambda^3$ alone $= 128$ \quad (wrong)
+\item $\chi \lambda^3 + d^2_{K_3} = 128 + 4 = 132$ \quad (wrong)
+\end{itemize}
+
+Only $K_4$ with the specific formula $\chi \lambda^3 + d^2 = 2 \cdot 64 + 9 = 137$ works.
+
 \begin{code}%
 \>[0]\AgdaKeyword{record}\AgdaSpace{}%
 \AgdaRecord{AlphaConsistency}\AgdaSpace{}%
@@ -63254,6 +64586,10 @@ additional microstates.
 \>[2]\AgdaSymbol{\}}\<%
 \end{code}
 
+\subsection{The Baryon-to-Photon Ratio}
+
+Why is only $\sim 5\%$ of the universe baryonic matter? The $K_4$ structure provides a geometric answer: baryons occupy 1 of 6 edge channels, while the remaining 5 are ``dark.'' The ratio $\Omega_b/\Omega_{total} \approx 1/6$ emerges from counting.
+
 \begin{code}%
 \>[0]\AgdaFunction{theorem-baryon-consistency}%
 \>[37560I]\AgdaSymbol{:}\AgdaSpace{}%
@@ -63632,6 +64968,12 @@ additional microstates.
 %
 \>[2]\AgdaSymbol{\}}\<%
 \end{code}
+
+\subsection{The Spectral Index}
+
+The cosmic microwave background shows nearly scale-invariant fluctuations, with spectral index $n_s \approx 0.96$. This slight deviation from 1 encodes information about the inflationary epoch.
+
+From $K_4$: the ``capacity'' is $V \times E = 4 \times 6 = 24$. The bare spectral index is $(24-1)/24 = 23/24 \approx 0.958$. Loop corrections from $K_4$ triangles refine this to match observation.
 
 \begin{code}%
 \>[0]\AgdaFunction{theorem-ns-consistency}%
@@ -64633,6 +65975,12 @@ additional microstates.
 \AgdaInductiveConstructor{refl}\<%
 \end{code}
 
+\subsection{Galaxy Clustering Length}
+
+The observed clustering length $r_0 \approx 20$ Mpc sets the scale at which galaxies transition from clustered to uniform distribution. From $K_4$: $C_3 \cdot V + C_3 = 4 \cdot 4 + 4 = 20$.
+
+This is not fitting---it is calculation.
+
 \begin{code}%
 \>[0]\AgdaKeyword{record}\AgdaSpace{}%
 \AgdaRecord{ClusteringLength4PartProof}\AgdaSpace{}%
@@ -65309,6 +66657,41 @@ additional microstates.
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{refl}\<%
 \end{code}
+
+\section{Lepton Mass Ratios}
+
+The charged leptons---electron, muon, tau---form a mass hierarchy spanning five orders of magnitude. Why these specific ratios?
+
+From $K_4$: the electron is the base unit ($m_e = 1$). The muon mass is $d^2 \times (E + F_2) = 9 \times 23 = 207 \, m_e$. The tau mass is $F_2 \times m_\mu = 17 \times 207 = 3519 \, m_e$.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.8]
+  % Lepton hierarchy
+  \draw[->, fdGray, thick] (0,0) -- (0,4) node[above] {$m/m_e$};
+  
+  % Electron
+  \fill[fdBlue] (1,0.1) circle (6pt);
+  \node[below] at (1,0) {$e$};
+  \node[right] at (1.3,0.1) {1};
+  
+  % Muon
+  \fill[fdBlue] (3,1.15) circle (6pt);
+  \node[below] at (3,0) {$\mu$};
+  \node[right] at (3.3,1.15) {207};
+  
+  % Tau
+  \fill[fdBlue] (5,3.5) circle (6pt);
+  \node[below] at (5,0) {$\tau$};
+  \node[right] at (5.3,3.5) {3519};
+  
+  % Formulas
+  \draw[fdAccent, thick, ->] (1.3,0.3) -- node[above, font=\scriptsize, sloped] {$\times d^2 \cdot 23$} (2.7,0.95);
+  \draw[fdAccent, thick, ->] (3.3,1.35) -- node[above, font=\scriptsize, sloped] {$\times F_2$} (4.7,3.3);
+\end{tikzpicture}
+\caption{Lepton mass hierarchy from $K_4$ invariants.}
+\label{fig:lepton-masses}
+\end{figure}
 
 \begin{code}%
 \>[0]\AgdaFunction{BivectorSpace}\AgdaSpace{}%
@@ -66469,9 +67852,30 @@ additional microstates.
 \AgdaFunction{charm-mass-formula}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaNumber{3014}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
+\end{code}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.7]
+  % Mass bar chart (log scale)
+  \draw[->, fdGray, thick] (0,0) -- (0,6) node[above, font=\small] {$m/m_e$};
+  \draw[->, fdGray, thick] (0,0) -- (10,0) node[right, font=\small] {particle};
+  
+  % Log scale bars
+  \foreach \x/\h/\name/\val in {1/1.5/p/1836, 2/1.5/n/1839, 3/1/\mu/207, 4/1.8/\tau/3519, 5/2.2/c/3014, 6/3.5/b/9316, 7/5.5/t/337k} {
+    \fill[fdBlue] (\x-0.3,0) rectangle (\x+0.3,\h);
+    \node[below] at (\x,0) {\scriptsize $\name$};
+    \node[above, font=\tiny] at (\x,\h) {\val};
+  }
+  
+  % Highlight K4 origin
+  \draw[fdAccent, thick, dashed] (0.5,4.5) -- (7.5,4.5) node[right, font=\scriptsize] {all from $K_4$};
+\end{tikzpicture}
+\caption{Fermion mass spectrum derived from $K_4$. Each ratio is computed from graph invariants.}
+\label{fig:fermion-masses}
+\end{figure}
+
+\begin{code}%
 \>[0]\AgdaFunction{theorem-mass-consistency}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaRecord{MassConsistency}\<%
@@ -71511,6 +72915,34 @@ the structure $E^2 + 1$ where $E = 6$ is the edge count of $K_4$:
 \>[2]\AgdaSymbol{\}}\<%
 \end{code}
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.75]
+  % Log scale mass hierarchy
+  \draw[->, fdGray, thick] (0,0) -- (14,0) node[right] {$\log_{10}(m/m_e)$};
+  
+  % Particles on the scale
+  \foreach \x/\name/\col in {0/e/fdBlue, 2.3/\mu/fdBlue, 3.5/\tau/fdBlue, 3.7/p/fdAccent, 6.5/W/fdGray, 7/H/fdGray, 8.5/t/fdRed} {
+    \draw[\col, thick] (\x,0) -- (\x,0.8);
+    \node[below] at (\x,0) {\scriptsize $\name$};
+  }
+  
+  % Planck scale
+  \draw[fdRed, very thick] (12.5,0) -- (12.5,1.2);
+  \node[below] at (12.5,0) {\scriptsize $M_P$};
+  
+  % Bracket for hierarchy
+  \draw[<->, fdAccent, thick] (0,1.5) -- node[above] {Hierarchy: $10^{22}$} (12.5,1.5);
+  
+  % K4 explanation
+  \node[below=1cm, text width=10cm, align=center] at (6.25,-0.5) {
+    \scriptsize $\alpha^{-2} \times 4^5 \times 4^{17} = 10^{22}$: all from $K_4$
+  };
+\end{tikzpicture}
+\caption{The mass hierarchy. All scales derive from powers of 4 (from $K_4$) and $\alpha = 4/\pi^2$.}
+\label{fig:mass-hierarchy}
+\end{figure}
+
 \begin{code}%
 \>[0]\AgdaFunction{theorem-discrete-ricci}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -71562,6 +72994,35 @@ the structure $E^2 + 1$ where $E = 6$ is the edge count of $K_4$:
 General relativity describes spacetime as a smooth four-dimensional manifold with a metric 
 tensor field $g_{\mu\nu}(x)$ defined at every point. But $K_4$ is a \emph{discrete} structure: 
 4 vertices connected by 6 edges. How can a discrete graph correspond to continuous geometry?
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.8]
+  % Discrete lattice
+  \begin{scope}[xshift=0cm]
+    \foreach \x in {0,1,2,3} {
+      \foreach \y in {0,1,2} {
+        \node[circle, fill=fdBlue, inner sep=1.5pt] at (\x*0.8,\y*0.7) {};
+      }
+    }
+    \node[below=0.5cm] at (1.2,0) {Discrete: $N$ cells};
+  \end{scope}
+  
+  % Arrow
+  \draw[->, fdAccent, very thick] (4,1) -- node[above, font=\small] {$N \to \infty$} (6,1);
+  
+  % Smooth manifold
+  \begin{scope}[xshift=7.5cm]
+    \draw[fdBlue, thick, fill=fdBlue, opacity=0.2] (0,0) .. controls (1,0.5) and (2,0.3) .. (3,0)
+      .. controls (3.2,1) and (3,2) .. (2.5,2.3)
+      .. controls (1.5,2.5) and (0.5,2) .. (0,1.5)
+      .. controls (-0.2,0.8) and (-0.1,0.3) .. (0,0);
+    \node[below=0.5cm] at (1.5,0) {Smooth: $g_{\mu\nu}(x)$};
+  \end{scope}
+\end{tikzpicture}
+\caption{Continuum limit. A lattice of $N$ $K_4$ cells becomes smooth spacetime as $N \to \infty$.}
+\label{fig:continuum-limit}
+\end{figure}
 
 The answer is the \emph{continuum limit}: at macroscopic scales far above the Planck length 
 ($\ell_P \approx 10^{-35}$ m), a lattice of $N$ $K_4$ cells behaves like smooth spacetime. 
@@ -78699,6 +80160,26 @@ The derivation follows a sequence:
 D_0 \to K_4 \to \text{Dimension} \to \text{Lorentz} \to \text{Einstein} \to \text{Gauge Groups}
 \]
 
+\begin{center}
+\begin{tikzpicture}[node distance=1.8cm]
+  % Nodes
+  \node[concept, text width=2cm] (D0) {$D_0$\\Distinction};
+  \node[concept, text width=2cm, right of=D0] (K4) {$K_4$\\Graph};
+  \node[concept, text width=2cm, right of=K4] (Dim) {$d=3+1$\\Dimension};
+  \node[concept, text width=2cm, right of=Dim] (Lor) {$\eta_{\mu\nu}$\\Lorentz};
+  \node[concept, text width=2cm, below of=K4, yshift=-0.5cm] (Ein) {$G_{\mu\nu}$\\Einstein};
+  \node[concept, text width=2cm, right of=Ein] (SM) {$SU(3)\times...$\\Gauge};
+  
+  % Arrows
+  \draw[flow] (D0) -- node[label, above] {self-ref} (K4);
+  \draw[flow] (K4) -- node[label, above] {spectrum} (Dim);
+  \draw[flow] (Dim) -- node[label, above] {drift} (Lor);
+  \draw[flow] (Lor) -- (Ein);
+  \draw[flow] (K4) -- node[label, left] {curvature} (Ein);
+  \draw[flow] (Ein) -- node[label, above] {$\text{Aut}(K_4)$} (SM);
+\end{tikzpicture}
+\end{center}
+
 Each arrow represents a mathematical necessity:
 
 \textbf{$D_0 \to K_4$}: A system that can witness its own structure requires exactly four distinguishable positions. This is a theorem about self-reference, not about physics.
@@ -78756,6 +80237,56 @@ We do not know which is correct. The mathematics is silent on interpretation. On
 We have computed mass ratios and coupling constants from $K_4$ invariants. But why do \emph{these} particular ratios correspond to \emph{these} particular particles? The electron has mass ratio 1, the muon 207, the tau 3519. Why?
 
 The answer lies in \textbf{loop topology}. A particle's mass is determined by the number of loops in its corresponding graph structure:
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.9]
+  % Photon: 0 loops
+  \begin{scope}[xshift=0cm]
+    \node[circle, fill=fdGray, inner sep=4pt] (p) at (0,0) {};
+    \draw[fdGray, thick, decorate, decoration={snake, amplitude=2pt, segment length=8pt}] (p) -- ++(1.5,0);
+    \node[above=0.3cm of p] {\textbf{Photon}};
+    \node[below=0.3cm of p] {0 loops};
+    \node[below=0.8cm of p, font=\small\itshape] {Massless};
+  \end{scope}
+  
+  % Electron: 1 loop
+  \begin{scope}[xshift=4cm]
+    \draw[fdBlue, thick] (0,0) circle (0.5);
+    \fill[fdBlue] (-0.5,0) circle (3pt);
+    \draw[->, fdBlue, thick] (0.35,0.35) arc (45:135:0.5);
+    \node[above=0.8cm] {\textbf{Electron}};
+    \node[below=0.8cm] {1 loop};
+    \node[below=1.3cm, font=\small\itshape] {Minimal mass};
+  \end{scope}
+  
+  % Muon/Tau: n loops
+  \begin{scope}[xshift=8cm]
+    \draw[fdRed, thick] (0,0) circle (0.3);
+    \draw[fdRed, thick] (0.5,0) circle (0.3);
+    \draw[fdRed, thick] (0.25,0.4) circle (0.3);
+    \fill[fdRed] (0,0.3) circle (2pt);
+    \fill[fdRed] (0.5,0.3) circle (2pt);
+    \node[above=1cm] {\textbf{Muon/Tau}};
+    \node[below=0.6cm] {$n$ loops};
+    \node[below=1.1cm, font=\small\itshape] {Higher mass};
+  \end{scope}
+  
+  % Neutrino: 5 loops (seesaw)
+  \begin{scope}[xshift=12cm]
+    \draw[fdAccent, thick] (-0.4,0.2) circle (0.15);
+    \draw[fdAccent, thick] (0,0.2) circle (0.15);
+    \draw[fdAccent, thick] (0.4,0.2) circle (0.15);
+    \draw[fdAccent, thick] (-0.2,-0.2) circle (0.15);
+    \draw[fdAccent, thick] (0.2,-0.2) circle (0.15);
+    \node[above=0.6cm] {\textbf{Neutrino}};
+    \node[below=0.3cm] {5 loops};
+    \node[below=0.8cm, font=\small\itshape] {$2r-1$ (seesaw)};
+  \end{scope}
+\end{tikzpicture}
+\caption{Loop topology determines mass. Zero loops: massless. Minimal loop: minimal mass. The seesaw formula gives neutrino mass.}
+\label{fig:loop-mass}
+\end{figure}
 
 \begin{itemize}
 \item \textbf{Photon}: Zero loops $\Rightarrow$ massless. A particle without internal structure propagates freely.
