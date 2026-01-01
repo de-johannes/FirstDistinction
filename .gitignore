@@ -1,10 +1,3 @@
-# Ignore Agda interface files EXCEPT FirstDistinction.agdai
-# (We track the main proof cache as evidence of successful compilation)
-*.agdai
-!FirstDistinction.agdai
-!FD-minimal.agdai
-!Physics-challenge.agdai
-
 # macOS cruft
 .DS_Store
 
@@ -21,8 +14,9 @@
 *.blg
 *.lof
 *.lot
+*.sty
 
+latex
 work
-src
 
 .venv
