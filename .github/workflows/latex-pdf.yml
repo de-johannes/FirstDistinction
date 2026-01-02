@@ -33,13 +33,10 @@ jobs:
 
       - name: Generate LaTeX from Agda
         run: |
-          echo "📦 Generating LaTeX..."
-          agda --safe --without-K --latex FirstDistinction.lagda.tex
-          # Agda generates latex/FirstDistinction.tex
-          # We also need agda.sty in the latex directory if it exists in root
-          if [ -f agda.sty ]; then
-            cp agda.sty latex/
-          fi
+          echo "📦 Generating LaTeX from literate Agda..."
+          agda --latex --safe --without-K FirstDistinction.lagda.tex
+          echo "✅ LaTeX generated in latex/ directory"
+          ls -la latex/
 
       - name: Compile LaTeX to PDF
         uses: xu-cheng/latex-action@v3
@@ -47,12 +44,12 @@ jobs:
           working_directory: latex
           root_file: FirstDistinction.tex
           latexmk_use_xelatex: true
-          extra_system_packages: "texlive-xetex texlive-science"
+          extra_system_packages: "texlive-xetex texlive-science texlive-fonts-extra"
 
       - name: Move PDF to root
         run: |
-          mv latex/FirstDistinction.pdf ./FirstDistinction.pdf
-          echo "✅ PDF moved to root"
+          cp latex/FirstDistinction.pdf ./FirstDistinction.pdf
+          echo "✅ PDF copied to root"
 
       - name: Commit PDF
         if: github.event_name == 'push'
