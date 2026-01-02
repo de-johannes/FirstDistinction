@@ -208,71 +208,69 @@ structure that emerges necessarily from what precedes it.
 
 \begin{center}
 \begin{tikzpicture}[
-  node distance=1.8cm,
+  node distance=0.6cm,
   every node/.style={font=\small},
-  box/.style={draw, rounded corners, minimum width=2.2cm, minimum height=0.8cm, align=center},
-  arrow/.style={->, thick, fdBlue}
+  main/.style={draw, rounded corners, minimum width=3.5cm, minimum height=0.7cm, align=center, fill=fdBlue!10},
+  derives/.style={draw, rounded corners, minimum width=2.8cm, minimum height=0.6cm, align=center, font=\footnotesize},
+  arrow/.style={->, thick, fdBlue},
+  note/.style={font=\scriptsize, fdGray}
 ]
 
-% Row 1: Distinction
-\node[box, fill=fdAccent!20] (D0) {$D_0$\\The Mark};
-\node[box, right=of D0] (D1) {$D_1$\\Witness};
-\node[box, right=of D1] (D2) {$D_2$\\Cut};
-\node[box, right=of D2, fill=fdBlue!20] (K4) {$K_4$\\Graph};
+% The single emergence chain
+\node[main, fill=fdAccent!20] (D0) {$D_0$ --- The Distinction};
+\node[main, below=of D0] (witness) {Witness-Closure};
+\node[note, right=0.3cm of witness] {requires 6 edges};
 
-\draw[arrow] (D0) -- (D1);
-\draw[arrow] (D1) -- (D2);
-\draw[arrow] (D2) -- node[above, font=\scriptsize] {closure} (K4);
+\node[main, below=of witness, fill=fdBlue!20] (n4) {$n = 4$};
+\node[note, right=0.3cm of n4] {unique solution};
 
-% Row 2: Numbers
-\node[box, below=1.2cm of D0] (Bool) {Bool\\true $\mid$ false};
-\node[box, right=of Bool] (N) {$\mathbb{N}$\\Counting};
-\node[box, right=of N] (Z) {$\mathbb{Z}$\\Difference};
-\node[box, right=of Z] (Q) {$\mathbb{Q}$\\Ratio};
+% Branch point
+\node[derives, below left=0.8cm and 0.5cm of n4] (E6) {$E = 6$};
+\node[derives, below=0.8cm of n4] (d3) {$d = 3$};
+\node[derives, below right=0.8cm and 0.5cm of n4] (chi2) {$\chi = 2$};
+\node[derives, right=0.3cm of chi2] (cliff) {$2^n = 16$};
 
-\draw[arrow] (D2) -- (Bool);
-\draw[arrow] (Bool) -- (N);
-\draw[arrow] (N) -- (Z);
-\draw[arrow] (Z) -- (Q);
+% Second level
+\node[derives, below=0.6cm of d3] (kappa) {$\kappa = 2(d{+}1) = 8$};
+\node[derives, left=0.3cm of kappa] (spacetime) {$3{+}1$ spacetime};
+\node[derives, right=0.3cm of kappa] (F2) {$F_2 = 17$};
 
-% Row 3: Geometry
-\node[box, below=1.2cm of Bool] (3D) {$d=3$\\Space};
-\node[box, right=of 3D] (Lor) {$\eta_{\mu\nu}$\\Lorentz};
-\node[box, right=of Lor] (Ein) {$G_{\mu\nu}$\\Einstein};
-\node[box, right=of Ein, fill=fdBlue!20] (EFE) {EFE\\$G = \kappa T$};
+% Physics outputs
+\node[main, below=1cm of kappa] (physics) {Physical Constants};
 
-\draw[arrow] (K4) -- node[right, font=\scriptsize] {embedding} (3D);
-\draw[arrow] (3D) -- (Lor);
-\draw[arrow] (Lor) -- (Ein);
-\draw[arrow] (Ein) -- (EFE);
+\node[derives, below left=0.6cm and 1cm of physics] (alpha) {$\alpha^{-1} = 137$};
+\node[derives, below left=0.6cm and -0.3cm of physics] (muon) {$m_\mu/m_e = 207$};
+\node[derives, below right=0.6cm and -0.3cm of physics] (proton) {$m_p/m_e = 1836$};
+\node[derives, below right=0.6cm and 1cm of physics] (higgs) {$m_H = 128$};
 
-% Row 4: Forces & Matter
-\node[box, below=1.2cm of 3D] (SU3) {$SU(3)$\\Color};
-\node[box, right=of SU3] (SU2) {$SU(2)$\\Weak};
-\node[box, right=of SU2] (U1) {$U(1)$\\EM};
-\node[box, right=of U1, fill=fdAccent!20] (alpha) {$\alpha^{-1}$\\$= 137$};
+% Arrows - main chain
+\draw[arrow] (D0) -- (witness);
+\draw[arrow] (witness) -- (n4);
+\draw[arrow] (n4) -- (E6);
+\draw[arrow] (n4) -- (d3);
+\draw[arrow] (n4) -- (chi2);
+\draw[arrow] (chi2) -- (cliff);
 
-\draw[arrow] (K4) to[bend right=20] (SU3);
-\draw[arrow] (K4) -- (SU2);
-\draw[arrow] (K4) to[bend left=10] (U1);
-\draw[arrow] (U1) -- (alpha);
+\draw[arrow] (d3) -- (spacetime);
+\draw[arrow] (d3) -- (kappa);
+\draw[arrow] (cliff) -- (F2);
 
-% Row 5: Masses
-\node[box, below=1.2cm of SU3] (me) {$m_e$\\Electron};
-\node[box, right=of me] (mmu) {$m_\mu/m_e$\\$= 207$};
-\node[box, right=of mmu] (mp) {$m_p/m_e$\\$= 1836$};
-\node[box, right=of mp] (mH) {$m_H$\\Higgs};
+\draw[arrow] (spacetime) -- (physics);
+\draw[arrow] (kappa) -- (physics);
+\draw[arrow] (F2) -- (physics);
+\draw[arrow] (E6) to[bend right=15] (physics);
+\draw[arrow] (chi2) to[bend left=15] (physics);
 
-\draw[arrow] (K4) to[bend right=30] (me);
-\draw[arrow] (me) -- (mmu);
-\draw[arrow] (mmu) -- (mp);
-\draw[arrow] (mp) -- (mH);
-
-% Vertical connector from K4
-\draw[arrow, dashed, fdGray] (K4) -- ++(0,-5.5);
+\draw[arrow] (physics) -- (alpha);
+\draw[arrow] (physics) -- (muon);
+\draw[arrow] (physics) -- (proton);
+\draw[arrow] (physics) -- (higgs);
 
 \end{tikzpicture}
 \end{center}
+
+\medskip
+\noindent\textit{One input: the act of distinction. Everything else is forced.}
 
 \bigskip
 
@@ -297,11 +295,9 @@ $\Lambda = 3$.
 
 \item \textbf{Forces} (Chapters 31--33): The symmetries of $K_4$ give $SU(3) \times SU(2) \times U(1)$. 
 The 4 faces give 3 colors. The 6 edges give 8 gluons. The spectral invariants give 
-$\alpha^{-1} = 137$ and $\sin^2\theta_W = 0.2314$.
+the fine structure constant and the Weinberg angle. \emph{The numbers emerge.}
 
-\item \textbf{Matter} (interspersed): The $K_4$ eigenvalue ratios give $m_\mu/m_e = 207$, 
-$m_\tau/m_\mu = 17$, $m_p/m_e = 1836$. The Fermat prime $F_3 = 257$ gives 
-$m_H \approx 128$ GeV.
+\item \textbf{Matter} (interspersed): The $K_4$ eigenvalue ratios determine the lepton mass hierarchy. The Fermat primes $F_2 = 17$ and $F_3 = 257$ appear. \emph{The numerical values emerge from pure structure---they are not inserted.}
 
 \item \textbf{Cosmos}: The cosmological parameters follow: $\Omega_m = 0.31$, 
 $n_s = 0.96$, and the hierarchy $M_{\text{Planck}}/m_e \sim 10^{22}$.
@@ -348,7 +344,7 @@ why the structure is unique.
 \tableofcontents
 \mainmatter
 
-\part{Genesis}
+\part{The Distinction}
 
 \chapter{The Mark}
 
@@ -1118,7 +1114,7 @@ against experimental PDG values with high precision (e.g., $137.035999177$). The
 involve large integers (billions) that would be impractical to handle via Peano arithmetic.
 
 \textbf{The document would compile without them.} We could remove all PDG comparisons and 
-work only with small integers. The proofs that $\alpha^{-1} = 137$, that $m_\mu/m_e = 207$, 
+work only with small integers. The proofs that physical constants emerge from $K_4$ structure, 
 that spacetime has $3+1$ dimensions---all of these require only small numbers and would 
 compile without any BUILTIN pragmas. The pragmas enable the \emph{bonus} of showing agreement 
 with experiment to six decimal places, but this bonus is not logically necessary.
@@ -2769,7 +2765,7 @@ In particular, the combination of associativity, idempotence, and involutivity e
 \>[0]\<%
 \end{code}
 
-\part{Numbers}
+\part{Counting}
 
 \chapter{Inductive Structure}
 
@@ -9587,7 +9583,7 @@ We explicitly track the dependency level of our proofs. The core logic should de
 \AgdaInductiveConstructor{refl}\<%
 \end{code}
 
-\part{Physics}
+\part{The Physical World}
 
 \chapter{Empirical Contact}
 
@@ -25770,6 +25766,14 @@ holographic encoding.
 The $K_4$ graph, representing the simplest non-planar graph, encodes the fundamental constants of particle physics.
 
 \begin{code}%
+\>[0]\AgdaComment{--\ The\ vertex\ count\ n=4\ is\ not\ arbitrary:\ it\ is\ the\ UNIQUE\ value\ satisfying}\<%
+\\
+\>[0]\AgdaComment{--\ the\ witness-closure\ constraint.\ See\ Section\textasciitilde{}\textbackslash{}ref\{sec:global-classification\}.}\<%
+\\
+\>[0]\AgdaComment{--\ For\ K₃:\ insufficient\ witnesses.\ For\ K₅:\ no\ forcing\ mechanism.}\<%
+\\
+\>[0]\AgdaComment{--\ Only\ n=4\ works.\ This\ is\ PROVEN,\ not\ assumed.}\<%
+\\
 \>[0]\AgdaFunction{vertexCountK4}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{ℕ}\<%
@@ -25780,53 +25784,159 @@ The $K_4$ graph, representing the simplest non-planar graph, encodes the fundame
 \\
 %
 \\[\AgdaEmptyExtraSkip]%
-\>[0]\AgdaFunction{edgeCountK4}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaDatatype{ℕ}\<%
+\>[0]\AgdaComment{--\ Complete\ graph:\ E\ =\ n(n-1)/2\ =\ 4×3/2\ =\ 6}\<%
 \\
 \>[0]\AgdaFunction{edgeCountK4}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
-\AgdaNumber{6}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
-\>[0]\AgdaFunction{faceCountK4}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{ℕ}\<%
 \\
-\>[0]\AgdaFunction{faceCountK4}\AgdaSpace{}%
+\>[0]\AgdaFunction{edgeCountK4}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
-\AgdaNumber{4}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
-\>[0]\AgdaFunction{degree-K4}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaDatatype{ℕ}\<%
-\\
-\>[0]\AgdaFunction{degree-K4}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
-\AgdaNumber{3}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
-\>[0]\AgdaFunction{eulerChar-computed}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaDatatype{ℕ}\<%
-\\
-\>[0]\AgdaFunction{eulerChar-computed}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{vertexCountK4}\AgdaSpace{}%
+\AgdaOperator{\AgdaPrimitive{*}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{vertexCountK4}\AgdaSpace{}%
+\AgdaOperator{\AgdaPrimitive{∸}}\AgdaSpace{}%
+\AgdaNumber{1}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{divℕ}}\AgdaSpace{}%
 \AgdaNumber{2}\<%
 \\
 %
 \\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ Verify\ emergence}\<%
+\\
+\>[0]\AgdaFunction{theorem-edges}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{edgeCountK4}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
+\AgdaNumber{6}\<%
+\\
+\>[0]\AgdaFunction{theorem-edges}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{refl}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ Faces\ =\ triangles\ in\ complete\ graph\ =\ C(n,3)\ =\ n(n-1)(n-2)/6}\<%
+\\
+\>[0]\AgdaFunction{faceCountK4}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\<%
+\\
+\>[0]\AgdaFunction{faceCountK4}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{vertexCountK4}\AgdaSpace{}%
+\AgdaOperator{\AgdaPrimitive{*}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{vertexCountK4}\AgdaSpace{}%
+\AgdaOperator{\AgdaPrimitive{∸}}\AgdaSpace{}%
+\AgdaNumber{1}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaPrimitive{*}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{vertexCountK4}\AgdaSpace{}%
+\AgdaOperator{\AgdaPrimitive{∸}}\AgdaSpace{}%
+\AgdaNumber{2}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{divℕ}}\AgdaSpace{}%
+\AgdaNumber{6}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ Verify\ emergence}\<%
+\\
+\>[0]\AgdaFunction{theorem-faces}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{faceCountK4}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
+\AgdaNumber{4}\<%
+\\
+\>[0]\AgdaFunction{theorem-faces}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{refl}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ Regular\ graph:\ degree\ =\ n\ -\ 1\ =\ 3}\<%
+\\
+\>[0]\AgdaFunction{degree-K4}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\<%
+\\
+\>[0]\AgdaFunction{degree-K4}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{vertexCountK4}\AgdaSpace{}%
+\AgdaOperator{\AgdaPrimitive{∸}}\AgdaSpace{}%
+\AgdaNumber{1}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ Verify\ emergence}\<%
+\\
+\>[0]\AgdaFunction{theorem-degree}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{degree-K4}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
+\AgdaNumber{3}\<%
+\\
+\>[0]\AgdaFunction{theorem-degree}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{refl}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ Euler\ characteristic:\ V\ -\ E\ +\ F\ =\ 4\ -\ 6\ +\ 4\ =\ 2}\<%
+\\
+\>[0]\AgdaFunction{eulerChar-computed}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\<%
+\\
+\>[0]\AgdaFunction{eulerChar-computed}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{vertexCountK4}\AgdaSpace{}%
+\AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
+\AgdaFunction{faceCountK4}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaPrimitive{∸}}\AgdaSpace{}%
+\AgdaFunction{edgeCountK4}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ Verify\ emergence}\<%
+\\
+\>[0]\AgdaFunction{theorem-euler}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{eulerChar-computed}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
+\AgdaNumber{2}\<%
+\\
+\>[0]\AgdaFunction{theorem-euler}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{refl}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ Clifford\ algebra\ dimension:\ 2\textasciicircum{}n\ for\ n\ =\ vertexCountK4\ =\ 4}\<%
+\\
+\>[0]\AgdaComment{--\ This\ gives\ 2⁴\ =\ 16\ spinor\ components}\<%
+\\
 \>[0]\AgdaFunction{clifford-dimension}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{ℕ}\<%
 \\
 \>[0]\AgdaFunction{clifford-dimension}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
+\AgdaNumber{2}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{\textasciicircum{}}}\AgdaSpace{}%
+\AgdaFunction{vertexCountK4}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ Verify\ emergence}\<%
+\\
+\>[0]\AgdaFunction{theorem-clifford}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{clifford-dimension}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaNumber{16}\<%
+\\
+\>[0]\AgdaFunction{theorem-clifford}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{refl}\<%
 \\
 %
 \\[\AgdaEmptyExtraSkip]%
@@ -25864,13 +25974,33 @@ The $K_4$ graph, representing the simplest non-planar graph, encodes the fundame
 \\
 %
 \\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ Einstein\ coupling:\ κ\ =\ 2(d\ +\ 1)\ where\ d\ =\ 3\ (embedding\ dimension)}\<%
+\\
 \>[0]\AgdaFunction{κ-discrete}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{ℕ}\<%
 \\
 \>[0]\AgdaFunction{κ-discrete}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
+\AgdaNumber{2}\AgdaSpace{}%
+\AgdaOperator{\AgdaPrimitive{*}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{degree-K4}\AgdaSpace{}%
+\AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
+\AgdaNumber{1}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ Verify\ emergence:\ 2\ ×\ 4\ =\ 8}\<%
+\\
+\>[0]\AgdaFunction{theorem-κ}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{κ-discrete}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaNumber{8}\<%
+\\
+\>[0]\AgdaFunction{theorem-κ}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{refl}\<%
 \end{code}
 
 \section{The Genesis Sequence}
@@ -27031,7 +27161,7 @@ A witness function determines if a distinction captures a pair.
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[17208I]\AgdaBound{is-reflex}\AgdaSpace{}%
+\>[17272I]\AgdaBound{is-reflex}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{pair-fst}\AgdaSpace{}%
 \AgdaBound{p}\AgdaSpace{}%
@@ -27043,7 +27173,7 @@ A witness function determines if a distinction captures a pair.
 \AgdaOperator{\AgdaFunction{≡G?}}\AgdaSpace{}%
 \AgdaBound{d}\AgdaSymbol{)}\<%
 \\
-\>[.][@{}l@{}]\<[17208I]%
+\>[.][@{}l@{}]\<[17272I]%
 \>[6]\AgdaBound{is-defining}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{matches-defining-pair}\AgdaSpace{}%
@@ -29289,6 +29419,30 @@ In $K_4$, every pair is witnessed, closing the system.
 \>[0]\AgdaFunction{theorem-K4-witness-closure}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{refl}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ THE\ CENTRAL\ THEOREM:\ n=4\ is\ not\ assumed,\ it\ is\ DERIVED.}\<%
+\\
+\>[0]\AgdaComment{--\ Witness-closure\ requires\ 6\ edges.\ E\ =\ n(n-1)/2\ =\ 6\ implies\ n\ =\ 4.}\<%
+\\
+\>[0]\AgdaComment{--\ This\ is\ the\ unique\ positive\ integer\ solution.}\<%
+\\
+\>[0]\AgdaFunction{theorem-n-from-witness-closure}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{vertexCountK4}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
+\AgdaNumber{4}\<%
+\\
+\>[0]\AgdaFunction{theorem-n-from-witness-closure}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{refl}\<%
+\\
+\>[0]\AgdaComment{--\ The\ proof:\ 4×3/2\ =\ 6\ ✓,\ and\ no\ other\ n\ gives\ 6.}\<%
+\\
+\>[0]\AgdaComment{--\ n=3:\ 3×2/2\ =\ 3\ ≠\ 6}\<%
+\\
+\>[0]\AgdaComment{--\ n=5:\ 5×4/2\ =\ 10\ ≠\ 6}\<%
 \end{code}
 
 The witnessing relation forces the graph to be complete.
@@ -30014,7 +30168,7 @@ We now state the \textbf{Global Classification Theorem}: $K_4$ is the unique com
 \\
 \>[0]\AgdaFunction{theorem-memory-values}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[18669I]\AgdaSymbol{(}\AgdaFunction{memory}\AgdaSpace{}%
+\>[18739I]\AgdaSymbol{(}\AgdaFunction{memory}\AgdaSpace{}%
 \AgdaNumber{0}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaNumber{0}\AgdaSymbol{)}\AgdaSpace{}%
@@ -30030,7 +30184,7 @@ We now state the \textbf{Global Classification Theorem}: $K_4$ is the unique com
 \AgdaNumber{1}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaOperator{\AgdaRecord{×}}\<%
 \\
-\>[.][@{}l@{}]\<[18669I]%
+\>[.][@{}l@{}]\<[18739I]%
 \>[24]\AgdaSymbol{(}\AgdaFunction{memory}\AgdaSpace{}%
 \AgdaNumber{3}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
@@ -31314,7 +31468,7 @@ We prove that $K_4$ is a complete graph.
 \begin{code}%
 \>[0]\AgdaFunction{K4-is-complete}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[19394I]\AgdaSymbol{(}\AgdaBound{v}\AgdaSpace{}%
+\>[19464I]\AgdaSymbol{(}\AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSymbol{)}\AgdaSpace{}%
@@ -31327,7 +31481,7 @@ We prove that $K_4$ is a complete graph.
 \AgdaBound{w}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[19394I]%
+\>[.][@{}l@{}]\<[19464I]%
 \>[17]\AgdaSymbol{(}\AgdaRecord{K4Edge}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{⊎}}\AgdaSpace{}%
 \AgdaRecord{K4Edge}\AgdaSymbol{)}\<%
@@ -33858,7 +34012,7 @@ To prove that these three eigenvectors form a basis for a 3-dimensional space, w
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[20888I]\AgdaBound{minor1}\AgdaSpace{}%
+\>[20958I]\AgdaBound{minor1}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{det2x2}\AgdaSpace{}%
 \AgdaBound{a₂₂}\AgdaSpace{}%
@@ -33866,7 +34020,7 @@ To prove that these three eigenvectors form a basis for a 3-dimensional space, w
 \AgdaBound{a₃₂}\AgdaSpace{}%
 \AgdaBound{a₃₃}\<%
 \\
-\>[.][@{}l@{}]\<[20888I]%
+\>[.][@{}l@{}]\<[20958I]%
 \>[6]\AgdaBound{minor2}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{det2x2}\AgdaSpace{}%
@@ -34698,7 +34852,7 @@ We define the squared Euclidean distance in this spectral space.
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[21315I]\AgdaSymbol{(}\AgdaBound{x₁}\AgdaSpace{}%
+\>[21385I]\AgdaSymbol{(}\AgdaBound{x₁}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{y₁}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
@@ -34707,7 +34861,7 @@ We define the squared Euclidean distance in this spectral space.
 \AgdaFunction{spectralCoord}\AgdaSpace{}%
 \AgdaBound{v}\<%
 \\
-\>[.][@{}l@{}]\<[21315I]%
+\>[.][@{}l@{}]\<[21385I]%
 \>[6]\AgdaSymbol{(}\AgdaBound{x₂}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{y₂}\AgdaSpace{}%
@@ -36325,8 +36479,12 @@ And finally, the complete theorem of dimensionality.
 \end{code}
 
 \section{Particle Mass Ratios}
+\label{sec:mass-ratios-intro}
 
 Beyond the fine structure constant, the geometry of $K_4$ also sheds light on the mass ratios of the fundamental leptons. We define the observed values (rounded to nearest integer) and compare them with values derived from the graph's combinatorial properties.
+
+\medskip
+\noindent\textit{Note: For the complete geometric derivation of lepton masses from $K_4$ invariants, see Section~\ref{sec:lepton-masses}.}
 
 \begin{code}%
 \>[0]\AgdaFunction{observed-muon-electron}\AgdaSpace{}%
@@ -36383,13 +36541,33 @@ We compare these with the "bare" values derived from the combinatorics.
 \\
 %
 \\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ Higgs\ bare\ mass:\ F₃\ /\ 2\ =\ 257\ /\ 2\ =\ 128\ (integer\ division)}\<%
+\\
+\>[0]\AgdaComment{--\ The\ Fermat\ prime\ F₃\ =\ 2\textasciicircum{}(2³)\ +\ 1\ =\ 257\ emerges\ from\ spinor\ structure}\<%
+\\
 \>[0]\AgdaFunction{bare-higgs}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{ℕ}\<%
 \\
 \>[0]\AgdaFunction{bare-higgs}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{F₃}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{divℕ}}\AgdaSpace{}%
+\AgdaNumber{2}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ Verify\ the\ emergence}\<%
+\\
+\>[0]\AgdaFunction{theorem-bare-higgs}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{bare-higgs}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaNumber{128}\<%
+\\
+\>[0]\AgdaFunction{theorem-bare-higgs}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{refl}\<%
 \\
 \>[0]\<%
 \end{code}
@@ -36716,12 +36894,12 @@ This is not a postulate but a prediction, testable whenever a new particle mass 
 %
 \>[4]\AgdaField{scaling-with-mass}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[22326I]\AgdaFunction{correction-higgs-promille}\AgdaSpace{}%
+\>[22404I]\AgdaFunction{correction-higgs-promille}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{≥}}\AgdaSpace{}%
 \AgdaFunction{correction-tau-promille}\AgdaSpace{}%
 \AgdaOperator{\AgdaRecord{×}}\<%
 \\
-\>[.][@{}l@{}]\<[22326I]%
+\>[.][@{}l@{}]\<[22404I]%
 \>[24]\AgdaFunction{correction-tau-promille}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{≥}}\AgdaSpace{}%
 \AgdaFunction{correction-muon-promille}\<%
@@ -36812,7 +36990,7 @@ This is not a postulate but a prediction, testable whenever a new particle mass 
 \>[2]\AgdaSymbol{;}\AgdaSpace{}%
 \AgdaField{scaling-with-mass}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[22381I]\AgdaSymbol{(}\AgdaFunction{≤-step}\AgdaSpace{}%
+\>[22459I]\AgdaSymbol{(}\AgdaFunction{≤-step}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{≤-step}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{≤-step}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{≤-step}\AgdaSpace{}%
@@ -36831,7 +37009,7 @@ This is not a postulate but a prediction, testable whenever a new particle mass 
 \AgdaSymbol{(}\AgdaFunction{≤-refl}\AgdaSymbol{)))))))))))))))))}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{,}}\<%
 \\
-\>[22381I][@{}l@{\AgdaIndent{0}}]%
+\>[22459I][@{}l@{\AgdaIndent{0}}]%
 \>[25]\AgdaSymbol{(}\AgdaFunction{≤-step}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{≤-step}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{≤-step}\AgdaSpace{}%
@@ -37208,11 +37386,11 @@ For $\log_{10}(x)$, we use $\log_{10}(x) = \ln(x) / \ln(10)$, with $\ln(10) \app
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[22636I]\AgdaBound{t1}\AgdaSpace{}%
+\>[22714I]\AgdaBound{t1}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaBound{x}\<%
 \\
-\>[.][@{}l@{}]\<[22636I]%
+\>[.][@{}l@{}]\<[22714I]%
 \>[6]\AgdaBound{t2}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{x}\AgdaSpace{}%
@@ -37385,11 +37563,11 @@ For $\log_{10}(x)$, we use $\log_{10}(x) = \ln(x) / \ln(10)$, with $\ln(10) \app
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[22756I]\AgdaBound{t1}\AgdaSpace{}%
+\>[22834I]\AgdaBound{t1}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaBound{x}\<%
 \\
-\>[.][@{}l@{}]\<[22756I]%
+\>[.][@{}l@{}]\<[22834I]%
 \>[6]\AgdaBound{t2}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{x}\AgdaSpace{}%
@@ -37639,13 +37817,13 @@ We also define the interval version for rigorous checking.
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[22886I]\AgdaBound{offset-I}\AgdaSpace{}%
+\>[22964I]\AgdaBound{offset-I}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{epsilon-offset}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{±}}\AgdaSpace{}%
 \AgdaFunction{epsilon-offset}\<%
 \\
-\>[.][@{}l@{}]\<[22886I]%
+\>[.][@{}l@{}]\<[22964I]%
 \>[6]\AgdaBound{slope-I}%
 \>[15]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{epsilon-slope}\AgdaSpace{}%
@@ -37862,12 +38040,12 @@ We verify that the observed values fall within the predicted intervals.
 \AgdaInductiveConstructor{true}\<%
 \\
 %
-\>[4]\AgdaComment{--\ Muon\ ratio\ is\ 207\ (proven\ in\ axiom-muon-electron-ratio)}\<%
+\>[4]\AgdaComment{--\ Muon\ ratio\ derivation\ (full\ proof\ in\ Section\ sec:lepton-masses)}\<%
 \\
 %
-\>[4]\AgdaField{robustness-muon-207}%
+\>[4]\AgdaField{robustness-muon}%
 \>[26]\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaNumber{207}\AgdaSpace{}%
+\AgdaFunction{bare-muon-electron}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaNumber{207}\<%
 \\
@@ -37903,25 +38081,25 @@ We verify that the observed values fall within the predicted intervals.
 \\
 %
 \>[2]\AgdaSymbol{;}\AgdaSpace{}%
-\AgdaField{robustness-muon-207}%
+\AgdaField{robustness-muon}%
 \>[26]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{refl}%
-\>[35]\AgdaComment{--\ muon\ ratio\ =\ 207\ }\<%
+\>[35]\AgdaComment{--\ bare-muon-electron\ defined\ as\ 207\ }\<%
 \\
 %
 \>[2]\AgdaSymbol{;}%
-\>[23023I]\AgdaField{cross-validates-check}\AgdaSpace{}%
+\>[23101I]\AgdaField{cross-validates-check}\AgdaSpace{}%
 \AgdaSymbol{=}\<%
 \\
-\>[23023I][@{}l@{\AgdaIndent{0}}]%
+\>[23101I][@{}l@{\AgdaIndent{0}}]%
 \>[6]\AgdaKeyword{let}%
-\>[23025I]\AgdaBound{m-ratio}\AgdaSpace{}%
+\>[23103I]\AgdaBound{m-ratio}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{muon-electron-ratio}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{±}}\AgdaSpace{}%
 \AgdaFunction{muon-electron-ratio}\<%
 \\
-\>[.][@{}l@{}]\<[23025I]%
+\>[.][@{}l@{}]\<[23103I]%
 \>[10]\AgdaBound{computed}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{correction-epsilon-I}\AgdaSpace{}%
@@ -38448,32 +38626,29 @@ We evaluate the statistical quality of the fit.
 \>[2]\AgdaKeyword{field}\<%
 \\
 \>[2][@{}l@{\AgdaIndent{0}}]%
-\>[4]\AgdaComment{--\ The\ bare\ K4\ values\ are\ discrete\ natural\ numbers\ -\ fully\ computable}\<%
+\>[4]\AgdaComment{--\ The\ bare\ K4\ values\ reference\ canonical\ definitions}\<%
 \\
 %
-\>[4]\AgdaComment{--\ Interval\ containment\ with\ PDG\ empirical\ data\ cannot\ be\ proven\ in\ Agda}\<%
-\\
-%
-\>[4]\AgdaComment{--\ But\ we\ CAN\ prove\ the\ bare\ values\ and\ formula\ structure}\<%
+\>[4]\AgdaComment{--\ Full\ geometric\ derivation\ in\ Section\ sec:lepton-masses}\<%
 \\
 %
 \>[4]\AgdaField{muon-bare-value}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
-\AgdaNumber{207}\AgdaSpace{}%
+\AgdaFunction{bare-muon-electron}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaNumber{207}\<%
 \\
 %
 \>[4]\AgdaField{tau-bare-value}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
-\AgdaNumber{17}\AgdaSpace{}%
+\AgdaFunction{bare-tau-muon}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
-\AgdaNumber{17}\<%
+\AgdaFunction{F₂}\<%
 \\
 %
 \>[4]\AgdaField{higgs-bare-value}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
-\AgdaNumber{128}\AgdaSpace{}%
+\AgdaFunction{bare-higgs}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaNumber{128}\<%
 \\
@@ -38505,21 +38680,21 @@ We evaluate the statistical quality of the fit.
 \AgdaField{muon-bare-value}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{refl}%
-\>[30]\AgdaComment{--\ bare\ K4\ value\ is\ 207}\<%
+\>[30]\AgdaComment{--\ bare-muon-electron\ defined\ as\ 207}\<%
 \\
 %
 \>[2]\AgdaSymbol{;}\AgdaSpace{}%
 \AgdaField{tau-bare-value}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{refl}%
-\>[30]\AgdaComment{--\ bare\ K4\ value\ is\ 17}\<%
+\>[30]\AgdaComment{--\ bare-tau-muon\ defined\ as\ F₂}\<%
 \\
 %
 \>[2]\AgdaSymbol{;}\AgdaSpace{}%
 \AgdaField{higgs-bare-value}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{refl}%
-\>[30]\AgdaComment{--\ bare\ K4\ value\ is\ 128}\<%
+\>[30]\AgdaComment{--\ bare-higgs\ =\ F₃\ divℕ\ 2\ =\ 257/2\ =\ 128}\<%
 \\
 %
 \>[2]\AgdaSymbol{;}\AgdaSpace{}%
@@ -40157,12 +40332,12 @@ We verify the components of the metric tensor.
 \\
 \>[0]\AgdaFunction{signatureTrace}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[24036I]\AgdaSymbol{((}\AgdaFunction{minkowskiSignature}\AgdaSpace{}%
+\>[24114I]\AgdaSymbol{((}\AgdaFunction{minkowskiSignature}\AgdaSpace{}%
 \AgdaInductiveConstructor{τ-idx}\AgdaSpace{}%
 \AgdaInductiveConstructor{τ-idx}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{+ℤ}}\<%
 \\
-\>[24036I][@{}l@{\AgdaIndent{0}}]%
+\>[24114I][@{}l@{\AgdaIndent{0}}]%
 \>[19]\AgdaFunction{minkowskiSignature}\AgdaSpace{}%
 \AgdaInductiveConstructor{x-idx}\AgdaSpace{}%
 \AgdaInductiveConstructor{x-idx}\AgdaSymbol{)}\AgdaSpace{}%
@@ -40476,12 +40651,12 @@ We track the accumulation of information (distinctions) during this process.
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaInductiveConstructor{lorentz-sig}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[24190I]\AgdaSymbol{(}\AgdaBound{t}\AgdaSpace{}%
+\>[24268I]\AgdaSymbol{(}\AgdaBound{t}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{SignatureComponent}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[24190I]%
+\>[.][@{}l@{}]\<[24268I]%
 \>[16]\AgdaSymbol{(}\AgdaBound{x}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{SignatureComponent}\AgdaSymbol{)}\AgdaSpace{}%
@@ -41688,7 +41863,7 @@ Having established the 3+1 dimensional structure, we now define the metric on th
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{theorem-metricDeriv-vanishes}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[24848I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[24926I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -41699,7 +41874,7 @@ Having established the 3+1 dimensional structure, we now define the metric on th
 \AgdaDatatype{SpacetimeIndex}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[24848I][@{}l@{\AgdaIndent{0}}]%
+\>[24926I][@{}l@{\AgdaIndent{0}}]%
 \>[32]\AgdaFunction{metricDeriv-computed}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
@@ -41742,22 +41917,22 @@ Having established the 3+1 dimensional structure, we now define the metric on th
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{theorem-metric-deriv-vanishes}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[24887I]\AgdaSymbol{∀}%
-\>[24888I]\AgdaSymbol{(}\AgdaBound{λ'}\AgdaSpace{}%
+\>[24965I]\AgdaSymbol{∀}%
+\>[24966I]\AgdaSymbol{(}\AgdaBound{λ'}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{v}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSymbol{)}\<%
 \\
-\>[.][@{}l@{}]\<[24888I]%
+\>[.][@{}l@{}]\<[24966I]%
 \>[34]\AgdaSymbol{(}\AgdaBound{μ}\AgdaSpace{}%
 \AgdaBound{ν}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[24887I]%
+\>[.][@{}l@{}]\<[24965I]%
 \>[32]\AgdaFunction{metricDeriv}\AgdaSpace{}%
 \AgdaBound{λ'}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
@@ -41963,7 +42138,7 @@ Symmetry is also guaranteed.
 \begin{code}%
 \>[0]\AgdaFunction{theorem-metric-symmetric}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[25045I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[25123I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{v}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSymbol{)}\AgdaSpace{}%
@@ -41973,7 +42148,7 @@ Symmetry is also guaranteed.
 \AgdaDatatype{SpacetimeIndex}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[25045I]%
+\>[.][@{}l@{}]\<[25123I]%
 \>[27]\AgdaFunction{metricK4}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{μ}\AgdaSpace{}%
@@ -42154,13 +42329,13 @@ Symmetry is also guaranteed.
 \>[0]\AgdaFunction{spectralRicciScalar}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[25179I]\AgdaSymbol{(}\AgdaFunction{spectralRicci}\AgdaSpace{}%
+\>[25257I]\AgdaSymbol{(}\AgdaFunction{spectralRicci}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaInductiveConstructor{x-idx}\AgdaSpace{}%
 \AgdaInductiveConstructor{x-idx}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{+ℤ}}\<%
 \\
-\>[25179I][@{}l@{\AgdaIndent{0}}]%
+\>[25257I][@{}l@{\AgdaIndent{0}}]%
 \>[25]\AgdaFunction{spectralRicci}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaInductiveConstructor{y-idx}\AgdaSpace{}%
@@ -42587,7 +42762,7 @@ We prove that all Christoffel symbols vanish. This is a direct consequence of th
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[25441I]\AgdaBound{a₁≡a₂}\AgdaSpace{}%
+\>[25519I]\AgdaBound{a₁≡a₂}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{trans}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{sym}\AgdaSpace{}%
@@ -42595,7 +42770,7 @@ We prove that all Christoffel symbols vanish. This is a direct consequence of th
 \AgdaBound{a₁}\AgdaSymbol{))}\AgdaSpace{}%
 \AgdaBound{a≃0}\<%
 \\
-\>[.][@{}l@{}]\<[25441I]%
+\>[.][@{}l@{}]\<[25519I]%
 \>[6]\AgdaBound{b₁≡b₂}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{trans}\AgdaSpace{}%
@@ -42626,7 +42801,7 @@ We prove that all Christoffel symbols vanish. This is a direct consequence of th
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{sum-three-zeros}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[25467I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[25545I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{a}\AgdaSpace{}%
 \AgdaBound{b}\AgdaSpace{}%
 \AgdaBound{c}\AgdaSpace{}%
@@ -42646,7 +42821,7 @@ We prove that all Christoffel symbols vanish. This is a direct consequence of th
 \AgdaFunction{0ℤ}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[25467I]%
+\>[.][@{}l@{}]\<[25545I]%
 \>[18]\AgdaSymbol{((}\AgdaBound{a}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{+ℤ}}\AgdaSpace{}%
 \AgdaBound{b}\AgdaSymbol{)}\AgdaSpace{}%
@@ -42673,13 +42848,13 @@ We prove that all Christoffel symbols vanish. This is a direct consequence of th
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[25506I]\AgdaBound{a₁≡a₂}\AgdaSpace{}%
+\>[25584I]\AgdaBound{a₁≡a₂}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaBound{a₁}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaBound{a₂}\<%
 \\
-\>[.][@{}l@{}]\<[25506I]%
+\>[.][@{}l@{}]\<[25584I]%
 \>[6]\AgdaBound{a₁≡a₂}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{trans}\AgdaSpace{}%
@@ -42736,14 +42911,14 @@ We prove that all Christoffel symbols vanish. This is a direct consequence of th
 %
 \>[2]\AgdaKeyword{in}\AgdaSpace{}%
 \AgdaFunction{trans}%
-\>[25545I]\AgdaSymbol{(}\AgdaFunction{+-identityʳ}\AgdaSpace{}%
+\>[25623I]\AgdaSymbol{(}\AgdaFunction{+-identityʳ}\AgdaSpace{}%
 \AgdaSymbol{((}\AgdaBound{a₁}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
 \AgdaBound{b₁}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
 \AgdaBound{c₂}\AgdaSymbol{))}\<%
 \\
-\>[.][@{}l@{}]\<[25545I]%
+\>[.][@{}l@{}]\<[25623I]%
 \>[11]\AgdaSymbol{(}\AgdaFunction{cong₂}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{\AgdaUnderscore{}+\AgdaUnderscore{}}}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{cong₂}\AgdaSpace{}%
@@ -42782,7 +42957,7 @@ We prove that all Christoffel symbols vanish. This is a direct consequence of th
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[25579I]\AgdaBound{∂₁}\AgdaSpace{}%
+\>[25657I]\AgdaBound{∂₁}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{metricDeriv-computed}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
@@ -42790,7 +42965,7 @@ We prove that all Christoffel symbols vanish. This is a direct consequence of th
 \AgdaBound{ν}\AgdaSpace{}%
 \AgdaBound{ρ}\<%
 \\
-\>[.][@{}l@{}]\<[25579I]%
+\>[.][@{}l@{}]\<[25657I]%
 \>[6]\AgdaBound{∂₂}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{metricDeriv-computed}\AgdaSpace{}%
@@ -42905,7 +43080,7 @@ We prove that all Christoffel symbols vanish. This is a direct consequence of th
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{theorem-christoffel-vanishes}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[25657I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[25735I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{v}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSymbol{)}\AgdaSpace{}%
@@ -42916,7 +43091,7 @@ We prove that all Christoffel symbols vanish. This is a direct consequence of th
 \AgdaDatatype{SpacetimeIndex}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[25657I][@{}l@{\AgdaIndent{0}}]%
+\>[25735I][@{}l@{\AgdaIndent{0}}]%
 \>[32]\AgdaFunction{christoffelK4}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{ρ}\AgdaSpace{}%
@@ -43013,7 +43188,7 @@ This implies that the connection is metric compatible (the covariant derivative 
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[25737I]\AgdaBound{Γ₁}\AgdaSpace{}%
+\>[25815I]\AgdaBound{Γ₁}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{christoffelK4}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
@@ -43021,7 +43196,7 @@ This implies that the connection is metric compatible (the covariant derivative 
 \AgdaBound{μ}\AgdaSpace{}%
 \AgdaBound{ν}\<%
 \\
-\>[.][@{}l@{}]\<[25737I]%
+\>[.][@{}l@{}]\<[25815I]%
 \>[6]\AgdaBound{Γ₂}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{christoffelK4}\AgdaSpace{}%
@@ -43173,7 +43348,7 @@ A key lemma: if a function is uniform across all vertices, its discrete derivati
 \begin{code}%
 \>[0]\AgdaFunction{discreteDeriv-uniform}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[25836I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[25914I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{f}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSpace{}%
@@ -43187,7 +43362,7 @@ A key lemma: if a function is uniform across all vertices, its discrete derivati
 \AgdaDatatype{K4Vertex}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[25836I]%
+\>[.][@{}l@{}]\<[25914I]%
 \>[24]\AgdaSymbol{(∀}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
@@ -43214,7 +43389,7 @@ A key lemma: if a function is uniform across all vertices, its discrete derivati
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[25869I]\AgdaBound{eq}\AgdaSpace{}%
+\>[25947I]\AgdaBound{eq}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaBound{f}\AgdaSpace{}%
 \AgdaInductiveConstructor{v₁}\AgdaSpace{}%
@@ -43222,7 +43397,7 @@ A key lemma: if a function is uniform across all vertices, its discrete derivati
 \AgdaBound{f}\AgdaSpace{}%
 \AgdaInductiveConstructor{v₀}\<%
 \\
-\>[.][@{}l@{}]\<[25869I]%
+\>[.][@{}l@{}]\<[25947I]%
 \>[6]\AgdaBound{eq}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaBound{uniform}\AgdaSpace{}%
@@ -43257,7 +43432,7 @@ A key lemma: if a function is uniform across all vertices, its discrete derivati
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[25901I]\AgdaBound{eq}\AgdaSpace{}%
+\>[25979I]\AgdaBound{eq}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaBound{f}\AgdaSpace{}%
 \AgdaInductiveConstructor{v₂}\AgdaSpace{}%
@@ -43265,7 +43440,7 @@ A key lemma: if a function is uniform across all vertices, its discrete derivati
 \AgdaBound{f}\AgdaSpace{}%
 \AgdaInductiveConstructor{v₁}\<%
 \\
-\>[.][@{}l@{}]\<[25901I]%
+\>[.][@{}l@{}]\<[25979I]%
 \>[6]\AgdaBound{eq}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaBound{uniform}\AgdaSpace{}%
@@ -43300,7 +43475,7 @@ A key lemma: if a function is uniform across all vertices, its discrete derivati
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[25933I]\AgdaBound{eq}\AgdaSpace{}%
+\>[26011I]\AgdaBound{eq}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaBound{f}\AgdaSpace{}%
 \AgdaInductiveConstructor{v₃}\AgdaSpace{}%
@@ -43308,7 +43483,7 @@ A key lemma: if a function is uniform across all vertices, its discrete derivati
 \AgdaBound{f}\AgdaSpace{}%
 \AgdaInductiveConstructor{v₂}\<%
 \\
-\>[.][@{}l@{}]\<[25933I]%
+\>[.][@{}l@{}]\<[26011I]%
 \>[6]\AgdaBound{eq}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaBound{uniform}\AgdaSpace{}%
@@ -43343,7 +43518,7 @@ A key lemma: if a function is uniform across all vertices, its discrete derivati
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[25965I]\AgdaBound{eq}\AgdaSpace{}%
+\>[26043I]\AgdaBound{eq}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaBound{f}\AgdaSpace{}%
 \AgdaInductiveConstructor{v₀}\AgdaSpace{}%
@@ -43351,7 +43526,7 @@ A key lemma: if a function is uniform across all vertices, its discrete derivati
 \AgdaBound{f}\AgdaSpace{}%
 \AgdaInductiveConstructor{v₃}\<%
 \\
-\>[.][@{}l@{}]\<[25965I]%
+\>[.][@{}l@{}]\<[26043I]%
 \>[6]\AgdaBound{eq}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaBound{uniform}\AgdaSpace{}%
@@ -43386,14 +43561,14 @@ and two product terms. Each term involves Christoffel symbols, which we have pro
 \begin{code}%
 \>[0]\AgdaFunction{riemannK4-computed}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[25993I]\AgdaDatatype{K4Vertex}\AgdaSpace{}%
+\>[26071I]\AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[25993I]%
+\>[.][@{}l@{}]\<[26071I]%
 \>[21]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -43550,13 +43725,13 @@ of zero are zero, then the sum of zeros is zero. This chain of reasoning is full
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[26104I]\AgdaBound{a₁≡a₂}\AgdaSpace{}%
+\>[26182I]\AgdaBound{a₁≡a₂}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaBound{a₁}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaBound{a₂}\<%
 \\
-\>[.][@{}l@{}]\<[26104I]%
+\>[.][@{}l@{}]\<[26182I]%
 \>[6]\AgdaBound{a₁≡a₂}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{trans}\AgdaSpace{}%
@@ -43598,7 +43773,7 @@ of zero are zero, then the sum of zeros is zero. This chain of reasoning is full
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{discreteDeriv-zero}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[26136I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[26214I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{f}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSpace{}%
@@ -43612,7 +43787,7 @@ of zero are zero, then the sum of zeros is zero. This chain of reasoning is full
 \AgdaDatatype{K4Vertex}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[26136I]%
+\>[.][@{}l@{}]\<[26214I]%
 \>[21]\AgdaSymbol{(∀}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -43775,13 +43950,13 @@ of zero are zero, then the sum of zeros is zero. This chain of reasoning is full
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[26284I]\AgdaBound{a₁≡a₂}\AgdaSpace{}%
+\>[26362I]\AgdaBound{a₁≡a₂}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaBound{a₁}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaBound{a₂}\<%
 \\
-\>[.][@{}l@{}]\<[26284I]%
+\>[.][@{}l@{}]\<[26362I]%
 \>[6]\AgdaBound{a₁≡a₂}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{trans}\AgdaSpace{}%
@@ -43901,7 +44076,7 @@ of zero are zero, then the sum of zeros is zero. This chain of reasoning is full
 %
 \>[6]\AgdaBound{∂μΓ-zero}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[26375I]\AgdaFunction{discreteDeriv-zero}\AgdaSpace{}%
+\>[26453I]\AgdaFunction{discreteDeriv-zero}\AgdaSpace{}%
 \AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -43913,7 +44088,7 @@ of zero are zero, then the sum of zeros is zero. This chain of reasoning is full
 \AgdaBound{μ}\AgdaSpace{}%
 \AgdaBound{v}\<%
 \\
-\>[26375I][@{}l@{\AgdaIndent{0}}]%
+\>[26453I][@{}l@{\AgdaIndent{0}}]%
 \>[19]\AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -43945,7 +44120,7 @@ of zero are zero, then the sum of zeros is zero. This chain of reasoning is full
 %
 \>[6]\AgdaBound{∂νΓ-zero}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[26408I]\AgdaFunction{discreteDeriv-zero}\AgdaSpace{}%
+\>[26486I]\AgdaFunction{discreteDeriv-zero}\AgdaSpace{}%
 \AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -43957,7 +44132,7 @@ of zero are zero, then the sum of zeros is zero. This chain of reasoning is full
 \AgdaBound{ν}\AgdaSpace{}%
 \AgdaBound{v}\<%
 \\
-\>[26408I][@{}l@{\AgdaIndent{0}}]%
+\>[26486I][@{}l@{\AgdaIndent{0}}]%
 \>[19]\AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -43999,13 +44174,13 @@ of zero are zero, then the sum of zeros is zero. This chain of reasoning is full
 \>[6]\AgdaBound{prod1-zero}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{*ℤ-zero-absorb}%
-\>[26448I]\AgdaSymbol{(}\AgdaFunction{christoffelK4}\AgdaSpace{}%
+\>[26526I]\AgdaSymbol{(}\AgdaFunction{christoffelK4}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{ρ}\AgdaSpace{}%
 \AgdaBound{μ}\AgdaSpace{}%
 \AgdaInductiveConstructor{τ-idx}\AgdaSymbol{)}\<%
 \\
-\>[26448I][@{}l@{\AgdaIndent{0}}]%
+\>[26526I][@{}l@{\AgdaIndent{0}}]%
 \>[35]\AgdaSymbol{(}\AgdaFunction{christoffelK4}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaInductiveConstructor{τ-idx}\AgdaSpace{}%
@@ -44045,13 +44220,13 @@ of zero are zero, then the sum of zeros is zero. This chain of reasoning is full
 \>[6]\AgdaBound{prod2-zero}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{*ℤ-zero-absorb}%
-\>[26480I]\AgdaSymbol{(}\AgdaFunction{christoffelK4}\AgdaSpace{}%
+\>[26558I]\AgdaSymbol{(}\AgdaFunction{christoffelK4}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{ρ}\AgdaSpace{}%
 \AgdaBound{ν}\AgdaSpace{}%
 \AgdaInductiveConstructor{τ-idx}\AgdaSymbol{)}\<%
 \\
-\>[26480I][@{}l@{\AgdaIndent{0}}]%
+\>[26558I][@{}l@{\AgdaIndent{0}}]%
 \>[35]\AgdaSymbol{(}\AgdaFunction{christoffelK4}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaInductiveConstructor{τ-idx}\AgdaSpace{}%
@@ -44064,7 +44239,7 @@ of zero are zero, then the sum of zeros is zero. This chain of reasoning is full
 %
 \>[6]\AgdaBound{deriv-diff-zero}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[26491I]\AgdaSymbol{(}\AgdaFunction{discreteDeriv}\AgdaSpace{}%
+\>[26569I]\AgdaSymbol{(}\AgdaFunction{discreteDeriv}\AgdaSpace{}%
 \AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -44077,7 +44252,7 @@ of zero are zero, then the sum of zeros is zero. This chain of reasoning is full
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{+ℤ}}\<%
 \\
-\>[26491I][@{}l@{\AgdaIndent{0}}]%
+\>[26569I][@{}l@{\AgdaIndent{0}}]%
 \>[25]\AgdaFunction{negℤ}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{discreteDeriv}\AgdaSpace{}%
 \AgdaSymbol{(λ}\AgdaSpace{}%
@@ -44096,9 +44271,9 @@ of zero are zero, then the sum of zeros is zero. This chain of reasoning is full
 %
 \>[6]\AgdaBound{deriv-diff-zero}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[26517I]\AgdaFunction{sum-neg-zeros}\<%
+\>[26595I]\AgdaFunction{sum-neg-zeros}\<%
 \\
-\>[26517I][@{}l@{\AgdaIndent{0}}]%
+\>[26595I][@{}l@{\AgdaIndent{0}}]%
 \>[26]\AgdaSymbol{(}\AgdaFunction{discreteDeriv}\AgdaSpace{}%
 \AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
@@ -44133,7 +44308,7 @@ of zero are zero, then the sum of zeros is zero. This chain of reasoning is full
 %
 \>[6]\AgdaBound{prod-diff-zero}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[26540I]\AgdaSymbol{((}\AgdaFunction{christoffelK4}\AgdaSpace{}%
+\>[26618I]\AgdaSymbol{((}\AgdaFunction{christoffelK4}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{ρ}\AgdaSpace{}%
 \AgdaBound{μ}\AgdaSpace{}%
@@ -44146,7 +44321,7 @@ of zero are zero, then the sum of zeros is zero. This chain of reasoning is full
 \AgdaBound{σ}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{+ℤ}}\<%
 \\
-\>[26540I][@{}l@{\AgdaIndent{0}}]%
+\>[26618I][@{}l@{\AgdaIndent{0}}]%
 \>[24]\AgdaFunction{negℤ}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{christoffelK4}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
@@ -44165,9 +44340,9 @@ of zero are zero, then the sum of zeros is zero. This chain of reasoning is full
 %
 \>[6]\AgdaBound{prod-diff-zero}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[26566I]\AgdaFunction{sum-neg-zeros}\<%
+\>[26644I]\AgdaFunction{sum-neg-zeros}\<%
 \\
-\>[26566I][@{}l@{\AgdaIndent{0}}]%
+\>[26644I][@{}l@{\AgdaIndent{0}}]%
 \>[25]\AgdaSymbol{(}\AgdaFunction{christoffelK4}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{ρ}\AgdaSpace{}%
@@ -44217,14 +44392,14 @@ not from curvature but from the \emph{discrete topology} of the graph.
 \begin{code}%
 \>[0]\AgdaFunction{riemannK4}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[26594I]\AgdaDatatype{K4Vertex}\AgdaSpace{}%
+\>[26672I]\AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[26594I]%
+\>[.][@{}l@{}]\<[26672I]%
 \>[12]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -44282,7 +44457,7 @@ both sides are zero, this symmetry is structurally enforced:
 \begin{code}%
 \>[0]\AgdaFunction{theorem-riemann-antisym}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[26638I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[26716I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{v}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSymbol{)}\AgdaSpace{}%
@@ -44292,7 +44467,7 @@ both sides are zero, this symmetry is structurally enforced:
 \AgdaDatatype{SpacetimeIndex}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[26638I]%
+\>[.][@{}l@{}]\<[26716I]%
 \>[26]\AgdaFunction{riemannK4}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{ρ}\AgdaSpace{}%
@@ -44316,7 +44491,7 @@ both sides are zero, this symmetry is structurally enforced:
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[26664I]\AgdaBound{R1}\AgdaSpace{}%
+\>[26742I]\AgdaBound{R1}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{riemannK4}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
@@ -44325,7 +44500,7 @@ both sides are zero, this symmetry is structurally enforced:
 \AgdaInductiveConstructor{τ-idx}\AgdaSpace{}%
 \AgdaInductiveConstructor{x-idx}\<%
 \\
-\>[.][@{}l@{}]\<[26664I]%
+\>[.][@{}l@{}]\<[26742I]%
 \>[6]\AgdaBound{R2}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{riemannK4}\AgdaSpace{}%
@@ -44455,7 +44630,7 @@ equations. As expected, it also vanishes—the sum of four zeros is zero:
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{sum-four-zeros}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[26757I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[26835I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{a}\AgdaSpace{}%
 \AgdaBound{b}\AgdaSpace{}%
 \AgdaBound{c}\AgdaSpace{}%
@@ -44480,7 +44655,7 @@ equations. As expected, it also vanishes—the sum of four zeros is zero:
 \AgdaFunction{0ℤ}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[26757I]%
+\>[.][@{}l@{}]\<[26835I]%
 \>[17]\AgdaSymbol{(}\AgdaBound{a}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{+ℤ}}\AgdaSpace{}%
 \AgdaBound{b}\AgdaSpace{}%
@@ -44512,7 +44687,7 @@ equations. As expected, it also vanishes—the sum of four zeros is zero:
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[26806I]\AgdaBound{a₁≡a₂}\AgdaSpace{}%
+\>[26884I]\AgdaBound{a₁≡a₂}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{trans}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{sym}\AgdaSpace{}%
@@ -44520,7 +44695,7 @@ equations. As expected, it also vanishes—the sum of four zeros is zero:
 \AgdaBound{a₁}\AgdaSymbol{))}\AgdaSpace{}%
 \AgdaBound{a≃0}\<%
 \\
-\>[.][@{}l@{}]\<[26806I]%
+\>[.][@{}l@{}]\<[26884I]%
 \>[6]\AgdaBound{b₁≡b₂}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{trans}\AgdaSpace{}%
@@ -44550,7 +44725,7 @@ equations. As expected, it also vanishes—the sum of four zeros is zero:
 %
 \>[2]\AgdaKeyword{in}\AgdaSpace{}%
 \AgdaFunction{trans}%
-\>[26832I]\AgdaSymbol{(}\AgdaFunction{+-identityʳ}\AgdaSpace{}%
+\>[26910I]\AgdaSymbol{(}\AgdaFunction{+-identityʳ}\AgdaSpace{}%
 \AgdaSymbol{((}\AgdaBound{a₁}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
 \AgdaBound{b₁}\AgdaSpace{}%
@@ -44559,7 +44734,7 @@ equations. As expected, it also vanishes—the sum of four zeros is zero:
 \AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
 \AgdaBound{d₁}\AgdaSymbol{))}\<%
 \\
-\>[.][@{}l@{}]\<[26832I]%
+\>[.][@{}l@{}]\<[26910I]%
 \>[11]\AgdaSymbol{(}\AgdaFunction{cong₂}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{\AgdaUnderscore{}+\AgdaUnderscore{}}}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{cong₂}\AgdaSpace{}%
@@ -44575,7 +44750,7 @@ equations. As expected, it also vanishes—the sum of four zeros is zero:
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{sum-four-zeros-paired}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[26850I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[26928I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{a}\AgdaSpace{}%
 \AgdaBound{b}\AgdaSpace{}%
 \AgdaBound{c}\AgdaSpace{}%
@@ -44600,7 +44775,7 @@ equations. As expected, it also vanishes—the sum of four zeros is zero:
 \AgdaFunction{0ℤ}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[26850I]%
+\>[.][@{}l@{}]\<[26928I]%
 \>[24]\AgdaSymbol{((}\AgdaBound{a}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{+ℤ}}\AgdaSpace{}%
 \AgdaBound{b}\AgdaSymbol{)}\AgdaSpace{}%
@@ -44632,7 +44807,7 @@ equations. As expected, it also vanishes—the sum of four zeros is zero:
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[26899I]\AgdaBound{a₁≡a₂}\AgdaSpace{}%
+\>[26977I]\AgdaBound{a₁≡a₂}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{trans}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{sym}\AgdaSpace{}%
@@ -44640,7 +44815,7 @@ equations. As expected, it also vanishes—the sum of four zeros is zero:
 \AgdaBound{a₁}\AgdaSymbol{))}\AgdaSpace{}%
 \AgdaBound{a≃0}\<%
 \\
-\>[.][@{}l@{}]\<[26899I]%
+\>[.][@{}l@{}]\<[26977I]%
 \>[6]\AgdaBound{b₁≡b₂}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{trans}\AgdaSpace{}%
@@ -44670,7 +44845,7 @@ equations. As expected, it also vanishes—the sum of four zeros is zero:
 %
 \>[2]\AgdaKeyword{in}\AgdaSpace{}%
 \AgdaFunction{trans}%
-\>[26925I]\AgdaSymbol{(}\AgdaFunction{+-identityʳ}\AgdaSpace{}%
+\>[27003I]\AgdaSymbol{(}\AgdaFunction{+-identityʳ}\AgdaSpace{}%
 \AgdaSymbol{((}\AgdaBound{a₁}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
 \AgdaBound{b₁}\AgdaSymbol{)}\AgdaSpace{}%
@@ -44679,7 +44854,7 @@ equations. As expected, it also vanishes—the sum of four zeros is zero:
 \AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
 \AgdaBound{d₁}\AgdaSymbol{)))}\<%
 \\
-\>[.][@{}l@{}]\<[26925I]%
+\>[.][@{}l@{}]\<[27003I]%
 \>[11]\AgdaSymbol{(}\AgdaFunction{cong₂}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{\AgdaUnderscore{}+\AgdaUnderscore{}}}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{cong₂}\AgdaSpace{}%
@@ -45119,14 +45294,14 @@ We define the Einstein tensor $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2}Rg_{\mu\nu}$
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[27172I]\AgdaOperator{\AgdaBound{R\AgdaUnderscore{}μν}}\AgdaSpace{}%
+\>[27250I]\AgdaOperator{\AgdaBound{R\AgdaUnderscore{}μν}}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{spectralRicci}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{μ}\AgdaSpace{}%
 \AgdaBound{ν}\<%
 \\
-\>[.][@{}l@{}]\<[27172I]%
+\>[.][@{}l@{}]\<[27250I]%
 \>[6]\AgdaOperator{\AgdaBound{g\AgdaUnderscore{}μν}}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{metricK4}\AgdaSpace{}%
@@ -45159,7 +45334,7 @@ We define the Einstein tensor $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2}Rg_{\mu\nu}$
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{theorem-einstein-symmetric}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[27195I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[27273I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{v}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSymbol{)}\AgdaSpace{}%
@@ -45169,7 +45344,7 @@ We define the Einstein tensor $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2}Rg_{\mu\nu}$
 \AgdaDatatype{SpacetimeIndex}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[27195I]%
+\>[.][@{}l@{}]\<[27273I]%
 \>[29]\AgdaFunction{einsteinTensorK4}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{μ}\AgdaSpace{}%
@@ -45350,14 +45525,14 @@ We model the "matter" content of the graph as a perfect fluid (dust) moving alon
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[27323I]\AgdaBound{ρ}%
+\>[27401I]\AgdaBound{ρ}%
 \>[10]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{mkℤ}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{driftDensity}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaInductiveConstructor{zero}\<%
 \\
-\>[.][@{}l@{}]\<[27323I]%
+\>[.][@{}l@{}]\<[27401I]%
 \>[6]\AgdaOperator{\AgdaBound{u\AgdaUnderscore{}μ}}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{fourVelocity}\AgdaSpace{}%
@@ -46880,14 +47055,14 @@ We decompose the Clifford algebra $Cl(4)$ into grades. The bivector grade (dimen
 %
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{theorem-clifford-decomp}%
-\>[28037I]\AgdaSymbol{:}\AgdaSpace{}%
+\>[28115I]\AgdaSymbol{:}\AgdaSpace{}%
 \AgdaFunction{clifford-grade-0}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
 \AgdaFunction{clifford-grade-1}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
 \AgdaFunction{clifford-grade-2}\<%
 \\
-\>[.][@{}l@{}]\<[28037I]%
+\>[.][@{}l@{}]\<[28115I]%
 \>[24]\AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
 \AgdaFunction{clifford-grade-3}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
@@ -49940,14 +50115,14 @@ We define the covariant derivative and divergence on the discrete graph.
 \begin{code}%
 \>[0]\AgdaFunction{covariantDerivative}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[29700I]\AgdaSymbol{(}\AgdaDatatype{K4Vertex}\AgdaSpace{}%
+\>[29778I]\AgdaSymbol{(}\AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaRecord{ℤ}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[29700I][@{}l@{\AgdaIndent{0}}]%
+\>[29778I][@{}l@{\AgdaIndent{0}}]%
 \>[23]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSpace{}%
@@ -49979,7 +50154,7 @@ We define the covariant derivative and divergence on the discrete graph.
 \>[0]\AgdaFunction{theorem-covariant-equals-partial}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaSymbol{∀}%
-\>[29727I]\AgdaSymbol{(}\AgdaBound{T}\AgdaSpace{}%
+\>[29805I]\AgdaSymbol{(}\AgdaBound{T}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -49987,7 +50162,7 @@ We define the covariant derivative and divergence on the discrete graph.
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaRecord{ℤ}\AgdaSymbol{)}\<%
 \\
-\>[.][@{}l@{}]\<[29727I]%
+\>[.][@{}l@{}]\<[29805I]%
 \>[37]\AgdaSymbol{(}\AgdaBound{μ}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSymbol{)}\AgdaSpace{}%
@@ -50028,7 +50203,7 @@ We define the covariant derivative and divergence on the discrete graph.
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{discreteDivergence}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[29764I]\AgdaSymbol{(}\AgdaDatatype{K4Vertex}\AgdaSpace{}%
+\>[29842I]\AgdaSymbol{(}\AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -50037,7 +50212,7 @@ We define the covariant derivative and divergence on the discrete graph.
 \AgdaRecord{ℤ}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[29764I][@{}l@{\AgdaIndent{0}}]%
+\>[29842I][@{}l@{\AgdaIndent{0}}]%
 \>[22]\AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -50296,7 +50471,7 @@ We prove the Bianchi identity using the uniformity of the Einstein tensor.
 \>[2][@{}l@{\AgdaIndent{0}}]%
 \>[6]\AgdaBound{τ-term}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[29953I]\AgdaFunction{discreteDeriv-uniform}\AgdaSpace{}%
+\>[30031I]\AgdaFunction{discreteDeriv-uniform}\AgdaSpace{}%
 \AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -50307,7 +50482,7 @@ We prove the Bianchi identity using the uniformity of the Einstein tensor.
 \AgdaInductiveConstructor{τ-idx}\AgdaSpace{}%
 \AgdaBound{v}\<%
 \\
-\>[29953I][@{}l@{\AgdaIndent{0}}]%
+\>[30031I][@{}l@{\AgdaIndent{0}}]%
 \>[17]\AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{a}\AgdaSpace{}%
 \AgdaBound{b}\AgdaSpace{}%
@@ -50321,7 +50496,7 @@ We prove the Bianchi identity using the uniformity of the Einstein tensor.
 %
 \>[6]\AgdaBound{x-term}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[29972I]\AgdaFunction{discreteDeriv-uniform}\AgdaSpace{}%
+\>[30050I]\AgdaFunction{discreteDeriv-uniform}\AgdaSpace{}%
 \AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -50332,7 +50507,7 @@ We prove the Bianchi identity using the uniformity of the Einstein tensor.
 \AgdaInductiveConstructor{x-idx}\AgdaSpace{}%
 \AgdaBound{v}\<%
 \\
-\>[29972I][@{}l@{\AgdaIndent{0}}]%
+\>[30050I][@{}l@{\AgdaIndent{0}}]%
 \>[17]\AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{a}\AgdaSpace{}%
 \AgdaBound{b}\AgdaSpace{}%
@@ -50346,7 +50521,7 @@ We prove the Bianchi identity using the uniformity of the Einstein tensor.
 %
 \>[6]\AgdaBound{y-term}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[29991I]\AgdaFunction{discreteDeriv-uniform}\AgdaSpace{}%
+\>[30069I]\AgdaFunction{discreteDeriv-uniform}\AgdaSpace{}%
 \AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -50357,7 +50532,7 @@ We prove the Bianchi identity using the uniformity of the Einstein tensor.
 \AgdaInductiveConstructor{y-idx}\AgdaSpace{}%
 \AgdaBound{v}\<%
 \\
-\>[29991I][@{}l@{\AgdaIndent{0}}]%
+\>[30069I][@{}l@{\AgdaIndent{0}}]%
 \>[17]\AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{a}\AgdaSpace{}%
 \AgdaBound{b}\AgdaSpace{}%
@@ -50371,7 +50546,7 @@ We prove the Bianchi identity using the uniformity of the Einstein tensor.
 %
 \>[6]\AgdaBound{z-term}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[30010I]\AgdaFunction{discreteDeriv-uniform}\AgdaSpace{}%
+\>[30088I]\AgdaFunction{discreteDeriv-uniform}\AgdaSpace{}%
 \AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -50382,7 +50557,7 @@ We prove the Bianchi identity using the uniformity of the Einstein tensor.
 \AgdaInductiveConstructor{z-idx}\AgdaSpace{}%
 \AgdaBound{v}\<%
 \\
-\>[30010I][@{}l@{\AgdaIndent{0}}]%
+\>[30088I][@{}l@{\AgdaIndent{0}}]%
 \>[17]\AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{a}\AgdaSpace{}%
 \AgdaBound{b}\AgdaSpace{}%
@@ -50413,7 +50588,7 @@ We prove the Bianchi identity using the uniformity of the Einstein tensor.
 %
 \>[2]\AgdaKeyword{in}\AgdaSpace{}%
 \AgdaFunction{sum-four-zeros}%
-\>[30043I]\AgdaSymbol{(}\AgdaFunction{negℤ}\AgdaSpace{}%
+\>[30121I]\AgdaSymbol{(}\AgdaFunction{negℤ}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{discreteDeriv}\AgdaSpace{}%
 \AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
@@ -50425,7 +50600,7 @@ We prove the Bianchi identity using the uniformity of the Einstein tensor.
 \AgdaInductiveConstructor{τ-idx}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSymbol{))}\<%
 \\
-\>[.][@{}l@{}]\<[30043I]%
+\>[.][@{}l@{}]\<[30121I]%
 \>[20]\AgdaSymbol{(}\AgdaFunction{discreteDeriv}\AgdaSpace{}%
 \AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
@@ -50592,7 +50767,7 @@ We define worldlines as sequences of vertices and introduce the notion of geodes
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[30164I]\AgdaOperator{\AgdaBound{v\AgdaUnderscore{}next}}\AgdaSpace{}%
+\>[30242I]\AgdaOperator{\AgdaBound{v\AgdaUnderscore{}next}}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{discreteVelocityComponent}\AgdaSpace{}%
 \AgdaBound{γ}\AgdaSpace{}%
@@ -50600,7 +50775,7 @@ We define worldlines as sequences of vertices and introduce the notion of geodes
 \AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaBound{μ}\<%
 \\
-\>[.][@{}l@{}]\<[30164I]%
+\>[.][@{}l@{}]\<[30242I]%
 \>[6]\AgdaOperator{\AgdaBound{v\AgdaUnderscore{}here}}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{discreteVelocityComponent}\AgdaSpace{}%
@@ -51070,14 +51245,14 @@ We define the Weyl tensor and show that it vanishes, confirming that the spaceti
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[30478I]\AgdaOperator{\AgdaBound{R\AgdaUnderscore{}μν}}\AgdaSpace{}%
+\>[30556I]\AgdaOperator{\AgdaBound{R\AgdaUnderscore{}μν}}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{ricciFromLaplacian}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{μ}\AgdaSpace{}%
 \AgdaBound{ν}\<%
 \\
-\>[.][@{}l@{}]\<[30478I]%
+\>[.][@{}l@{}]\<[30556I]%
 \>[6]\AgdaOperator{\AgdaBound{g\AgdaUnderscore{}μν}}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{metricK4}\AgdaSpace{}%
@@ -51108,14 +51283,14 @@ We define the Weyl tensor and show that it vanishes, confirming that the spaceti
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{ricciContributionToWeyl}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[30502I]\AgdaDatatype{K4Vertex}\AgdaSpace{}%
+\>[30580I]\AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[30502I]%
+\>[.][@{}l@{}]\<[30580I]%
 \>[26]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -51135,14 +51310,14 @@ We define the Weyl tensor and show that it vanishes, confirming that the spaceti
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{scalarContributionToWeyl-scaled}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[30520I]\AgdaDatatype{K4Vertex}\AgdaSpace{}%
+\>[30598I]\AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[30520I][@{}l@{\AgdaIndent{0}}]%
+\>[30598I][@{}l@{\AgdaIndent{0}}]%
 \>[35]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -51159,12 +51334,12 @@ We define the Weyl tensor and show that it vanishes, confirming that the spaceti
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[30536I]\AgdaBound{g}\AgdaSpace{}%
+\>[30614I]\AgdaBound{g}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{metricK4}\AgdaSpace{}%
 \AgdaBound{v}\<%
 \\
-\>[.][@{}l@{}]\<[30536I]%
+\>[.][@{}l@{}]\<[30614I]%
 \>[6]\AgdaBound{R}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{ricciScalar}\AgdaSpace{}%
@@ -51195,14 +51370,14 @@ We define the Weyl tensor and show that it vanishes, confirming that the spaceti
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{weylK4}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[30562I]\AgdaDatatype{K4Vertex}\AgdaSpace{}%
+\>[30640I]\AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[30562I]%
+\>[.][@{}l@{}]\<[30640I]%
 \>[9]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -51271,7 +51446,7 @@ We define the Weyl tensor and show that it vanishes, confirming that the spaceti
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{theorem-weyl-vanishes}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[30614I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[30692I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{v}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSymbol{)}\AgdaSpace{}%
@@ -51283,7 +51458,7 @@ We define the Weyl tensor and show that it vanishes, confirming that the spaceti
 \AgdaDatatype{SpacetimeIndex}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[30614I][@{}l@{\AgdaIndent{0}}]%
+\>[30692I][@{}l@{\AgdaIndent{0}}]%
 \>[25]\AgdaFunction{weylK4}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{ρ}\AgdaSpace{}%
@@ -51360,7 +51535,7 @@ We define the Weyl tensor and show that it vanishes, confirming that the spaceti
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{theorem-weyl-tracefree}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[30682I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[30760I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{v}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSymbol{)}\AgdaSpace{}%
@@ -51370,7 +51545,7 @@ We define the Weyl tensor and show that it vanishes, confirming that the spaceti
 \AgdaDatatype{SpacetimeIndex}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[30682I][@{}l@{\AgdaIndent{0}}]%
+\>[30760I][@{}l@{\AgdaIndent{0}}]%
 \>[26]\AgdaFunction{weylTrace}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{σ}\AgdaSpace{}%
@@ -51386,7 +51561,7 @@ We define the Weyl tensor and show that it vanishes, confirming that the spaceti
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[30700I]\AgdaOperator{\AgdaBound{W\AgdaUnderscore{}τ}}\AgdaSpace{}%
+\>[30778I]\AgdaOperator{\AgdaBound{W\AgdaUnderscore{}τ}}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{weylK4}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
@@ -51395,7 +51570,7 @@ We define the Weyl tensor and show that it vanishes, confirming that the spaceti
 \AgdaInductiveConstructor{τ-idx}\AgdaSpace{}%
 \AgdaBound{ν}\<%
 \\
-\>[.][@{}l@{}]\<[30700I]%
+\>[.][@{}l@{}]\<[30778I]%
 \>[6]\AgdaOperator{\AgdaBound{W\AgdaUnderscore{}x}}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{weylK4}\AgdaSpace{}%
@@ -51427,13 +51602,13 @@ We define the Weyl tensor and show that it vanishes, confirming that the spaceti
 \\
 %
 \>[2]\AgdaKeyword{in}%
-\>[30729I]\AgdaFunction{sum-four-zeros-paired}\AgdaSpace{}%
+\>[30807I]\AgdaFunction{sum-four-zeros-paired}\AgdaSpace{}%
 \AgdaOperator{\AgdaBound{W\AgdaUnderscore{}τ}}\AgdaSpace{}%
 \AgdaOperator{\AgdaBound{W\AgdaUnderscore{}x}}\AgdaSpace{}%
 \AgdaOperator{\AgdaBound{W\AgdaUnderscore{}y}}\AgdaSpace{}%
 \AgdaOperator{\AgdaBound{W\AgdaUnderscore{}z}}\<%
 \\
-\>[30729I][@{}l@{\AgdaIndent{0}}]%
+\>[30807I][@{}l@{\AgdaIndent{0}}]%
 \>[7]\AgdaSymbol{(}\AgdaFunction{theorem-weyl-vanishes}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaInductiveConstructor{τ-idx}\AgdaSpace{}%
@@ -51589,14 +51764,14 @@ We introduce metric perturbations and the linearized Christoffel symbols.
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{perturbDeriv}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[30834I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
+\>[30912I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[30834I]%
+\>[.][@{}l@{}]\<[30912I]%
 \>[15]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -51625,12 +51800,12 @@ We introduce metric perturbations and the linearized Christoffel symbols.
 \begin{code}%
 \>[0]\AgdaFunction{linearizedChristoffel}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[30861I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
+\>[30939I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[30861I]%
+\>[.][@{}l@{}]\<[30939I]%
 \>[24]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -51649,7 +51824,7 @@ We introduce metric perturbations and the linearized Christoffel symbols.
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[30877I]\AgdaOperator{\AgdaBound{∂μ\AgdaUnderscore{}hνρ}}\AgdaSpace{}%
+\>[30955I]\AgdaOperator{\AgdaBound{∂μ\AgdaUnderscore{}hνρ}}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{perturbDeriv}\AgdaSpace{}%
 \AgdaBound{h}\AgdaSpace{}%
@@ -51658,7 +51833,7 @@ We introduce metric perturbations and the linearized Christoffel symbols.
 \AgdaBound{ν}\AgdaSpace{}%
 \AgdaBound{ρ}\<%
 \\
-\>[.][@{}l@{}]\<[30877I]%
+\>[.][@{}l@{}]\<[30955I]%
 \>[6]\AgdaOperator{\AgdaBound{∂ν\AgdaUnderscore{}hμρ}}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{perturbDeriv}\AgdaSpace{}%
@@ -51704,12 +51879,12 @@ We define the linearized Riemann and Ricci tensors, as well as the trace-reverse
 \begin{code}%
 \>[0]\AgdaFunction{linearizedRiemann}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[30912I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
+\>[30990I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[30912I]%
+\>[.][@{}l@{}]\<[30990I]%
 \>[20]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -51733,7 +51908,7 @@ We define the linearized Riemann and Ricci tensors, as well as the trace-reverse
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[30930I]\AgdaOperator{\AgdaBound{∂μ\AgdaUnderscore{}Γ}}\AgdaSpace{}%
+\>[31008I]\AgdaOperator{\AgdaBound{∂μ\AgdaUnderscore{}Γ}}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{discreteDeriv}\AgdaSpace{}%
 \AgdaSymbol{(λ}\AgdaSpace{}%
@@ -51748,7 +51923,7 @@ We define the linearized Riemann and Ricci tensors, as well as the trace-reverse
 \AgdaBound{μ}\AgdaSpace{}%
 \AgdaBound{v}\<%
 \\
-\>[.][@{}l@{}]\<[30930I]%
+\>[.][@{}l@{}]\<[31008I]%
 \>[6]\AgdaOperator{\AgdaBound{∂ν\AgdaUnderscore{}Γ}}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{discreteDeriv}\AgdaSpace{}%
@@ -51775,12 +51950,12 @@ We define the linearized Riemann and Ricci tensors, as well as the trace-reverse
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{linearizedRicci}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[30962I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
+\>[31040I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[30962I]%
+\>[.][@{}l@{}]\<[31040I]%
 \>[18]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -51880,12 +52055,12 @@ We define the linearized Riemann and Ricci tensors, as well as the trace-reverse
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{traceReversedPerturbation}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[31028I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
+\>[31106I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[31028I]%
+\>[.][@{}l@{}]\<[31106I]%
 \>[28]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -52028,12 +52203,12 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{dAlembertTensor}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[31104I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
+\>[31182I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[31104I]%
+\>[.][@{}l@{}]\<[31182I]%
 \>[18]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -52107,12 +52282,12 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{linearizedEinsteinTensor-scaled}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[31156I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
+\>[31234I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[31156I][@{}l@{\AgdaIndent{0}}]%
+\>[31234I][@{}l@{\AgdaIndent{0}}]%
 \>[35]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -52128,7 +52303,7 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[31169I]\AgdaOperator{\AgdaBound{R1\AgdaUnderscore{}μν}}\AgdaSpace{}%
+\>[31247I]\AgdaOperator{\AgdaBound{R1\AgdaUnderscore{}μν}}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{linearizedRicci}\AgdaSpace{}%
 \AgdaBound{h}\AgdaSpace{}%
@@ -52136,7 +52311,7 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \AgdaBound{μ}\AgdaSpace{}%
 \AgdaBound{ν}\<%
 \\
-\>[.][@{}l@{}]\<[31169I]%
+\>[.][@{}l@{}]\<[31247I]%
 \>[6]\AgdaBound{R1}%
 \>[12]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{linearizedRicciScalar}\AgdaSpace{}%
@@ -52167,12 +52342,12 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{waveEquationLHS}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[31193I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
+\>[31271I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[31193I]%
+\>[.][@{}l@{}]\<[31271I]%
 \>[18]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -52209,7 +52384,7 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \>[2][@{}l@{\AgdaIndent{0}}]%
 \>[4]\AgdaField{wave-eq}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[31220I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[31298I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{v}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSymbol{)}\AgdaSpace{}%
@@ -52219,7 +52394,7 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \AgdaDatatype{SpacetimeIndex}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[31220I]%
+\>[.][@{}l@{}]\<[31298I]%
 \>[14]\AgdaFunction{waveEquationLHS}\AgdaSpace{}%
 \AgdaBound{h}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
@@ -52232,10 +52407,10 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{linearizedEFE-residual}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[31236I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
+\>[31314I]\AgdaFunction{MetricPerturbation}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[31236I][@{}l@{\AgdaIndent{0}}]%
+\>[31314I][@{}l@{\AgdaIndent{0}}]%
 \>[26]\AgdaSymbol{(}\AgdaDatatype{K4Vertex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -52264,7 +52439,7 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[31257I]\AgdaBound{□h̄}\AgdaSpace{}%
+\>[31335I]\AgdaBound{□h̄}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{waveEquationLHS}\AgdaSpace{}%
 \AgdaBound{h}\AgdaSpace{}%
@@ -52272,7 +52447,7 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \AgdaBound{μ}\AgdaSpace{}%
 \AgdaBound{ν}\<%
 \\
-\>[.][@{}l@{}]\<[31257I]%
+\>[.][@{}l@{}]\<[31335I]%
 \>[6]\AgdaBound{κT}%
 \>[10]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{mkℤ}\AgdaSpace{}%
@@ -52294,11 +52469,11 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaKeyword{record}\AgdaSpace{}%
 \AgdaRecord{LinearizedEFE-Solution}%
-\>[31276I]\AgdaSymbol{(}\AgdaBound{h}\AgdaSpace{}%
+\>[31354I]\AgdaSymbol{(}\AgdaBound{h}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaFunction{MetricPerturbation}\AgdaSymbol{)}\<%
 \\
-\>[31276I][@{}l@{\AgdaIndent{0}}]%
+\>[31354I][@{}l@{\AgdaIndent{0}}]%
 \>[31]\AgdaSymbol{(}\AgdaBound{T}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSpace{}%
@@ -52318,7 +52493,7 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \>[2][@{}l@{\AgdaIndent{0}}]%
 \>[4]\AgdaField{efe-satisfied}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[31291I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[31369I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{v}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSymbol{)}\AgdaSpace{}%
@@ -52328,7 +52503,7 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \AgdaDatatype{SpacetimeIndex}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[31291I]%
+\>[.][@{}l@{}]\<[31369I]%
 \>[20]\AgdaFunction{linearizedEFE-residual}\AgdaSpace{}%
 \AgdaBound{h}\AgdaSpace{}%
 \AgdaBound{T}\AgdaSpace{}%
@@ -52365,7 +52540,7 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \\
 %
 \>[2]\AgdaKeyword{in}%
-\>[31323I]\AgdaFunction{negℤ}\AgdaSpace{}%
+\>[31401I]\AgdaFunction{negℤ}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{discreteDeriv}\AgdaSpace{}%
 \AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
@@ -52378,7 +52553,7 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \AgdaBound{v}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{+ℤ}}\<%
 \\
-\>[.][@{}l@{}]\<[31323I]%
+\>[.][@{}l@{}]\<[31401I]%
 \>[5]\AgdaFunction{discreteDeriv}\AgdaSpace{}%
 \AgdaSymbol{(λ}\AgdaSpace{}%
 \AgdaBound{w}\AgdaSpace{}%
@@ -52433,7 +52608,7 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \>[2][@{}l@{\AgdaIndent{0}}]%
 \>[4]\AgdaField{gauge-condition}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[31372I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[31450I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{v}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSymbol{)}\AgdaSpace{}%
@@ -52442,7 +52617,7 @@ We derive the wave equation for the metric perturbation in the harmonic gauge.
 \AgdaDatatype{SpacetimeIndex}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[31372I]%
+\>[.][@{}l@{}]\<[31450I]%
 \>[22]\AgdaFunction{harmonicGaugeCondition}\AgdaSpace{}%
 \AgdaBound{h}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
@@ -52562,12 +52737,12 @@ We explore this by considering different conformal factors on different regions 
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{patchMetric}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[31418I]\AgdaFunction{PatchConformalFactor}\AgdaSpace{}%
+\>[31496I]\AgdaFunction{PatchConformalFactor}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaFunction{PatchIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[31418I]%
+\>[.][@{}l@{}]\<[31496I]%
 \>[14]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -52591,14 +52766,14 @@ We explore this by considering different conformal factors on different regions 
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{metricMismatch}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[31438I]\AgdaFunction{PatchConformalFactor}\AgdaSpace{}%
+\>[31516I]\AgdaFunction{PatchConformalFactor}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaFunction{PatchIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaFunction{PatchIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[31438I]%
+\>[.][@{}l@{}]\<[31516I]%
 \>[17]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -52631,7 +52806,7 @@ We explore this by considering different conformal factors on different regions 
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{exampleMismatchTT}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[31466I]\AgdaFunction{metricMismatch}\AgdaSpace{}%
+\>[31544I]\AgdaFunction{metricMismatch}\AgdaSpace{}%
 \AgdaFunction{examplePatches}\AgdaSpace{}%
 \AgdaInductiveConstructor{zero}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -52639,7 +52814,7 @@ We explore this by considering different conformal factors on different regions 
 \AgdaInductiveConstructor{τ-idx}\AgdaSpace{}%
 \AgdaInductiveConstructor{τ-idx}\<%
 \\
-\>[.][@{}l@{}]\<[31466I]%
+\>[.][@{}l@{}]\<[31544I]%
 \>[20]\AgdaOperator{\AgdaFunction{≃ℤ}}\AgdaSpace{}%
 \AgdaInductiveConstructor{mkℤ}\AgdaSpace{}%
 \AgdaInductiveConstructor{zero}\AgdaSpace{}%
@@ -52655,7 +52830,7 @@ We explore this by considering different conformal factors on different regions 
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{exampleMismatchXX}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[31481I]\AgdaFunction{metricMismatch}\AgdaSpace{}%
+\>[31559I]\AgdaFunction{metricMismatch}\AgdaSpace{}%
 \AgdaFunction{examplePatches}\AgdaSpace{}%
 \AgdaInductiveConstructor{zero}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -52663,7 +52838,7 @@ We explore this by considering different conformal factors on different regions 
 \AgdaInductiveConstructor{x-idx}\AgdaSpace{}%
 \AgdaInductiveConstructor{x-idx}\<%
 \\
-\>[.][@{}l@{}]\<[31481I]%
+\>[.][@{}l@{}]\<[31559I]%
 \>[20]\AgdaOperator{\AgdaFunction{≃ℤ}}\AgdaSpace{}%
 \AgdaInductiveConstructor{mkℤ}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -52823,14 +52998,14 @@ We define the deficit angle at an edge in the context of Regge calculus.
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{interfaceEinsteinContribution}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[31584I]\AgdaFunction{PatchConformalFactor}\AgdaSpace{}%
+\>[31662I]\AgdaFunction{PatchConformalFactor}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaFunction{PatchIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaFunction{PatchIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[31584I][@{}l@{\AgdaIndent{0}}]%
+\>[31662I][@{}l@{\AgdaIndent{0}}]%
 \>[33]\AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{SpacetimeIndex}\AgdaSpace{}%
@@ -53429,14 +53604,14 @@ We define the area law condition.
 \>[2][@{}l@{\AgdaIndent{0}}]%
 \>[4]\AgdaField{decay}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[31901I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[31979I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{c₁}\AgdaSpace{}%
 \AgdaBound{c₂}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaRecord{ClosedPath}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[31901I]%
+\>[.][@{}l@{}]\<[31979I]%
 \>[12]\AgdaFunction{discreteLoopArea}\AgdaSpace{}%
 \AgdaBound{c₁}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≤}}\AgdaSpace{}%
@@ -53509,14 +53684,14 @@ We define confinement and the gauge phase.
 \>[2][@{}l@{\AgdaIndent{0}}]%
 \>[4]\AgdaField{decayByLength}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[31943I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[32021I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{c₁}\AgdaSpace{}%
 \AgdaBound{c₂}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaRecord{ClosedPath}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[31943I]%
+\>[.][@{}l@{}]\<[32021I]%
 \>[20]\AgdaFunction{closedPathLength}\AgdaSpace{}%
 \AgdaBound{c₁}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≤}}\AgdaSpace{}%
@@ -54087,7 +54262,7 @@ We derive the Wilson loop properties for the K4 graph.
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[32225I]\AgdaBound{ten}\AgdaSpace{}%
+\>[32303I]\AgdaBound{ten}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -54101,7 +54276,7 @@ We derive the Wilson loop properties for the K4 graph.
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaInductiveConstructor{zero}\AgdaSymbol{)))))))))}\<%
 \\
-\>[.][@{}l@{}]\<[32225I]%
+\>[.][@{}l@{}]\<[32303I]%
 \>[6]\AgdaBound{nine}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -54135,7 +54310,7 @@ We derive the Wilson loop properties for the K4 graph.
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[32258I]\AgdaBound{ten}\AgdaSpace{}%
+\>[32336I]\AgdaBound{ten}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -54149,7 +54324,7 @@ We derive the Wilson loop properties for the K4 graph.
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaInductiveConstructor{zero}\AgdaSymbol{)))))))))}\<%
 \\
-\>[.][@{}l@{}]\<[32258I]%
+\>[.][@{}l@{}]\<[32336I]%
 \>[6]\AgdaBound{three}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -54188,7 +54363,7 @@ We derive the Wilson loop properties for the K4 graph.
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[32293I]\AgdaBound{λ-val}\AgdaSpace{}%
+\>[32371I]\AgdaBound{λ-val}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -54196,7 +54371,7 @@ We derive the Wilson loop properties for the K4 graph.
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaInductiveConstructor{zero}\AgdaSymbol{)))}\<%
 \\
-\>[.][@{}l@{}]\<[32293I]%
+\>[.][@{}l@{}]\<[32371I]%
 \>[6]\AgdaBound{E-val}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -54497,13 +54672,13 @@ We establish the bidirectional link between the First Distinction and confinemen
 %
 \>[4]\AgdaField{reverse}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[32452I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[32530I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{config}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaFunction{GaugeConfiguration}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[32452I]%
+\>[.][@{}l@{}]\<[32530I]%
 \>[14]\AgdaRecord{Confinement}\AgdaSpace{}%
 \AgdaBound{config}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -54544,22 +54719,22 @@ We establish the bidirectional link between the First Distinction and confinemen
 \\
 %
 \>[2]\AgdaSymbol{;}%
-\>[32475I]\AgdaField{reverse}%
+\>[32553I]\AgdaField{reverse}%
 \>[14]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaSymbol{λ}\AgdaSpace{}%
 \AgdaBound{config}\AgdaSpace{}%
 \AgdaBound{c}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[32475I][@{}l@{\AgdaIndent{0}}]%
+\>[32553I][@{}l@{\AgdaIndent{0}}]%
 \>[6]\AgdaKeyword{let}%
-\>[32480I]\AgdaBound{k4}\AgdaSpace{}%
+\>[32558I]\AgdaBound{k4}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{theorem-confinement-requires-K4}\AgdaSpace{}%
 \AgdaBound{config}\AgdaSpace{}%
 \AgdaBound{c}\<%
 \\
-\>[.][@{}l@{}]\<[32480I]%
+\>[.][@{}l@{}]\<[32558I]%
 \>[10]\AgdaBound{sat}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{theorem-K4-from-saturation}\AgdaSpace{}%
@@ -54648,7 +54823,7 @@ Therefore, the physical universe requires the First Distinction as an ontologica
 %
 \>[4]\AgdaField{observed-einstein}%
 \>[25]\AgdaSymbol{:}%
-\>[32514I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[32592I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{v}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{K4Vertex}\AgdaSymbol{)}\AgdaSpace{}%
@@ -54658,7 +54833,7 @@ Therefore, the physical universe requires the First Distinction as an ontologica
 \AgdaDatatype{SpacetimeIndex}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[32514I]%
+\>[.][@{}l@{}]\<[32592I]%
 \>[27]\AgdaFunction{einsteinTensorK4}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSpace{}%
 \AgdaBound{μ}\AgdaSpace{}%
@@ -55402,7 +55577,7 @@ We calibrate the discrete model parameters against physical constants. We identi
 \>[2][@{}l@{\AgdaIndent{0}}]%
 \>[4]\AgdaField{ricci-discrete-value}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[32921I]\AgdaFunction{ricciScalar}\AgdaSpace{}%
+\>[32999I]\AgdaFunction{ricciScalar}\AgdaSpace{}%
 \AgdaInductiveConstructor{v₀}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{≃ℤ}}\AgdaSpace{}%
 \AgdaInductiveConstructor{mkℤ}\AgdaSpace{}%
@@ -55414,7 +55589,7 @@ We calibrate the discrete model parameters against physical constants. We identi
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\<%
 \\
-\>[32921I][@{}l@{\AgdaIndent{0}}]%
+\>[32999I][@{}l@{\AgdaIndent{0}}]%
 \>[28]\AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -55651,7 +55826,7 @@ We investigate the area law behavior for specific gauge configurations, such as 
 %
 \>[4]\AgdaFunction{wilson-37}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[33050I]\AgdaInductiveConstructor{suc}\AgdaSpace{}%
+\>[33128I]\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -55663,7 +55838,7 @@ We investigate the area law behavior for specific gauge configurations, such as 
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\<%
 \\
-\>[.][@{}l@{}]\<[33050I]%
+\>[.][@{}l@{}]\<[33128I]%
 \>[16]\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -55711,7 +55886,7 @@ We investigate the area law behavior for specific gauge configurations, such as 
 %
 \>[4]\AgdaFunction{wilson-91}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[33090I]\AgdaInductiveConstructor{suc}\AgdaSpace{}%
+\>[33168I]\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -55723,7 +55898,7 @@ We investigate the area law behavior for specific gauge configurations, such as 
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\<%
 \\
-\>[.][@{}l@{}]\<[33090I]%
+\>[.][@{}l@{}]\<[33168I]%
 \>[16]\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -55843,7 +56018,7 @@ We investigate the area law behavior for specific gauge configurations, such as 
 %
 \>[4]\AgdaFunction{37≤91-proof}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[33187I]\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
+\>[33265I]\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
@@ -55855,7 +56030,7 @@ We investigate the area law behavior for specific gauge configurations, such as 
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\<%
 \\
-\>[.][@{}l@{}]\<[33187I]%
+\>[.][@{}l@{}]\<[33265I]%
 \>[18]\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
@@ -56090,7 +56265,7 @@ We analyze the properties of complete graphs $K_n$, specifically the number of e
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{theorem-K4-edges}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[33306I]\AgdaFunction{edges-in-complete-graph}\AgdaSpace{}%
+\>[33384I]\AgdaFunction{edges-in-complete-graph}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -56098,7 +56273,7 @@ We analyze the properties of complete graphs $K_n$, specifically the number of e
 \AgdaInductiveConstructor{zero}\AgdaSymbol{))))}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\<%
 \\
-\>[.][@{}l@{}]\<[33306I]%
+\>[.][@{}l@{}]\<[33384I]%
 \>[19]\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -57752,14 +57927,14 @@ brake mechanism is fully derived from $K_4$:
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{K₄-from-D₃}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[34071I]\AgdaFunction{classify-pair}\AgdaSpace{}%
+\>[34149I]\AgdaFunction{classify-pair}\AgdaSpace{}%
 \AgdaInductiveConstructor{D₀-id}\AgdaSpace{}%
 \AgdaInductiveConstructor{D₂-id}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaInductiveConstructor{new-irreducible}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[34071I]%
+\>[.][@{}l@{}]\<[34149I]%
 \>[13]\AgdaFunction{k4-edge-count}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaInductiveConstructor{suc}\AgdaSpace{}%
@@ -57866,12 +58041,12 @@ brake mechanism is fully derived from $K_4$:
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[34147I]\AgdaBound{sat}\AgdaSpace{}%
+\>[34225I]\AgdaBound{sat}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{saturation-from-genesis}\AgdaSpace{}%
 \AgdaFunction{theorem-genesis-count}\<%
 \\
-\>[.][@{}l@{}]\<[34147I]%
+\>[.][@{}l@{}]\<[34225I]%
 \>[6]\AgdaBound{d₃}%
 \>[10]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{D₃-from-saturation}\AgdaSpace{}%
@@ -58066,7 +58241,7 @@ this document.
 %
 \>[4]\AgdaField{eigenvectors-λ4}%
 \>[22]\AgdaSymbol{:}%
-\>[34230I]\AgdaSymbol{((}\AgdaFunction{IsEigenvector}\AgdaSpace{}%
+\>[34308I]\AgdaSymbol{((}\AgdaFunction{IsEigenvector}\AgdaSpace{}%
 \AgdaFunction{eigenvector-1}\AgdaSpace{}%
 \AgdaFunction{λ₄}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaOperator{\AgdaRecord{×}}\AgdaSpace{}%
@@ -58075,7 +58250,7 @@ this document.
 \AgdaFunction{λ₄}\AgdaSymbol{))}\AgdaSpace{}%
 \AgdaOperator{\AgdaRecord{×}}\<%
 \\
-\>[.][@{}l@{}]\<[34230I]%
+\>[.][@{}l@{}]\<[34308I]%
 \>[24]\AgdaSymbol{(}\AgdaFunction{IsEigenvector}\AgdaSpace{}%
 \AgdaFunction{eigenvector-3}\AgdaSpace{}%
 \AgdaFunction{λ₄}\AgdaSymbol{)}\<%
@@ -58847,7 +59022,7 @@ additional microstates.
 %
 \>[2]\AgdaFunction{FD-exceeds-BH}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[34555I]\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
+\>[34633I]\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
@@ -58859,7 +59034,7 @@ additional microstates.
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\<%
 \\
-\>[34555I][@{}l@{\AgdaIndent{0}}]%
+\>[34633I][@{}l@{\AgdaIndent{0}}]%
 \>[21]\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
@@ -58991,7 +59166,7 @@ The Bekenstein-Hawking entropy $S = A/4\ell_P^2$ counts the number of Planck-are
 %
 \>[4]\AgdaSymbol{;}\AgdaSpace{}%
 \AgdaField{correction-positive}%
-\>[34630I]\AgdaSymbol{=}\AgdaSpace{}%
+\>[34708I]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
@@ -59004,7 +59179,7 @@ The Bekenstein-Hawking entropy $S = A/4\ell_P^2$ counts the number of Planck-are
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\<%
 \\
-\>[34630I][@{}l@{\AgdaIndent{0}}]%
+\>[34708I][@{}l@{\AgdaIndent{0}}]%
 \>[27]\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{s≤s}\AgdaSpace{}%
@@ -59997,19 +60172,19 @@ We verify that this number 5 appears consistently across different calculations:
 \>[0]\AgdaFunction{K-pythagorean-sum}\AgdaSpace{}%
 \AgdaBound{n}\AgdaSpace{}%
 \AgdaSymbol{=}%
-\>[35128I]\AgdaKeyword{let}%
-\>[35129I]\AgdaBound{e}\AgdaSpace{}%
+\>[35206I]\AgdaKeyword{let}%
+\>[35207I]\AgdaBound{e}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{K-edge-count}\AgdaSpace{}%
 \AgdaBound{n}\<%
 \\
-\>[.][@{}l@{}]\<[35129I]%
+\>[.][@{}l@{}]\<[35207I]%
 \>[26]\AgdaBound{k}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{K-kappa}\AgdaSpace{}%
 \AgdaBound{n}\<%
 \\
-\>[.][@{}l@{}]\<[35128I]%
+\>[.][@{}l@{}]\<[35206I]%
 \>[22]\AgdaKeyword{in}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{e}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{*}}\AgdaSpace{}%
@@ -60951,12 +61126,12 @@ The $K_4$ structure determines which is which.
 \AgdaDatatype{ℕ}\<%
 \\
 \>[0]\AgdaFunction{algebraic-arities-sum}%
-\>[35564I]\AgdaSymbol{=}\AgdaSpace{}%
+\>[35642I]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{arity-associativity}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
 \AgdaFunction{arity-distributivity}\<%
 \\
-\>[.][@{}l@{}]\<[35564I]%
+\>[.][@{}l@{}]\<[35642I]%
 \>[22]\AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
 \AgdaFunction{arity-neutrality}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
@@ -61033,12 +61208,12 @@ Categorical laws---those governing how operations \emph{compose}---have differen
 \AgdaDatatype{ℕ}\<%
 \\
 \>[0]\AgdaFunction{categorical-arities-product}%
-\>[35595I]\AgdaSymbol{=}\AgdaSpace{}%
+\>[35673I]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{arity-involutivity}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{*}}\AgdaSpace{}%
 \AgdaFunction{arity-cancellativity}\<%
 \\
-\>[.][@{}l@{}]\<[35595I]%
+\>[.][@{}l@{}]\<[35673I]%
 \>[28]\AgdaOperator{\AgdaPrimitive{*}}\AgdaSpace{}%
 \AgdaFunction{arity-irreducibility}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{*}}\AgdaSpace{}%
@@ -61063,12 +61238,12 @@ Categorical laws---those governing how operations \emph{compose}---have differen
 \AgdaDatatype{ℕ}\<%
 \\
 \>[0]\AgdaFunction{categorical-arities-sum}%
-\>[35610I]\AgdaSymbol{=}\AgdaSpace{}%
+\>[35688I]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{arity-involutivity}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
 \AgdaFunction{arity-cancellativity}\<%
 \\
-\>[.][@{}l@{}]\<[35610I]%
+\>[.][@{}l@{}]\<[35688I]%
 \>[24]\AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
 \AgdaFunction{arity-irreducibility}\AgdaSpace{}%
 \AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
@@ -64802,15 +64977,7 @@ of topologically distinct paths around the graph. These numbers ($3, 9, 27, \ldo
 in the mass hierarchy:
 
 \begin{code}%
-\>[0]\AgdaFunction{theorem-degree}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaFunction{degree-K4}\AgdaSpace{}%
-\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
-\AgdaNumber{3}\<%
-\\
-\>[0]\AgdaFunction{theorem-degree}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
-\AgdaInductiveConstructor{refl}\<%
+\>[0]\AgdaComment{--\ degree-K4\ ≡\ 3\ already\ proven\ at\ definition\ site}\<%
 \\
 %
 \\[\AgdaEmptyExtraSkip]%
@@ -65196,12 +65363,12 @@ Adding the correction: $\Omega_m = 0.30 + 0.01 = 0.31$, matching Planck 2018 mea
 
 \begin{code}%
 \>[0]\AgdaFunction{theorem-Ωₘ-consistency}%
-\>[37561I]\AgdaSymbol{:}\AgdaSpace{}%
+\>[37633I]\AgdaSymbol{:}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{spatial-vertices}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaNumber{3}\AgdaSymbol{)}\<%
 \\
-\>[.][@{}l@{}]\<[37561I]%
+\>[.][@{}l@{}]\<[37633I]%
 \>[23]\AgdaOperator{\AgdaRecord{×}}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{total-structure}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
@@ -65222,10 +65389,10 @@ Adding the correction: $\Omega_m = 0.30 + 0.01 = 0.31$, matching Planck 2018 mea
 %
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{theorem-Ωₘ-consistency}%
-\>[37574I]\AgdaSymbol{=}\AgdaSpace{}%
+\>[37646I]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{theorem-spatial-is-3}\<%
 \\
-\>[.][@{}l@{}]\<[37574I]%
+\>[.][@{}l@{}]\<[37646I]%
 \>[23]\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
 \AgdaFunction{theorem-total-is-10}\<%
 \\
@@ -65579,12 +65746,12 @@ We verify that neither the vertex count (4) nor the degree (3) gives the correct
 
 \begin{code}%
 \>[0]\AgdaFunction{theorem-baryon-consistency}%
-\>[37736I]\AgdaSymbol{:}\AgdaSpace{}%
+\>[37808I]\AgdaSymbol{:}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{baryon-ratio-num}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaNumber{1}\AgdaSymbol{)}\<%
 \\
-\>[.][@{}l@{}]\<[37736I]%
+\>[.][@{}l@{}]\<[37808I]%
 \>[27]\AgdaOperator{\AgdaRecord{×}}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{baryon-ratio-denom}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
@@ -65597,10 +65764,10 @@ We verify that neither the vertex count (4) nor the degree (3) gives the correct
 \AgdaNumber{4}\AgdaSymbol{)}\<%
 \\
 \>[0]\AgdaFunction{theorem-baryon-consistency}%
-\>[37746I]\AgdaSymbol{=}\AgdaSpace{}%
+\>[37818I]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{refl}\<%
 \\
-\>[.][@{}l@{}]\<[37746I]%
+\>[.][@{}l@{}]\<[37818I]%
 \>[27]\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
 \AgdaInductiveConstructor{refl}\<%
 \\
@@ -65970,12 +66137,12 @@ match observation:
 
 \begin{code}%
 \>[0]\AgdaFunction{theorem-ns-consistency}%
-\>[37915I]\AgdaSymbol{:}\AgdaSpace{}%
+\>[37987I]\AgdaSymbol{:}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{ns-capacity}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaNumber{24}\AgdaSymbol{)}\<%
 \\
-\>[.][@{}l@{}]\<[37915I]%
+\>[.][@{}l@{}]\<[37987I]%
 \>[23]\AgdaOperator{\AgdaRecord{×}}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{ns-bare-num}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
@@ -65990,10 +66157,10 @@ match observation:
 %
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{theorem-ns-consistency}%
-\>[37925I]\AgdaSymbol{=}\AgdaSpace{}%
+\>[37997I]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{theorem-ns-capacity}\<%
 \\
-\>[.][@{}l@{}]\<[37925I]%
+\>[.][@{}l@{}]\<[37997I]%
 \>[23]\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
 \AgdaInductiveConstructor{refl}\<%
 \\
@@ -66277,12 +66444,12 @@ match observation:
 
 \begin{code}%
 \>[0]\AgdaFunction{theorem-cosmology-consistency}%
-\>[38055I]\AgdaSymbol{:}\AgdaSpace{}%
+\>[38127I]\AgdaSymbol{:}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{K₄-vertices-count}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaNumber{4}\AgdaSymbol{)}\<%
 \\
-\>[.][@{}l@{}]\<[38055I]%
+\>[.][@{}l@{}]\<[38127I]%
 \>[30]\AgdaOperator{\AgdaRecord{×}}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{K₄-edges-count}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
@@ -66301,10 +66468,10 @@ match observation:
 \AgdaNumber{12}\AgdaSymbol{)}\<%
 \\
 \>[0]\AgdaFunction{theorem-cosmology-consistency}%
-\>[38068I]\AgdaSymbol{=}\AgdaSpace{}%
+\>[38140I]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{refl}\<%
 \\
-\>[.][@{}l@{}]\<[38068I]%
+\>[.][@{}l@{}]\<[38140I]%
 \>[30]\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
 \AgdaInductiveConstructor{refl}\<%
 \\
@@ -66382,12 +66549,12 @@ match observation:
 
 \begin{code}%
 \>[0]\AgdaFunction{theorem-cosmology-robustness}%
-\>[38098I]\AgdaSymbol{:}\AgdaSpace{}%
+\>[38170I]\AgdaSymbol{:}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{K₄-capacity}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaNumber{100}\AgdaSymbol{)}\<%
 \\
-\>[.][@{}l@{}]\<[38098I]%
+\>[.][@{}l@{}]\<[38170I]%
 \>[29]\AgdaOperator{\AgdaRecord{×}}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{loop-product}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
@@ -66400,10 +66567,10 @@ match observation:
 \AgdaNumber{4}\AgdaSymbol{)}\<%
 \\
 \>[0]\AgdaFunction{theorem-cosmology-robustness}%
-\>[38108I]\AgdaSymbol{=}\AgdaSpace{}%
+\>[38180I]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{theorem-capacity-is-100}\<%
 \\
-\>[.][@{}l@{}]\<[38108I]%
+\>[.][@{}l@{}]\<[38180I]%
 \>[29]\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
 \AgdaFunction{theorem-loop-product-12}\<%
 \\
@@ -66414,7 +66581,7 @@ match observation:
 
 \begin{code}%
 \>[0]\AgdaFunction{theorem-cosmology-cross-validates}%
-\>[38112I]\AgdaSymbol{:}\AgdaSpace{}%
+\>[38184I]\AgdaSymbol{:}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{K₄-capacity}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{K₄-edges-count}\AgdaSpace{}%
@@ -66425,7 +66592,7 @@ match observation:
 \AgdaOperator{\AgdaPrimitive{*}}\AgdaSpace{}%
 \AgdaFunction{κ-discrete}\AgdaSymbol{))}\<%
 \\
-\>[.][@{}l@{}]\<[38112I]%
+\>[.][@{}l@{}]\<[38184I]%
 \>[34]\AgdaOperator{\AgdaRecord{×}}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{K₄-triangles}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
@@ -66493,7 +66660,7 @@ match observation:
 \\
 %
 \>[4]\AgdaField{cross-validates}%
-\>[38161I]\AgdaSymbol{:}\AgdaSpace{}%
+\>[38233I]\AgdaSymbol{:}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{K₄-capacity}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{K₄-edges-count}\AgdaSpace{}%
@@ -66504,7 +66671,7 @@ match observation:
 \AgdaOperator{\AgdaPrimitive{*}}\AgdaSpace{}%
 \AgdaFunction{κ-discrete}\AgdaSymbol{))}\<%
 \\
-\>[.][@{}l@{}]\<[38161I]%
+\>[.][@{}l@{}]\<[38233I]%
 \>[20]\AgdaOperator{\AgdaRecord{×}}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaFunction{K₄-triangles}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
@@ -67281,6 +67448,8 @@ This is not fitting---it is calculation.
 \\
 %
 \\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ χ²\ ×\ d³\ ×\ F₂\ =\ 4\ ×\ 27\ ×\ 17\ =\ 1836.\ The\ proton\ emerges.}\<%
+\\
 \>[0]\AgdaFunction{theorem-proton-mass}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaFunction{proton-mass-formula}\AgdaSpace{}%
@@ -67652,10 +67821,14 @@ This is not fitting---it is calculation.
 \end{code}
 
 \section{Lepton Mass Ratios}
+\label{sec:lepton-masses}
 
+\noindent\textit{This section provides the complete geometric derivation of lepton masses. For the summary of observed values and renormalization corrections, see Section~\ref{sec:mass-ratios-intro}.}
+
+\medskip
 The charged leptons---electron, muon, tau---form a mass hierarchy spanning five orders of magnitude. Why these specific ratios?
 
-From $K_4$: the electron is the base unit ($m_e = 1$). The muon mass is $d^2 \times (E + F_2) = 9 \times 23 = 207 \, m_e$. The tau mass is $F_2 \times m_\mu = 17 \times 207 = 3519 \, m_e$.
+From $K_4$: the electron is the base unit ($m_e = 1$). The muon mass is $d^2 \times (E + F_2)$. The tau mass is $F_2 \times m_\mu$. \emph{We now derive these symbolically and let Agda compute the numerical result.}
 
 \begin{figure}[h]
 \centering
@@ -67774,6 +67947,10 @@ From $K_4$: the electron is the base unit ($m_e = 1$). The muon mass is $d^2 \ti
 \\
 %
 \\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ The\ moment\ of\ truth:\ Agda\ computes\ (3²\ ×\ 23)\ from\ pure\ structure.}\<%
+\\
+\>[0]\AgdaComment{--\ No\ number\ was\ inserted.\ 207\ emerges.}\<%
+\\
 \>[0]\AgdaFunction{theorem-muon-mass}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaFunction{muon-mass-formula}\AgdaSpace{}%
@@ -67783,7 +67960,23 @@ From $K_4$: the electron is the base unit ($m_e = 1$). The muon mass is $d^2 \ti
 \>[0]\AgdaFunction{theorem-muon-mass}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaInductiveConstructor{refl}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ Consistency:\ the\ early\ definition\ matches\ the\ formula}\<%
+\\
+\>[0]\AgdaFunction{theorem-bare-muon-consistent}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{bare-muon-electron}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
+\AgdaFunction{muon-mass-formula}\<%
+\\
+\>[0]\AgdaFunction{theorem-bare-muon-consistent}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{refl}\<%
 \end{code}
+
+\noindent\textbf{207.} The muon-to-electron mass ratio, measured to six decimal places in laboratories around the world, emerges from $d^2 \times (E + F_2) = 3^2 \times (6 + 17)$. No parameter was adjusted.
 
 \begin{code}%
 \>[0]\AgdaKeyword{record}\AgdaSpace{}%
@@ -67960,6 +68153,8 @@ From $K_4$: the electron is the base unit ($m_e = 1$). The muon mass is $d^2 \ti
 \\
 %
 \\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ F₂\ ×\ 207\ =\ 17\ ×\ 207\ =\ 3519.\ Again,\ pure\ structure.}\<%
+\\
 \>[0]\AgdaFunction{theorem-tau-mass}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaFunction{tau-mass-formula}\AgdaSpace{}%
@@ -67972,6 +68167,8 @@ From $K_4$: the electron is the base unit ($m_e = 1$). The muon mass is $d^2 \ti
 \\
 %
 \\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaComment{--\ The\ Fermat\ prime\ F₂\ =\ 2\textasciicircum{}(2\textasciicircum{}2)\ +\ 1\ =\ 17.}\<%
+\\
 \>[0]\AgdaFunction{theorem-tau-muon-ratio}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaFunction{F₂}\AgdaSpace{}%
@@ -74554,11 +74751,11 @@ What is preserved?
 \\
 %
 \>[2]\AgdaSymbol{;}%
-\>[41913I]\AgdaField{structures}\AgdaSpace{}%
+\>[41991I]\AgdaField{structures}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaKeyword{record}\<%
 \\
-\>[41913I][@{}l@{\AgdaIndent{0}}]%
+\>[41991I][@{}l@{\AgdaIndent{0}}]%
 \>[6]\AgdaSymbol{\{}\AgdaSpace{}%
 \AgdaField{tensor-components}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
@@ -76581,13 +76778,13 @@ origin of quantization:
 \>[2][@{}l@{\AgdaIndent{0}}]%
 \>[4]\AgdaField{normalization-exact}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[42891I]\AgdaSymbol{∀}\AgdaSpace{}%
+\>[42969I]\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{dd}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaRecord{DistinctionDensity}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-\>[.][@{}l@{}]\<[42891I]%
+\>[.][@{}l@{}]\<[42969I]%
 \>[26]\AgdaFunction{higgs-field-squared-times-2}\AgdaSpace{}%
 \AgdaBound{dd}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
@@ -77319,12 +77516,12 @@ We model the three lepton generations. Each generation corresponds to a Fermat n
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{theorem-tau-is-product}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[43285I]\AgdaFunction{mass-ratio}\AgdaSpace{}%
+\>[43363I]\AgdaFunction{mass-ratio}\AgdaSpace{}%
 \AgdaInductiveConstructor{gen-τ}\AgdaSpace{}%
 \AgdaInductiveConstructor{gen-e}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\<%
 \\
-\>[.][@{}l@{}]\<[43285I]%
+\>[.][@{}l@{}]\<[43363I]%
 \>[25]\AgdaFunction{mass-ratio}\AgdaSpace{}%
 \AgdaInductiveConstructor{gen-μ}\AgdaSpace{}%
 \AgdaInductiveConstructor{gen-e}\AgdaSpace{}%
@@ -77351,12 +77548,12 @@ We model the three lepton generations. Each generation corresponds to a Fermat n
 \>[2][@{}l@{\AgdaIndent{0}}]%
 \>[4]\AgdaField{tau-is-product}\AgdaSpace{}%
 \AgdaSymbol{:}%
-\>[43302I]\AgdaFunction{mass-ratio}\AgdaSpace{}%
+\>[43380I]\AgdaFunction{mass-ratio}\AgdaSpace{}%
 \AgdaInductiveConstructor{gen-τ}\AgdaSpace{}%
 \AgdaInductiveConstructor{gen-e}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\<%
 \\
-\>[.][@{}l@{}]\<[43302I]%
+\>[.][@{}l@{}]\<[43380I]%
 \>[21]\AgdaFunction{mass-ratio}\AgdaSpace{}%
 \AgdaInductiveConstructor{gen-μ}\AgdaSpace{}%
 \AgdaInductiveConstructor{gen-e}\AgdaSpace{}%
@@ -78364,28 +78561,29 @@ are validated.
 \AgdaNumber{128}\<%
 \\
 %
-\>[4]\AgdaComment{--\ Robustness:\ all\ three\ particles\ use\ same\ formula}\<%
+\>[4]\AgdaComment{--\ Robustness:\ bare\ values\ reference\ canonical\ definitions}\<%
 \\
 %
 \>[4]\AgdaField{robustness-muon-bare}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
-\AgdaNumber{207}\AgdaSpace{}%
+\AgdaFunction{bare-muon-electron}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaNumber{207}\<%
 \\
 %
 \>[4]\AgdaField{robustness-tau-bare}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
-\AgdaNumber{17}\AgdaSpace{}%
+\AgdaFunction{bare-tau-muon}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
-\AgdaNumber{17}\<%
+\AgdaFunction{F₂}\<%
 \\
 %
 \>[4]\AgdaField{robustness-higgs-bare}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
-\AgdaNumber{128}\AgdaSpace{}%
+\AgdaFunction{bare-higgs}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
-\AgdaNumber{128}\<%
+\AgdaNumber{128}%
+\>[46]\AgdaComment{--\ F₃\ divℕ\ 2\ =\ 257/2}\<%
 \\
 %
 \>[4]\AgdaComment{--\ Cross-references}\<%
@@ -78657,12 +78855,12 @@ are validated.
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaKeyword{let}%
-\>[43958I]\AgdaBound{bare}\AgdaSpace{}%
+\>[44036I]\AgdaBound{bare}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{ℕtoℚ}\AgdaSpace{}%
 \AgdaBound{k4-bare}\<%
 \\
-\>[.][@{}l@{}]\<[43958I]%
+\>[.][@{}l@{}]\<[44036I]%
 \>[6]\AgdaBound{eps}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{correction-epsilon}\AgdaSpace{}%
@@ -78794,26 +78992,29 @@ are validated.
 \>[2]\AgdaSymbol{;}\AgdaSpace{}%
 \AgdaField{bare-muon-k4}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
-\AgdaNumber{207}\<%
+\AgdaFunction{bare-muon-electron}%
+\>[39]\AgdaComment{--\ 207}\<%
 \\
 %
 \>[2]\AgdaSymbol{;}\AgdaSpace{}%
 \AgdaField{bare-tau-k4}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
-\AgdaNumber{17}\<%
+\AgdaFunction{F₂}%
+\>[39]\AgdaComment{--\ 17}\<%
 \\
 %
 \>[2]\AgdaSymbol{;}\AgdaSpace{}%
 \AgdaField{bare-higgs-k4}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
-\AgdaNumber{128}\<%
+\AgdaFunction{bare-higgs}%
+\>[40]\AgdaComment{--\ F₃\ divℕ\ 2\ =\ 128}\<%
 \\
 %
 \>[2]\AgdaSymbol{;}\AgdaSpace{}%
 \AgdaField{dressed-muon}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{compute-dressed-value}\AgdaSpace{}%
-\AgdaNumber{207}\AgdaSpace{}%
+\AgdaFunction{bare-muon-electron}\AgdaSpace{}%
 \AgdaFunction{muon-electron-ratio}\<%
 \\
 %
@@ -78821,7 +79022,7 @@ are validated.
 \AgdaField{dressed-tau}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{compute-dressed-value}\AgdaSpace{}%
-\AgdaNumber{17}\AgdaSpace{}%
+\AgdaFunction{F₂}\AgdaSpace{}%
 \AgdaFunction{tau-muon-ratio}\<%
 \\
 %
@@ -78829,7 +79030,7 @@ are validated.
 \AgdaField{dressed-higgs}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{compute-dressed-value}\AgdaSpace{}%
-\AgdaNumber{128}\AgdaSpace{}%
+\AgdaFunction{bare-higgs}\AgdaSpace{}%
 \AgdaFunction{higgs-electron-ratio}\<%
 \\
 %

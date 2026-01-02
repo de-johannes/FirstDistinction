@@ -208,71 +208,69 @@ structure that emerges necessarily from what precedes it.
 
 \begin{center}
 \begin{tikzpicture}[
-  node distance=1.8cm,
+  node distance=0.6cm,
   every node/.style={font=\small},
-  box/.style={draw, rounded corners, minimum width=2.2cm, minimum height=0.8cm, align=center},
-  arrow/.style={->, thick, fdBlue}
+  main/.style={draw, rounded corners, minimum width=3.5cm, minimum height=0.7cm, align=center, fill=fdBlue!10},
+  derives/.style={draw, rounded corners, minimum width=2.8cm, minimum height=0.6cm, align=center, font=\footnotesize},
+  arrow/.style={->, thick, fdBlue},
+  note/.style={font=\scriptsize, fdGray}
 ]
 
-% Row 1: Distinction
-\node[box, fill=fdAccent!20] (D0) {$D_0$\\The Mark};
-\node[box, right=of D0] (D1) {$D_1$\\Witness};
-\node[box, right=of D1] (D2) {$D_2$\\Cut};
-\node[box, right=of D2, fill=fdBlue!20] (K4) {$K_4$\\Graph};
+% The single emergence chain
+\node[main, fill=fdAccent!20] (D0) {$D_0$ --- The Distinction};
+\node[main, below=of D0] (witness) {Witness-Closure};
+\node[note, right=0.3cm of witness] {requires 6 edges};
 
-\draw[arrow] (D0) -- (D1);
-\draw[arrow] (D1) -- (D2);
-\draw[arrow] (D2) -- node[above, font=\scriptsize] {closure} (K4);
+\node[main, below=of witness, fill=fdBlue!20] (n4) {$n = 4$};
+\node[note, right=0.3cm of n4] {unique solution};
 
-% Row 2: Numbers
-\node[box, below=1.2cm of D0] (Bool) {Bool\\true $\mid$ false};
-\node[box, right=of Bool] (N) {$\mathbb{N}$\\Counting};
-\node[box, right=of N] (Z) {$\mathbb{Z}$\\Difference};
-\node[box, right=of Z] (Q) {$\mathbb{Q}$\\Ratio};
+% Branch point
+\node[derives, below left=0.8cm and 0.5cm of n4] (E6) {$E = 6$};
+\node[derives, below=0.8cm of n4] (d3) {$d = 3$};
+\node[derives, below right=0.8cm and 0.5cm of n4] (chi2) {$\chi = 2$};
+\node[derives, right=0.3cm of chi2] (cliff) {$2^n = 16$};
 
-\draw[arrow] (D2) -- (Bool);
-\draw[arrow] (Bool) -- (N);
-\draw[arrow] (N) -- (Z);
-\draw[arrow] (Z) -- (Q);
+% Second level
+\node[derives, below=0.6cm of d3] (kappa) {$\kappa = 2(d{+}1) = 8$};
+\node[derives, left=0.3cm of kappa] (spacetime) {$3{+}1$ spacetime};
+\node[derives, right=0.3cm of kappa] (F2) {$F_2 = 17$};
 
-% Row 3: Geometry
-\node[box, below=1.2cm of Bool] (3D) {$d=3$\\Space};
-\node[box, right=of 3D] (Lor) {$\eta_{\mu\nu}$\\Lorentz};
-\node[box, right=of Lor] (Ein) {$G_{\mu\nu}$\\Einstein};
-\node[box, right=of Ein, fill=fdBlue!20] (EFE) {EFE\\$G = \kappa T$};
+% Physics outputs
+\node[main, below=1cm of kappa] (physics) {Physical Constants};
 
-\draw[arrow] (K4) -- node[right, font=\scriptsize] {embedding} (3D);
-\draw[arrow] (3D) -- (Lor);
-\draw[arrow] (Lor) -- (Ein);
-\draw[arrow] (Ein) -- (EFE);
+\node[derives, below left=0.6cm and 1cm of physics] (alpha) {$\alpha^{-1} = 137$};
+\node[derives, below left=0.6cm and -0.3cm of physics] (muon) {$m_\mu/m_e = 207$};
+\node[derives, below right=0.6cm and -0.3cm of physics] (proton) {$m_p/m_e = 1836$};
+\node[derives, below right=0.6cm and 1cm of physics] (higgs) {$m_H = 128$};
 
-% Row 4: Forces & Matter
-\node[box, below=1.2cm of 3D] (SU3) {$SU(3)$\\Color};
-\node[box, right=of SU3] (SU2) {$SU(2)$\\Weak};
-\node[box, right=of SU2] (U1) {$U(1)$\\EM};
-\node[box, right=of U1, fill=fdAccent!20] (alpha) {$\alpha^{-1}$\\$= \,?$};
+% Arrows - main chain
+\draw[arrow] (D0) -- (witness);
+\draw[arrow] (witness) -- (n4);
+\draw[arrow] (n4) -- (E6);
+\draw[arrow] (n4) -- (d3);
+\draw[arrow] (n4) -- (chi2);
+\draw[arrow] (chi2) -- (cliff);
 
-\draw[arrow] (K4) to[bend right=20] (SU3);
-\draw[arrow] (K4) -- (SU2);
-\draw[arrow] (K4) to[bend left=10] (U1);
-\draw[arrow] (U1) -- (alpha);
+\draw[arrow] (d3) -- (spacetime);
+\draw[arrow] (d3) -- (kappa);
+\draw[arrow] (cliff) -- (F2);
 
-% Row 5: Masses
-\node[box, below=1.2cm of SU3] (me) {$m_e$\\Electron};
-\node[box, right=of me] (mmu) {$m_\mu/m_e$\\$= \,?$};
-\node[box, right=of mmu] (mp) {$m_p/m_e$\\$= \,?$};
-\node[box, right=of mp] (mH) {$m_H$\\Higgs};
+\draw[arrow] (spacetime) -- (physics);
+\draw[arrow] (kappa) -- (physics);
+\draw[arrow] (F2) -- (physics);
+\draw[arrow] (E6) to[bend right=15] (physics);
+\draw[arrow] (chi2) to[bend left=15] (physics);
 
-\draw[arrow] (K4) to[bend right=30] (me);
-\draw[arrow] (me) -- (mmu);
-\draw[arrow] (mmu) -- (mp);
-\draw[arrow] (mp) -- (mH);
-
-% Vertical connector from K4
-\draw[arrow, dashed, fdGray] (K4) -- ++(0,-5.5);
+\draw[arrow] (physics) -- (alpha);
+\draw[arrow] (physics) -- (muon);
+\draw[arrow] (physics) -- (proton);
+\draw[arrow] (physics) -- (higgs);
 
 \end{tikzpicture}
 \end{center}
+
+\medskip
+\noindent\textit{One input: the act of distinction. Everything else is forced.}
 
 \bigskip
 
