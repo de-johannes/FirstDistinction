@@ -46,7 +46,11 @@ jobs:
       - name: Compile LaTeX to PDF
         run: |
           cd latex
-          latexmk -xelatex -interaction=nonstopmode FirstDistinction.tex
+          # Run xelatex multiple times to resolve all references
+          xelatex -interaction=nonstopmode FirstDistinction.tex || true
+          xelatex -interaction=nonstopmode FirstDistinction.tex || true
+          xelatex -interaction=nonstopmode FirstDistinction.tex
+          echo "✅ PDF compiled"
 
       - name: Move PDF to root
         run: |
