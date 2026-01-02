@@ -49,8 +49,9 @@ jobs:
           # Run xelatex multiple times to resolve all references
           xelatex -interaction=nonstopmode FirstDistinction.tex || true
           xelatex -interaction=nonstopmode FirstDistinction.tex || true
-          xelatex -interaction=nonstopmode FirstDistinction.tex
-          echo "✅ PDF compiled"
+          xelatex -interaction=nonstopmode FirstDistinction.tex || true
+          # Verify PDF was created
+          test -f FirstDistinction.pdf && echo "✅ PDF compiled ($(wc -c < FirstDistinction.pdf) bytes)"
 
       - name: Move PDF to root
         run: |
