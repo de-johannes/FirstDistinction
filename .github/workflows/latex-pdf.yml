@@ -38,13 +38,15 @@ jobs:
           echo "✅ LaTeX generated in latex/ directory"
           ls -la latex/
 
+      - name: Install TeX Live
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-xetex texlive-science texlive-fonts-extra latexmk
+
       - name: Compile LaTeX to PDF
-        uses: xu-cheng/latex-action@v3
-        with:
-          working_directory: latex
-          root_file: FirstDistinction.tex
-          latexmk_use_xelatex: true
-          extra_system_packages: "texlive-xetex texlive-science texlive-fonts-extra"
+        run: |
+          cd latex
+          latexmk -xelatex -interaction=nonstopmode FirstDistinction.tex
 
       - name: Move PDF to root
         run: |
