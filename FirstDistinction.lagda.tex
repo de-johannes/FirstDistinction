@@ -5336,20 +5336,41 @@ The $K_4$ graph, representing the simplest non-planar graph, encodes the fundame
 vertexCountK4 : ℕ
 vertexCountK4 = 4
 
+-- Complete graph: E = n(n-1)/2 = 4×3/2 = 6
 edgeCountK4 : ℕ
-edgeCountK4 = 6
+edgeCountK4 = (vertexCountK4 * (vertexCountK4 ∸ 1)) divℕ 2
+
+-- Verify emergence
+theorem-edges : edgeCountK4 ≡ 6
+theorem-edges = refl
 
 faceCountK4 : ℕ
 faceCountK4 = 4
 
+-- Regular graph: degree = n - 1 = 3
 degree-K4 : ℕ
-degree-K4 = 3
+degree-K4 = vertexCountK4 ∸ 1
 
+-- Verify emergence
+theorem-degree : degree-K4 ≡ 3
+theorem-degree = refl
+
+-- Euler characteristic: V - E + F = 4 - 6 + 4 = 2
 eulerChar-computed : ℕ
-eulerChar-computed = 2
+eulerChar-computed = (vertexCountK4 + faceCountK4) ∸ edgeCountK4
 
+-- Verify emergence
+theorem-euler : eulerChar-computed ≡ 2
+theorem-euler = refl
+
+-- Clifford algebra dimension: 2^n for n = vertexCountK4 = 4
+-- This gives 2⁴ = 16 spinor components
 clifford-dimension : ℕ
-clifford-dimension = 16
+clifford-dimension = 2 ^ vertexCountK4
+
+-- Verify emergence
+theorem-clifford : clifford-dimension ≡ 16
+theorem-clifford = refl
 
 spinor-modes : ℕ
 spinor-modes = clifford-dimension
@@ -5360,8 +5381,13 @@ F₂ = suc spinor-modes
 F₃ : ℕ
 F₃ = suc (spinor-modes * spinor-modes)
 
+-- Einstein coupling: κ = 2(d + 1) where d = 3 (embedding dimension)
 κ-discrete : ℕ
-κ-discrete = 8
+κ-discrete = 2 * (degree-K4 + 1)
+
+-- Verify emergence: 2 × 4 = 8
+theorem-κ : κ-discrete ≡ 8
+theorem-κ = refl
 \end{code}
 
 \section{The Genesis Sequence}
@@ -14464,8 +14490,7 @@ of topologically distinct paths around the graph. These numbers ($3, 9, 27, \ldo
 in the mass hierarchy:
 
 \begin{code}
-theorem-degree : degree-K4 ≡ 3
-theorem-degree = refl
+-- degree-K4 ≡ 3 already proven at definition site
 
 winding-factor : ℕ → ℕ
 winding-factor n = degree-K4 ^ n
