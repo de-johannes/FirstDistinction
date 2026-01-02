@@ -5331,51 +5331,36 @@ holographic encoding.
 The $K_4$ graph, representing the simplest non-planar graph, yields numerical invariants that coincide with certain measured values.
 
 \begin{code}
--- The vertex count n=4 is not arbitrary: it is the UNIQUE value satisfying
--- the witness-closure constraint. See Section~\ref{sec:global-classification}.
--- For K₃: insufficient witnesses. For K₅: no forcing mechanism.
--- Only n=4 works. This is PROVEN, not assumed.
 vertexCountK4 : ℕ
 vertexCountK4 = 4
 
--- Complete graph: E = n(n-1)/2 = 4×3/2 = 6
 edgeCountK4 : ℕ
 edgeCountK4 = (vertexCountK4 * (vertexCountK4 ∸ 1)) divℕ 2
 
--- Verify emergence
 theorem-edges : edgeCountK4 ≡ 6
 theorem-edges = refl
 
--- Faces = triangles in complete graph = C(n,3) = n(n-1)(n-2)/6
 faceCountK4 : ℕ
 faceCountK4 = (vertexCountK4 * (vertexCountK4 ∸ 1) * (vertexCountK4 ∸ 2)) divℕ 6
 
--- Verify emergence
 theorem-faces : faceCountK4 ≡ 4
 theorem-faces = refl
 
--- Regular graph: degree = n - 1 = 3
 degree-K4 : ℕ
 degree-K4 = vertexCountK4 ∸ 1
 
--- Verify emergence
 theorem-degree : degree-K4 ≡ 3
 theorem-degree = refl
 
--- Euler characteristic: V - E + F = 4 - 6 + 4 = 2
 eulerChar-computed : ℕ
 eulerChar-computed = (vertexCountK4 + faceCountK4) ∸ edgeCountK4
 
--- Verify emergence
 theorem-euler : eulerChar-computed ≡ 2
 theorem-euler = refl
 
--- Clifford algebra dimension: 2^n for n = vertexCountK4 = 4
--- This gives 2⁴ = 16 spinor components
 clifford-dimension : ℕ
 clifford-dimension = 2 ^ vertexCountK4
 
--- Verify emergence
 theorem-clifford : clifford-dimension ≡ 16
 theorem-clifford = refl
 
@@ -5388,11 +5373,9 @@ F₂ = suc spinor-modes
 F₃ : ℕ
 F₃ = suc (spinor-modes * spinor-modes)
 
--- Einstein coupling: κ = 2(d + 1) where d = 3 (embedding dimension)
 κ-discrete : ℕ
 κ-discrete = 2 * (degree-K4 + 1)
 
--- Verify emergence: 2 × 4 = 8
 theorem-κ : κ-discrete ≡ 8
 theorem-κ = refl
 \end{code}
@@ -6213,7 +6196,6 @@ record K4StructuralConsistency : Set where
     robustness        : K4Robustness
     cross-constraints : K4CrossConstraints
 
--- Lemma: K4 satisfies all structural constraints
 lemma-K4-structural-consistency : K4StructuralConsistency
 lemma-K4-structural-consistency = record
   { consistency       = theorem-K4-consistency
@@ -6222,7 +6204,6 @@ lemma-K4-structural-consistency = record
   ; cross-constraints = theorem-K4-cross-constraints
   }
 
--- Backwards compatibility alias
 K4UniquenessComplete : Set
 K4UniquenessComplete = K4StructuralConsistency
 
@@ -6273,14 +6254,8 @@ K4-all-pairs-witnessed = 6
 theorem-K4-witness-closure : K4-all-pairs-witnessed ≡ K4-E
 theorem-K4-witness-closure = refl
 
--- THE CENTRAL THEOREM: n=4 is not assumed, it is DERIVED.
--- Witness-closure requires 6 edges. E = n(n-1)/2 = 6 implies n = 4.
--- This is the unique positive integer solution.
 theorem-n-from-witness-closure : vertexCountK4 ≡ 4
 theorem-n-from-witness-closure = refl
--- The proof: 4×3/2 = 6 ✓, and no other n gives 6.
--- n=3: 3×2/2 = 3 ≠ 6
--- n=5: 5×4/2 = 10 ≠ 6
 \end{code}
 
 The witnessing relation forces the graph to be complete.
@@ -6332,7 +6307,6 @@ This is the foundational theorem upon which all subsequent physics depends. The 
 \end{enumerate}
 
 \begin{code}
--- Impossibility for K1: A single vertex has no edges, cannot witness anything
 record ImpossibilityK1 : Set where
   field
     no-edges      : memory 1 ≡ 0
@@ -6346,7 +6320,6 @@ theorem-K1-impossible = record
   ; no-dimension = λ ()
   }
 
--- Impossibility for K2: Two vertices have one edge, insufficient structure
 record ImpossibilityK2 : Set where
   field
     one-edge      : memory 2 ≡ 1
@@ -6366,7 +6339,6 @@ For $n < 4$, there are too few edges to close all witness relations.
 For $n > 4$, no forcing mechanism exists---the structure is already complete at $n = 4$.
 
 \begin{code}
--- Impossibility for K3: Has 3 edges, but dimension = 2, not 3
 record ImpossibilityK3-structural : Set where
   field
     three-edges     : memory 3 ≡ 3
@@ -6392,10 +6364,6 @@ $K_3$ (the triangle) has only 3 edges and embeds in 2 dimensions. It cannot sati
 For $n \geq 5$, the situation is different: the constraint is not violated, but there is no \emph{forcing mechanism}. Once $K_4$ is complete, all pairs are witnessed. There is no ``uncaptured pair'' that would force a fifth distinction into existence.
 
 \begin{code}
--- For n ≥ 5: No forcing mechanism exists
--- The key insight: once K4 is complete, ALL pairs are witnessed
--- There is no "uncaptured pair" that would force D₄ into existence
-
 record NoForcingAboveK4 (n : ℕ) : Set where
   field
     K4-complete        : (e : K4EdgeForStability) → K4EdgeCaptured e
@@ -6413,7 +6381,6 @@ theorem-no-forcing-K6 = record
   ; no-new-requirement = refl
   }
 
--- The general principle: for any n > 4, the same argument applies
 theorem-no-forcing-above-K4 : ∀ (n : ℕ) → 4 < n → NoForcingAboveK4 n
 theorem-no-forcing-above-K4 n _ = record
   { K4-complete = theorem-K4-all-edges-captured
@@ -6424,7 +6391,6 @@ theorem-no-forcing-above-K4 n _ = record
 We now state the \textbf{Global Classification Theorem}: $K_4$ is the unique complete graph satisfying the witness-closure constraint.
 
 \begin{code}
--- The classification: n = 4 is the unique solution
 data K4UniqueClassification : ℕ → Set where
   too-small-0  : K4UniqueClassification 0
   too-small-1  : K4UniqueClassification 1
@@ -6433,7 +6399,6 @@ data K4UniqueClassification : ℕ → Set where
   exactly-K4   : K4UniqueClassification 4
   unreachable  : ∀ {n} → 4 < n → K4UniqueClassification n
 
--- For any n, we can classify it
 classify-Kn : (n : ℕ) → K4UniqueClassification n
 classify-Kn zero = too-small-0
 classify-Kn (suc zero) = too-small-1
@@ -6442,11 +6407,8 @@ classify-Kn (suc (suc (suc zero))) = too-small-3
 classify-Kn (suc (suc (suc (suc zero)))) = exactly-K4
 classify-Kn (suc (suc (suc (suc (suc n))))) = unreachable (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))
 
--- The key theorem: 4 is the unique fixpoint for the degree constraint
--- For complete graph K_n: degree = n - 1
--- We require degree = 3, therefore n = 4
 theorem-4-unique-from-degree : ∀ (n : ℕ) → 
-  (n ∸ 1 ≡ 3) →              -- degree = 3 (embeds in 3D)
+  (n ∸ 1 ≡ 3) →
   n ≡ 4
 theorem-4-unique-from-degree (suc (suc (suc (suc zero)))) _ = refl
 theorem-4-unique-from-degree zero ()
@@ -6455,23 +6417,19 @@ theorem-4-unique-from-degree (suc (suc zero)) ()
 theorem-4-unique-from-degree (suc (suc (suc zero))) ()
 theorem-4-unique-from-degree (suc (suc (suc (suc (suc n))))) ()
 
--- Explicit edge count verification for small graphs
 theorem-memory-values : (memory 0 ≡ 0) × (memory 1 ≡ 0) × (memory 2 ≡ 1) × 
                         (memory 3 ≡ 3) × (memory 4 ≡ 6) × (memory 5 ≡ 10)
 theorem-memory-values = refl , refl , refl , refl , refl , refl
 
--- For n ≥ 5: memory n ≥ 10, so memory n ≢ 6
 lemma-memory-5-is-10 : memory 5 ≡ 10
 lemma-memory-5-is-10 = refl
 
 lemma-10-not-6 : ¬ (10 ≡ 6)
 lemma-10-not-6 ()
 
--- The FULL uniqueness theorem with BOTH constraints
--- This is the strongest form: n = 4 is the UNIQUE solution to BOTH constraints simultaneously
 theorem-4-unique-fixpoint : ∀ (n : ℕ) → 
-  (memory n ≡ 6) →           -- has 6 edges (complete witness structure)
-  (n ∸ 1 ≡ 3) →              -- degree = 3 (embeds in 3D)
+  (memory n ≡ 6) →
+  (n ∸ 1 ≡ 3) →
   n ≡ 4
 theorem-4-unique-fixpoint zero mem-eq _ with mem-eq
 ... | ()
@@ -6492,7 +6450,6 @@ theorem-4-unique-fixpoint (suc (suc (suc (suc (suc (suc (suc (suc n)))))))) mem-
   with deg-eq
 ... | ()
 
--- Combined uniqueness: both constraints uniquely determine n = 4
 theorem-K4-unique-by-degree-and-edges : 
   (∀ (n : ℕ) → memory n ≡ 6 → n ∸ 1 ≡ 3 → n ≡ 4) × (memory 4 ≡ 6) × (4 ∸ 1 ≡ 3)
 theorem-K4-unique-by-degree-and-edges = theorem-4-unique-fixpoint , refl , refl
@@ -7980,12 +7937,9 @@ bare-muon-electron = 207
 bare-tau-muon : ℕ
 bare-tau-muon = F₂
 
--- Higgs bare mass: F₃ / 2 = 257 / 2 = 128 (integer division)
--- The Fermat prime F₃ = 2^(2³) + 1 = 257 emerges from spinor structure
 bare-higgs : ℕ
 bare-higgs = F₃ divℕ 2
 
--- Verify the emergence
 theorem-bare-higgs : bare-higgs ≡ 128
 theorem-bare-higgs = refl
 
@@ -8526,7 +8480,6 @@ theorem-parameters-derived = record
   ; slope-derivation = theorem-slope-from-k4-geometry
   }
 
--- Cross-validation: both use same K4 invariants
 theorem-offset-slope-use-same-k4 : 
   OffsetDerivation.k4-vertices theorem-offset-from-k4 ≡ 
   SlopeDerivation.k4-vertices theorem-slope-from-k4-geometry
@@ -14506,8 +14459,6 @@ of topologically distinct paths around the graph. These numbers ($3, 9, 27, \ldo
 in the mass hierarchy:
 
 \begin{code}
--- degree-K4 ≡ 3 already proven at definition site
-
 winding-factor : ℕ → ℕ
 winding-factor n = degree-K4 ^ n
 
@@ -15109,7 +15060,6 @@ ProtonSpace = SpinSpace × VolumeSpace × CompactifiedSpinorSpace
 proton-mass-formula : ℕ
 proton-mass-formula = (eulerChar-computed * eulerChar-computed) * (degree-K4 * degree-K4 * degree-K4) * F₂
 
--- χ² × d³ × F₂ = 4 × 27 × 17 = 1836. The proton emerges.
 theorem-proton-mass : proton-mass-formula ≡ 1836
 theorem-proton-mass = refl
 
@@ -15250,12 +15200,9 @@ MuonMassSpace = InteractionSurface × MuonFactorSpace
 muon-mass-formula : ℕ
 muon-mass-formula = (degree-K4 * degree-K4) * muon-factor
 
--- The moment of truth: Agda computes (3² × 23) from pure structure.
--- No number was inserted. 207 emerges.
 theorem-muon-mass : muon-mass-formula ≡ 207
 theorem-muon-mass = refl
 
--- Consistency: the early definition matches the formula
 theorem-bare-muon-consistent : bare-muon-electron ≡ muon-mass-formula
 theorem-bare-muon-consistent = refl
 \end{code}
@@ -15296,11 +15243,9 @@ muon-uniqueness = record
 tau-mass-formula : ℕ
 tau-mass-formula = F₂ * muon-mass-formula
 
--- F₂ × 207 = 17 × 207 = 3519. Again, pure structure.
 theorem-tau-mass : tau-mass-formula ≡ 3519
 theorem-tau-mass = refl
 
--- The Fermat prime F₂ = 2^(2^2) + 1 = 17.
 theorem-tau-muon-ratio : F₂ ≡ 17
 theorem-tau-muon-ratio = refl
 
