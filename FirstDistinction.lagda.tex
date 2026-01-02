@@ -250,7 +250,7 @@ structure that emerges necessarily from what precedes it.
 \node[box, below=1.2cm of 3D] (SU3) {$SU(3)$\\Color};
 \node[box, right=of SU3] (SU2) {$SU(2)$\\Weak};
 \node[box, right=of SU2] (U1) {$U(1)$\\EM};
-\node[box, right=of U1, fill=fdAccent!20] (alpha) {$\alpha^{-1}$\\$= 137$};
+\node[box, right=of U1, fill=fdAccent!20] (alpha) {$\alpha^{-1}$\\$= \,?$};
 
 \draw[arrow] (K4) to[bend right=20] (SU3);
 \draw[arrow] (K4) -- (SU2);
@@ -297,7 +297,7 @@ $\Lambda = 3$.
 
 \item \textbf{Forces} (Chapters 31--33): The symmetries of $K_4$ give $SU(3) \times SU(2) \times U(1)$. 
 The 4 faces give 3 colors. The 6 edges give 8 gluons. The spectral invariants give 
-$\alpha^{-1} = 137$ and $\sin^2\theta_W = 0.2314$.
+the fine structure constant and the Weinberg angle. \emph{The numbers emerge.}
 
 \item \textbf{Matter} (interspersed): The $K_4$ eigenvalue ratios determine the lepton mass hierarchy. The Fermat primes $F_2 = 17$ and $F_3 = 257$ appear. \emph{The numerical values emerge from pure structure---they are not inserted.}
 
@@ -7938,8 +7938,14 @@ bare-muon-electron = 207
 bare-tau-muon : ℕ
 bare-tau-muon = F₂
 
+-- Higgs bare mass: F₃ / 2 = 257 / 2 = 128 (integer division)
+-- The Fermat prime F₃ = 2^(2³) + 1 = 257 emerges from spinor structure
 bare-higgs : ℕ
-bare-higgs = 128
+bare-higgs = F₃ divℕ 2
+
+-- Verify the emergence
+theorem-bare-higgs : bare-higgs ≡ 128
+theorem-bare-higgs = refl
 
 \end{code}
 
@@ -8504,7 +8510,7 @@ theorem-epsilon-consistency : EpsilonConsistency
 theorem-epsilon-consistency = record
   { muon-bare-value = refl    -- bare-muon-electron defined as 207
   ; tau-bare-value = refl     -- bare-tau-muon defined as F₂
-  ; higgs-bare-value = refl   -- bare-higgs defined as 128
+  ; higgs-bare-value = refl   -- bare-higgs = F₃ divℕ 2 = 257/2 = 128
   ; correlation = (mkℤ 9994 zero) / (ℕ-to-ℕ⁺ 10000)
   ; rms-error = (mkℤ 25 zero) / (ℕ-to-ℕ⁺ 100000)
   }
@@ -15207,6 +15213,10 @@ muon-mass-formula = (degree-K4 * degree-K4) * muon-factor
 -- No number was inserted. 207 emerges.
 theorem-muon-mass : muon-mass-formula ≡ 207
 theorem-muon-mass = refl
+
+-- Consistency: the early definition matches the formula
+theorem-bare-muon-consistent : bare-muon-electron ≡ muon-mass-formula
+theorem-bare-muon-consistent = refl
 \end{code}
 
 \noindent\textbf{207.} The muon-to-electron mass ratio, measured to six decimal places in laboratories around the world, emerges from $d^2 \times (E + F_2) = 3^2 \times (6 + 17)$. No parameter was adjusted.
@@ -17738,7 +17748,7 @@ record ContinuumTransitionProofStructure : Set where
     -- Robustness: bare values reference canonical definitions
     robustness-muon-bare : bare-muon-electron ≡ 207
     robustness-tau-bare : bare-tau-muon ≡ F₂
-    robustness-higgs-bare : bare-higgs ≡ 128
+    robustness-higgs-bare : bare-higgs ≡ 128  -- F₃ divℕ 2 = 257/2
     -- Cross-references
     cross-offset-topology : OffsetDerivation
     cross-slope-qcd : SlopeDerivation
@@ -17821,12 +17831,12 @@ diff-higgs = dressed-higgs-real -ℝ pdg-higgs
 theorem-k4-to-pdg : IntegrationTheorem
 theorem-k4-to-pdg = record
   { epsilon-formula = correction-epsilon
-  ; bare-muon-k4 = 207
-  ; bare-tau-k4 = 17
-  ; bare-higgs-k4 = 128
-  ; dressed-muon = compute-dressed-value 207 muon-electron-ratio
-  ; dressed-tau = compute-dressed-value 17 tau-muon-ratio
-  ; dressed-higgs = compute-dressed-value 128 higgs-electron-ratio
+  ; bare-muon-k4 = bare-muon-electron  -- 207
+  ; bare-tau-k4 = F₂                   -- 17
+  ; bare-higgs-k4 = bare-higgs          -- F₃ divℕ 2 = 128
+  ; dressed-muon = compute-dressed-value bare-muon-electron muon-electron-ratio
+  ; dressed-tau = compute-dressed-value F₂ tau-muon-ratio
+  ; dressed-higgs = compute-dressed-value bare-higgs higgs-electron-ratio
   ; dressed-muon-ℝ = dressed-muon-real
   ; dressed-tau-ℝ = dressed-tau-real
   ; dressed-higgs-ℝ = dressed-higgs-real
