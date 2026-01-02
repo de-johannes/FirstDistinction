@@ -35,6 +35,7 @@ jobs:
         run: |
           echo "📦 Generating LaTeX from literate Agda..."
           agda --latex --safe --without-K FirstDistinction.lagda.tex
+          cp agda.sty latex/
           echo "✅ LaTeX generated in latex/ directory"
           ls -la latex/
 

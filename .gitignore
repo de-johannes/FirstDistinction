@@ -14,9 +14,10 @@
 *.blg
 *.lof
 *.lot
-*.sty
 
-latex
-work
+# Keep agda.sty in root for CI
+# latex/ folder is generated, not tracked
+latex/
 
-.venv
+work/
+.venv/
