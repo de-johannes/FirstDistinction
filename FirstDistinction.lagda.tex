@@ -187,7 +187,7 @@ severely.
 
 This path leads to the complete graph $K_4$. When we analyze the spectral 
 properties of this graph, we find dimensionless numbers that bear a striking 
-resemblance to the fundamental constants of physics, such as the fine-structure 
+resemblance to measured physical values, such as the fine-structure 
 constant $\alpha$.
 
 In total, we present a formal experiment: what happens if we take the concept of 
@@ -715,8 +715,8 @@ against experimental PDG values with high precision (e.g., $137.035999177$). The
 involve large integers (billions) that would be impractical to handle via Peano arithmetic.
 
 \textbf{The document would compile without them.} We could remove all PDG comparisons and 
-work only with small integers. The proofs that physical constants emerge from $K_4$ structure, 
-that spacetime has $3+1$ dimensions---all of these require only small numbers and would 
+work only with small integers. The proofs that numerical invariants emerge from $K_4$ structure, 
+that the embedding dimension is $3$---all of these require only small numbers and would 
 compile without any BUILTIN pragmas. The pragmas enable the \emph{bonus} of showing agreement 
 with experiment to six decimal places, but this bonus is not logically necessary.
 
@@ -802,7 +802,7 @@ Logic has emerged from distinction. We did not assume it.
 \chapter{Logical Primitives}
 
 We have derived truth from the structure of distinction itself. But to proceed 
-further—to construct numbers, to analyze graphs, to reach physical constants—we 
+further—to construct numbers, to analyze graphs, to compute numerical invariants—we 
 must build a calculus of combination.
 
 The question is: given two types $A$ and $B$, how can they interact? Can we have 
@@ -2633,7 +2633,7 @@ theorem-core-independent-of-ℝ : core-proofs-use ≡ natural-layer
 theorem-core-independent-of-ℝ = refl
 \end{code}
 
-\part{The Physical World}
+\part{Empirical Correspondence}
 
 \chapter{Empirical Contact}
 
@@ -2642,9 +2642,9 @@ logic, natural numbers, integers, rationals, and (in skeletal form) reals. Every
 forced by the requirements of self-consistency and closure under operations.
 
 But this remains, so far, pure mathematics. The question we now explore is: \emph{could} this 
-structure correspond to the physical world? Could the dimensionless constants of nature—the 
-fine-structure constant $\alpha$, the mass ratios of leptons, the Higgs field vacuum 
-expectation value—be structural properties of $K_4$ rather than arbitrary parameters?
+structure correspond to empirical observation? Could the dimensionless constants measured in 
+physics—the fine-structure constant $\alpha$, the mass ratios of leptons, the Higgs mass—
+coincide with structural properties of $K_4$?
 
 \begin{figure}[h]
 \centering
@@ -3678,7 +3678,7 @@ On a lattice with spacing $a$, the maximum momentum is $\pi/a$. Beyond this scal
 lattice approximation breaks down. There is a natural UV cutoff built into the structure.
 
 In our framework, the lattice spacing is the Planck length: $a = \ell_P = \sqrt{\hbar G / c^3}$. 
-This is the only scale that can be constructed from fundamental constants without arbitrary 
+This is the only scale that can be constructed from fundamental scales without arbitrary 
 ratios. It is not a parameter we choose—it is the scale at which quantum gravity becomes 
 relevant and classical spacetime ceases to be a good approximation.
 
@@ -5328,7 +5328,7 @@ holographic encoding.
 
 \section{The Graph Invariants}
 
-The $K_4$ graph, representing the simplest non-planar graph, encodes the fundamental constants of particle physics.
+The $K_4$ graph, representing the simplest non-planar graph, yields numerical invariants that coincide with certain measured values.
 
 \begin{code}
 -- The vertex count n=4 is not arbitrary: it is the UNIQUE value satisfying
@@ -7784,7 +7784,7 @@ theorem-dimension-4part = record
 
 \end{code}
 
-We verify the fundamental constants of the graph.
+We verify the structural invariants of the graph.
 
 \begin{code}
 theorem-lambda-from-k4 : λ₄ ≡ mkℤ 4 zero
@@ -12115,9 +12115,9 @@ theorem-all-eigenvector-equations = record
   }
 \end{code}
 
-\section{Calibration of Physical Constants}
+\section{Scale Identification}
 
-We calibrate the discrete model parameters against physical constants. We identify the discrete length scale $\ell$ with the Planck length and verify the values of $\kappa$ and the cosmological constant $\Lambda$.
+We identify the discrete model parameters with physical scales for comparison. We set the discrete length scale $\ell$ equal to the Planck length and compare the emergent values of $\kappa$ and the cosmological constant $\Lambda$ with observation.
 
 \begin{code}
 ℓ-discrete : ℕ
@@ -18617,9 +18617,9 @@ arising from the $K_4$ structure. This would close the last gap in the derivatio
 \chapter{Experimental Validation}
 \label{chap:validation}
 
-Having derived the physical constants from $K_4$ structure, we now compare these mathematical 
-predictions with experimental measurements. This chapter contains no new derivations—only 
-verification that the computed values agree with observations.
+Having computed numerical invariants from the $K_4$ structure, we now compare these values 
+with experimental measurements. This chapter contains no new derivations—only 
+comparison of computed values with observations.
 
 \section{Measured Values}
 
