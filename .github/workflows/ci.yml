@@ -28,12 +28,12 @@ jobs:
         with:
           agda-version: '2.7.0.1'
 
-      - name: Compile FD-minimal.agda
+      - name: Compile FD-Minimal.agda
         run: |
-          echo "⏳ Compiling FD-minimal.agda (--safe --without-K)..."
+          echo "⏳ Compiling FD-Minimal.agda (--safe --without-K)..."
           set -e
-          if agda --safe --without-K FD-minimal.agda; then
-            echo "✅ FD-minimal.agda compiles successfully"
+          if agda --safe --without-K FD-Minimal.agda; then
+            echo "✅ FD-Minimal.agda compiles successfully"
           else
             echo "❌ Compilation FAILED!"
             exit 1
