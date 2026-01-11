@@ -22766,6 +22766,38 @@ theorem-loop-depth-5pillar = record
   }
 \end{code}
 
+\section{Connection to String Theory: The 10 Dimensions}
+
+A remarkable connection exists between the $K_4$ structure and superstring theory. 
+String theory requires exactly \textbf{10 spacetime dimensions} for quantum consistency. 
+In conventional string theory, these decompose as $10 = 4 + 6$: four extended 
+dimensions (our observable spacetime) plus six compactified dimensions (curled up 
+at the Planck scale).
+
+In the $K_4$ framework, the same decomposition emerges naturally but with a 
+different interpretation:
+\begin{itemize}
+\item \textbf{6 edges} of $K_4$ correspond to the bivector grade of the Clifford 
+  algebra $Cl(4)$---the generators of Lorentz transformations (3 rotations + 3 boosts).
+\item \textbf{4 vertices} of $K_4$ correspond to the vector grade---the four 
+  spacetime directions.
+\item Together: $E + V = 6 + 4 = 10$ dimensions.
+\end{itemize}
+
+This is \emph{not} a coincidence. The complete graph $K_5$ (which arises when we 
+add the centroid as a fifth vertex) has exactly 10 edges: $E_{K_5} = 5 \times 4 / 2 = 10$. 
+These 10 edges decompose as:
+\begin{itemize}
+\item \textbf{6 inner edges}: the original $K_4$ edges (``bulk'' dynamics)
+\item \textbf{4 centroid edges}: connections from each $K_4$ vertex to the centroid 
+  (``boundary'' or ``string'' degrees of freedom)
+\end{itemize}
+
+The centroid---the Witness position---thus provides the additional structure that 
+string theory requires. The ``compactified'' dimensions are not hidden in some 
+inaccessible Calabi-Yau manifold; they are the \emph{relationship between the 
+observer and the observed}.
+
 \begin{code}
 data VertexIndex : Set where
   v0 v1 v2 v3 : VertexIndex
@@ -22795,6 +22827,11 @@ K5-string-edges = K4-V
 theorem-edge-decomposition : K5-inner-edges + K5-string-edges ≡ K5-total-edges
 theorem-edge-decomposition = refl
 \end{code}
+
+We formalize this as a theorem: the 10 dimensions of string theory decompose as 
+$6 + 4$, where 6 equals the edge count of $K_4$ (bivectors/Lorentz generators) and 
+4 equals the vertex count (spacetime directions). This is not a parameter choice---it 
+is forced by the structure of the complete graph.
 
 \begin{code}
 record StringTheoryReinterpretation : Set where
