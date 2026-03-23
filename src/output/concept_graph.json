@@ -1,0 +1,782 @@
+{
+  "chapter_1": {
+    "title": "The Mark",
+    "part": "Genesis: The Unavoidable Structure",
+    "agda_modules": [
+      "D\u2080"
+    ],
+    "five_pillar": false,
+    "needs": []
+  },
+  "chapter_2": {
+    "title": "The Witness",
+    "part": "Genesis: The Unavoidable Structure",
+    "agda_modules": [
+      "D\u2081"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1
+    ]
+  },
+  "chapter_3": {
+    "title": "The Cut",
+    "part": "Genesis: The Unavoidable Structure",
+    "agda_modules": [
+      "D\u2082",
+      "Bool"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2
+    ]
+  },
+  "chapter_4": {
+    "title": "Witness-Closure",
+    "part": "Genesis: The Unavoidable Structure",
+    "agda_modules": [
+      "WitnessClosure"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3
+    ]
+  },
+  "chapter_5": {
+    "title": "K\u2084 Emerges",
+    "part": "Genesis: The Unavoidable Structure",
+    "agda_modules": [
+      "K4",
+      "GraphTheory"
+    ],
+    "five_pillar": true,
+    "needs": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "chapter_6": {
+    "title": "The Distinction Field",
+    "part": "Genesis: The Unavoidable Structure",
+    "agda_modules": [
+      "DistinctionField"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "chapter_7": {
+    "title": "Natural Numbers",
+    "part": "Arithmetic: Tools for Self-Reference",
+    "agda_modules": [
+      "\u2115",
+      "Peano"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  "chapter_8": {
+    "title": "Integers",
+    "part": "Arithmetic: Tools for Self-Reference",
+    "agda_modules": [
+      "\u2124"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "chapter_9": {
+    "title": "Rationals",
+    "part": "Arithmetic: Tools for Self-Reference",
+    "agda_modules": [
+      "\u211a"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  "chapter_10": {
+    "title": "Reals and Continuity",
+    "part": "Arithmetic: Tools for Self-Reference",
+    "agda_modules": [
+      "\u211d",
+      "Interval"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "chapter_11": {
+    "title": "Embedding Dimension",
+    "part": "Spacetime: K\u2084 as Geometry",
+    "agda_modules": [
+      "EmbeddingDimension"
+    ],
+    "five_pillar": true,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  "chapter_12": {
+    "title": "Time Emergence",
+    "part": "Spacetime: K\u2084 as Geometry",
+    "agda_modules": [
+      "TimeEmergence",
+      "Drift"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ]
+  },
+  "chapter_13": {
+    "title": "Minkowski Signature",
+    "part": "Spacetime: K\u2084 as Geometry",
+    "agda_modules": [
+      "MinkowskiSignature"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  "chapter_14": {
+    "title": "The Einstein Tensor",
+    "part": "Spacetime: K\u2084 as Geometry",
+    "agda_modules": [
+      "EinsteinCoupling"
+    ],
+    "five_pillar": true,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ]
+  },
+  "chapter_15": {
+    "title": "Cosmological Constant",
+    "part": "Spacetime: K\u2084 as Geometry",
+    "agda_modules": [
+      "CosmologicalConstant"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ]
+  },
+  "chapter_16": {
+    "title": "Gauge Structure",
+    "part": "Forces: K\u2084 Symmetries",
+    "agda_modules": [
+      "GaugeSymmetry",
+      "S4"
+    ],
+    "five_pillar": true,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ]
+  },
+  "chapter_17": {
+    "title": "The Fine-Structure Constant",
+    "part": "Forces: K\u2084 Symmetries",
+    "agda_modules": [
+      "Alpha",
+      "SpectralStructure"
+    ],
+    "five_pillar": true,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ]
+  },
+  "chapter_18": {
+    "title": "The Weinberg Angle",
+    "part": "Forces: K\u2084 Symmetries",
+    "agda_modules": [
+      "WeinbergAngle"
+    ],
+    "five_pillar": true,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ]
+  },
+  "chapter_19": {
+    "title": "RG Flow",
+    "part": "Forces: K\u2084 Symmetries",
+    "agda_modules": [
+      "RGFlow"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ]
+  },
+  "chapter_20": {
+    "title": "The Laplacian Spectrum",
+    "part": "Matter: K\u2084 Eigenmodes",
+    "agda_modules": [
+      "LaplacianSpectrum"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  "chapter_21": {
+    "title": "Fermion Generations",
+    "part": "Matter: K\u2084 Eigenmodes",
+    "agda_modules": [
+      "FermionGenerations"
+    ],
+    "five_pillar": true,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ]
+  },
+  "chapter_22": {
+    "title": "Electron Mass",
+    "part": "Matter: K\u2084 Eigenmodes",
+    "agda_modules": [
+      "ElectronMass"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21
+    ]
+  },
+  "chapter_23": {
+    "title": "Muon Mass Ratio",
+    "part": "Matter: K\u2084 Eigenmodes",
+    "agda_modules": [
+      "MuonMassRatio"
+    ],
+    "five_pillar": true,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ]
+  },
+  "chapter_24": {
+    "title": "Proton-Electron Ratio",
+    "part": "Matter: K\u2084 Eigenmodes",
+    "agda_modules": [
+      "ProtonElectronRatio"
+    ],
+    "five_pillar": true,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ]
+  },
+  "chapter_25": {
+    "title": "Quark Mixing",
+    "part": "Matter: K\u2084 Eigenmodes",
+    "agda_modules": [
+      "CKMMatrix",
+      "CabibboAngle"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24
+    ]
+  },
+  "chapter_26": {
+    "title": "Matter Density",
+    "part": "Cosmos: K\u2084 at Large Scale",
+    "agda_modules": [
+      "MatterDensity"
+    ],
+    "five_pillar": true,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25
+    ]
+  },
+  "chapter_27": {
+    "title": "Spectral Index",
+    "part": "Cosmos: K\u2084 at Large Scale",
+    "agda_modules": [
+      "SpectralIndex"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26
+    ]
+  },
+  "chapter_28": {
+    "title": "Hierarchy Problem",
+    "part": "Cosmos: K\u2084 at Large Scale",
+    "agda_modules": [
+      "HierarchyProblem"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27
+    ]
+  },
+  "chapter_29": {
+    "title": "PDG Comparison",
+    "part": "Validation: Experimental Contact",
+    "agda_modules": [
+      "PDGValidation"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
+    ]
+  },
+  "chapter_30": {
+    "title": "Precision Analysis",
+    "part": "Validation: Experimental Contact",
+    "agda_modules": [
+      "PrecisionAnalysis"
+    ],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29
+    ]
+  },
+  "chapter_31": {
+    "title": "Open Questions",
+    "part": "Validation: Experimental Contact",
+    "agda_modules": [],
+    "five_pillar": false,
+    "needs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ]
+  }
+}
