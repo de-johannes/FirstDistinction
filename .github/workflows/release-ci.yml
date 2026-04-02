@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'FirstDistinction.lagda.tex'
+      - '.github/workflows/release-ci.yml'
 
 permissions:
   contents: write
@@ -28,6 +29,16 @@ jobs:
         uses: wenkokke/setup-agda@v2
         with:
           agda-version: '2.7.0.1'
+
+      - name: Install XeLaTeX and PDF tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            texlive-xetex \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            texlive-plain-generic \
+            poppler-utils
 
       - name: Check for holes
         run: |
