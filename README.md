@@ -61,7 +61,7 @@ FirstDistinction.lagda.tex   ← the entire book + proof (single file)
 - **Companion paper** (pure K₄ derivation, 5 pages) — for TYPES / LICS / CSL
 - **Physics summary** (computed invariants, 4 pages) — for physicists evaluating the numerical claims
 
-Both are maintained in the [Void](https://github.com/de-johannes/Void) repository.
+Both live in the `papers/` directory of this repository.
 
 ## License
 
