@@ -1,23 +1,20 @@
-# macOS cruft
+# macOS
 .DS_Store
 
-# LaTeX auxiliary files (everywhere)
+# Agda compiled interfaces
+*.agdai
+
+# Agda Haskell backend artifacts
+MAlonzo/
+
+# LaTeX build artifacts (book)
 *.aux
 *.log
 *.out
 *.toc
-*.ptb
+*.synctex.gz
 *.fls
 *.fdb_latexmk
-*.synctex.gz
-*.bbl
-*.blg
-*.lof
-*.lot
 
-# Keep agda.sty in root for CI
-# latex/ folder is generated, not tracked
-latex/
-
-work/
-.venv/
+# Editor
+.vscode/*.log

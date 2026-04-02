@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Book: agda --latex then xelatex",
+      "type": "shell",
+      "command": "agda --latex FirstDistinction.lagda.tex && cd latex && xelatex FirstDistinction.tex",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}

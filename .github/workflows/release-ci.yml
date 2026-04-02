@@ -17,9 +17,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  verify:
+  verify-and-build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,17 +29,36 @@ jobs:
         with:
           agda-version: '2.7.0.1'
 
-      - name: Compile FirstDistinction.lagda.tex
+      - name: Check for holes
         run: |
-          echo "🚀 Compiling FirstDistinction.lagda.tex for release verification..."
-          set -e
-          if agda --safe --without-K --no-libraries FirstDistinction.lagda.tex 2>&1 | tee agda-compile.log; then
-            echo "✅ FirstDistinction.lagda.tex compiled successfully!"
-          else
-            echo "❌ Compilation FAILED!"
-            cat agda-compile.log
+          if grep -n '{!.*!}' FirstDistinction.lagda.tex; then
+            echo "::error::Holes found — cannot release"
             exit 1
           fi
+
+      - name: Verify Agda (--safe --without-K)
+        run: |
+          set -e
+          agda --safe --without-K --no-libraries FirstDistinction.lagda.tex 2>&1 \
+            | tee agda-compile.log
+          echo "Agda verification passed"
+
+      - name: Build PDF
+        run: |
+          set -e
+          agda --latex FirstDistinction.lagda.tex
+          cd latex
+          # Two passes for cross-references
+          xelatex -interaction=nonstopmode FirstDistinction.tex
+          xelatex -interaction=nonstopmode FirstDistinction.tex
+          cp FirstDistinction.pdf ../FirstDistinction.pdf
+          echo "PDF built ($(wc -c < FirstDistinction.pdf) bytes)"
+
+      - name: Page count
+        run: |
+          PAGES=$(pdfinfo FirstDistinction.pdf 2>/dev/null | awk '/^Pages:/{print $2}' || echo "?")
+          echo "pages=${PAGES}" >> "$GITHUB_ENV"
+          echo "PDF has ${PAGES} pages"
 
       - name: Create verification manifest
         run: |
@@ -49,45 +68,30 @@ jobs:
             echo "Commit: ${{ github.sha }}"
             echo "Agda Version: 2.7.0.1"
             echo "Flags: --safe --without-K --no-libraries"
+            echo "Pages: ${pages:-unknown}"
             echo ""
-            echo "=== AGDA COMPILATION OUTPUT ==="
+            echo "=== AGDA OUTPUT ==="
             cat agda-compile.log
             echo ""
-            echo "=== FILE CHECKSUMS ==="
+            echo "=== CHECKSUMS ==="
             sha256sum FirstDistinction.lagda.tex
-            sha256sum FirstDistinction.agdai 2>/dev/null || echo "No .agdai generated"
+            sha256sum FirstDistinction.pdf
+            sha256sum FirstDistinction.agdai 2>/dev/null || true
           } > verification-manifest.txt
 
-      - name: Upload verification artifacts
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: verification-artifacts
+          name: release-artifacts
           path: |
+            FirstDistinction.pdf
             FirstDistinction.agdai
             verification-manifest.txt
             agda-compile.log
 
-      - name: Check for holes
-        run: |
-          echo "🔍 Checking for holes {!!}..."
-          if grep -n '{!.*!}' FirstDistinction.lagda.tex; then
-            echo "❌ Holes found - cannot release!"
-            exit 1
-          else
-            echo "✅ No holes found!"
-          fi
-
-      - name: Verification complete
-        run: |
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "✅ All verification steps passed:"
-          echo "   ✅ FirstDistinction.lagda.tex compiles (--safe --without-K)"
-          echo "   ✅ No holes detected"
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-
   release:
-    name: Create release on success
-    needs: verify
+    name: Create release
+    needs: verify-and-build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -95,10 +99,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Download verification artifacts
+      - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: verification-artifacts
+          name: release-artifacts
           path: artifacts/
 
       - name: Compute SHORT_SHA
@@ -114,43 +118,40 @@ jobs:
         run: |
           set -euo pipefail
           PREV_TAG="$(git describe --tags --abbrev=0 2>/dev/null || true)"
-          echo "prev=${PREV_TAG}" >> "$GITHUB_OUTPUT"
-          
           {
-            echo "## First Distinction ${{ steps.sha.outputs.short }}"
+            echo "## First Distinction — ${{ steps.sha.outputs.short }}"
             echo ""
-            echo "Machine-verified derivation of spacetime structure from pure type theory."
+            echo "A machine-verified derivation from logical distinction to K₄,"
+            echo "compiled under \`--safe --without-K\` with no libraries."
             echo ""
-            echo "### Zero-Parameter Predictions"
-            echo ""
-            echo "| Quantity | Value | Source |"
-            echo "|----------|-------|--------|"
-            echo "| Spatial dimensions | d = 3 | K₄ Laplacian eigenvalue multiplicity |"
-            echo "| Lorentz signature | (−,+,+,+) | Drift irreversibility |"
-            echo "| Einstein coupling | κ = 8 | dim × χ = 4 × 2 |"
-            echo "| Fine structure | α⁻¹ = 137.036 | Operad arities |"
-            echo "| Cosmic age | τ = 13.7 Gyr | N = 5 × 4¹⁰⁰ |"
+            echo "### Included"
+            echo "- **FirstDistinction.pdf** — the complete book"
+            echo "- **FirstDistinction.agdai** — compiled Agda interface"
+            echo "- **verification-manifest.txt** — build provenance"
             echo ""
             if [ -n "$PREV_TAG" ]; then
               echo "### Changes since $PREV_TAG"
               echo ""
               git log --no-decorate --pretty=format:'- %s (%h)' "${PREV_TAG}..HEAD"
+              echo ""
             fi
-            echo ""
             echo "---"
             echo ""
-            echo "**Verify:** \`agda --safe --without-K --no-libraries FirstDistinction.lagda.tex\`"
+            echo "**Verify locally:**"
+            echo "\`\`\`"
+            echo "agda --safe --without-K --no-libraries FirstDistinction.lagda.tex"
+            echo "\`\`\`"
           } > CHANGELOG.md
 
       - name: Create source archive
-        run: |
-          git archive -o fd-${{ steps.sha.outputs.short }}.zip HEAD
+        run: git archive -o fd-${{ steps.sha.outputs.short }}.zip HEAD
 
       - name: Attest Build Provenance
         uses: actions/attest-build-provenance@v2
         with:
           subject-path: |
             fd-${{ steps.sha.outputs.short }}.zip
+            artifacts/FirstDistinction.pdf
             artifacts/FirstDistinction.agdai
             artifacts/verification-manifest.txt
 
@@ -158,11 +159,12 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ github.run_number }}
-          name: FD v${{ github.run_number }} (${{ steps.sha.outputs.short }})
+          name: "First Distinction v${{ github.run_number }} (${{ steps.sha.outputs.short }})"
           body_path: CHANGELOG.md
           draft: false
           prerelease: false
           files: |
+            artifacts/FirstDistinction.pdf
             fd-${{ steps.sha.outputs.short }}.zip
             artifacts/verification-manifest.txt
             artifacts/FirstDistinction.agdai
