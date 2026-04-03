@@ -13241,6 +13241,133 @@ multiplicative freedom survives the cross-product setoid.
       (sym (*ℤ-zero-left (⁺toℤ (b *⁺ one⁺)))))
 \end{code}
 
+\paragraph{Step 1.5: Positive reciprocal infrastructure.}
+The analytic Planck block now has a precise target shape, so the next forced arithmetic step is an inversion law that does not overreach. The minimal viable layer is the strictly positive sector of $\mathbb{Q}$: positivity can be reflected to the numerator, the numerator can be exposed in successor form, and then denominator and numerator-magnitude can be swapped to produce a reciprocal whose product with the original rational collapses back to~$1$.
+
+\begin{code}
+-- § Positive numerator forces positive rational.
+0<ℤnum→0<ℚ : (q : ℚ) → 0ℤ <ℤ num q → 0ℚ <ℚ q
+0<ℤnum→0<ℚ (a / b) apos =
+  let
+    step₁ : 0ℤ <ℤ (a *ℤ ⁺toℤ one⁺)
+    step₁ = <ℤ-resp-≡ʳ (sym (*ℤ-one-right a)) apos
+  in
+  <ℤ-resp-≡ˡ (sym (*ℤ-zero-left (⁺toℤ b))) step₁
+
+-- § A positive rational exposes its numerator as +suc n.
+positive-num-witnessℚ : (q : ℚ) → 0ℚ <ℚ q → Σ ℕ (λ n → num q ≡ +suc n)
+positive-num-witnessℚ q qpos =
+  0<ℤ→pos (num q) (0ℚ<→0ℤ<num q qpos)
+
+-- § Reciprocal on the strictly positive sector of ℚ.
+reciprocal⁺ : (q : ℚ) → 0ℚ <ℚ q → ℚ
+reciprocal⁺ (a / b) qpos with positive-num-witnessℚ (a / b) qpos
+... | n , _ = ⁺toℤ b / mkℕ⁺ n
+
+-- § The reciprocal of a positive rational is again positive.
+reciprocal⁺-pos : (q : ℚ) → (qpos : 0ℚ <ℚ q) → 0ℚ <ℚ reciprocal⁺ q qpos
+reciprocal⁺-pos (a / b) qpos with positive-num-witnessℚ (a / b) qpos
+... | n , _ = 0<ℤnum→0<ℚ ((⁺toℤ b) / mkℕ⁺ n) (den-posℤ b)
+
+-- § Positive rational times its reciprocal is 1.
+*ℚ-reciprocal⁺-right : (q : ℚ) → (qpos : 0ℚ <ℚ q) → (q *ℚ reciprocal⁺ q qpos) ≃ℚ 1ℚ
+*ℚ-reciprocal⁺-right (a / b) qpos with positive-num-witnessℚ (a / b) qpos
+... | n , a≡ =
+  let
+    lhsOne : ((a *ℤ ⁺toℤ b) *ℤ ⁺toℤ one⁺) ≡ (a *ℤ ⁺toℤ b)
+    lhsOne = *ℤ-one-right (a *ℤ ⁺toℤ b)
+
+    core : (a *ℤ ⁺toℤ b) ≡ ⁺toℤ (b *⁺ mkℕ⁺ n)
+    core =
+      trans
+        (cong (λ t → t *ℤ ⁺toℤ b) a≡)
+        (trans
+          (*ℤ-comm (+suc n) (⁺toℤ b))
+          (sym (⁺toℤ-*⁺ b (mkℕ⁺ n))))
+
+    rhsOne : ⁺toℤ (b *⁺ mkℕ⁺ n) ≡ (oneℤ *ℤ ⁺toℤ (b *⁺ mkℕ⁺ n))
+    rhsOne = sym (*ℤ-one-left (⁺toℤ (b *⁺ mkℕ⁺ n)))
+  in
+  trans lhsOne (trans core rhsOne)
+
+-- § The reciprocal also cancels on the left.
+*ℚ-reciprocal⁺-left : (q : ℚ) → (qpos : 0ℚ <ℚ q) → (reciprocal⁺ q qpos *ℚ q) ≃ℚ 1ℚ
+*ℚ-reciprocal⁺-left q qpos =
+  ≃ℚ-trans
+    (*ℚ-comm (reciprocal⁺ q qpos) q)
+    (*ℚ-reciprocal⁺-right q qpos)
+
+-- § Negation commutes with rational multiplication on the left.
+*ℚ-neg-left : (p q : ℚ) → ((-ℚ p) *ℚ q) ≃ℚ (-ℚ (p *ℚ q))
+*ℚ-neg-left (a / b) (c / d) =
+  cong (λ t → t *ℤ ⁺toℤ (b *⁺ d)) (*ℤ-neg-left a c)
+
+-- § Negation commutes with rational multiplication on the right.
+*ℚ-neg-right : (p q : ℚ) → (p *ℚ (-ℚ q)) ≃ℚ (-ℚ (p *ℚ q))
+*ℚ-neg-right (a / b) (c / d) =
+  cong (λ t → t *ℤ ⁺toℤ (b *⁺ d)) (*ℤ-neg-right a c)
+
+-- § Double negation is trivial on rational classes.
+-ℚ-involutive : (p : ℚ) → (-ℚ (-ℚ p)) ≃ℚ p
+-ℚ-involutive (a / b) =
+  cong (λ t → t *ℤ ⁺toℤ b) (negℤ-involutive a)
+
+-- § Local negation transport on rational equivalence.
+negℚ-resp-≃ : {p q : ℚ} → p ≃ℚ q → (-ℚ p) ≃ℚ (-ℚ q)
+negℚ-resp-≃ {a / b} {c / d} eq =
+  trans
+    (*ℤ-neg-left a (⁺toℤ d))
+    (trans
+      (cong negℤ eq)
+      (sym (*ℤ-neg-left c (⁺toℤ b))))
+
+-- § Nonzero rational: numerator is not zero.
+NonZeroℚ : ℚ → Set
+NonZeroℚ q = num q ≡ 0ℤ → ⊥
+
+-- § Reciprocal on the full nonzero sector of ℚ.
+reciprocal≠0 : (q : ℚ) → NonZeroℚ q → ℚ
+reciprocal≠0 (0ℤ / b) qnz = ⊥-elim (qnz refl)
+reciprocal≠0 ((+suc n) / b) qnz =
+  reciprocal⁺ ((+suc n) / b) (0<ℤnum→0<ℚ ((+suc n) / b) (0<ℤ-pos n))
+reciprocal≠0 ((-suc n) / b) qnz =
+  -ℚ (reciprocal⁺ ((+suc n) / b) (0<ℤnum→0<ℚ ((+suc n) / b) (0<ℤ-pos n)))
+
+-- § Any nonzero rational times its reciprocal is 1.
+*ℚ-reciprocal≠0-right : (q : ℚ) → (qnz : NonZeroℚ q) → (q *ℚ reciprocal≠0 q qnz) ≃ℚ 1ℚ
+*ℚ-reciprocal≠0-right (0ℤ / b) qnz = ⊥-elim (qnz refl)
+*ℚ-reciprocal≠0-right ((+suc n) / b) qnz =
+  *ℚ-reciprocal⁺-right ((+suc n) / b) (0<ℤnum→0<ℚ ((+suc n) / b) (0<ℤ-pos n))
+*ℚ-reciprocal≠0-right ((-suc n) / b) qnz =
+  let
+    p : ℚ
+    p = (+suc n) / b
+
+    ppos : 0ℚ <ℚ p
+    ppos = 0<ℤnum→0<ℚ p (0<ℤ-pos n)
+
+    step₁ : (((-ℚ p) *ℚ (-ℚ (reciprocal⁺ p ppos)))) ≃ℚ (-ℚ (p *ℚ (-ℚ (reciprocal⁺ p ppos))))
+    step₁ = *ℚ-neg-left p (-ℚ (reciprocal⁺ p ppos))
+
+    step₂ : (p *ℚ (-ℚ (reciprocal⁺ p ppos))) ≃ℚ (-ℚ (p *ℚ reciprocal⁺ p ppos))
+    step₂ = *ℚ-neg-right p (reciprocal⁺ p ppos)
+
+    step₃ : (-ℚ (p *ℚ (-ℚ (reciprocal⁺ p ppos)))) ≃ℚ (-ℚ (-ℚ (p *ℚ reciprocal⁺ p ppos)))
+    step₃ = negℚ-resp-≃ step₂
+
+    step₄ : (-ℚ (-ℚ (p *ℚ reciprocal⁺ p ppos))) ≃ℚ (p *ℚ reciprocal⁺ p ppos)
+    step₄ = -ℚ-involutive (p *ℚ reciprocal⁺ p ppos)
+  in
+  ≃ℚ-trans step₁ (≃ℚ-trans step₃ (≃ℚ-trans step₄ (*ℚ-reciprocal⁺-right p ppos)))
+
+-- § The reciprocal also cancels on the left for any nonzero rational.
+*ℚ-reciprocal≠0-left : (q : ℚ) → (qnz : NonZeroℚ q) → (reciprocal≠0 q qnz *ℚ q) ≃ℚ 1ℚ
+*ℚ-reciprocal≠0-left q qnz =
+  ≃ℚ-trans
+    (*ℚ-comm (reciprocal≠0 q qnz) q)
+    (*ℚ-reciprocal≠0-right q qnz)
+\end{code}
+
 \paragraph{Step 2: Rational Distributivity.}
 With associativity, identity, and zero laws in place, the remaining
 algebraic burden is distributivity. Both left and right distributivity
@@ -17858,30 +17985,124 @@ record _≃ℝ_ (x y : ℝ) : Set where
   field
     conv0 : (ε : ℚ) → (0ℚ <ℚ ε) → Σ ℕ (λ N → (n : ℕ) → N ≤ n → distℚ (seq x n) (seq y n) <ℚ ε)
 
--- § Symmetry of real equivalence
-≃ℝ-sym : {x y : ℝ} → x ≃ℝ y → y ≃ℝ x
-≃ℝ-sym {x} {y} x≃y = record
-  { conv0 = λ ε εpos →
-      let
-        pack : Σ ℕ (λ N → (n : ℕ) → N ≤ n → distℚ (seq x n) (seq y n) <ℚ ε)
-        pack = _≃ℝ_.conv0 x≃y ε εpos
+-- § early helper: left summand stays below the sum
+natPlusRightLe-early : (a : ℕ) → (b : ℕ) → a ≤ (a +ℕ b)
+natPlusRightLe-early zero b = z≤n
+natPlusRightLe-early (suc a) b = s≤s (natPlusRightLe-early a b)
 
-        N : ℕ
-        N = fst pack
-
-        conv : (n : ℕ) → N ≤ n → distℚ (seq x n) (seq y n) <ℚ ε
-        conv = snd pack
-      in
-      N , (λ n N≤n →
+abstract
+  -- § Symmetry of real equivalence
+  ≃ℝ-sym : {x y : ℝ} → x ≃ℝ y → y ≃ℝ x
+  ≃ℝ-sym {x} {y} x≃y = record
+    { conv0 = λ ε εpos →
         let
-          swap : distℚ (seq y n) (seq x n) ≃ℚ distℚ (seq x n) (seq y n)
-          swap = distℚ-sym (seq y n) (seq x n)
+          pack : Σ ℕ (λ N → (n : ℕ) → N ≤ n → distℚ (seq x n) (seq y n) <ℚ ε)
+          pack = _≃ℝ_.conv0 x≃y ε εpos
 
-          d≤ : distℚ (seq y n) (seq x n) ≤ℚ distℚ (seq x n) (seq y n)
-          d≤ = ≃ℚ→≤ℚˡ {distℚ (seq y n) (seq x n)} {distℚ (seq x n) (seq y n)} swap
+          N : ℕ
+          N = fst pack
+
+          conv : (n : ℕ) → N ≤ n → distℚ (seq x n) (seq y n) <ℚ ε
+          conv = snd pack
         in
-        ≤<ℚ→<ℚ {distℚ (seq y n) (seq x n)} {distℚ (seq x n) (seq y n)} {ε} d≤ (conv n N≤n))
-  }
+        N , (λ n N≤n →
+          let
+            swap : distℚ (seq y n) (seq x n) ≃ℚ distℚ (seq x n) (seq y n)
+            swap = distℚ-sym (seq y n) (seq x n)
+
+            d≤ : distℚ (seq y n) (seq x n) ≤ℚ distℚ (seq x n) (seq y n)
+            d≤ = ≃ℚ→≤ℚˡ {distℚ (seq y n) (seq x n)} {distℚ (seq x n) (seq y n)} swap
+          in
+          ≤<ℚ→<ℚ {distℚ (seq y n) (seq x n)} {distℚ (seq x n) (seq y n)} {ε} d≤ (conv n N≤n))
+    }
+
+  -- § Transitivity of real equivalence via ε-quartering and triangle inequality
+  ≃ℝ-trans : {x y z : ℝ} → x ≃ℝ y → y ≃ℝ z → x ≃ℝ z
+  ≃ℝ-trans {x} {y} {z} x≃y y≃z = record
+    { conv0 = λ ε εpos →
+        let
+          εq : ℚ
+          εq = εQuarter ε
+
+          εqPos : 0ℚ <ℚ εq
+          εqPos = εQuarter-pos ε
+
+          xyPack : Σ ℕ (λ N → (n : ℕ) → N ≤ n → distℚ (seq x n) (seq y n) <ℚ εq)
+          xyPack = _≃ℝ_.conv0 x≃y εq εqPos
+
+          yzPack : Σ ℕ (λ N → (n : ℕ) → N ≤ n → distℚ (seq y n) (seq z n) <ℚ εq)
+          yzPack = _≃ℝ_.conv0 y≃z εq εqPos
+
+          Nx : ℕ
+          Nx = fst xyPack
+
+          Ny : ℕ
+          Ny = fst yzPack
+
+          xyConv : (n : ℕ) → Nx ≤ n → distℚ (seq x n) (seq y n) <ℚ εq
+          xyConv = snd xyPack
+
+          yzConv : (n : ℕ) → Ny ≤ n → distℚ (seq y n) (seq z n) <ℚ εq
+          yzConv = snd yzPack
+
+          N : ℕ
+          N = Nx +ℕ Ny
+
+          Nx≤N : Nx ≤ N
+          Nx≤N = natPlusRightLe-early Nx Ny
+
+          Ny≤N : Ny ≤ N
+          Ny≤N = subst (λ t → Ny ≤ t) (+ℕ-comm Ny Nx) (natPlusRightLe-early Ny Nx)
+
+          εqNonneg : 0ℚ ≤ℚ εq
+          εqNonneg = <ℚ→≤ℚ {x = 0ℚ} {y = εq} εqPos
+
+          εq+εq<ε : (εq +ℚ εq) <ℚ ε
+          εq+εq<ε = εQuarter-double<ε ε εpos
+        in
+        N , (λ n N≤n →
+          let
+            Nx≤n : Nx ≤ n
+            Nx≤n = ≤-trans Nx≤N N≤n
+
+            Ny≤n : Ny ≤ n
+            Ny≤n = ≤-trans Ny≤N N≤n
+
+            d1 : ℚ
+            d1 = distℚ (seq x n) (seq y n)
+
+            d2 : ℚ
+            d2 = distℚ (seq y n) (seq z n)
+
+            d1<εq : d1 <ℚ εq
+            d1<εq = xyConv n Nx≤n
+
+            d2<εq : d2 <ℚ εq
+            d2<εq = yzConv n Ny≤n
+
+            d1≤εq : d1 ≤ℚ εq
+            d1≤εq = <ℚ→≤ℚ {x = d1} {y = εq} d1<εq
+
+            d2≤εq : d2 ≤ℚ εq
+            d2≤εq = <ℚ→≤ℚ {x = d2} {y = εq} d2<εq
+
+            d1Nonneg : 0ℚ ≤ℚ d1
+            d1Nonneg = distℚ-nonneg (seq x n) (seq y n)
+
+            d2Nonneg : 0ℚ ≤ℚ d2
+            d2Nonneg = distℚ-nonneg (seq y n) (seq z n)
+
+            sum≤ : (d1 +ℚ d2) ≤ℚ (εq +ℚ εq)
+            sum≤ = ≤ℚ-sum≤double-nonneg d1 d2 εq d1Nonneg d2Nonneg εqNonneg d1≤εq d2≤εq
+
+            sum<ε : (d1 +ℚ d2) <ℚ ε
+            sum<ε = ≤<ℚ→<ℚ {x = d1 +ℚ d2} {y = εq +ℚ εq} {z = ε} sum≤ εq+εq<ε
+
+            tri : distℚ (seq x n) (seq z n) ≤ℚ (d1 +ℚ d2)
+            tri = distℚ-triangle (seq x n) (seq y n) (seq z n)
+          in
+          ≤<ℚ→<ℚ {x = distℚ (seq x n) (seq z n)} {y = d1 +ℚ d2} {z = ε} tri sum<ε)
+    }
 \end{code}
 
 
@@ -23029,6 +23250,1996 @@ The global layer can no longer remain an unrestricted numeric container. If ever
   obs-euler-value = eulerChar-computed
 \end{code}
 
+%═══════════════════════════════════════════════════════════════════════════
+\chapter{K$_4$ Vertex Permutations}
+\label{ch:k4-vertex-permutations}
+%═══════════════════════════════════════════════════════════════════════════
+
+The automorphism group $\mathrm{Aut}(K_4) \cong S_4$ acts on the four vertices by permutation. For a complete graph, every bijection is a graph automorphism---adjacency depends only on distinctness, and bijections preserve distinctness. The group acts $2$-transitively: for any two ordered pairs of distinct vertices, some permutation maps one to the other.
+
+This chapter builds the formal infrastructure. The strategy re-uses the permutation machinery already proven for \texttt{EndoCase}---transpositions, involutivity, transitivity---by lifting it through an explicit bijection $\texttt{K4Vertex} \leftrightarrow \texttt{EndoCase}$. No case table is re-proved; the $64$-entry involution table for \texttt{swapEndo} does all the work.
+
+\textbf{Constraint:} The permutation group must act on \texttt{K4Vertex} with full bijectivity proofs, not merely produce functions.
+
+\textbf{Construction:} A record \texttt{K4Perm} packages transport and inverse with round-trip laws. Transpositions and compositions inherit these from \texttt{EndoPerm}. Decidable equality on \texttt{K4Vertex} provides the case analysis that the adjacency-preservation proof requires.
+
+\textbf{Consequence:} Any $\mathbb{N}$-valued function on vertex pairs that is invariant under all \texttt{K4Perm} has a single uniform value on all off-diagonal entries. This is the core tool the forced-propagation elimination will use.
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Vertex bijection}
+\label{sec:k4-perms:bijection}
+%───────────────────────────────────────────────────────────────────────────
+
+The bijection between \texttt{K4Vertex} and \texttt{EndoCase} maps constructors to constructors and round-trips in both directions.
+
+\begin{code}
+k4-to-endo : K4Vertex → EndoCase
+k4-to-endo v₀ = case-constL
+k4-to-endo v₁ = case-constR
+k4-to-endo v₂ = case-id
+k4-to-endo v₃ = case-dual
+
+endo-to-k4 : EndoCase → K4Vertex
+endo-to-k4 case-constL = v₀
+endo-to-k4 case-constR = v₁
+endo-to-k4 case-id     = v₂
+endo-to-k4 case-dual   = v₃
+
+k4-endo-k4 : (v : K4Vertex) → endo-to-k4 (k4-to-endo v) ≡ v
+k4-endo-k4 v₀ = refl
+k4-endo-k4 v₁ = refl
+k4-endo-k4 v₂ = refl
+k4-endo-k4 v₃ = refl
+
+endo-k4-endo : (e : EndoCase) → k4-to-endo (endo-to-k4 e) ≡ e
+endo-k4-endo case-constL = refl
+endo-k4-endo case-constR = refl
+endo-k4-endo case-id     = refl
+endo-k4-endo case-dual   = refl
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Permutation record and lifting}
+\label{sec:k4-perms:record}
+%───────────────────────────────────────────────────────────────────────────
+
+A \texttt{K4Perm} is a bijection on \texttt{K4Vertex}: forward and inverse maps with round-trip proofs. The function \texttt{liftPerm} converts any \texttt{EndoPerm} into a \texttt{K4Perm} by conjugating through the vertex bijection.
+
+\begin{code}
+record K4Perm : Set where
+  field
+    k4to       : K4Vertex → K4Vertex
+    k4from     : K4Vertex → K4Vertex
+    k4-to-from : (v : K4Vertex) → k4to (k4from v) ≡ v
+    k4-from-to : (v : K4Vertex) → k4from (k4to v) ≡ v
+
+open K4Perm public
+
+liftPerm : EndoPerm → K4Perm
+liftPerm σ = record
+  { k4to      = λ v → endo-to-k4 (eto σ (k4-to-endo v))
+  ; k4from    = λ v → endo-to-k4 (efrom σ (k4-to-endo v))
+  ; k4-to-from = λ v →
+      trans (cong (λ e → endo-to-k4 (eto σ e))
+                  (endo-k4-endo (efrom σ (k4-to-endo v))))
+            (trans (cong endo-to-k4 (eto-efrom σ (k4-to-endo v)))
+                   (k4-endo-k4 v))
+  ; k4-from-to = λ v →
+      trans (cong (λ e → endo-to-k4 (efrom σ e))
+                  (endo-k4-endo (eto σ (k4-to-endo v))))
+            (trans (cong endo-to-k4 (efrom-eto σ (k4-to-endo v)))
+                   (k4-endo-k4 v))
+  }
+\end{code}
+
+Composition of two permutations inherits bijectivity from the components.
+
+\begin{code}
+k4Perm-comp : K4Perm → K4Perm → K4Perm
+k4Perm-comp σ τ = record
+  { k4to      = λ v → k4to σ (k4to τ v)
+  ; k4from    = λ v → k4from τ (k4from σ v)
+  ; k4-to-from = λ v →
+      trans (cong (k4to σ) (k4-to-from τ (k4from σ v)))
+            (k4-to-from σ v)
+  ; k4-from-to = λ v →
+      trans (cong (k4from τ) (k4-from-to σ (k4to τ v)))
+            (k4-from-to τ v)
+  }
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Decidable equality and adjacency lemmas}
+\label{sec:k4-perms:decidable-equality}
+%───────────────────────────────────────────────────────────────────────────
+
+Decidable equality on \texttt{K4Vertex} enables proofs that branch on whether two vertices coincide. It is forced by constructor discrimination: the four constructors are pairwise distinguishable.
+
+\begin{code}
+K4-decEq : (v w : K4Vertex) → (v ≡ w) ⊎ (v ≠ w)
+K4-decEq v₀ v₀ = inj₁ refl
+K4-decEq v₁ v₁ = inj₁ refl
+K4-decEq v₂ v₂ = inj₁ refl
+K4-decEq v₃ v₃ = inj₁ refl
+K4-decEq v₀ v₁ = inj₂ (λ ())
+K4-decEq v₀ v₂ = inj₂ (λ ())
+K4-decEq v₀ v₃ = inj₂ (λ ())
+K4-decEq v₁ v₀ = inj₂ (λ ())
+K4-decEq v₁ v₂ = inj₂ (λ ())
+K4-decEq v₁ v₃ = inj₂ (λ ())
+K4-decEq v₂ v₀ = inj₂ (λ ())
+K4-decEq v₂ v₁ = inj₂ (λ ())
+K4-decEq v₂ v₃ = inj₂ (λ ())
+K4-decEq v₃ v₀ = inj₂ (λ ())
+K4-decEq v₃ v₁ = inj₂ (λ ())
+K4-decEq v₃ v₂ = inj₂ (λ ())
+\end{code}
+
+Two structural facts about \texttt{adjacent}: it returns~$0$ on the diagonal and~$1$ on every off-diagonal pair. Together they say that adjacency in $K_4$ is exactly distinctness.
+
+\begin{code}
+adj-self : (v : K4Vertex) → adjacent v v ≡ 0
+adj-self v₀ = refl
+adj-self v₁ = refl
+adj-self v₂ = refl
+adj-self v₃ = refl
+
+K4-distinct-adj : (v w : K4Vertex) → v ≠ w → adjacent v w ≡ 1
+K4-distinct-adj v₀ v₀ ne = ⊥-elim (ne refl)
+K4-distinct-adj v₀ v₁ _  = refl
+K4-distinct-adj v₀ v₂ _  = refl
+K4-distinct-adj v₀ v₃ _  = refl
+K4-distinct-adj v₁ v₀ _  = refl
+K4-distinct-adj v₁ v₁ ne = ⊥-elim (ne refl)
+K4-distinct-adj v₁ v₂ _  = refl
+K4-distinct-adj v₁ v₃ _  = refl
+K4-distinct-adj v₂ v₀ _  = refl
+K4-distinct-adj v₂ v₁ _  = refl
+K4-distinct-adj v₂ v₂ ne = ⊥-elim (ne refl)
+K4-distinct-adj v₂ v₃ _  = refl
+K4-distinct-adj v₃ v₀ _  = refl
+K4-distinct-adj v₃ v₁ _  = refl
+K4-distinct-adj v₃ v₂ _  = refl
+K4-distinct-adj v₃ v₃ ne = ⊥-elim (ne refl)
+\end{code}
+
+Injectivity of any \texttt{K4Perm} follows from the round-trip law: compose with the inverse on both sides.
+
+\begin{code}
+k4-injective : (σ : K4Perm) → (v w : K4Vertex) →
+  k4to σ v ≡ k4to σ w → v ≡ w
+k4-injective σ v w p =
+  trans (sym (k4-from-to σ v))
+        (trans (cong (k4from σ) p)
+               (k4-from-to σ w))
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Transitivity and 2-transitivity}
+\label{sec:k4-perms:transitivity}
+%───────────────────────────────────────────────────────────────────────────
+
+The group acts $1$-transitively: any vertex can be sent to any other by some permutation. The proof lifts \texttt{endoPerm-send} through the bijection.
+
+\begin{code}
+k4Perm-send : (a a' : K4Vertex) → Σ K4Perm (λ σ → k4to σ a ≡ a')
+k4Perm-send a a' =
+  let ep = endoPerm-send (k4-to-endo a) (k4-to-endo a')
+  in (liftPerm (fst ep) ,
+      trans (cong endo-to-k4 (snd ep)) (k4-endo-k4 a'))
+\end{code}
+
+$2$-transitivity is the key tool for the propagation elimination: for any two ordered pairs of distinct vertices, some permutation maps one to the other. The reference pair is $(v_0, v_1)$. Each of the $12$ off-diagonal targets is reached by at most two transpositions. Every case reduces by computation to \texttt{refl}.
+
+\begin{code}
+edge-map : (v w : K4Vertex) → v ≠ w →
+  Σ K4Perm (λ σ → Σ (k4to σ v₀ ≡ v) (λ _ → k4to σ v₁ ≡ w))
+edge-map v₀ v₀ ne = ⊥-elim (ne refl)
+edge-map v₀ v₁ _  = (liftPerm (permSwap case-constL case-constL)
+                     , (refl , refl))
+edge-map v₀ v₂ _  = (liftPerm (permSwap case-constR case-id)
+                     , (refl , refl))
+edge-map v₀ v₃ _  = (liftPerm (permSwap case-constR case-dual)
+                     , (refl , refl))
+edge-map v₁ v₀ _  = (liftPerm (permSwap case-constL case-constR)
+                     , (refl , refl))
+edge-map v₁ v₁ ne = ⊥-elim (ne refl)
+edge-map v₁ v₂ _  = (k4Perm-comp (liftPerm (permSwap case-constR case-id))
+                                   (liftPerm (permSwap case-constL case-id))
+                     , (refl , refl))
+edge-map v₁ v₃ _  = (k4Perm-comp (liftPerm (permSwap case-constR case-dual))
+                                   (liftPerm (permSwap case-constL case-dual))
+                     , (refl , refl))
+edge-map v₂ v₀ _  = (k4Perm-comp (liftPerm (permSwap case-constL case-id))
+                                   (liftPerm (permSwap case-constR case-id))
+                     , (refl , refl))
+edge-map v₂ v₁ _  = (liftPerm (permSwap case-constL case-id)
+                     , (refl , refl))
+edge-map v₂ v₂ ne = ⊥-elim (ne refl)
+edge-map v₂ v₃ _  = (k4Perm-comp (liftPerm (permSwap case-constL case-id))
+                                   (liftPerm (permSwap case-constR case-dual))
+                     , (refl , refl))
+edge-map v₃ v₀ _  = (k4Perm-comp (liftPerm (permSwap case-constL case-dual))
+                                   (liftPerm (permSwap case-constR case-dual))
+                     , (refl , refl))
+edge-map v₃ v₁ _  = (liftPerm (permSwap case-constL case-dual)
+                     , (refl , refl))
+edge-map v₃ v₂ _  = (k4Perm-comp (liftPerm (permSwap case-constL case-dual))
+                                   (liftPerm (permSwap case-constR case-id))
+                     , (refl , refl))
+edge-map v₃ v₃ ne = ⊥-elim (ne refl)
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Adjacency preservation}
+\label{sec:k4-perms:adjacency-preservation}
+%───────────────────────────────────────────────────────────────────────────
+
+In $K_4$---and only in a complete graph---every bijection is a graph automorphism. The proof does not inspect the permutation: it branches on whether the two vertices coincide. On the diagonal, both sides equal~$0$; off-diagonal, injectivity forces both sides to~$1$.
+
+\begin{code}
+k4-perm-preserves-adj : (σ : K4Perm) → (v w : K4Vertex) →
+  adjacent v w ≡ adjacent (k4to σ v) (k4to σ w)
+k4-perm-preserves-adj σ v w with K4-decEq v w
+... | inj₁ refl = trans (adj-self v) (sym (adj-self (k4to σ v)))
+... | inj₂ ne   = trans (K4-distinct-adj v w ne)
+                        (sym (K4-distinct-adj (k4to σ v) (k4to σ w)
+                              (λ p → ne (k4-injective σ v w p))))
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{K4-invariance and uniform edge weight}
+\label{sec:k4-perms:invariance}
+%───────────────────────────────────────────────────────────────────────────
+
+A numeric function on vertex pairs is $K_4$-invariant when its value is preserved under every permutation.
+
+\begin{code}
+IsK4PermInvariant : (K4Vertex → K4Vertex → ℕ) → Set
+IsK4PermInvariant f = (σ : K4Perm) → (v w : K4Vertex) →
+  f v w ≡ f (k4to σ v) (k4to σ w)
+\end{code}
+
+The central consequence: any $K_4$-invariant function assigns the same value to every pair of distinct vertices. The proof picks two permutations---one from \texttt{edge-map} for each target pair---and chains the invariance equalities through the common reference value $f\, v_0\, v_1$.
+
+\begin{code}
+invariant-uniform-edges : (f : K4Vertex → K4Vertex → ℕ) →
+  IsK4PermInvariant f →
+  (v w v' w' : K4Vertex) → v ≠ w → v' ≠ w' → f v w ≡ f v' w'
+invariant-uniform-edges f inv v w v' w' ne ne' =
+  trans (sym (to-ref v w ne)) (to-ref v' w' ne')
+  where
+    to-ref : (a b : K4Vertex) → a ≠ b → f v₀ v₁ ≡ f a b
+    to-ref a b ne-ab =
+      let em = edge-map a b ne-ab
+          σ  = fst em
+          p  = fst (snd em)
+          q  = snd (snd em)
+      in trans (inv σ v₀ v₁)
+               (trans (cong (λ x → f x (k4to σ v₁)) p)
+                      (cong (f a) q))
+\end{code}
+
+    This is the exact place where the admissibility architecture must sit. The permutation chapter supplies the transport engine: a single reference value on one edge, face, or vertex can now be moved across the full orbit of the same simplicial dimension. The three physics-constant chapters therefore no longer need to postulate pointwise lower and upper bounds on every simplex. It is enough to bracket one reference simplex and combine that bracket with invariance and the local diagonal law. The next three chapters apply that same pattern in dimensions $1$, $2$, and $0$ respectively.
+
+
+%═══════════════════════════════════════════════════════════════════════════
+\chapter{Forced Propagation}
+\label{ch:forced-propagation}
+%═══════════════════════════════════════════════════════════════════════════
+
+The arithmetic identity $\texttt{max-propagation-per-edge} \equiv 1$ was proved earlier by reduction. That identity computes the right number but does not eliminate alternatives: it never defines what a propagation law \emph{is}, so it never shows that rival laws fail.
+
+This chapter closes that gap. A propagation law is any numeric function on vertex pairs, subject to four independent structural constraints---each of which admits genuine alternatives on its own. Only their intersection is a singleton. The elimination is not a case split. It is a sandwich argument: automorphism invariance collapses the off-diagonal entries to a single value $r$, the lower bound forces $1 \le r$, the upper bound forces $r \le 1$, and antisymmetry closes to $r = 1$.
+
+\textbf{Constraint:} The candidate space is deliberately wide: \emph{any} function $K_4\text{Vertex} \to K_4\text{Vertex} \to \mathbb{N}$. Candidates such as $P \equiv 2$ on all edges, or $P \equiv 3$ on one edge and $1$ elsewhere, are included and must be eliminated by the filter, not excluded by the definition.
+
+\textbf{Construction:} Four filters are applied in sequence:
+\begin{enumerate}
+\item \emph{Locality} --- zero on the diagonal.
+\item \emph{Edge support} --- every off-diagonal entry is at least $1$.
+\item \emph{$K_4$-invariance} --- the law is preserved under every vertex permutation.
+\item \emph{Boundedness} --- every entry is at most $1$.
+\end{enumerate}
+Filters 2 and 4 are the wide brackets; filter 3 does the structural work. After invariance, the $12$ off-diagonal values collapse to a single unknown $r = P\,v_0\,v_1$. Edge support gives $1 \le r$; boundedness gives $r \le 1$; antisymmetry of $\le$ yields $r \equiv 1$. The diagonal is $0$ by locality. Together: $P \equiv \texttt{adjacent}$.
+
+\textbf{Consequence:} The propagation rate is forced without enumerating vertex pairs. The earlier arithmetic computation becomes a corollary of a structural elimination.
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Propagation candidates}
+\label{sec:forced-propagation:candidates}
+%───────────────────────────────────────────────────────────────────────────
+
+A propagation law assigns a natural-number weight to each ordered vertex pair. No constraint is placed yet---the type is deliberately wide. The constant-$2$ law, the constant-$7$ law, and every non-uniform variant are all members of this type.
+
+\begin{code}
+PropagationLaw : Set
+PropagationLaw = K4Vertex → K4Vertex → ℕ
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{The four admissibility filters}
+\label{sec:forced-propagation:filters}
+%───────────────────────────────────────────────────────────────────────────
+
+Locality demands zero weight on the diagonal: a vertex does not propagate to itself.
+
+\begin{code}
+IsLocal : PropagationLaw → Set
+IsLocal P = (v : K4Vertex) → P v v ≡ 0
+\end{code}
+
+Edge support demands that every off-diagonal pair carries weight at least~$1$. This is deliberately weak---it admits $P = 2$, $P = 5$, any non-zero value.
+
+\begin{code}
+HasEdgeSupport : PropagationLaw → Set
+HasEdgeSupport P = (v w : K4Vertex) → v ≠ w → 1 ≤ P v w
+
+ReferenceEdgeLower : PropagationLaw → Set
+ReferenceEdgeLower P = 1 ≤ P v₀ v₁
+\end{code}
+
+Boundedness demands that no single edge carries weight above~$1$. Physically: propagation is local, with at most one unit of signal per direct link. No shortcutting, no amplification. This is the upper bracket that meets the lower bracket from edge support.
+
+\begin{code}
+IsBounded : PropagationLaw → Set
+IsBounded P = (v w : K4Vertex) → P v w ≤ 1
+
+ReferenceEdgeUpper : PropagationLaw → Set
+ReferenceEdgeUpper P = P v₀ v₁ ≤ 1
+\end{code}
+
+$K_4$-invariance demands that the law is preserved under every vertex permutation. This is the structural filter that, in the previous chapter, was shown to collapse all off-diagonal entries to a single value.
+
+The full admissibility record packages all four constraints. Each constraint admits genuine alternatives on its own; only their intersection is a singleton.
+
+\begin{code}
+record AdmissiblePropagation (P : PropagationLaw) : Set where
+  field
+    local     : IsLocal P
+    invariant : IsK4PermInvariant P
+    ref-lower : ReferenceEdgeLower P
+    ref-upper : ReferenceEdgeUpper P
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{The elimination}
+\label{sec:forced-propagation:elimination}
+%───────────────────────────────────────────────────────────────────────────
+
+The elimination proceeds without enumerating vertex pairs. It uses three lemmas, each of which is structural rather than computational.
+
+\paragraph{Step 1: Invariance collapses off-diagonal to one value.}
+By \texttt{invariant-uniform-edges} (proved in the previous chapter), any $K_4$-invariant function assigns the same value $r$ to every pair of distinct vertices. The reference value is $P\,v_0\,v_1$.
+
+\begin{code}
+propagation-uniform : (P : PropagationLaw) → IsK4PermInvariant P →
+  (v w : K4Vertex) → v ≠ w → P v w ≡ P v₀ v₁
+propagation-uniform P inv v w ne =
+  invariant-uniform-edges P inv v w v₀ v₁ ne (λ ())
+\end{code}
+
+\paragraph{Step 2: Invariance transports the brackets.}
+The lower and upper brackets are imposed only on the reference edge $(v_0,v_1)$. Invariance transports them to every off-diagonal edge.
+
+\begin{code}
+propagation-supported : (P : PropagationLaw) → AdmissiblePropagation P →
+  (v w : K4Vertex) → v ≠ w → 1 ≤ P v w
+propagation-supported P adm v w ne =
+  subst (λ n → 1 ≤ n)
+    (sym (propagation-uniform P (AdmissiblePropagation.invariant adm) v w ne))
+    (AdmissiblePropagation.ref-lower adm)
+
+propagation-bounded : (P : PropagationLaw) → AdmissiblePropagation P →
+  (v w : K4Vertex) → P v w ≤ 1
+propagation-bounded P adm v w with K4-decEq v w
+... | inj₁ refl = subst (λ n → n ≤ 1) (sym (AdmissiblePropagation.local adm v)) z≤n
+... | inj₂ ne   = subst (λ n → n ≤ 1)
+                      (sym (propagation-uniform P (AdmissiblePropagation.invariant adm) v w ne))
+                      (AdmissiblePropagation.ref-upper adm)
+\end{code}
+
+\paragraph{Step 3: The sandwich.}
+The transported lower bound gives $1 \le r$. The transported upper bound gives $r \le 1$. Antisymmetry of $\le$ closes to $r \equiv 1$.
+
+\begin{code}
+v₀≠v₁ : v₀ ≠ v₁
+v₀≠v₁ ()
+
+propagation-edge-value : (P : PropagationLaw) → AdmissiblePropagation P →
+  P v₀ v₁ ≡ 1
+propagation-edge-value P adm =
+  ≤-antisym
+    (AdmissiblePropagation.ref-upper adm)
+    (AdmissiblePropagation.ref-lower adm)
+\end{code}
+
+\paragraph{Step 4: Assembly.}
+Every off-diagonal entry equals $1$; every diagonal entry equals $0$. Both agree with \texttt{adjacent}, whose definition is exactly $0$ on the diagonal and $1$ elsewhere.
+
+\begin{code}
+propagation-off-diag : (P : PropagationLaw) → AdmissiblePropagation P →
+  (v w : K4Vertex) → v ≠ w → P v w ≡ 1
+propagation-off-diag P adm v w ne =
+  trans (propagation-uniform P (AdmissiblePropagation.invariant adm) v w ne)
+        (propagation-edge-value P adm)
+
+propagation-forced : (P : PropagationLaw) → AdmissiblePropagation P →
+  (v w : K4Vertex) → P v w ≡ adjacent v w
+propagation-forced P adm v w with K4-decEq v w
+... | inj₁ refl = trans (AdmissiblePropagation.local adm v)
+                        (sym (adj-self v))
+... | inj₂ ne   = trans (propagation-off-diag P adm v w ne)
+                        (sym (K4-distinct-adj v w ne))
+\end{code}
+
+The core theorem now branches on a single binary question---same vertex or different?---not on $16$ constructor pairs. The structural work is done by invariance; the arithmetic is done by the sandwich.
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Existence}
+\label{sec:forced-propagation:existence}
+%───────────────────────────────────────────────────────────────────────────
+
+The adjacency matrix itself is admissible: it satisfies all four constraints. Locality and boundedness hold by computation. Edge support follows from \texttt{K4-distinct-adj}. Invariance follows from \texttt{k4-perm-preserves-adj}.
+
+\begin{code}
+adjacent-is-local : IsLocal adjacent
+adjacent-is-local v₀ = refl
+adjacent-is-local v₁ = refl
+adjacent-is-local v₂ = refl
+adjacent-is-local v₃ = refl
+
+adjacent-supported : HasEdgeSupport adjacent
+adjacent-supported v w ne = subst (λ n → 1 ≤ n)
+  (sym (K4-distinct-adj v w ne)) (s≤s z≤n)
+
+adjacent-bounded : IsBounded adjacent
+adjacent-bounded v₀ v₀ = z≤n
+adjacent-bounded v₀ v₁ = s≤s z≤n
+adjacent-bounded v₀ v₂ = s≤s z≤n
+adjacent-bounded v₀ v₃ = s≤s z≤n
+adjacent-bounded v₁ v₀ = s≤s z≤n
+adjacent-bounded v₁ v₁ = z≤n
+adjacent-bounded v₁ v₂ = s≤s z≤n
+adjacent-bounded v₁ v₃ = s≤s z≤n
+adjacent-bounded v₂ v₀ = s≤s z≤n
+adjacent-bounded v₂ v₁ = s≤s z≤n
+adjacent-bounded v₂ v₂ = z≤n
+adjacent-bounded v₂ v₃ = s≤s z≤n
+adjacent-bounded v₃ v₀ = s≤s z≤n
+adjacent-bounded v₃ v₁ = s≤s z≤n
+adjacent-bounded v₃ v₂ = s≤s z≤n
+adjacent-bounded v₃ v₃ = z≤n
+
+adjacent-invariant : IsK4PermInvariant adjacent
+adjacent-invariant σ v w = k4-perm-preserves-adj σ v w
+
+adjacent-ref-lower : ReferenceEdgeLower adjacent
+adjacent-ref-lower = s≤s z≤n
+
+adjacent-ref-upper : ReferenceEdgeUpper adjacent
+adjacent-ref-upper = s≤s z≤n
+
+adjacent-admissible : AdmissiblePropagation adjacent
+adjacent-admissible = record
+  { local     = adjacent-is-local
+  ; invariant = adjacent-invariant
+  ; ref-lower = adjacent-ref-lower
+  ; ref-upper = adjacent-ref-upper
+  }
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Summary and the discrete speed of light}
+\label{sec:forced-propagation:summary}
+%───────────────────────────────────────────────────────────────────────────
+
+The full result: the admissible propagation law exists, is unique, and has effective rate~$1$. The uniqueness is structural---invariance, sandwich, antisymmetry---not a $4 \times 4$ case table.
+
+\begin{code}
+record ForcedPropagationResult : Set where
+  field
+    witness   : AdmissiblePropagation adjacent
+    unique    : (P : PropagationLaw) → AdmissiblePropagation P →
+                (v w : K4Vertex) → P v w ≡ adjacent v w
+    rate-is-1 : (P : PropagationLaw) → AdmissiblePropagation P →
+                (v w : K4Vertex) → adjacent v w ≡ 1 → P v w ≡ 1
+
+theorem-forced-propagation : ForcedPropagationResult
+theorem-forced-propagation = record
+  { witness   = adjacent-admissible
+  ; unique    = propagation-forced
+  ; rate-is-1 = λ P adm v w hw → trans (propagation-forced P adm v w) hw
+  }
+\end{code}
+
+With the elimination closed, the propagation rate can be named for what it is: the unit propagation speed in native FD units. The value $c_{\mathrm{FD}} = 1$ is not a numerical input or a convenient convention. It is the only value that survives the four-filter admissibility test.
+
+\begin{code}
+c-FD : ℕ
+c-FD = 1
+
+c-FD-is-propagation-rate : c-FD ≡ max-propagation-per-edge
+c-FD-is-propagation-rate = refl
+\end{code}
+
+%═══════════════════════════════════════════════════════════════════════════
+\chapter{Forced Minimal Action}
+\label{ch:forced-minimal-action}
+%═══════════════════════════════════════════════════════════════════════════
+
+$K_4$ has a forced cycle structure. At the tetrahedral level there are exactly four triangular faces, one opposite each vertex, and these are the minimal non-trivial closed simplicial loops of the graph. An action law assigns a natural-number weight to each face. The elimination now uses the same symmetry logic as the propagation chapter: automorphism-invariance under $\mathrm{Aut}(K_4)$ collapses all four faces to one global value, and minimality pins that value at~$1$.
+
+\textbf{Constraint:} The candidate space must not encode the target value. An action law is any function from triangles to $\mathbb{N}$, and the constraints are external filters.
+
+\textbf{Construction:} Four filters are applied:
+\begin{enumerate}
+\item \emph{Non-triviality} --- every face has positive weight.
+\item \emph{$K_4$-invariance} --- the law is preserved under every vertex permutation.
+\item \emph{Lower bound} --- every face carries weight at least~$1$.
+\item \emph{Minimality} --- no face carries weight above~$1$.
+\end{enumerate}
+Filters 3 and 4 are the wide brackets; filter 2 does the structural work. After invariance, the four face values collapse to a single unknown $r = A\,\mathit{tri}\text{-}012$. The lower bound gives $1 \le r$; minimality gives $r \le 1$; antisymmetry of $\le$ yields $r \equiv 1$.
+
+\textbf{Consequence:} The discrete action unit $\hbar_{\mathrm{FD}} = 1$ is forced by a sandwich argument parallel to propagation. The earlier arithmetic statement $\texttt{triangle-loop-order} = 1$ becomes a corollary.
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Triangles and action candidates}
+\label{sec:forced-action:triangles}
+%───────────────────────────────────────────────────────────────────────────
+
+A triangle face of the tetrahedral $K_4$ is determined by the unique vertex it omits. There are therefore exactly four such faces, one opposite each vertex. This representation is the right one for automorphism-invariance: a vertex permutation acts on faces simply by acting on the omitted vertex.
+
+\begin{code}
+K4Triangle : Set
+K4Triangle = K4Vertex
+
+triangle-map : K4Perm → K4Triangle → K4Triangle
+triangle-map σ t = k4to σ t
+\end{code}
+
+An action law assigns a natural-number weight to each triangle. No constraint is assumed yet.
+
+\begin{code}
+ActionLaw : Set
+ActionLaw = K4Triangle → ℕ
+
+tri-012 : K4Triangle
+tri-012 = v₃
+
+tri-013 : K4Triangle
+tri-013 = v₂
+
+tri-023 : K4Triangle
+tri-023 = v₁
+
+tri-123 : K4Triangle
+tri-123 = v₀
+\end{code}
+
+The four admissibility conditions mirror the propagation chapter: non-triviality, automorphism-invariance, a lower bound, and a minimality upper bound. Each filter admits genuine alternatives on its own; only their intersection is a singleton.
+
+\begin{code}
+IsNonTrivial : ActionLaw → Set
+IsNonTrivial A = (t : K4Triangle) → A t ≡ 0 → ⊥
+
+IsActionInvariant : ActionLaw → Set
+IsActionInvariant A = (σ : K4Perm) → (t : K4Triangle) →
+  A t ≡ A (triangle-map σ t)
+
+ActionBound : ActionLaw → Set
+ActionBound A = (t : K4Triangle) → 1 ≤ A t
+
+ReferenceTriangleLower : ActionLaw → Set
+ReferenceTriangleLower A = 1 ≤ A tri-012
+
+IsMinimal : ActionLaw → Set
+IsMinimal A = (t : K4Triangle) → A t ≤ 1
+
+ReferenceTriangleUpper : ActionLaw → Set
+ReferenceTriangleUpper A = A tri-012 ≤ 1
+
+record AdmissibleAction (A : ActionLaw) : Set where
+  field
+    invariant  : IsActionInvariant A
+    ref-lower  : ReferenceTriangleLower A
+    ref-upper  : ReferenceTriangleUpper A
+\end{code}
+
+The four canonical triangle faces of $K_4$ are the faces opposite $v_3$, $v_2$, $v_1$, and $v_0$ respectively.
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Existence: the unit action law}
+\label{sec:forced-action:existence}
+%───────────────────────────────────────────────────────────────────────────
+
+The constant-$1$ action law is admissible: it is trivially invariant, its value is never zero, every triangle satisfies $1 \leq 1$, and no triangle exceeds~$1$.
+
+\begin{code}
+unit-action : ActionLaw
+unit-action _ = 1
+
+unit-action-invariant : IsActionInvariant unit-action
+unit-action-invariant _ _ = refl
+
+unit-action-bounded : ActionBound unit-action
+unit-action-bounded _ = s≤s z≤n
+
+unit-action-minimal : IsMinimal unit-action
+unit-action-minimal _ = s≤s z≤n
+
+unit-action-ref-lower : ReferenceTriangleLower unit-action
+unit-action-ref-lower = s≤s z≤n
+
+unit-action-ref-upper : ReferenceTriangleUpper unit-action
+unit-action-ref-upper = s≤s z≤n
+
+unit-action-admissible : AdmissibleAction unit-action
+unit-action-admissible = record
+  { invariant  = unit-action-invariant
+  ; ref-lower  = unit-action-ref-lower
+  ; ref-upper  = unit-action-ref-upper
+  }
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Elimination: invariance collapses to a single value}
+\label{sec:forced-action:elimination}
+%───────────────────────────────────────────────────────────────────────────
+
+Automorphism-invariance forces every admissible action law to a single global value: all four faces lie in one orbit.
+
+\begin{code}
+action-from-012 : (A : ActionLaw) → AdmissibleAction A →
+  (t : K4Triangle) → A tri-012 ≡ A t
+action-from-012 A adm t =
+  let st = k4Perm-send tri-012 t in
+  let σ = fst st in
+  let p = snd st in
+  trans (AdmissibleAction.invariant adm σ tri-012)
+        (cong A p)
+
+action-all-equal-to-012 : (A : ActionLaw) → AdmissibleAction A →
+  (t : K4Triangle) → A t ≡ A tri-012
+action-all-equal-to-012 A adm t =
+  sym (action-from-012 A adm t)
+
+action-global-value : (A : ActionLaw) → AdmissibleAction A →
+  (t₁ t₂ : K4Triangle) → A t₁ ≡ A t₂
+action-global-value A adm t₁ t₂ =
+  trans (action-all-equal-to-012 A adm t₁)
+        (action-from-012 A adm t₂)
+\end{code}
+
+\paragraph{Step 2: Invariance transports the brackets.}
+The lower and upper brackets are imposed only on the reference face $\mathit{tri}\text{-}012$. Invariance transports them to every triangle.
+
+\begin{code}
+action-bound : (A : ActionLaw) → AdmissibleAction A → ActionBound A
+action-bound A adm t =
+  subst (λ n → 1 ≤ n)
+    (action-from-012 A adm t)
+    (AdmissibleAction.ref-lower adm)
+
+action-minimal : (A : ActionLaw) → AdmissibleAction A → IsMinimal A
+action-minimal A adm t =
+  subst (λ n → n ≤ 1)
+    (action-from-012 A adm t)
+    (AdmissibleAction.ref-upper adm)
+
+action-nontrivial : (A : ActionLaw) → AdmissibleAction A → IsNonTrivial A
+action-nontrivial A adm t eq =
+  suc≤-impossible zero (subst (λ n → 1 ≤ n) eq (action-bound A adm t))
+\end{code}
+
+\paragraph{Step 3: The sandwich.}
+The lower bound gives $1 \le A\,\mathit{tri}\text{-}012$. The upper bound gives $A\,\mathit{tri}\text{-}012 \le 1$. Antisymmetry closes to $A\,\mathit{tri}\text{-}012 \equiv 1$.
+
+\begin{code}
+action-ref-value : (A : ActionLaw) → AdmissibleAction A → A tri-012 ≡ 1
+action-ref-value A adm =
+  ≤-antisym (AdmissibleAction.ref-upper adm)
+            (AdmissibleAction.ref-lower adm)
+\end{code}
+
+\paragraph{Step 4: Assembly.}
+Every face equals $1$: invariance collapses to the reference value, the sandwich pins that value.
+
+\begin{code}
+action-forced : (A : ActionLaw) → AdmissibleAction A →
+  (t : K4Triangle) → A t ≡ 1
+action-forced A adm t =
+  trans (action-all-equal-to-012 A adm t)
+        (action-ref-value A adm)
+\end{code}
+
+The core theorem branches on no cases at all. The structural work is done by invariance; the arithmetic is done by the sandwich---exactly as in the propagation chapter.
+
+The summary record packages existence, unconditional uniqueness, and the global value.
+
+\begin{code}
+record ForcedActionResult : Set where
+  field
+    witness      : AdmissibleAction unit-action
+    global-value : (A : ActionLaw) → AdmissibleAction A →
+                   (t₁ t₂ : K4Triangle) → A t₁ ≡ A t₂
+    unique       : (A : ActionLaw) → AdmissibleAction A →
+                   (t : K4Triangle) → A t ≡ 1
+
+theorem-forced-action : ForcedActionResult
+theorem-forced-action = record
+  { witness      = unit-action-admissible
+  ; global-value = action-global-value
+  ; unique       = action-forced
+  }
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{The discrete action unit}
+\label{sec:forced-action:hbar-fd}
+%───────────────────────────────────────────────────────────────────────────
+
+The discrete action unit $\hbar_{\mathrm{FD}} = 1$ names the unique admissible action value in native FD units. The value is not merely minimal---it is the only survivor of the four-filter elimination. It is consistent with the triangle loop order already computed.
+
+\begin{code}
+hbar-FD : ℕ
+hbar-FD = 1
+
+hbar-FD-is-loop-order : hbar-FD ≡ triangle-loop-order
+hbar-FD-is-loop-order = refl
+\end{code}
+
+
+%═══════════════════════════════════════════════════════════════════════════
+\chapter{Forced Geometric Coupling}
+\label{ch:forced-geometric-coupling}
+%═══════════════════════════════════════════════════════════════════════════
+
+The three forced constants of the FD system live on three simplicial dimensions of $K_4$:
+\[
+\begin{array}{ccl}
+\text{dim}\;1 & \text{(edges)}   & \longrightarrow\; c \\
+\text{dim}\;2 & \text{(faces)}   & \longrightarrow\; \hbar \\
+\text{dim}\;0 & \text{(vertices)} & \longrightarrow\; G
+\end{array}
+\]
+Propagation assigns a weight to each edge; the action assigns a weight to each face. Both were eliminated by the same four-filter sandwich. The gravitational coupling completes the triple: it assigns a curvature weight to each \emph{vertex}---the 0-simplices where, in discrete geometry, curvature concentrates.
+
+A curvature law is any function $K_4\text{Vertex} \to \mathbb{N}$, subject to four constraints---each of which admits genuine alternatives on its own:
+\begin{enumerate}
+\item \emph{Non-triviality} --- every vertex carries positive curvature.
+\item \emph{$K_4$-invariance} --- the law is preserved under every vertex permutation.
+\item \emph{Lower bound} --- every vertex carries curvature at least~$1$.
+\item \emph{Minimality} --- no vertex carries curvature above~$1$.
+\end{enumerate}
+The sandwich argument is identical to propagation and action: invariance collapses all four vertex values to a single unknown $r$, the lower bound gives $1 \le r$, minimality gives $r \le 1$, antisymmetry of $\le$ yields $r \equiv 1$.
+
+\textbf{Constraint:} The candidate space is deliberately wide: \emph{any} function $K_4\text{Vertex} \to \mathbb{N}$. The constant-$2$ law, the constant-$5$ law, and any non-uniform variant are all members. The filters are external.
+
+\textbf{Construction:} Four filters applied in sequence collapse the space to a singleton.
+
+\textbf{Consequence:} The discrete gravitational coupling $G_{\mathrm{FD}} = 1$ is forced by the same simplicial elimination that forces $c$ and $\hbar$. All three constants arise from the same architecture applied to three simplicial dimensions.
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Curvature candidates}
+\label{sec:forced-coupling:candidates}
+%───────────────────────────────────────────────────────────────────────────
+
+A curvature law assigns a natural-number weight to each vertex of $K_4$. No constraint is placed yet---the type is deliberately wide.
+
+\begin{code}
+CurvatureLaw : Set
+CurvatureLaw = K4Vertex → ℕ
+\end{code}
+
+The four admissibility conditions mirror the propagation and action chapters exactly.
+
+\begin{code}
+IsCurvatureNonTrivial : CurvatureLaw → Set
+IsCurvatureNonTrivial C = (v : K4Vertex) → C v ≡ 0 → ⊥
+
+IsCurvatureInvariant : CurvatureLaw → Set
+IsCurvatureInvariant C = (σ : K4Perm) → (v : K4Vertex) →
+  C v ≡ C (k4to σ v)
+
+CurvatureBound : CurvatureLaw → Set
+CurvatureBound C = (v : K4Vertex) → 1 ≤ C v
+
+ReferenceVertexLower : CurvatureLaw → Set
+ReferenceVertexLower C = 1 ≤ C v₀
+
+IsCurvatureMinimal : CurvatureLaw → Set
+IsCurvatureMinimal C = (v : K4Vertex) → C v ≤ 1
+
+ReferenceVertexUpper : CurvatureLaw → Set
+ReferenceVertexUpper C = C v₀ ≤ 1
+
+record AdmissibleCurvature (C : CurvatureLaw) : Set where
+  field
+    invariant  : IsCurvatureInvariant C
+    ref-lower  : ReferenceVertexLower C
+    ref-upper  : ReferenceVertexUpper C
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Existence: the unit curvature law}
+\label{sec:forced-coupling:existence}
+%───────────────────────────────────────────────────────────────────────────
+
+The constant-$1$ curvature law is admissible: it is trivially invariant, its value is never zero, every vertex satisfies $1 \leq 1$, and no vertex exceeds~$1$.
+
+\begin{code}
+unit-curvature : CurvatureLaw
+unit-curvature _ = 1
+
+unit-curvature-invariant : IsCurvatureInvariant unit-curvature
+unit-curvature-invariant _ _ = refl
+
+unit-curvature-bounded : CurvatureBound unit-curvature
+unit-curvature-bounded _ = s≤s z≤n
+
+unit-curvature-minimal : IsCurvatureMinimal unit-curvature
+unit-curvature-minimal _ = s≤s z≤n
+
+unit-curvature-ref-lower : ReferenceVertexLower unit-curvature
+unit-curvature-ref-lower = s≤s z≤n
+
+unit-curvature-ref-upper : ReferenceVertexUpper unit-curvature
+unit-curvature-ref-upper = s≤s z≤n
+
+unit-curvature-admissible : AdmissibleCurvature unit-curvature
+unit-curvature-admissible = record
+  { invariant  = unit-curvature-invariant
+  ; ref-lower  = unit-curvature-ref-lower
+  ; ref-upper  = unit-curvature-ref-upper
+  }
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Elimination: invariance collapses to a single value}
+\label{sec:forced-coupling:elimination}
+%───────────────────────────────────────────────────────────────────────────
+
+Automorphism-invariance forces every admissible curvature law to a single global value: all four vertices lie in one orbit under $S_4$.
+
+\begin{code}
+curvature-from-v0 : (C : CurvatureLaw) → AdmissibleCurvature C →
+  (v : K4Vertex) → C v₀ ≡ C v
+curvature-from-v0 C adm v =
+  let st = k4Perm-send v₀ v in
+  let σ = fst st in
+  let p = snd st in
+  trans (AdmissibleCurvature.invariant adm σ v₀)
+        (cong C p)
+
+curvature-all-equal-to-v0 : (C : CurvatureLaw) → AdmissibleCurvature C →
+  (v : K4Vertex) → C v ≡ C v₀
+curvature-all-equal-to-v0 C adm v =
+  sym (curvature-from-v0 C adm v)
+
+curvature-global-value : (C : CurvatureLaw) → AdmissibleCurvature C →
+  (v₁ v₂ : K4Vertex) → C v₁ ≡ C v₂
+curvature-global-value C adm u w =
+  trans (curvature-all-equal-to-v0 C adm u)
+        (curvature-from-v0 C adm w)
+\end{code}
+
+\paragraph{Step 2: Invariance transports the brackets.}
+The lower and upper brackets are imposed only on the reference vertex $v_0$. Invariance transports them to every vertex.
+
+\begin{code}
+curvature-bound : (C : CurvatureLaw) → AdmissibleCurvature C → CurvatureBound C
+curvature-bound C adm v =
+  subst (λ n → 1 ≤ n)
+    (curvature-from-v0 C adm v)
+    (AdmissibleCurvature.ref-lower adm)
+
+curvature-minimal : (C : CurvatureLaw) → AdmissibleCurvature C → IsCurvatureMinimal C
+curvature-minimal C adm v =
+  subst (λ n → n ≤ 1)
+    (curvature-from-v0 C adm v)
+    (AdmissibleCurvature.ref-upper adm)
+
+curvature-nontrivial : (C : CurvatureLaw) → AdmissibleCurvature C → IsCurvatureNonTrivial C
+curvature-nontrivial C adm v eq =
+  suc≤-impossible zero (subst (λ n → 1 ≤ n) eq (curvature-bound C adm v))
+\end{code}
+
+\paragraph{Step 3: The sandwich.}
+The lower bound gives $1 \le C\,v_0$. The upper bound gives $C\,v_0 \le 1$. Antisymmetry closes to $C\,v_0 \equiv 1$.
+
+\begin{code}
+curvature-ref-value : (C : CurvatureLaw) → AdmissibleCurvature C → C v₀ ≡ 1
+curvature-ref-value C adm =
+  ≤-antisym (AdmissibleCurvature.ref-upper adm)
+            (AdmissibleCurvature.ref-lower adm)
+\end{code}
+
+\paragraph{Step 4: Assembly.}
+Every vertex equals $1$: invariance collapses to the reference value, the sandwich pins that value.
+
+\begin{code}
+curvature-forced : (C : CurvatureLaw) → AdmissibleCurvature C →
+  (v : K4Vertex) → C v ≡ 1
+curvature-forced C adm v =
+  trans (curvature-all-equal-to-v0 C adm v)
+        (curvature-ref-value C adm)
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{The discrete gravitational coupling}
+\label{sec:forced-coupling:g-fd}
+%───────────────────────────────────────────────────────────────────────────
+
+The summary record packages existence, unconditional uniqueness, and the global value---exactly parallel to the propagation and action results.
+
+\begin{code}
+record ForcedCurvatureResult : Set where
+  field
+    witness      : AdmissibleCurvature unit-curvature
+    global-value : (C : CurvatureLaw) → AdmissibleCurvature C →
+                   (v₁ v₂ : K4Vertex) → C v₁ ≡ C v₂
+    unique       : (C : CurvatureLaw) → AdmissibleCurvature C →
+                   (v : K4Vertex) → C v ≡ 1
+
+theorem-forced-curvature : ForcedCurvatureResult
+theorem-forced-curvature = record
+  { witness      = unit-curvature-admissible
+  ; global-value = curvature-global-value
+  ; unique       = curvature-forced
+  }
+
+G-FD : ℕ
+G-FD = 1
+
+G-FD-forced : (C : CurvatureLaw) → AdmissibleCurvature C → C v₀ ≡ G-FD
+G-FD-forced C adm = curvature-ref-value C adm
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Filter audit: sufficiency versus minimality}
+\label{sec:forced-coupling:filter-audit}
+%───────────────────────────────────────────────────────────────────────────
+
+The three preceding chapters now prove their target constants by elimination. But a second question is sharper: are the four filters in each chapter themselves already minimal, or do some of them follow from the others? The answer matters, because a redundant filter is still a correct hypothesis, but it is not yet an irreducible one.
+
+The present book has already reacted to that diagnosis. The constant chapters no longer impose pointwise lower and upper brackets on every simplex. Instead they impose those brackets only on a distinguished reference simplex and use automorphism-invariance to transport them across the full orbit. That repair makes invariance genuinely structural again.
+
+The audit lemmas below are therefore no longer a diagnosis of the \emph{current} admissibility records. They are a diagnosis of the older pointwise packages the book has now replaced. Their purpose is historical and conceptual: they show exactly why the earlier pointwise form was too strong, and why the reference-simplex architecture was necessary.
+
+\begin{code}
+propagation-forced-no-invariance :
+  (P : PropagationLaw) → IsLocal P → HasEdgeSupport P → IsBounded P →
+  (v w : K4Vertex) → P v w ≡ adjacent v w
+propagation-forced-no-invariance P local support upper v w with K4-decEq v w
+... | inj₁ refl = trans (local v) (sym (adj-self v))
+... | inj₂ ne   = trans (≤-antisym (upper v w) (support v w ne))
+                        (sym (K4-distinct-adj v w ne))
+
+action-nontrivial-from-bound : (A : ActionLaw) → ActionBound A → IsNonTrivial A
+action-nontrivial-from-bound A lower t eq =
+  suc≤-impossible zero (subst (λ n → 1 ≤ n) eq (lower t))
+
+action-forced-no-invariance :
+  (A : ActionLaw) → ActionBound A → IsMinimal A →
+  (t : K4Triangle) → A t ≡ 1
+action-forced-no-invariance A lower upper t =
+  ≤-antisym (upper t) (lower t)
+
+curvature-nontrivial-from-bound :
+  (C : CurvatureLaw) → CurvatureBound C → IsCurvatureNonTrivial C
+curvature-nontrivial-from-bound C lower v eq =
+  suc≤-impossible zero (subst (λ n → 1 ≤ n) eq (lower v))
+
+curvature-forced-no-invariance :
+  (C : CurvatureLaw) → CurvatureBound C → IsCurvatureMinimal C →
+  (v : K4Vertex) → C v ≡ 1
+curvature-forced-no-invariance C lower upper v =
+  ≤-antisym (upper v) (lower v)
+\end{code}
+
+The force of these lemmas is conceptual, not destructive. They do \emph{not} weaken the earlier theorems; they explain the repair that followed. The current chapters already prove uniqueness with a genuinely non-pointwise admissibility basis. What they do not yet prove is that this repaired basis is itself the unique irreducible one. That is now the next formal target.
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Minimal admissibility basis}
+\label{sec:forced-coupling:minimal-basis}
+%───────────────────────────────────────────────────────────────────────────
+
+The repaired admissibility architecture has four primitive clauses in the propagation chapter and three primitive clauses in the action and curvature chapters. To justify calling this basis \emph{minimal}, each primitive clause must now be shown indispensable: if it is removed while the others are kept, a rival law survives.
+
+The proofs are by concrete witness. Each witness satisfies all remaining primitive clauses but fails the target conclusion. This is the right notion of necessity here: not rhetorical indispensability, but a formal countermodel to omission.
+
+\paragraph{Propagation basis.}
+Without locality, the everywhere-one law survives. Without invariance, a law can single out the reference edge and ignore the rest. Without the lower bracket, the zero law survives. Without the upper bracket, the doubled adjacency law survives.
+
+\begin{code}
+propagation-all-one : PropagationLaw
+propagation-all-one _ _ = 1
+
+propagation-all-one-invariant : IsK4PermInvariant propagation-all-one
+propagation-all-one-invariant _ _ _ = refl
+
+propagation-all-one-ref-lower : ReferenceEdgeLower propagation-all-one
+propagation-all-one-ref-lower = s≤s z≤n
+
+propagation-all-one-ref-upper : ReferenceEdgeUpper propagation-all-one
+propagation-all-one-ref-upper = s≤s z≤n
+
+propagation-all-one-not-adj : propagation-all-one v₀ v₀ ≡ adjacent v₀ v₀ → ⊥
+propagation-all-one-not-adj ()
+
+propagation-reference-only : PropagationLaw
+propagation-reference-only v₀ v₁ = 1
+propagation-reference-only _  _  = 0
+
+propagation-reference-only-local : IsLocal propagation-reference-only
+propagation-reference-only-local v₀ = refl
+propagation-reference-only-local v₁ = refl
+propagation-reference-only-local v₂ = refl
+propagation-reference-only-local v₃ = refl
+
+propagation-reference-only-ref-lower : ReferenceEdgeLower propagation-reference-only
+propagation-reference-only-ref-lower = s≤s z≤n
+
+propagation-reference-only-ref-upper : ReferenceEdgeUpper propagation-reference-only
+propagation-reference-only-ref-upper = s≤s z≤n
+
+propagation-reference-only-not-adj :
+  propagation-reference-only v₀ v₂ ≡ adjacent v₀ v₂ → ⊥
+propagation-reference-only-not-adj ()
+
+propagation-zero : PropagationLaw
+propagation-zero _ _ = 0
+
+propagation-zero-local : IsLocal propagation-zero
+propagation-zero-local v₀ = refl
+propagation-zero-local v₁ = refl
+propagation-zero-local v₂ = refl
+propagation-zero-local v₃ = refl
+
+propagation-zero-invariant : IsK4PermInvariant propagation-zero
+propagation-zero-invariant _ _ _ = refl
+
+propagation-zero-ref-upper : ReferenceEdgeUpper propagation-zero
+propagation-zero-ref-upper = z≤n
+
+propagation-zero-not-adj : propagation-zero v₀ v₁ ≡ adjacent v₀ v₁ → ⊥
+propagation-zero-not-adj ()
+
+propagation-double : PropagationLaw
+propagation-double v w = adjacent v w +ℕ adjacent v w
+
+propagation-double-local : IsLocal propagation-double
+propagation-double-local v =
+  subst (λ n → n +ℕ n ≡ 0)
+    (sym (adj-self v))
+    refl
+
+propagation-double-invariant : IsK4PermInvariant propagation-double
+propagation-double-invariant σ v w =
+  cong (λ n → n +ℕ n) (k4-perm-preserves-adj σ v w)
+
+propagation-double-ref-lower : ReferenceEdgeLower propagation-double
+propagation-double-ref-lower = s≤s z≤n
+
+propagation-double-not-adj : propagation-double v₀ v₁ ≡ adjacent v₀ v₁ → ⊥
+propagation-double-not-adj ()
+\end{code}
+
+\paragraph{Action basis.}
+Without invariance, the reference face can be privileged while the others collapse to zero. Without the lower bracket, the zero law survives. Without the upper bracket, the constant-two law survives.
+
+\begin{code}
+action-reference-only : ActionLaw
+action-reference-only v₃ = 1
+action-reference-only _  = 0
+
+action-reference-only-ref-lower : ReferenceTriangleLower action-reference-only
+action-reference-only-ref-lower = s≤s z≤n
+
+action-reference-only-ref-upper : ReferenceTriangleUpper action-reference-only
+action-reference-only-ref-upper = s≤s z≤n
+
+action-reference-only-not-forced : action-reference-only tri-013 ≡ 1 → ⊥
+action-reference-only-not-forced ()
+
+action-zero : ActionLaw
+action-zero _ = 0
+
+action-zero-invariant : IsActionInvariant action-zero
+action-zero-invariant _ _ = refl
+
+action-zero-ref-upper : ReferenceTriangleUpper action-zero
+action-zero-ref-upper = z≤n
+
+action-zero-not-forced : action-zero tri-012 ≡ 1 → ⊥
+action-zero-not-forced ()
+
+action-two : ActionLaw
+action-two _ = 2
+
+action-two-invariant : IsActionInvariant action-two
+action-two-invariant _ _ = refl
+
+action-two-ref-lower : ReferenceTriangleLower action-two
+action-two-ref-lower = s≤s z≤n
+
+action-two-not-forced : action-two tri-012 ≡ 1 → ⊥
+action-two-not-forced ()
+\end{code}
+
+\paragraph{Curvature basis.}
+The same pattern repeats on the $0$-simplices. Without invariance, the reference vertex can be privileged. Without the lower bracket, the zero law survives. Without the upper bracket, the constant-two law survives.
+
+\begin{code}
+curvature-reference-only : CurvatureLaw
+curvature-reference-only v₀ = 1
+curvature-reference-only _  = 0
+
+curvature-reference-only-ref-lower : ReferenceVertexLower curvature-reference-only
+curvature-reference-only-ref-lower = s≤s z≤n
+
+curvature-reference-only-ref-upper : ReferenceVertexUpper curvature-reference-only
+curvature-reference-only-ref-upper = s≤s z≤n
+
+curvature-reference-only-not-forced : curvature-reference-only v₁ ≡ 1 → ⊥
+curvature-reference-only-not-forced ()
+
+curvature-zero : CurvatureLaw
+curvature-zero _ = 0
+
+curvature-zero-invariant : IsCurvatureInvariant curvature-zero
+curvature-zero-invariant _ _ = refl
+
+curvature-zero-ref-upper : ReferenceVertexUpper curvature-zero
+curvature-zero-ref-upper = z≤n
+
+curvature-zero-not-forced : curvature-zero v₀ ≡ 1 → ⊥
+curvature-zero-not-forced ()
+
+curvature-two : CurvatureLaw
+curvature-two _ = 2
+
+curvature-two-invariant : IsCurvatureInvariant curvature-two
+curvature-two-invariant _ _ = refl
+
+curvature-two-ref-lower : ReferenceVertexLower curvature-two
+curvature-two-ref-lower = s≤s z≤n
+
+curvature-two-not-forced : curvature-two v₀ ≡ 1 → ⊥
+curvature-two-not-forced ()
+\end{code}
+
+These witnesses do not yet prove uniqueness of the admissibility basis up to equivalence. But they do prove the next necessary fact: every primitive clause in the repaired architecture excludes a live rival. Nothing remaining in the basis is decorative.
+
+%═══════════════════════════════════════════════════════════════════════════
+\chapter{Scale Closure}
+\label{ch:scale-closure}
+%═══════════════════════════════════════════════════════════════════════════
+
+With $c_{\mathrm{FD}} = 1$, $\hbar_{\mathrm{FD}} = 1$, and $G_{\mathrm{FD}} = 1$, no free scale parameter remains. Three independent dimensionful constants fill three independent dimensions (length, time, mass). The native FD unit system is therefore the Planck system---not by postulate, but because the three forced constants leave no room for rescaling.
+
+\textbf{Constraint:} Each constant was derived by the same simplicial elimination applied to a different dimension of the $K_4$ complex:
+\[
+\begin{array}{cccc}
+\text{dim}\;1 & \text{(edges, 6)}   & c\;\text{from propagation}    & \text{sandwich on } K_4\text{Vertex} \to K_4\text{Vertex} \to \mathbb{N} \\
+\text{dim}\;2 & \text{(faces, 4)}   & \hbar\;\text{from action}     & \text{sandwich on } K_4\text{Triangle} \to \mathbb{N} \\
+\text{dim}\;0 & \text{(vertices, 4)} & G\;\text{from curvature}     & \text{sandwich on } K_4\text{Vertex} \to \mathbb{N}
+\end{array}
+\]
+No constant was inserted by hand. No constant was derived from another. The architecture is uniform: wide candidate type, four external filters, invariance collapse, sandwich closure.
+
+\textbf{Construction:} The Planck length, time, and mass are computed from the three constants and evaluated in FD units. All three reduce to~$1$.
+
+\textbf{Consequence:} The Planck scale is not an external anchor. It is the native scale of the FD system. One edge is the Planck length; one step is the Planck time.
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Planck units in FD coordinates}
+\label{sec:scale-closure:planck-units}
+%───────────────────────────────────────────────────────────────────────────
+
+The standard Planck units are:
+\[
+\ell_P = \sqrt{\frac{\hbar\, G}{c^3}}, \qquad
+t_P = \sqrt{\frac{\hbar\, G}{c^5}}, \qquad
+m_P = \sqrt{\frac{\hbar\, c}{G}}.
+\]
+With $\hbar = G = c = 1$, every numerator and denominator is~$1$, so $\ell_P = t_P = m_P = 1$ in FD units.
+
+\begin{code}
+planck-length-FD : ℕ
+planck-length-FD = (hbar-FD * G-FD) * 1
+
+planck-time-FD : ℕ
+planck-time-FD = (hbar-FD * G-FD) * 1
+
+planck-mass-FD : ℕ
+planck-mass-FD = (hbar-FD * c-FD) * 1
+
+planck-length-is-1 : planck-length-FD ≡ 1
+planck-length-is-1 = refl
+
+planck-time-is-1 : planck-time-FD ≡ 1
+planck-time-is-1 = refl
+
+planck-mass-is-1 : planck-mass-FD ≡ 1
+planck-mass-is-1 = refl
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{The closure record}
+\label{sec:scale-closure:record}
+%───────────────────────────────────────────────────────────────────────────
+
+The closure record packages the three forced constants and the three Planck unit identities into a single witness.
+
+\begin{code}
+record ScaleClosure : Set where
+  field
+    c-forced    : c-FD ≡ 1
+    hbar-forced : hbar-FD ≡ 1
+    G-forced    : G-FD ≡ 1
+    length-1    : planck-length-FD ≡ 1
+    time-1      : planck-time-FD ≡ 1
+    mass-1      : planck-mass-FD ≡ 1
+
+theorem-scale-closure : ScaleClosure
+theorem-scale-closure = record
+  { c-forced    = refl
+  ; hbar-forced = refl
+  ; G-forced    = refl
+  ; length-1    = refl
+  ; time-1      = refl
+  ; mass-1      = refl
+  }
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{No free scale}
+\label{sec:scale-closure:no-free-scale}
+%───────────────────────────────────────────────────────────────────────────
+
+Three independent constants saturate three independent dimensions. No free parameter survives.
+
+\begin{code}
+independent-constants : ℕ
+independent-constants = 3
+
+independent-dimensions : ℕ
+independent-dimensions = 3
+
+free-parameters : ℕ
+free-parameters = independent-dimensions ∸ independent-constants
+
+no-free-scale : free-parameters ≡ 0
+no-free-scale = refl
+\end{code}
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Normalized scale elimination}
+\label{sec:scale-closure:normalized-scale-elimination}
+%───────────────────────────────────────────────────────────────────────────
+
+The closure claim can be sharpened one step further without appealing to decimal SI numerals. Work entirely in normalized units, where the three continuum constants are already written as $c = \hbar = G = 1$. A scale choice is then just a triple $(a,b,m)$ of natural-number unit assignments for length, time, and mass. The bridge equations become
+\[
+b = a,
+\qquad
+b = m a^2,
+\qquad
+mb^2 = a^3.
+\]
+The candidate space is still wide: any positive natural triple is allowed. The elimination shows that only the unit triple survives.
+
+\begin{code}
+IsScaleNonZero : ℕ → Set
+IsScaleNonZero n = n ≡ 0 → ⊥
+
+record NormalizedScaleChoice : Set where
+  field
+    length-step    : ℕ
+    time-step      : ℕ
+    mass-step      : ℕ
+    length-nonzero : IsScaleNonZero length-step
+    c-lock         : time-step ≡ length-step
+    hbar-lock      : time-step ≡ (mass-step *ℕ length-step) *ℕ length-step
+    G-lock         : (mass-step *ℕ time-step) *ℕ time-step ≡
+                     (length-step *ℕ length-step) *ℕ length-step
+\end{code}
+
+Two small arithmetic lemmas do the work. First: if adding a tail leaves a natural unchanged, that tail must have been zero. Second: for any value $a \ge 2$, neither $a^2 = a$ nor $a^3 = a$ can hold.
+
+\begin{code}
+natPlusRightLe : (a : ℕ) → (b : ℕ) → a ≤ (a +ℕ b)
+natPlusRightLe zero b = z≤n
+natPlusRightLe (suc a) b = s≤s (natPlusRightLe a b)
+
+natPlusCancelSelf : (a : ℕ) → (b : ℕ) → a +ℕ b ≡ a → b ≡ 0
+natPlusCancelSelf a b eq with ≤-+ℕ-cancelˡ a b 0
+  (≤-resp-≡ʳ (subst (λ t → t ≤ a) (sym eq) (≤-refl a)) (sym (+ℕ-zero-right a)))
+natPlusCancelSelf a zero eq | z≤n = refl
+natPlusCancelSelf a (suc b) eq | ()
+
+squareNotSelf : (n : ℕ) → ((suc (suc n) *ℕ suc (suc n)) ≡ suc (suc n)) → ⊥
+squareNotSelf n eq =
+  let
+    a : ℕ
+    a = suc (suc n)
+
+    expand : a *ℕ a ≡ a +ℕ (a *ℕ suc n)
+    expand = *ℕ-suc-right-+ℕ a (suc n)
+
+    tail0 : (a *ℕ suc n) ≡ 0
+    tail0 = natPlusCancelSelf a (a *ℕ suc n) (trans (sym expand) eq)
+
+    bad : suc n ≡ 0
+    bad = *ℕ-pos-zero→zero (suc n) (suc n) tail0
+  in
+  suc≠0 bad
+  where
+    suc≠0 : {k : ℕ} → suc k ≡ 0 → ⊥
+    suc≠0 ()
+
+squareDominates : (n : ℕ) → suc (suc n) ≤ (suc (suc n) *ℕ suc (suc n))
+squareDominates n =
+  let
+    a : ℕ
+    a = suc (suc n)
+
+    base : suc 0 ≤ a
+    base = s≤s z≤n
+
+    step : (suc 0 *ℕ a) ≤ (a *ℕ a)
+    step = ≤-*ℕ-monoʳ base a
+  in
+  subst (λ t → t ≤ (a *ℕ a)) (*ℕ-one-left a) step
+
+cubeNotSelf : (n : ℕ) → (((suc (suc n) *ℕ suc (suc n)) *ℕ suc (suc n)) ≡ suc (suc n)) → ⊥
+cubeNotSelf n eq =
+  let
+    a : ℕ
+    a = suc (suc n)
+
+    sq : ℕ
+    sq = a *ℕ a
+
+    expand : sq *ℕ a ≡ sq +ℕ (sq *ℕ suc n)
+    expand = *ℕ-suc-right-+ℕ sq (suc n)
+
+    sq≤a : sq ≤ a
+    sq≤a = ≤-resp-≡ʳ (natPlusRightLe sq (sq *ℕ suc n)) (trans (sym expand) eq)
+
+    a≤sq : a ≤ sq
+    a≤sq = squareDominates n
+
+    sq≡a : sq ≡ a
+    sq≡a = ≤-antisym sq≤a a≤sq
+  in
+  squareNotSelf n sq≡a
+
+mass-unit-forced : (m : ℕ) → ((m *ℕ 1) *ℕ 1) ≡ 1 → m ≡ 1
+mass-unit-forced zero ()
+mass-unit-forced (suc zero) refl = refl
+mass-unit-forced (suc (suc n)) ()
+\end{code}
+
+The elimination itself is now direct. The three bridge equations collapse to $a^3 = a$, and that excludes every $a \ge 2$. Positivity excludes $a = 0$. So $a = 1$, hence also $b = 1$ and $m = 1$.
+
+\begin{code}
+normalized-length-is-1 : (S : NormalizedScaleChoice) → NormalizedScaleChoice.length-step S ≡ 1
+normalized-length-is-1 S
+  with NormalizedScaleChoice.length-step S
+     | NormalizedScaleChoice.time-step S
+     | NormalizedScaleChoice.mass-step S
+     | NormalizedScaleChoice.length-nonzero S
+     | NormalizedScaleChoice.c-lock S
+     | NormalizedScaleChoice.hbar-lock S
+     | NormalizedScaleChoice.G-lock S
+... | zero          | _ | _ | nz | _  | _  | _  = ⊥-elim (nz refl)
+... | suc zero      | _ | _ | _  | _  | _  | _  = refl
+... | suc (suc n)   | b | m | _  | cl | hl | gl =
+  let
+    a : ℕ
+    a = suc (suc n)
+
+    G-at-a : (m *ℕ a) *ℕ a ≡ (a *ℕ a) *ℕ a
+    G-at-a = trans (sym (cong (λ t → (m *ℕ t) *ℕ t) cl)) gl
+
+    cubeEq : ((a *ℕ a) *ℕ a) ≡ a
+    cubeEq = trans (sym G-at-a) (trans (sym hl) cl)
+  in
+  ⊥-elim (cubeNotSelf n cubeEq)
+
+normalized-time-is-1 : (S : NormalizedScaleChoice) → NormalizedScaleChoice.time-step S ≡ 1
+normalized-time-is-1 S = trans (NormalizedScaleChoice.c-lock S) (normalized-length-is-1 S)
+
+normalized-mass-is-1 : (S : NormalizedScaleChoice) → NormalizedScaleChoice.mass-step S ≡ 1
+normalized-mass-is-1 S =
+  mass-unit-forced
+    (NormalizedScaleChoice.mass-step S)
+    (trans
+      (cong (λ t → (NormalizedScaleChoice.mass-step S *ℕ t) *ℕ t)
+            (sym (normalized-length-is-1 S)))
+      (trans
+        (sym (NormalizedScaleChoice.hbar-lock S))
+        (normalized-time-is-1 S)))
+
+normalized-scale-witness : NormalizedScaleChoice
+normalized-scale-witness = record
+  { length-step    = 1
+  ; time-step      = 1
+  ; mass-step      = 1
+  ; length-nonzero = λ ()
+  ; c-lock         = refl
+  ; hbar-lock      = refl
+  ; G-lock         = refl
+  }
+\end{code}
+
+This is the normalized form of the Planck claim. Before any decimal SI calibration enters, the only admissible positive scale triple in the $c = \hbar = G = 1$ regime is already the unit triple. The later SI gate therefore does not introduce new structure. It only names that already-forced triple in external units.
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Distinction as measurement kernel}
+\label{sec:scale-closure:measurement-kernel}
+%───────────────────────────────────────────────────────────────────────────
+
+At this point the scale triangle is closed. A sharper question now replaces the earlier combinatorial one: what must any would-be physics already contain before it can even speak about measurement? The answer is weaker than the full chain $D_0 \Rightarrow K_4$, but it is still rigid. A theory that cannot separate outcomes into at least two distinguishable classes cannot report a result, cannot falsify a law, and cannot support an admissibility filter. Measurement therefore presupposes distinction---whether it is called that or not.
+
+The formal kernel is exactly the old one in a new role. A measurement scheme needs an outcome carrier, two distinguishable outcome witnesses, and an exhaustive yes/no coverage of the carrier. That is not merely analogous to a distinction. It \emph{is} one.
+
+\begin{code}
+record BinaryMeasurement : Set1 where
+  field
+    State   : Set
+    Outcome : Set
+    measure : State → Outcome
+    yes     : Outcome
+    no      : Outcome
+    yes≠no  : yes ≠ no
+    total   : (y : Outcome) → (y ≡ yes) ⊎ (y ≡ no)
+
+open BinaryMeasurement public
+
+measurement-outcome-distinction : (M : BinaryMeasurement) → Distinction
+measurement-outcome-distinction M =
+  fromDistinctCovered
+    (yes M)
+    (no M)
+    (yes≠no M)
+    (total M)
+
+measurement-outcome-nontrivial : (M : BinaryMeasurement) → NonTrivial (Outcome M)
+measurement-outcome-nontrivial M =
+  law0-5-distinct-pair-forces-nontrivial
+    (yes M , (no M , yes≠no M))
+
+measurement-has-distinct-outcomes : (M : BinaryMeasurement) → HasDistinctPair (Outcome M)
+measurement-has-distinct-outcomes M =
+  yes M , (no M , yes≠no M)
+\end{code}
+
+These lemmas do not yet say that every physical formalism collapses all the way to $K_4$. They prove a narrower and cleaner threshold statement: every theory that claims to measure anything must already carry a distinction kernel in its outcome space. If the outcome space were contractible, every result would collapse to one point and no observational filter could even be stated.
+
+This is the correct red line. $D_0$ is our name for the fully formalized package that begins from distinction and carries it through elimination. Rival frameworks may refuse that name. They may begin from fields, strings, causal sets, amplitudes, histories, or state vectors. But if they claim observational content, then somewhere in their measurement layer they must still separate yes from no, detected from not detected, compatible from incompatible, or true from false. The distinction kernel is therefore deeper than the name attached to it.
+
+The next chapter does not assume that every framework has already collapsed to the whole FD chain. It assumes only what the lemmas above force: that measurement itself already stands on a distinction. The continuum question can then be asked sharply: once a theory has a distinction kernel and the discrete FD chain has closed to $K_4$, does the passage to decimal physics add freedom, or only expose the next forced quotient?
+
+%───────────────────────────────────────────────────────────────────────────
+\section{The SI rescaling gate}
+\label{sec:scale-closure:si-gate}
+%───────────────────────────────────────────────────────────────────────────
+
+The closure theorem does not claim that the book directly computes decimal SI numerals. It does something stricter and cleaner: it isolates the only place where continuum calibration may enter. Once $c_{\mathrm{FD}} = \hbar_{\mathrm{FD}} = G_{\mathrm{FD}} = 1$ are forced, an SI interpretation can differ from the native FD system only by three scale factors: one for length, one for time, and one for mass.
+
+Write $a$ for the SI length assigned to one FD edge, $b$ for the SI time assigned to one FD update step, and $m$ for the SI mass assigned to one FD mass unit. Then the SI constants must satisfy the cross-multiplied bridge equations
+\[
+c_{\mathrm{SI}} \cdot b = a,
+\qquad
+\hbar_{\mathrm{SI}} \cdot b = m a^2,
+\qquad
+G_{\mathrm{SI}} \cdot m b^2 = a^3.
+\]
+These are exactly the dimensional translations of $c = a/b$, $\hbar = ma^2/b$, and $G = a^3/(mb^2)$, with the native FD values already fixed to~$1$.
+
+\begin{code}
+LengthScale : Set
+LengthScale = ℚ
+
+TimeScale : Set
+TimeScale = ℚ
+
+MassScale : Set
+MassScale = ℚ
+
+record SIRescaling : Set where
+  field
+    length-scale : LengthScale
+    time-scale   : TimeScale
+    mass-scale   : MassScale
+    c-SI         : ℚ
+    hbar-SI      : ℚ
+    G-SI         : ℚ
+    c-bridge     : (c-SI *ℚ time-scale) ≃ℚ length-scale
+    hbar-bridge  : (hbar-SI *ℚ time-scale) ≃ℚ
+                  ((mass-scale *ℚ length-scale) *ℚ length-scale)
+    G-bridge     : ((G-SI *ℚ mass-scale) *ℚ (time-scale *ℚ time-scale)) ≃ℚ
+                  ((length-scale *ℚ length-scale) *ℚ length-scale)
+
+unit-c-bridge : (1ℚ *ℚ 1ℚ) ≃ℚ 1ℚ
+unit-c-bridge = *ℚ-one-right 1ℚ
+
+unit-hbar-bridge : (1ℚ *ℚ 1ℚ) ≃ℚ ((1ℚ *ℚ 1ℚ) *ℚ 1ℚ)
+unit-hbar-bridge = ≃ℚ-sym (*ℚ-one-right (1ℚ *ℚ 1ℚ))
+
+unit-G-bridge : ((1ℚ *ℚ 1ℚ) *ℚ (1ℚ *ℚ 1ℚ)) ≃ℚ ((1ℚ *ℚ 1ℚ) *ℚ 1ℚ)
+unit-G-bridge =
+  ≃ℚ-trans
+    (*ℚ-assoc 1ℚ 1ℚ (1ℚ *ℚ 1ℚ))
+    (≃ℚ-trans
+      (*ℚ-one-left (1ℚ *ℚ (1ℚ *ℚ 1ℚ)))
+      (≃ℚ-sym (*ℚ-assoc 1ℚ 1ℚ 1ℚ)))
+
+normalized-planck-rescaling : SIRescaling
+normalized-planck-rescaling = record
+  { length-scale = 1ℚ
+  ; time-scale   = 1ℚ
+  ; mass-scale   = 1ℚ
+  ; c-SI         = 1ℚ
+  ; hbar-SI      = 1ℚ
+  ; G-SI         = 1ℚ
+  ; c-bridge     = unit-c-bridge
+  ; hbar-bridge  = unit-hbar-bridge
+  ; G-bridge     = unit-G-bridge
+  }
+
+squareℚ : ℚ → ℚ
+squareℚ q = q *ℚ q
+
+cube-scaleℚ : ℚ → ℚ → ℚ
+cube-scaleℚ x c = (((x *ℚ c) *ℚ c) *ℚ c)
+
+fifth-scaleℚ : ℚ → ℚ → ℚ
+fifth-scaleℚ x c = (((((x *ℚ c) *ℚ c) *ℚ c) *ℚ c) *ℚ c)
+
+record AnalyticPlanckExtraction (R : SIRescaling) : Set where
+  field
+    planck-length-SI : ℚ
+    planck-time-SI   : ℚ
+    planck-mass-SI   : ℚ
+    length-nonneg    : 0ℚ ≤ℚ planck-length-SI
+    time-nonneg      : 0ℚ ≤ℚ planck-time-SI
+    mass-nonneg      : 0ℚ ≤ℚ planck-mass-SI
+    length-balance   :
+      cube-scaleℚ (squareℚ planck-length-SI) (SIRescaling.c-SI R) ≃ℚ
+      (SIRescaling.hbar-SI R *ℚ SIRescaling.G-SI R)
+    time-balance     :
+      fifth-scaleℚ (squareℚ planck-time-SI) (SIRescaling.c-SI R) ≃ℚ
+      (SIRescaling.hbar-SI R *ℚ SIRescaling.G-SI R)
+    mass-balance     :
+      (squareℚ planck-mass-SI *ℚ SIRescaling.G-SI R) ≃ℚ
+      (SIRescaling.hbar-SI R *ℚ SIRescaling.c-SI R)
+
+record AnalyticPlanckSolver : Set1 where
+  field
+    extract-planck : (R : SIRescaling) → AnalyticPlanckExtraction R
+
+oneℚ-nonneg : 0ℚ ≤ℚ 1ℚ
+oneℚ-nonneg = <ℚ→≤ℚ 0ℚ<1ℚ
+
+unit-squareℚ : squareℚ 1ℚ ≃ℚ 1ℚ
+unit-squareℚ = *ℚ-one-right 1ℚ
+
+unit-cube-scaleℚ : cube-scaleℚ (squareℚ 1ℚ) 1ℚ ≃ℚ 1ℚ
+unit-cube-scaleℚ =
+  ≃ℚ-trans
+    (*ℚ-one-right (((squareℚ 1ℚ) *ℚ 1ℚ) *ℚ 1ℚ))
+    (≃ℚ-trans
+      (*ℚ-one-right ((squareℚ 1ℚ) *ℚ 1ℚ))
+      (≃ℚ-trans
+        (*ℚ-one-right (squareℚ 1ℚ))
+        unit-squareℚ))
+
+unit-fifth-scaleℚ : fifth-scaleℚ (squareℚ 1ℚ) 1ℚ ≃ℚ 1ℚ
+unit-fifth-scaleℚ =
+  ≃ℚ-trans
+    (*ℚ-one-right (((((squareℚ 1ℚ) *ℚ 1ℚ) *ℚ 1ℚ) *ℚ 1ℚ) *ℚ 1ℚ))
+    (≃ℚ-trans
+    (*ℚ-one-right ((((squareℚ 1ℚ) *ℚ 1ℚ) *ℚ 1ℚ) *ℚ 1ℚ))
+      (≃ℚ-trans
+        (*ℚ-one-right (((squareℚ 1ℚ) *ℚ 1ℚ) *ℚ 1ℚ))
+        (≃ℚ-trans
+          (*ℚ-one-right ((squareℚ 1ℚ) *ℚ 1ℚ))
+          (≃ℚ-trans
+            (*ℚ-one-right (squareℚ 1ℚ))
+            unit-squareℚ))))
+
+normalized-analytic-planck-extraction : AnalyticPlanckExtraction normalized-planck-rescaling
+normalized-analytic-planck-extraction = record
+  { planck-length-SI = 1ℚ
+  ; planck-time-SI   = 1ℚ
+  ; planck-mass-SI   = 1ℚ
+  ; length-nonneg    = oneℚ-nonneg
+  ; time-nonneg      = oneℚ-nonneg
+  ; mass-nonneg      = oneℚ-nonneg
+  ; length-balance   =
+      ≃ℚ-trans
+        unit-cube-scaleℚ
+        (≃ℚ-sym (*ℚ-one-right 1ℚ))
+  ; time-balance     =
+      ≃ℚ-trans
+        unit-fifth-scaleℚ
+        (≃ℚ-sym (*ℚ-one-right 1ℚ))
+  ; mass-balance     =
+      ≃ℚ-trans
+        (≃ℚ-trans
+          (*ℚ-one-right (squareℚ 1ℚ))
+          unit-squareℚ)
+        (≃ℚ-sym (*ℚ-one-right 1ℚ))
+  }
+
+squareℝ : ℝ → ℝ
+squareℝ x = x ⋅ℝ x
+
+record PositiveSquareRoot (x : ℝ) : Set where
+  field
+    sqrt-value  : ℝ
+    sqrt-nonneg : 0ℝ ≤ℝ sqrt-value
+    sqrt-square : squareℝ sqrt-value ≃ℝ x
+
+record RealSquareRootSolver : Set1 where
+  field
+    sqrt⁺-real : (x : ℝ) → 0ℝ ≤ℝ x → PositiveSquareRoot x
+
+unit-squareℝ : squareℝ 1ℝ ≃ℝ 1ℝ
+unit-squareℝ = ⋅ℝ-one-right 1ℝ
+
+unit-positive-square-root : PositiveSquareRoot 1ℝ
+unit-positive-square-root = record
+  { sqrt-value  = 1ℝ
+  ; sqrt-nonneg = ≤ℝ-refl 1ℝ
+  ; sqrt-square = unit-squareℝ
+  }
+
+0<ℤ-zero-impossible : 0ℤ <ℤ 0ℤ → ⊥
+0<ℤ-zero-impossible (p≤ , p≰) = p≰ p≤
+
+0<ℚ→NonZeroℚ : (q : ℚ) → 0ℚ <ℚ q → NonZeroℚ q
+0<ℚ→NonZeroℚ q qpos q0 =
+  let
+    numPos : 0ℤ <ℤ num q
+    numPos = 0ℚ<→0ℤ<num q qpos
+  in
+  0<ℤ-zero-impossible (≤ℤ-resp-≡ʳ q0 numPos)
+
+record PositiveSIRescaling : Set where
+  field
+    base      : SIRescaling
+    c-positive    : 0ℚ <ℚ SIRescaling.c-SI base
+    hbar-positive : 0ℚ <ℚ SIRescaling.hbar-SI base
+    G-positive    : 0ℚ <ℚ SIRescaling.G-SI base
+
+c-inverseℚ : PositiveSIRescaling → ℚ
+c-inverseℚ P = reciprocal⁺ (SIRescaling.c-SI (PositiveSIRescaling.base P))
+  (PositiveSIRescaling.c-positive P)
+
+cubeℚ : ℚ → ℚ
+cubeℚ q = (q *ℚ q) *ℚ q
+
+fifthℚ : ℚ → ℚ
+fifthℚ q = (((q *ℚ q) *ℚ q) *ℚ q) *ℚ q
+
+length-radicandℚ : PositiveSIRescaling → ℚ
+length-radicandℚ P =
+  (SIRescaling.hbar-SI (PositiveSIRescaling.base P) *ℚ
+   SIRescaling.G-SI (PositiveSIRescaling.base P)) *ℚ
+  cubeℚ (c-inverseℚ P)
+
+time-radicandℚ : PositiveSIRescaling → ℚ
+time-radicandℚ P =
+  (SIRescaling.hbar-SI (PositiveSIRescaling.base P) *ℚ
+   SIRescaling.G-SI (PositiveSIRescaling.base P)) *ℚ
+  fifthℚ (c-inverseℚ P)
+
+mass-radicandℚ : PositiveSIRescaling → ℚ
+mass-radicandℚ P =
+  (SIRescaling.hbar-SI (PositiveSIRescaling.base P) *ℚ
+   SIRescaling.c-SI (PositiveSIRescaling.base P)) *ℚ
+  reciprocal⁺ (SIRescaling.G-SI (PositiveSIRescaling.base P))
+    (PositiveSIRescaling.G-positive P)
+
+length-radicandℝ : PositiveSIRescaling → ℝ
+length-radicandℝ P = ℚtoℝ (length-radicandℚ P)
+
+time-radicandℝ : PositiveSIRescaling → ℝ
+time-radicandℝ P = ℚtoℝ (time-radicandℚ P)
+
+mass-radicandℝ : PositiveSIRescaling → ℝ
+mass-radicandℝ P = ℚtoℝ (mass-radicandℚ P)
+
+normalized-positive-si-rescaling : PositiveSIRescaling
+normalized-positive-si-rescaling = record
+  { base          = normalized-planck-rescaling
+  ; c-positive    = 0ℚ<1ℚ
+  ; hbar-positive = 0ℚ<1ℚ
+  ; G-positive    = 0ℚ<1ℚ
+  }
+
+normalized-c-inverseℚ : c-inverseℚ normalized-positive-si-rescaling ≃ℚ 1ℚ
+normalized-c-inverseℚ = *ℚ-reciprocal⁺-left 1ℚ 0ℚ<1ℚ
+
+normalized-length-radicandℚ : length-radicandℚ normalized-positive-si-rescaling ≃ℚ 1ℚ
+normalized-length-radicandℚ = refl
+
+normalized-time-radicandℚ : time-radicandℚ normalized-positive-si-rescaling ≃ℚ 1ℚ
+normalized-time-radicandℚ = refl
+
+normalized-mass-radicandℚ : mass-radicandℚ normalized-positive-si-rescaling ≃ℚ 1ℚ
+normalized-mass-radicandℚ = refl
+
+ℚtoℝ-resp-≃ℚ : {p q : ℚ} → p ≃ℚ q → ℚtoℝ p ≃ℝ ℚtoℝ q
+ℚtoℝ-resp-≃ℚ {p} {q} pq = record
+  { conv0 = λ ε εpos →
+      zero , (λ n _ →
+        let
+          d≃0 : distℚ p q ≃ℚ 0ℚ
+          d≃0 = distℚ-≃0 pq
+
+          d≤0 : distℚ p q ≤ℚ 0ℚ
+          d≤0 = ≃ℚ→≤ℚˡ {distℚ p q} {0ℚ} d≃0
+        in
+        ≤<ℚ→<ℚ {distℚ p q} {0ℚ} {ε} d≤0 εpos)
+  }
+
+ℚtoℝ-mono-≤ : {p q : ℚ} → p ≤ℚ q → ℚtoℝ p ≤ℝ ℚtoℝ q
+ℚtoℝ-mono-≤ {p} {q} p≤q = record
+  { leReal = λ ε εpos →
+      zero , (λ n _ →
+        let
+          q≤q+ε : q ≤ℚ (q +ℚ ε)
+          q≤q+ε = ≤ℚ-add-nonneg-right q ε (<ℚ→≤ℚ εpos)
+        in
+        ≤ℚ-trans p≤q q≤q+ε)
+  }
+
+ℚtoℝ-nonneg : {q : ℚ} → 0ℚ ≤ℚ q → 0ℝ ≤ℝ ℚtoℝ q
+ℚtoℝ-nonneg {q} qnonneg = ℚtoℝ-mono-≤ {0ℚ} {q} qnonneg
+
+0≤ℚ-*ℚ : (p q : ℚ) → 0ℚ ≤ℚ p → 0ℚ ≤ℚ q → 0ℚ ≤ℚ (p *ℚ q)
+0≤ℚ-*ℚ p q pnonneg qnonneg =
+  let
+    scaled : (0ℚ *ℚ q) ≤ℚ (p *ℚ q)
+    scaled = ≤ℚ-mul-nonneg-right 0ℚ p q pnonneg qnonneg
+
+    zero≤scaled : 0ℚ ≤ℚ (0ℚ *ℚ q)
+    zero≤scaled = ≃ℚ→≤ℚʳ (*ℚ-zero-left q)
+  in
+  ≤ℚ-trans zero≤scaled scaled
+
+cubeℚ-nonneg : (q : ℚ) → 0ℚ ≤ℚ q → 0ℚ ≤ℚ cubeℚ q
+cubeℚ-nonneg q qnonneg =
+  0≤ℚ-*ℚ (q *ℚ q) q (0≤ℚ-*ℚ q q qnonneg qnonneg) qnonneg
+
+fifthℚ-nonneg : (q : ℚ) → 0ℚ ≤ℚ q → 0ℚ ≤ℚ fifthℚ q
+fifthℚ-nonneg q qnonneg =
+  0≤ℚ-*ℚ ((((q *ℚ q) *ℚ q) *ℚ q)) q
+    (0≤ℚ-*ℚ (((q *ℚ q) *ℚ q)) q
+      (0≤ℚ-*ℚ (q *ℚ q) q (0≤ℚ-*ℚ q q qnonneg qnonneg) qnonneg)
+      qnonneg)
+    qnonneg
+
+length-radicandℚ-nonneg : (P : PositiveSIRescaling) → 0ℚ ≤ℚ length-radicandℚ P
+length-radicandℚ-nonneg P =
+  let
+    hbarNonneg : 0ℚ ≤ℚ SIRescaling.hbar-SI (PositiveSIRescaling.base P)
+    hbarNonneg = <ℚ→≤ℚ (PositiveSIRescaling.hbar-positive P)
+
+    GNonneg : 0ℚ ≤ℚ SIRescaling.G-SI (PositiveSIRescaling.base P)
+    GNonneg = <ℚ→≤ℚ (PositiveSIRescaling.G-positive P)
+
+    cinvNonneg : 0ℚ ≤ℚ c-inverseℚ P
+    cinvNonneg = <ℚ→≤ℚ (reciprocal⁺-pos (SIRescaling.c-SI (PositiveSIRescaling.base P))
+      (PositiveSIRescaling.c-positive P))
+  in
+  0≤ℚ-*ℚ
+    (SIRescaling.hbar-SI (PositiveSIRescaling.base P) *ℚ SIRescaling.G-SI (PositiveSIRescaling.base P))
+    (cubeℚ (c-inverseℚ P))
+    (0≤ℚ-*ℚ
+      (SIRescaling.hbar-SI (PositiveSIRescaling.base P))
+      (SIRescaling.G-SI (PositiveSIRescaling.base P))
+      hbarNonneg GNonneg)
+    (cubeℚ-nonneg (c-inverseℚ P) cinvNonneg)
+
+time-radicandℚ-nonneg : (P : PositiveSIRescaling) → 0ℚ ≤ℚ time-radicandℚ P
+time-radicandℚ-nonneg P =
+  let
+    hbarNonneg : 0ℚ ≤ℚ SIRescaling.hbar-SI (PositiveSIRescaling.base P)
+    hbarNonneg = <ℚ→≤ℚ (PositiveSIRescaling.hbar-positive P)
+
+    GNonneg : 0ℚ ≤ℚ SIRescaling.G-SI (PositiveSIRescaling.base P)
+    GNonneg = <ℚ→≤ℚ (PositiveSIRescaling.G-positive P)
+
+    cinvNonneg : 0ℚ ≤ℚ c-inverseℚ P
+    cinvNonneg = <ℚ→≤ℚ (reciprocal⁺-pos (SIRescaling.c-SI (PositiveSIRescaling.base P))
+      (PositiveSIRescaling.c-positive P))
+  in
+  0≤ℚ-*ℚ
+    (SIRescaling.hbar-SI (PositiveSIRescaling.base P) *ℚ SIRescaling.G-SI (PositiveSIRescaling.base P))
+    (fifthℚ (c-inverseℚ P))
+    (0≤ℚ-*ℚ
+      (SIRescaling.hbar-SI (PositiveSIRescaling.base P))
+      (SIRescaling.G-SI (PositiveSIRescaling.base P))
+      hbarNonneg GNonneg)
+    (fifthℚ-nonneg (c-inverseℚ P) cinvNonneg)
+
+mass-radicandℚ-nonneg : (P : PositiveSIRescaling) → 0ℚ ≤ℚ mass-radicandℚ P
+mass-radicandℚ-nonneg P =
+  let
+    hbarNonneg : 0ℚ ≤ℚ SIRescaling.hbar-SI (PositiveSIRescaling.base P)
+    hbarNonneg = <ℚ→≤ℚ (PositiveSIRescaling.hbar-positive P)
+
+    cNonneg : 0ℚ ≤ℚ SIRescaling.c-SI (PositiveSIRescaling.base P)
+    cNonneg = <ℚ→≤ℚ (PositiveSIRescaling.c-positive P)
+
+    GinvNonneg : 0ℚ ≤ℚ reciprocal⁺ (SIRescaling.G-SI (PositiveSIRescaling.base P))
+      (PositiveSIRescaling.G-positive P)
+    GinvNonneg = <ℚ→≤ℚ (reciprocal⁺-pos (SIRescaling.G-SI (PositiveSIRescaling.base P))
+      (PositiveSIRescaling.G-positive P))
+  in
+  0≤ℚ-*ℚ
+    (SIRescaling.hbar-SI (PositiveSIRescaling.base P) *ℚ SIRescaling.c-SI (PositiveSIRescaling.base P))
+    (reciprocal⁺ (SIRescaling.G-SI (PositiveSIRescaling.base P))
+      (PositiveSIRescaling.G-positive P))
+    (0≤ℚ-*ℚ
+      (SIRescaling.hbar-SI (PositiveSIRescaling.base P))
+      (SIRescaling.c-SI (PositiveSIRescaling.base P))
+      hbarNonneg cNonneg)
+    GinvNonneg
+
+length-radicandℝ-nonneg : (P : PositiveSIRescaling) → 0ℝ ≤ℝ length-radicandℝ P
+length-radicandℝ-nonneg P = ℚtoℝ-nonneg (length-radicandℚ-nonneg P)
+
+time-radicandℝ-nonneg : (P : PositiveSIRescaling) → 0ℝ ≤ℝ time-radicandℝ P
+time-radicandℝ-nonneg P = ℚtoℝ-nonneg (time-radicandℚ-nonneg P)
+
+mass-radicandℝ-nonneg : (P : PositiveSIRescaling) → 0ℝ ≤ℝ mass-radicandℝ P
+mass-radicandℝ-nonneg P = ℚtoℝ-nonneg (mass-radicandℚ-nonneg P)
+
+record RealAnalyticPlanckExtraction (P : PositiveSIRescaling) : Set where
+  field
+    planck-length-ℝ : ℝ
+    planck-time-ℝ   : ℝ
+    planck-mass-ℝ   : ℝ
+    length-nonneg-ℝ : 0ℝ ≤ℝ planck-length-ℝ
+    time-nonneg-ℝ   : 0ℝ ≤ℝ planck-time-ℝ
+    mass-nonneg-ℝ   : 0ℝ ≤ℝ planck-mass-ℝ
+    length-square-ℝ : squareℝ planck-length-ℝ ≃ℝ length-radicandℝ P
+    time-square-ℝ   : squareℝ planck-time-ℝ ≃ℝ time-radicandℝ P
+    mass-square-ℝ   : squareℝ planck-mass-ℝ ≃ℝ mass-radicandℝ P
+
+record RealAnalyticPlanckSolver : Set1 where
+  field
+    extract-planck-ℝ : (P : PositiveSIRescaling) → RealAnalyticPlanckExtraction P
+
+record PlanckRadicandRoots (P : PositiveSIRescaling) : Set where
+  field
+    length-root : PositiveSquareRoot (length-radicandℝ P)
+    time-root   : PositiveSquareRoot (time-radicandℝ P)
+    mass-root   : PositiveSquareRoot (mass-radicandℝ P)
+
+record SpecializedPlanckRootSolver : Set1 where
+  field
+    solve-planck-radicands : (P : PositiveSIRescaling) → PlanckRadicandRoots P
+
+normalized-length-radicandℝ : length-radicandℝ normalized-positive-si-rescaling ≃ℝ 1ℝ
+normalized-length-radicandℝ =
+  ≃ℝ-sym (ℚtoℝ-resp-≃ℚ normalized-length-radicandℚ)
+
+normalized-time-radicandℝ : time-radicandℝ normalized-positive-si-rescaling ≃ℝ 1ℝ
+normalized-time-radicandℝ =
+  ≃ℝ-sym (ℚtoℝ-resp-≃ℚ normalized-time-radicandℚ)
+
+normalized-mass-radicandℝ : mass-radicandℝ normalized-positive-si-rescaling ≃ℝ 1ℝ
+normalized-mass-radicandℝ =
+  ≃ℝ-sym (ℚtoℝ-resp-≃ℚ normalized-mass-radicandℚ)
+
+normalized-planck-radicand-roots : PlanckRadicandRoots normalized-positive-si-rescaling
+normalized-planck-radicand-roots = record
+  { length-root = record
+      { sqrt-value  = 1ℝ
+      ; sqrt-nonneg = ≤ℝ-refl 1ℝ
+      ; sqrt-square = ≃ℝ-trans unit-squareℝ (≃ℝ-sym normalized-length-radicandℝ)
+      }
+  ; time-root = record
+      { sqrt-value  = 1ℝ
+      ; sqrt-nonneg = ≤ℝ-refl 1ℝ
+      ; sqrt-square = ≃ℝ-trans unit-squareℝ (≃ℝ-sym normalized-time-radicandℝ)
+      }
+  ; mass-root = record
+      { sqrt-value  = 1ℝ
+      ; sqrt-nonneg = ≤ℝ-refl 1ℝ
+      ; sqrt-square = ≃ℝ-trans unit-squareℝ (≃ℝ-sym normalized-mass-radicandℝ)
+      }
+  }
+
+assemble-real-analytic-planck-solver : RealSquareRootSolver → RealAnalyticPlanckSolver
+assemble-real-analytic-planck-solver sqrtSolver = record
+  { extract-planck-ℝ = λ P →
+      let
+        lengthRoot : PositiveSquareRoot (length-radicandℝ P)
+        lengthRoot = RealSquareRootSolver.sqrt⁺-real sqrtSolver (length-radicandℝ P) (length-radicandℝ-nonneg P)
+
+        timeRoot : PositiveSquareRoot (time-radicandℝ P)
+        timeRoot = RealSquareRootSolver.sqrt⁺-real sqrtSolver (time-radicandℝ P) (time-radicandℝ-nonneg P)
+
+        massRoot : PositiveSquareRoot (mass-radicandℝ P)
+        massRoot = RealSquareRootSolver.sqrt⁺-real sqrtSolver (mass-radicandℝ P) (mass-radicandℝ-nonneg P)
+      in
+      record
+        { planck-length-ℝ = PositiveSquareRoot.sqrt-value lengthRoot
+        ; planck-time-ℝ   = PositiveSquareRoot.sqrt-value timeRoot
+        ; planck-mass-ℝ   = PositiveSquareRoot.sqrt-value massRoot
+        ; length-nonneg-ℝ = PositiveSquareRoot.sqrt-nonneg lengthRoot
+        ; time-nonneg-ℝ   = PositiveSquareRoot.sqrt-nonneg timeRoot
+        ; mass-nonneg-ℝ   = PositiveSquareRoot.sqrt-nonneg massRoot
+        ; length-square-ℝ = PositiveSquareRoot.sqrt-square lengthRoot
+        ; time-square-ℝ   = PositiveSquareRoot.sqrt-square timeRoot
+        ; mass-square-ℝ   = PositiveSquareRoot.sqrt-square massRoot
+        }
+  }
+
+assemble-specialized-planck-solver : SpecializedPlanckRootSolver → RealAnalyticPlanckSolver
+assemble-specialized-planck-solver rootSolver = record
+  { extract-planck-ℝ = λ P →
+      let
+        roots : PlanckRadicandRoots P
+        roots = SpecializedPlanckRootSolver.solve-planck-radicands rootSolver P
+
+        lengthRoot : PositiveSquareRoot (length-radicandℝ P)
+        lengthRoot = PlanckRadicandRoots.length-root roots
+
+        timeRoot : PositiveSquareRoot (time-radicandℝ P)
+        timeRoot = PlanckRadicandRoots.time-root roots
+
+        massRoot : PositiveSquareRoot (mass-radicandℝ P)
+        massRoot = PlanckRadicandRoots.mass-root roots
+      in
+      record
+        { planck-length-ℝ = PositiveSquareRoot.sqrt-value lengthRoot
+        ; planck-time-ℝ   = PositiveSquareRoot.sqrt-value timeRoot
+        ; planck-mass-ℝ   = PositiveSquareRoot.sqrt-value massRoot
+        ; length-nonneg-ℝ = PositiveSquareRoot.sqrt-nonneg lengthRoot
+        ; time-nonneg-ℝ   = PositiveSquareRoot.sqrt-nonneg timeRoot
+        ; mass-nonneg-ℝ   = PositiveSquareRoot.sqrt-nonneg massRoot
+        ; length-square-ℝ = PositiveSquareRoot.sqrt-square lengthRoot
+        ; time-square-ℝ   = PositiveSquareRoot.sqrt-square timeRoot
+        ; mass-square-ℝ   = PositiveSquareRoot.sqrt-square massRoot
+        }
+  }
+
+\end{code}
+
+This record is the whole gate from FD to SI. No fourth free parameter is permitted. All empirical calibration is concentrated in the choice of a single rescaling triple $(a,b,m)$ satisfying these three equations. In physical language, the solution is the Planck calibration: once the measured continuum values of $c$, $\hbar$, and $G$ are fixed, the three native FD units are identified with the Planck length, Planck time, and Planck mass.
+
+The code above now contains the normalized witness explicitly: if the continuum constants are already expressed in Planck units, so that $c_{\mathrm{SI}} = \hbar_{\mathrm{SI}} = G_{\mathrm{SI}} = 1$, then the canonical rescaling is the unit triple $(a,b,m) = (1,1,1)$. That is the formal content of \texttt{normalized-planck-rescaling}.
+
+The book now also fixes the exact shape of the remaining analytic problem. The record \texttt{AnalyticPlanckExtraction} expresses the three Planck formulas using multiplication alone:
+\[
+\ell_P^2 c^3 = \hbar G,
+\qquad
+t_P^2 c^5 = \hbar G,
+\qquad
+m_P^2 G = \hbar c.
+\]
+So the missing endgame is no longer vague. A full decimal-to-Planck normalization theorem is precisely a term of \texttt{AnalyticPlanckSolver}. The normalized case is already realized by \texttt{normalized-analytic-planck-extraction}: when the continuum constants are themselves normalized to $1$, the analytic witnesses for $(\ell_P,t_P,m_P)$ are again the unit triple.
+
+The next missing solver layer is now fixed just as explicitly. A general square-root theory on the positive real sector is precisely a term of \texttt{RealSquareRootSolver}, and the normalized seed case is already witnessed by \texttt{unit-positive-square-root}. So the analytic staircase is now split into two clean interfaces rather than one vague gap: inversion on $\mathbb{Q}$, then square-root extraction on $\mathbb{R}$, then the final assembly of the Planck solver.
+
+One correction of target space is now explicit. For arbitrary measured SI data, the Planck scales need not be rational. So the genuinely general endpoint cannot live in $\mathbb{Q}$ alone. The book therefore now contains \texttt{RealAnalyticPlanckExtraction}: three nonnegative real outputs whose squares reproduce the three already-defined Planck radicands. In this stricter sense, \texttt{AnalyticPlanckExtraction} is the rational balance ledger, while \texttt{RealAnalyticPlanckSolver} is the honest general target for arbitrary continuum data.
+
+The remaining gap can also be stated in a weaker and more focused form. Instead of demanding a square-root solver for all nonnegative reals, it already suffices to provide square roots for the three Planck radicands attached to a positive SI rescaling. That weaker interface is exactly \texttt{SpecializedPlanckRootSolver}, and the function \texttt{assemble-specialized-planck-solver} shows that nothing else is missing on the assembly side.
+
+What is 
+\emph{not yet} formalized is the final analytic step from arbitrary measured decimal SI values to that normalized witness by explicit inversion and square-root formulas. The present book has forced multiplication, order, and Cauchy completion, but it has not yet built a general square-root / reciprocal solver at this late chapter boundary. So the correct claim at this stage is precise: the SI gate is fully identified, the normalized Planck calibration is witnessed, and the absence of any fourth scale parameter is proved; the explicit analytic extraction of $(\ell_P,t_P,m_P)$ from measured SI numerals remains future infrastructure rather than hidden assumption.
+
 \subsubsection*{Threshold To Physics}
 
 At this point the discrete chain has already delivered its verdict. The carrier has been forced into a two-class distinction. The two-class distinction has been forced into the unique $K_4$ graph. The graph has been forced into a rigid invariant ledger. And the observable principle has stripped away the last semantic slack by ruling out every quantity that depends on presentation, labeling, or proof artefacts.
@@ -24642,49 +26853,6 @@ This is the largest technical debt left by the manuscript. The theorem
 chain stands, but its strongest surviving form may still be ahead of us:
 a presentation in which classification becomes inevitability in an even
 sharper sense than exhaustive proof can display.
-
-\subsection{A Concrete Path: The Pure Derivation as a Short Paper}
-\label{sec:invitation:pure-derivation-paper}
-
-The physics claim cannot be evaluated by a community that has not first
-accepted the formal derivation. These are separate questions, and they
-require separate acts of verification.
-
-A short companion paper---four to eight pages---addressed to the type
-theory community and submitted to a venue such as TYPES, LICS, or CSL,
-would isolate exactly the question that must be settled first:
-\emph{Is the derivation of $K_4$ from the distinction formally
-compulsory?} No physics. No $\alpha$. No spectral interpretation.
-Only the bare chain: distinction, coverage, four-case classification,
-drift acyclicity, presentation fixpoint, $K_4$ uniqueness.
-
-Such a paper would serve three purposes:
-
-\begin{enumerate}
-\item \textbf{External validation.} Acceptance at a refereed venue
-  establishes that the formal argument is not circular, not trivially
-  blocked, and not dependent on hidden postulates. The Agda source is
-  the proof artifact; the paper is the narrative wrapper that makes it
-  accessible.
-
-\item \textbf{Separation of concerns.} The physics community is right
-  to demand formal credibility before evaluating the numerical claims.
-  A published formal result provides exactly the external reference
-  that the physics discussion needs.
-
-\item \textbf{Pressure test.} If the derivation contains a gap---a step
-  where an alternative survives that the book overlooks---a type-theory
-  referee is best positioned to find it. Submitting the core argument to
-  that scrutiny is not a formality. It is the most informative experiment
-  available.
-\end{enumerate}
-
-The companion paper does not replace the present book. It extracts the
-load-bearing chain, strips away the arithmetic and physics layers, and
-presents the bare derivation in the language and conventions of its
-natural audience. If it survives review, the book gains an external
-anchor. If it does not, the failure will be informative in exactly the
-way that matters.
 
 \section{To Philosophers}
 \label{sec:invitation:to-philosophers}
