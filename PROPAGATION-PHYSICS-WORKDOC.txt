@@ -114,58 +114,6 @@ Current state after the refactor:
   no longer inversion on ℚ, but the controlled passage to root extraction and then to the
   real-valued Planck solver.
 
-Analytic staircase from the current state
-
-To keep the SI program navigable, the remaining analytic work should now be read as a fixed
-five-step staircase rather than as a cloud of ad hoc side lemmas:
-
-1. Specify the target equations exactly. STATUS: done.
-  The book now contains `AnalyticPlanckExtraction`, so the endpoint is no longer vague.
-
-2. Build rational inversion. STATUS: done.
-  The book now contains `reciprocal⁺` for the strictly positive sector and `reciprocal≠0`
-  for arbitrary nonzero rational classes, each with inverse laws.
-
-3. Expose the real closure in which irrational outputs can live. STATUS: already present.
-  The book already contains `ℚtoℝ`, the Cauchy completion `ℝ`, and the ordered-ring layer
-  on reals.
-
-4. Isolate the root-extraction interface needed for Planck scales. STATUS: now specified.
-  The book now contains `PositiveSquareRoot`, `RealSquareRootSolver`, and the normalized
-  unit witness `unit-positive-square-root` as the next exact gap.
-
-5. Assemble the full analytic Planck solver. STATUS: open.
-  Once the positive real square-root layer is solved, the remaining job is to combine the
-  already-forced SI balance equations, rational inversion, and real root extraction into a
-  global `AnalyticPlanckSolver`.
-
-Assembly status
-
-The assembly step has now been reduced to bookkeeping. The book contains nonnegativity
-proofs for the three real Planck radicands together with
-`assemble-real-analytic-planck-solver`, which turns any `RealSquareRootSolver` directly
-into a `RealAnalyticPlanckSolver`. So there is now only one substantive analytic gap left:
-construct `RealSquareRootSolver` itself.
-
-Final gap, sharpened again
-
-The remaining open problem can now be posed in a weaker and more precise form than a global
-square-root theory on all nonnegative reals. The book contains
-`SpecializedPlanckRootSolver` and `assemble-specialized-planck-solver`, so it already
-suffices to solve the three concrete root problems attached to
-`length-radicandℝ`, `time-radicandℝ`, and `mass-radicandℝ` for each positive SI rescaling.
-Nothing else remains open on the assembly side.
-
-Target-space correction
-
-One methodological clarification is now explicit: the genuinely general endpoint for
-arbitrary measured SI data cannot be rational-valued in general, because Planck scales need
-not lie in `ℚ`. The book therefore now distinguishes two layers:
-
-1. `AnalyticPlanckExtraction`: rational balance ledger.
-2. `RealAnalyticPlanckExtraction` / `RealAnalyticPlanckSolver`: the honest general target
-  in `ℝ` for arbitrary continuum data.
-
 The rest of this document treats each remaining path in turn, then the closure argument
 that ties them together.
 
