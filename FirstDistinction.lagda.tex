@@ -4421,6 +4421,14 @@ suc-injective refl = refl
 ≤-antisym {suc m} {zero} () _
 ≤-antisym {suc m} {suc n} (s≤s p) (s≤s q) = cong suc (≤-antisym p q)
 
+-- § Totality of ≤ on ℕ.
+≤-total : (m n : ℕ) → (m ≤ n) ⊎ (n ≤ m)
+≤-total zero    _       = inj₁ z≤n
+≤-total _       zero    = inj₂ z≤n
+≤-total (suc m) (suc n) with ≤-total m n
+... | inj₁ p = inj₁ (s≤s p)
+... | inj₂ p = inj₂ (s≤s p)
+
 -- § Boolean type with built-in binding.
 data Bool : Set where
   true  : Bool
@@ -5528,6 +5536,22 @@ Strict order implies weak order, and antisymmetry forces equality of the underly
 ≤ℤ-antisym { -suc m } {0ℤ} _ ()
 ≤ℤ-antisym { -suc m } {+suc n} _ ()
 ≤ℤ-antisym { -suc m } { -suc n } p q = cong -suc_ (suc-injective (≤-antisym q p))
+
+-- § Totality of ≤ℤ.
+≤ℤ-total : (x y : ℤ) → (x ≤ℤ y) ⊎ (y ≤ℤ x)
+≤ℤ-total 0ℤ 0ℤ = inj₁ tt
+≤ℤ-total 0ℤ (+suc _) = inj₁ tt
+≤ℤ-total 0ℤ (-suc _) = inj₂ tt
+≤ℤ-total (+suc _) 0ℤ = inj₂ tt
+≤ℤ-total (+suc m) (+suc n) with ≤-total (suc m) (suc n)
+... | inj₁ p = inj₁ p
+... | inj₂ p = inj₂ p
+≤ℤ-total (+suc _) (-suc _) = inj₂ tt
+≤ℤ-total (-suc _) 0ℤ = inj₁ tt
+≤ℤ-total (-suc _) (+suc _) = inj₁ tt
+≤ℤ-total (-suc m) (-suc n) with ≤-total (suc n) (suc m)
+... | inj₁ p = inj₁ p
+... | inj₂ p = inj₂ p
 \end{code}
 
 \chapter{K$_4$ Neighborhood and Laplacian}
@@ -7325,6 +7349,24 @@ with cancellation.
   in
   ≤ℤ-resp-≡ˡ (sym lhs) (≤ℤ-resp-≡ʳ (sym rhs) step)
 ≤ℤ-mul-nonneg-right x y (-suc k) _ ()
+
+-- § Integer squares are always nonneg: 0 ≤ a * a.
+squareℤ-nonneg : (a : ℤ) → 0ℤ ≤ℤ a *ℤ a
+squareℤ-nonneg 0ℤ =
+  subst (0ℤ ≤ℤ_) (sym (*ℤ-zero-left 0ℤ)) tt
+squareℤ-nonneg (+suc n) =
+  subst (_≤ℤ ((+suc n) *ℤ (+suc n))) (*ℤ-zero-left (+suc n))
+    (≤ℤ-mul-nonneg-right 0ℤ (+suc n) (+suc n) tt tt)
+squareℤ-nonneg (-suc n) =
+  let
+    chain : (-suc n) *ℤ (-suc n) ≡ (+suc n) *ℤ (+suc n)
+    chain = trans
+      (*ℤ-neg-left (+suc n) (-suc n))
+      (trans
+        (cong negℤ (*ℤ-neg-right (+suc n) (+suc n)))
+        (negℤ-involutive ((+suc n) *ℤ (+suc n))))
+  in
+  subst (0ℤ ≤ℤ_) (sym chain) (squareℤ-nonneg (+suc n))
 
 -- § Strict order preserved by positive right factor.
 <ℤ-mul-pos-right : {x y : ℤ} → (d : ℕ⁺) → x <ℤ y → (x *ℤ ⁺toℤ d) <ℤ (y *ℤ ⁺toℤ d)
@@ -10224,6 +10266,23 @@ mul-swap-middle x y z =
     middle = ≤ℚ-trans {(a / b) *ℚ (e / f)} {(c / d) *ℚ (e / f)} {(e / f) *ℚ (c / d)} xz≤yz yz≤zy
   in
   ≤ℚ-trans {(e / f) *ℚ (a / b)} {(a / b) *ℚ (e / f)} {(e / f) *ℚ (c / d)} zx≤xz middle
+\end{code}
+
+\begin{code}
+-- § q * q ≥ 0 for every rational q.
+squareℚ-always-nonneg : (q : ℚ) → 0ℚ ≤ℚ (q *ℚ q)
+squareℚ-always-nonneg (a / b) =
+  let
+    lhsEq : 0ℤ *ℤ ⁺toℤ (b *⁺ b) ≡ 0ℤ
+    lhsEq = *ℤ-zero-left (⁺toℤ (b *⁺ b))
+    rhsEq : (a *ℤ a) *ℤ ⁺toℤ one⁺ ≡ a *ℤ a
+    rhsEq = *ℤ-one-right (a *ℤ a)
+    inner : 0ℤ ≤ℤ a *ℤ a
+    inner = squareℤ-nonneg a
+    step : 0ℤ ≤ℤ (a *ℤ a) *ℤ ⁺toℤ one⁺
+    step = subst (0ℤ ≤ℤ_) (sym rhsEq) inner
+  in
+  subst (_≤ℤ ((a *ℤ a) *ℤ ⁺toℤ one⁺)) (sym lhsEq) step
 \end{code}
 
 
@@ -13366,6 +13425,186 @@ reciprocal≠0 ((-suc n) / b) qnz =
   ≃ℚ-trans
     (*ℚ-comm (reciprocal≠0 q qnz) q)
     (*ℚ-reciprocal≠0-right q qnz)
+
+-- § Left monotonicity of *ℤ under nonneg factor (via commutativity).
+≤ℤ-mul-nonneg-left : (x y z : ℤ) → x ≤ℤ y → 0ℤ ≤ℤ z → (z *ℤ x) ≤ℤ (z *ℤ y)
+≤ℤ-mul-nonneg-left x y z x≤y z≥0 =
+  let
+    step : (x *ℤ z) ≤ℤ (y *ℤ z)
+    step = ≤ℤ-mul-nonneg-right x y z x≤y z≥0
+
+    step' : (z *ℤ x) ≤ℤ (y *ℤ z)
+    step' = ≤ℤ-resp-≡ˡ (*ℤ-comm x z) step
+
+    step'' : (z *ℤ x) ≤ℤ (z *ℤ y)
+    step'' = ≤ℤ-resp-≡ʳ (*ℤ-comm y z) step'
+  in step''
+
+-- § Nonneg square injectivity on ℤ: x² = y² and 0 ≤ x and 0 ≤ y implies x = y.
+nonneg-square-injective-ℤ : (x y : ℤ) → 0ℤ ≤ℤ x → 0ℤ ≤ℤ y
+  → (x *ℤ x) ≡ (y *ℤ y) → x ≡ y
+nonneg-square-injective-ℤ 0ℤ 0ℤ _ _ _ = refl
+nonneg-square-injective-ℤ 0ℤ (+suc n) _ _ eq =
+  let
+    zero-sq : (0ℤ *ℤ 0ℤ) ≡ 0ℤ
+    zero-sq = *ℤ-zero-left 0ℤ
+    rhs : 0ℤ ≡ (+suc n) *ℤ (+suc n)
+    rhs = trans (sym zero-sq) eq
+    rhsPos : 0ℤ <ℤ ((+suc n) *ℤ (+suc n))
+    rhsPos = 0<ℤ-mul-pos-right (+suc n) (mkℕ⁺ n) (0<ℤ-pos n)
+  in ⊥-elim (snd rhsPos (≤ℤ-resp-≡ˡ rhs (≤ℤ-refl 0ℤ)))
+nonneg-square-injective-ℤ (+suc m) 0ℤ _ _ eq =
+  let
+    zero-sq : (0ℤ *ℤ 0ℤ) ≡ 0ℤ
+    zero-sq = *ℤ-zero-left 0ℤ
+    rhs : (+suc m) *ℤ (+suc m) ≡ 0ℤ
+    rhs = trans eq zero-sq
+    lhsPos : 0ℤ <ℤ ((+suc m) *ℤ (+suc m))
+    lhsPos = 0<ℤ-mul-pos-right (+suc m) (mkℕ⁺ m) (0<ℤ-pos m)
+  in ⊥-elim (snd lhsPos (≤ℤ-resp-≡ʳ rhs (≤ℤ-refl ((+suc m) *ℤ (+suc m)))))
+nonneg-square-injective-ℤ (+suc m) (+suc n) _ _ eq with ≤ℤ-total (+suc m) (+suc n)
+... | inj₁ m≤n =
+  let
+    -- m ≤ n: m*m ≤ n*m (right-mono) and n*m ≤ n*n (left-mono).
+    -- eq : m*m = n*n forces n*m = m*m, cancel right factor m to get n = m.
+    step₁ : ((+suc m) *ℤ (+suc m)) ≤ℤ ((+suc n) *ℤ (+suc m))
+    step₁ = ≤ℤ-mul-nonneg-right (+suc m) (+suc n) (+suc m) m≤n tt
+
+    step₂ : ((+suc n) *ℤ (+suc m)) ≤ℤ ((+suc n) *ℤ (+suc n))
+    step₂ = ≤ℤ-mul-nonneg-left (+suc m) (+suc n) (+suc n) m≤n tt
+
+    -- n*m = m*m: upper from eq+step₂, lower is step₁
+    nm≡mm : ((+suc n) *ℤ (+suc m)) ≡ ((+suc m) *ℤ (+suc m))
+    nm≡mm = ≤ℤ-antisym
+               (≤ℤ-resp-≡ʳ (sym eq) step₂)
+               step₁
+  in sym (*ℤ-cancel-right-pos (+suc n) (+suc m) (mkℕ⁺ m) nm≡mm)
+... | inj₂ n≤m =
+  let
+    -- n ≤ m: n*n ≤ m*n (right-mono) and m*n ≤ m*m (left-mono).
+    -- eq : m*m = n*n forces m*n = n*n, cancel right factor n to get m = n.
+    step₁ : ((+suc n) *ℤ (+suc n)) ≤ℤ ((+suc m) *ℤ (+suc n))
+    step₁ = ≤ℤ-mul-nonneg-right (+suc n) (+suc m) (+suc n) n≤m tt
+
+    step₂ : ((+suc m) *ℤ (+suc n)) ≤ℤ ((+suc m) *ℤ (+suc m))
+    step₂ = ≤ℤ-mul-nonneg-left (+suc n) (+suc m) (+suc m) n≤m tt
+
+    -- m*n = n*n: upper from eq+step₂, lower is step₁
+    mn≡nn : ((+suc m) *ℤ (+suc n)) ≡ ((+suc n) *ℤ (+suc n))
+    mn≡nn = ≤ℤ-antisym
+               (≤ℤ-resp-≡ʳ eq step₂)
+               step₁
+  in *ℤ-cancel-right-pos (+suc m) (+suc n) (mkℕ⁺ n) mn≡nn
+nonneg-square-injective-ℤ (-suc _) _ () _
+nonneg-square-injective-ℤ _ (-suc _) _ () _
+
+-- § Multiplicative cancellation on ℚ by positive factor.
+*ℚ-cancel-pos-right : (p q r : ℚ) → 0ℚ <ℚ r → (p *ℚ r) ≃ℚ (q *ℚ r) → p ≃ℚ q
+*ℚ-cancel-pos-right (a / b) (c / d) (e / f) rpos eq with 0<ℤ→pos e (0ℚ<→0ℤ<num (e / f) rpos)
+... | n , e≡ =
+  let
+    E = ⁺toℤ f
+    B = ⁺toℤ b
+    D = ⁺toℤ d
+
+    -- Regroup LHS: (a*e)*(d*f) = (a*d)*(e*f)
+    lhsRegroup : ((a *ℤ e) *ℤ ⁺toℤ (d *⁺ f)) ≡ ((a *ℤ D) *ℤ (e *ℤ E))
+    lhsRegroup =
+      trans
+        (cong (λ t → (a *ℤ e) *ℤ t) (⁺toℤ-*⁺ d f))
+        (trans
+          (sym (*ℤ-assoc (a *ℤ e) D E))
+          (trans
+            (cong (λ t → t *ℤ E) (*ℤ-assoc a e D))
+            (trans
+              (cong (λ t → (a *ℤ t) *ℤ E) (*ℤ-comm e D))
+              (trans
+                (cong (λ t → t *ℤ E) (sym (*ℤ-assoc a D e)))
+                (*ℤ-assoc (a *ℤ D) e E)))))
+
+    -- Regroup RHS: (c*e)*(b*f) = (c*b)*(e*f)
+    rhsRegroup : ((c *ℤ e) *ℤ ⁺toℤ (b *⁺ f)) ≡ ((c *ℤ B) *ℤ (e *ℤ E))
+    rhsRegroup =
+      trans
+        (cong (λ t → (c *ℤ e) *ℤ t) (⁺toℤ-*⁺ b f))
+        (trans
+          (sym (*ℤ-assoc (c *ℤ e) B E))
+          (trans
+            (cong (λ t → t *ℤ E) (*ℤ-assoc c e B))
+            (trans
+              (cong (λ t → (c *ℤ t) *ℤ E) (*ℤ-comm e B))
+              (trans
+                (cong (λ t → t *ℤ E) (sym (*ℤ-assoc c B e)))
+                (*ℤ-assoc (c *ℤ B) e E)))))
+
+    -- e = +suc n, so e*f = ⁺toℤ (mkℕ⁺ n *⁺ f)
+    ef-eq : (e *ℤ E) ≡ ⁺toℤ (mkℕ⁺ n *⁺ f)
+    ef-eq = trans (cong (λ t → t *ℤ E) e≡) (sym (⁺toℤ-*⁺ (mkℕ⁺ n) f))
+
+    combined : ((a *ℤ D) *ℤ (e *ℤ E)) ≡ ((c *ℤ B) *ℤ (e *ℤ E))
+    combined = trans (sym lhsRegroup) (trans eq rhsRegroup)
+  in *ℤ-cancel-right-pos (a *ℤ D) (c *ℤ B) (mkℕ⁺ n *⁺ f)
+       (trans (cong (λ t → (a *ℤ D) *ℤ t) (sym ef-eq))
+         (trans combined
+           (cong (λ t → (c *ℤ B) *ℤ t) ef-eq)))
+
+-- § Nonneg square uniqueness on ℚ: if p*p ≃ℚ q*q and both nonneg, then p ≃ℚ q.
+*ℚ-nonneg-square-injective : (p q : ℚ) → 0ℚ ≤ℚ p → 0ℚ ≤ℚ q
+  → (p *ℚ p) ≃ℚ (q *ℚ q) → p ≃ℚ q
+*ℚ-nonneg-square-injective (a / b) (c / d) p≥0 q≥0 sq≃ =
+  let
+    -- sq≃ : (a*a) * ⁺toℤ(d*d) ≡ (c*c) * ⁺toℤ(b*b)
+    -- Regroup to (a*d)*(a*d) = (c*b)*(c*b)
+    B = ⁺toℤ b
+    D = ⁺toℤ d
+
+    lhsR : ((a *ℤ a) *ℤ ⁺toℤ (d *⁺ d)) ≡ ((a *ℤ D) *ℤ (a *ℤ D))
+    lhsR =
+      trans
+        (cong (λ t → (a *ℤ a) *ℤ t) (⁺toℤ-*⁺ d d))
+        (trans
+          (sym (*ℤ-assoc (a *ℤ a) D D))
+          (trans
+            (cong (λ t → t *ℤ D) (*ℤ-assoc a a D))
+            (trans
+              (cong (λ t → (a *ℤ t) *ℤ D) (*ℤ-comm a D))
+              (trans
+                (cong (λ t → t *ℤ D) (sym (*ℤ-assoc a D a)))
+                (*ℤ-assoc (a *ℤ D) a D)))))
+
+    rhsR : ((c *ℤ c) *ℤ ⁺toℤ (b *⁺ b)) ≡ ((c *ℤ B) *ℤ (c *ℤ B))
+    rhsR =
+      trans
+        (cong (λ t → (c *ℤ c) *ℤ t) (⁺toℤ-*⁺ b b))
+        (trans
+          (sym (*ℤ-assoc (c *ℤ c) B B))
+          (trans
+            (cong (λ t → t *ℤ B) (*ℤ-assoc c c B))
+            (trans
+              (cong (λ t → (c *ℤ t) *ℤ B) (*ℤ-comm c B))
+              (trans
+                (cong (λ t → t *ℤ B) (sym (*ℤ-assoc c B c)))
+                (*ℤ-assoc (c *ℤ B) c B)))))
+
+    sq-eq : ((a *ℤ D) *ℤ (a *ℤ D)) ≡ ((c *ℤ B) *ℤ (c *ℤ B))
+    sq-eq = trans (sym lhsR) (trans sq≃ rhsR)
+
+    -- a*d ≥ 0 from a ≥ 0 and d > 0
+    aNonneg : 0ℤ ≤ℤ a
+    aNonneg = 0≤ℚ→0≤ℤ-num (a / b) p≥0
+
+    cNonneg : 0ℤ ≤ℤ c
+    cNonneg = 0≤ℚ→0≤ℤ-num (c / d) q≥0
+
+    adNonneg : 0ℤ ≤ℤ (a *ℤ D)
+    adNonneg = ≤ℤ-resp-≡ˡ (*ℤ-zero-left D)
+                 (≤ℤ-mul-nonneg-right 0ℤ a D aNonneg tt)
+
+    cbNonneg : 0ℤ ≤ℤ (c *ℤ B)
+    cbNonneg = ≤ℤ-resp-≡ˡ (*ℤ-zero-left B)
+                 (≤ℤ-mul-nonneg-right 0ℤ c B cNonneg tt)
+  in
+  nonneg-square-injective-ℤ (a *ℤ D) (c *ℤ B) adNonneg cbNonneg sq-eq
 \end{code}
 
 \paragraph{Step 2: Rational Distributivity.}
@@ -20444,6 +20683,26 @@ Left monotonicity is forced by the same rational order law, now applied through 
   }
 \end{code}
 
+\begin{code}
+-- § Squaring function on ℝ.
+squareℝ : ℝ → ℝ
+squareℝ x = x ⋅ℝ x
+
+-- § Squares are always nonneg on ℝ: 0 ≤ x * x.
+squareℝ-nonneg : (x : ℝ) → 0ℝ ≤ℝ squareℝ x
+squareℝ-nonneg x = record
+  { leReal = λ ε εpos →
+      zero , (λ n _ →
+        let
+          sq≥0 : 0ℚ ≤ℚ (seq x n *ℚ seq x n)
+          sq≥0 = squareℚ-always-nonneg (seq x n)
+          ε≥0 : 0ℚ ≤ℚ ε
+          ε≥0 = <ℚ→≤ℚ εpos
+        in
+        0≤ℚ-+ℚ (seq x n *ℚ seq x n) ε sq≥0 ε≥0)
+  }
+\end{code}
+
 \paragraph{Where we now stand.}
 The numerical machinery is now in place. Natural numbers, integers, rationals, reals, order, distance, scaling, and spectral operators have all been forced from the surviving structure rather than imported from outside it. The document now possesses the full language required to evaluate $K_4$ quantitatively.
 
@@ -24700,6 +24959,11 @@ normalized-planck-rescaling = record
 squareℚ : ℚ → ℚ
 squareℚ q = q *ℚ q
 
+-- § Wrapper: nonneg square uniqueness stated via squareℚ.
+squareℚ-nonneg-unique : (p q : ℚ) → 0ℚ ≤ℚ p → 0ℚ ≤ℚ q
+  → squareℚ p ≃ℚ squareℚ q → p ≃ℚ q
+squareℚ-nonneg-unique = *ℚ-nonneg-square-injective
+
 cube-scaleℚ : ℚ → ℚ → ℚ
 cube-scaleℚ x c = (((x *ℚ c) *ℚ c) *ℚ c)
 
@@ -24799,6 +25063,178 @@ So the missing endgame is no longer vague. A full decimal-to-Planck normalizatio
 
 What is 
 \emph{not yet} formalized is the final analytic step from arbitrary measured decimal SI values to that normalized witness by explicit inversion and square-root formulas. The present book has forced multiplication, order, and Cauchy completion, but it has not yet built a general square-root / reciprocal solver at this late chapter boundary. So the correct claim at this stage is precise: the SI gate is fully identified, the normalized Planck calibration is witnessed, and the absence of any fourth scale parameter is proved; the explicit analytic extraction of $(\ell_P,t_P,m_P)$ from measured SI numerals remains future infrastructure rather than hidden assumption.
+
+What \emph{is} now proved is the uniqueness half: the extraction, should it exist, admits no second solution. If two triples $(\ell_P, t_P, m_P)$ and $(\ell'_P, t'_P, m'_P)$ both satisfy the three Planck balance equations for the same continuum constants, and all entries are nonnegative, then the triples agree. This is the eliminative content: not construction of a root, but proof that any root is unique. The argument is purely algebraic---totality of order, multiplicative cancellation, and nonnegative square injectivity suffice, with no appeal to completeness, continuity, or the intermediate value theorem.
+
+\begin{code}
+-- § Uniqueness of AnalyticPlanckExtraction:
+-- any two extractions for the same rescaling agree on all three Planck scales.
+module PlanckUnique (R : SIRescaling) (cpos : 0ℚ <ℚ SIRescaling.c-SI R)
+                    (Gpos : 0ℚ <ℚ SIRescaling.G-SI R) where
+
+  private
+    c = SIRescaling.c-SI R
+    ℏ' = SIRescaling.hbar-SI R
+    G' = SIRescaling.G-SI R
+
+  -- Cancel one *ℚ c factor from both sides.
+  cancel-right-c : (x y : ℚ) → (x *ℚ c) ≃ℚ (y *ℚ c) → x ≃ℚ y
+  cancel-right-c x y = *ℚ-cancel-pos-right x y c cpos
+
+  -- Cancel cube-scale: if ((x*c)*c)*c ≃ ((y*c)*c)*c then x ≃ y.
+  cancel-cube-scaleℚ : (x y : ℚ) →
+    cube-scaleℚ x c ≃ℚ cube-scaleℚ y c → x ≃ℚ y
+  cancel-cube-scaleℚ x y eq =
+    cancel-right-c x y
+      (cancel-right-c (x *ℚ c) (y *ℚ c)
+        (cancel-right-c ((x *ℚ c) *ℚ c) ((y *ℚ c) *ℚ c) eq))
+
+  -- Cancel fifth-scale: if (((((x*c)*c)*c)*c)*c) ≃ (((((y*c)*c)*c)*c)*c) then x ≃ y.
+  cancel-fifth-scaleℚ : (x y : ℚ) →
+    fifth-scaleℚ x c ≃ℚ fifth-scaleℚ y c → x ≃ℚ y
+  cancel-fifth-scaleℚ x y eq =
+    cancel-right-c x y
+      (cancel-right-c (x *ℚ c) (y *ℚ c)
+        (cancel-right-c ((x *ℚ c) *ℚ c) ((y *ℚ c) *ℚ c)
+          (cancel-right-c (((x *ℚ c) *ℚ c) *ℚ c) (((y *ℚ c) *ℚ c) *ℚ c)
+            (cancel-right-c ((((x *ℚ c) *ℚ c) *ℚ c) *ℚ c) ((((y *ℚ c) *ℚ c) *ℚ c) *ℚ c) eq))))
+
+  -- Cancel one *ℚ G factor.
+  cancel-right-G : (x y : ℚ) → (x *ℚ G') ≃ℚ (y *ℚ G') → x ≃ℚ y
+  cancel-right-G x y = *ℚ-cancel-pos-right x y G' Gpos
+
+  -- The uniqueness theorem.
+  planck-length-unique : (A B : AnalyticPlanckExtraction R) →
+    AnalyticPlanckExtraction.planck-length-SI A ≃ℚ
+    AnalyticPlanckExtraction.planck-length-SI B
+  planck-length-unique A B =
+    let
+      ℓA = AnalyticPlanckExtraction.planck-length-SI A
+      ℓB = AnalyticPlanckExtraction.planck-length-SI B
+      balA = AnalyticPlanckExtraction.length-balance A
+      balB = AnalyticPlanckExtraction.length-balance B
+      -- balA : cube-scaleℚ (squareℚ ℓA) c ≃ℚ (ℏ' *ℚ G')
+      -- balB : cube-scaleℚ (squareℚ ℓB) c ≃ℚ (ℏ' *ℚ G')
+      combined : cube-scaleℚ (squareℚ ℓA) c ≃ℚ cube-scaleℚ (squareℚ ℓB) c
+      combined = ≃ℚ-trans balA (≃ℚ-sym balB)
+
+      sq≃ : squareℚ ℓA ≃ℚ squareℚ ℓB
+      sq≃ = cancel-cube-scaleℚ (squareℚ ℓA) (squareℚ ℓB) combined
+    in
+    squareℚ-nonneg-unique ℓA ℓB
+      (AnalyticPlanckExtraction.length-nonneg A)
+      (AnalyticPlanckExtraction.length-nonneg B)
+      sq≃
+
+  planck-time-unique : (A B : AnalyticPlanckExtraction R) →
+    AnalyticPlanckExtraction.planck-time-SI A ≃ℚ
+    AnalyticPlanckExtraction.planck-time-SI B
+  planck-time-unique A B =
+    let
+      tA = AnalyticPlanckExtraction.planck-time-SI A
+      tB = AnalyticPlanckExtraction.planck-time-SI B
+      balA = AnalyticPlanckExtraction.time-balance A
+      balB = AnalyticPlanckExtraction.time-balance B
+      combined : fifth-scaleℚ (squareℚ tA) c ≃ℚ fifth-scaleℚ (squareℚ tB) c
+      combined = ≃ℚ-trans balA (≃ℚ-sym balB)
+
+      sq≃ : squareℚ tA ≃ℚ squareℚ tB
+      sq≃ = cancel-fifth-scaleℚ (squareℚ tA) (squareℚ tB) combined
+    in
+    squareℚ-nonneg-unique tA tB
+      (AnalyticPlanckExtraction.time-nonneg A)
+      (AnalyticPlanckExtraction.time-nonneg B)
+      sq≃
+
+  planck-mass-unique : (A B : AnalyticPlanckExtraction R) →
+    AnalyticPlanckExtraction.planck-mass-SI A ≃ℚ
+    AnalyticPlanckExtraction.planck-mass-SI B
+  planck-mass-unique A B =
+    let
+      mA = AnalyticPlanckExtraction.planck-mass-SI A
+      mB = AnalyticPlanckExtraction.planck-mass-SI B
+      balA = AnalyticPlanckExtraction.mass-balance A
+      balB = AnalyticPlanckExtraction.mass-balance B
+      -- balA : (squareℚ mA *ℚ G') ≃ℚ (ℏ' *ℚ c)
+      -- balB : (squareℚ mB *ℚ G') ≃ℚ (ℏ' *ℚ c)
+      combined : (squareℚ mA *ℚ G') ≃ℚ (squareℚ mB *ℚ G')
+      combined = ≃ℚ-trans balA (≃ℚ-sym balB)
+
+      sq≃ : squareℚ mA ≃ℚ squareℚ mB
+      sq≃ = cancel-right-G (squareℚ mA) (squareℚ mB) combined
+    in
+    squareℚ-nonneg-unique mA mB
+      (AnalyticPlanckExtraction.mass-nonneg A)
+      (AnalyticPlanckExtraction.mass-nonneg B)
+      sq≃
+\end{code}
+
+The uniqueness theorem above lives in a module parameterized by $c > 0$ and $G > 0$---physically the only sensible regime. Under these conditions, any two nonnegative solutions $(\ell_P, t_P, m_P)$ of the Planck balance equations must agree (up to $\simeq_{\mathbb{Q}}$). The proof chains three reductions: cancel the power-of-$c$ or $G$ factor from both sides via multiplicative torsion-freedom; reduce to the injectivity of the nonneg square; and apply the algebraic uniqueness theorem that needs nothing beyond totality of integer order and cancellation. No $\pi$, no $\sqrt{\cdot}$, no completeness, no intermediate value theorem: only elimination.
+
+The existence half of the Planck extraction is now made explicit as a named record: \texttt{HasPlanckRoots}. It bundles exactly the three rational witnesses whose existence is the last open gate --- one nonnegative rational root per balance equation. Under that hypothesis, the extraction record assembles immediately. If the hypothesis holds universally for all \texttt{SIRescaling} data (as it would in any Cauchy-complete ordered field closed under positive square roots), the full \texttt{AnalyticPlanckSolver} follows. The residual freedom is thus reduced to a single named condition rather than a diffuse analytic gap.
+
+\begin{code}
+-- § Root hypothesis: a nonneg rational witness per Planck balance equation.
+record HasPlanckRoots (R : SIRescaling) : Set where
+  field
+    length-root        : ℚ
+    length-root-nonneg : 0ℚ ≤ℚ length-root
+    length-root-eq     :
+      cube-scaleℚ (squareℚ length-root) (SIRescaling.c-SI R) ≃ℚ
+        (SIRescaling.hbar-SI R *ℚ SIRescaling.G-SI R)
+    time-root          : ℚ
+    time-root-nonneg   : 0ℚ ≤ℚ time-root
+    time-root-eq       :
+      fifth-scaleℚ (squareℚ time-root) (SIRescaling.c-SI R) ≃ℚ
+        (SIRescaling.hbar-SI R *ℚ SIRescaling.G-SI R)
+    mass-root          : ℚ
+    mass-root-nonneg   : 0ℚ ≤ℚ mass-root
+    mass-root-eq       :
+      (squareℚ mass-root *ℚ SIRescaling.G-SI R) ≃ℚ
+        (SIRescaling.hbar-SI R *ℚ SIRescaling.c-SI R)
+
+-- § Root witnesses assemble into an AnalyticPlanckExtraction.
+has-roots-to-extraction : (R : SIRescaling) → HasPlanckRoots R → AnalyticPlanckExtraction R
+has-roots-to-extraction _ roots = record
+  { planck-length-SI = HasPlanckRoots.length-root roots
+  ; planck-time-SI   = HasPlanckRoots.time-root roots
+  ; planck-mass-SI   = HasPlanckRoots.mass-root roots
+  ; length-nonneg    = HasPlanckRoots.length-root-nonneg roots
+  ; time-nonneg      = HasPlanckRoots.time-root-nonneg roots
+  ; mass-nonneg      = HasPlanckRoots.mass-root-nonneg roots
+  ; length-balance   = HasPlanckRoots.length-root-eq roots
+  ; time-balance     = HasPlanckRoots.time-root-eq roots
+  ; mass-balance     = HasPlanckRoots.mass-root-eq roots
+  }
+
+-- § If every rescaling has roots, there is a full Planck solver.
+-- This is the final elimination form: the AnalyticPlanckSolver is forced
+-- as soon as the universal root hypothesis is discharged.
+roots-solver : ((R : SIRescaling) → HasPlanckRoots R) → AnalyticPlanckSolver
+roots-solver allRoots = record
+  { extract-planck = λ R → has-roots-to-extraction R (allRoots R) }
+
+-- § The normalized case satisfies HasPlanckRoots (unit witnesses).
+normalized-has-roots : HasPlanckRoots normalized-planck-rescaling
+normalized-has-roots = record
+  { length-root        = 1ℚ
+  ; length-root-nonneg = oneℚ-nonneg
+  ; length-root-eq     = ≃ℚ-trans unit-cube-scaleℚ (≃ℚ-sym (*ℚ-one-right 1ℚ))
+  ; time-root          = 1ℚ
+  ; time-root-nonneg   = oneℚ-nonneg
+  ; time-root-eq       = ≃ℚ-trans unit-fifth-scaleℚ (≃ℚ-sym (*ℚ-one-right 1ℚ))
+  ; mass-root          = 1ℚ
+  ; mass-root-nonneg   = oneℚ-nonneg
+  ; mass-root-eq       =
+      ≃ℚ-trans
+        (≃ℚ-trans (*ℚ-one-right (squareℚ 1ℚ)) unit-squareℚ)
+        (≃ℚ-sym (*ℚ-one-right 1ℚ))
+  }
+\end{code}
+
+The three theorems together close the analytic gate in its eliminative form. \texttt{HasPlanckRoots} names the only remaining hypothesis. \texttt{has-roots-to-extraction} shows that the hypothesis immediately produces a full Planck extraction --- no further algebra is needed. \texttt{roots-solver} converts the universal form of the hypothesis into the full \texttt{AnalyticPlanckSolver}. And \texttt{normalized-has-roots} confirms that the hypothesis is not vacuous: the normalized case satisfies it with unit witnesses.
+
+What is \emph{not yet} closed is the universal form of the root hypothesis: for an arbitrary \texttt{SIRescaling} with positive $c$ and $G$, the three quotients $\hbar G / c^3$, $\hbar G / c^5$, $\hbar c / G$ need to have nonneg rational square roots. In $\mathbb{Q}$ this fails generically. In $\mathbb{R}$ it would follow from the intermediate value theorem applied to $x \mapsto x^2$ on positive reals---but that theorem has not yet been built in this book's real-analysis layer. The gap is therefore not a hidden assumption but a named, localized proof obligation: one further theorem about $\mathbb{R}$ would close it. Every other analytic step in the extraction chain is now proved.
 
 \subsubsection*{Threshold To Physics}
 
