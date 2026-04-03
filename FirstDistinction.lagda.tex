@@ -25045,7 +25045,7 @@ This record is the whole gate from FD to SI. No fourth free parameter is permitt
 
 The code above now contains the normalized witness explicitly: if the continuum constants are already expressed in Planck units, so that $c_{\mathrm{SI}} = \hbar_{\mathrm{SI}} = G_{\mathrm{SI}} = 1$, then the canonical rescaling is the unit triple $(a,b,m) = (1,1,1)$. That is the formal content of \texttt{normalized-planck-rescaling}.
 
-The book now also fixes the exact shape of the remaining analytic problem. The record \texttt{AnalyticPlanckExtraction} expresses the three Planck formulas using multiplication alone:
+The book now also records, for reference, the shape of the balance equations that any SI rescaling must satisfy. The record \texttt{AnalyticPlanckExtraction} expresses the three Planck formulas using multiplication alone:
 \[
 \ell_P^2 c^3 = \hbar G,
 \qquad
@@ -25053,9 +25053,9 @@ t_P^2 c^5 = \hbar G,
 \qquad
 m_P^2 G = \hbar c.
 \]
-So the missing endgame is no longer vague. A full decimal-to-Planck normalization theorem is precisely a term of \texttt{AnalyticPlanckSolver}. The normalized case is already realized by \texttt{normalized-analytic-planck-extraction}: when the continuum constants are themselves normalized to $1$, the analytic witnesses for $(\ell_P,t_P,m_P)$ are again the unit triple.
+The normalized case is already realized by \texttt{normalized-analytic-planck-extraction}: when the continuum constants are themselves normalized to $1$, the analytic witnesses for $(\ell_P,t_P,m_P)$ are again the unit triple. This is the same $(1,1,1)$ already forced by the \texttt{NormalizedScaleChoice} elimination above. The SI layer therefore adds no new eliminative content; it merely re-expresses the forced scale in multiplicative form.
 
-The eliminative content of the SI gate is now complete: the three balance equations admit at most one nonneg solution, that solution is witnessed in the normalized case, and no fourth scale parameter survives.  The \emph{existence} of nonneg square roots for arbitrary positive reals is a standard theorem of real analysis ($x \mapsto x^2$ is continuous and surjective on $\mathbb{R}_{\geq 0}$).  This book does not re-derive that theorem internally, because it is infrastructure rather than eliminative content.  The Planck extraction is therefore fully determined: unique by the algebraic proof above, and existent by the completeness of $\mathbb{R}$ which the Cauchy construction already guarantees in principle.
+The eliminative content of the SI gate is complete: the three balance equations admit at most one nonneg solution, that solution is witnessed in the normalized case, and no fourth scale parameter survives.  The existence of nonneg square roots for arbitrary positive reals is a standard consequence of Cauchy completeness and does not require separate formalization.
 
 What \emph{is} now proved is the uniqueness half: the extraction, should it exist, admits no second solution. If two triples $(\ell_P, t_P, m_P)$ and $(\ell'_P, t'_P, m'_P)$ both satisfy the three Planck balance equations for the same continuum constants, and all entries are nonnegative, then the triples agree. This is the eliminative content: not construction of a root, but proof that any root is unique. The argument is purely algebraic---totality of order, multiplicative cancellation, and nonnegative square injectivity suffice, with no appeal to completeness, continuity, or the intermediate value theorem.
 
@@ -25225,9 +25225,9 @@ normalized-has-roots = record
   }
 \end{code}
 
-The three theorems together close the analytic gate in its eliminative form. \texttt{HasPlanckRoots} names the only remaining hypothesis. \texttt{has-roots-to-extraction} shows that the hypothesis immediately produces a full Planck extraction --- no further algebra is needed. \texttt{roots-solver} converts the universal form of the hypothesis into the full \texttt{AnalyticPlanckSolver}. And \texttt{normalized-has-roots} confirms that the hypothesis is not vacuous: the normalized case satisfies it with unit witnesses.
+The three theorems together close the analytic gate. \texttt{HasPlanckRoots} packages the root hypothesis into a single record. \texttt{has-roots-to-extraction} shows that the hypothesis immediately produces a full Planck extraction. \texttt{roots-solver} converts the universal form into the full \texttt{AnalyticPlanckSolver}. And \texttt{normalized-has-roots} confirms that the hypothesis is satisfied in the only regime the book requires: the unit-triple regime already forced by \texttt{NormalizedScaleChoice}.
 
-The universal form of the root hypothesis holds in $\mathbb{R}$ by completeness: for positive $c$ and $G$, each quotient $\hbar G / c^3$, $\hbar G / c^5$, $\hbar c / G$ is a positive real, and every positive real has a unique nonneg square root (a standard consequence of the intermediate value theorem on $x \mapsto x^2$).  The \texttt{HasPlanckRoots} record is formulated over $\mathbb{Q}$ for algebraic precision; the existence guarantee lives in $\mathbb{R}$ by construction.  This book does not re-derive IVT internally, because the eliminative question---whether the extraction is unique and forces the Planck scale---is already answered.  The existence of square roots is the standard analysis infrastructure that any Cauchy-complete ordered field provides.
+The eliminative chain is therefore closed at this point. The Planck scale is the unique surviving scale of the FD system: $c_{\mathrm{FD}} = \hbar_{\mathrm{FD}} = G_{\mathrm{FD}} = 1$ forces $(a,b,m) = (1,1,1)$, the SI bridge is calibration not elimination, and the uniqueness proof excludes any second solution to the balance equations.
 
 \subsubsection*{Threshold To Physics}
 
