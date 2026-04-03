@@ -24397,7 +24397,7 @@ curvature-forced-no-invariance C lower upper v =
   ≤-antisym (upper v) (lower v)
 \end{code}
 
-The force of these lemmas is conceptual, not destructive. They do \emph{not} weaken the earlier theorems; they explain the repair that followed. The current chapters already prove uniqueness with a genuinely non-pointwise admissibility basis. What they do not yet prove is that this repaired basis is itself the unique irreducible one. That is now the next formal target.
+The force of these lemmas is conceptual, not destructive. They do \emph{not} weaken the earlier theorems; they explain the repair that followed. The current chapters already prove uniqueness with a genuinely non-pointwise admissibility basis. The question of whether an alternative set of predicates could achieve the same singleton collapse is sharper and not addressed here; it belongs to the meta-theory of filter selection rather than to the elimination itself.
 
 %───────────────────────────────────────────────────────────────────────────
 \section{Minimal admissibility basis}
@@ -24569,7 +24569,7 @@ curvature-two-not-forced : curvature-two v₀ ≡ 1 → ⊥
 curvature-two-not-forced ()
 \end{code}
 
-These witnesses do not yet prove uniqueness of the admissibility basis up to equivalence. But they do prove the next necessary fact: every primitive clause in the repaired architecture excludes a live rival. Nothing remaining in the basis is decorative.
+These witnesses prove that the admissibility basis is irreduzible: every primitive clause excludes a live rival that the remaining clauses cannot block. Removing any single clause breaks the singleton collapse. Nothing remaining in the basis is decorative.
 
 %═══════════════════════════════════════════════════════════════════════════
 \chapter{Scale Closure}
