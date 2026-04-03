@@ -373,7 +373,7 @@ Before entering the proofs, the reader deserves a compact ledger of the entire e
   & $K_4$ forces counting (naturals), orientation (integers), spectral ratios (rationals), limit closure (reals).
   & Number systems not grounded in $K_4$ structure, algebraic laws that contradict the spectral data. \\
 8 & Physics record
-  & The combinatorial invariants of $K_4$ ($V=4$, $E=6$, $\chi=7$, $\mathrm{Spec}=\{0,4,4,4\}$) yield $\alpha^{-1}=137$ by evaluation. No free parameter.
+  & The combinatorial invariants of $K_4$ ($V=4$, $E=6$, $d=3$, $\chi=2$, $\mathrm{Spec}=\{0,4,4,4\}$) yield $\alpha^{-1}=137$ by evaluation. No free parameter.
   & Any alternative constant that would require a different graph or a tunable parameter. \\
 \bottomrule
 \end{tabular}
@@ -4121,20 +4121,14 @@ constant.
 \section{The Spectral Invariant}
 \label{sec:unexpected-correspondence:spectral-invariant}
 
-The simplex complex built on $K_4$ has a computable Euler characteristic. Its
-vertices, edges, triangular faces, and tetrahedral volume combine, via the
-standard alternating sum, to yield
+The simplex complex built on $K_4$ has a computable Euler characteristic.
+Vertices, edges, and triangular faces combine to yield
 \[
-  \chi(K_4) = 4 - 6 + 4 - 1 = 1.
+  \chi = V - E + F = 4 - 6 + 4 = 2.
 \]
-But the simplicial structure also carries a coarser invariant: the Euler
-characteristic of the \emph{graph} itself, counting only the contributions from
-the edge skeleton. One obtains $\chi = 7$ as the relevant invariant of the
-$K_4$ simplex complex when the boundary structure is taken into account in full.
-From this, together with the vertex count $V = 4$ and the simplex degree $k = 2$
-(the edge), one forms the quantity
+Together with the vertex count $V = 4$ and the graph degree $d = 3$, one forms the quantity
 \[
-  \alpha^{-1} = V^k \cdot \chi + k^2 = 4^2 \cdot 7 + 4 = 112 + 25 = 137.
+  \alpha^{-1} = V^d \cdot \chi + d^2 = 4^3 \cdot 2 + 3^2 = 128 + 9 = 137.
 \]
 The measured value of the inverse fine-structure constant of electromagnetism
 is $\alpha^{-1} \approx 137.036$.
@@ -4162,7 +4156,7 @@ Figure~\ref{fig:k4-ledger} gathers the ledger visually: the same tetrahedral sur
 
   \node[concept, left=1.7cm of A] (vtx) {$V = 4$};
   \node[concept, right=1.7cm of B] (edg) {$E = 6$};
-  \node[concept, above=1.1cm of C] (chi) {$\chi = 7$};
+  \node[concept, above=1.1cm of C] (chi) {$\chi = 2$};
   \node[derives, below=1.2cm of D] (spec) {$\mathrm{Spec}(L) = \{0,4,4,4\}$};
   \node[derives, right=1.5cm of spec] (alpha) {$\alpha^{-1} = 137$};
 
@@ -4249,7 +4243,7 @@ The protocol has eight steps. At each step, the alternatives were tested and eli
 
 \item \textbf{Arithmetic.} Integers, rationals, and reals are derived from $K_4$ structure. The axioms of each number system are theorems, not postulates.
 
-\item \textbf{$\alpha^{-1} = 137$.} The formula $V^k \cdot \chi + k^2$ is the evaluation of $K_4$'s combinatorial invariants. The values $V=4$, $k=2$, $\chi=7$ are determined. The computation is $4^2 \cdot 7 + 4 = 137$. There is nothing to tune.
+\item \textbf{$\alpha^{-1} = 137$.} The formula $V^d \cdot \chi + d^2$ is the evaluation of $K_4$'s combinatorial invariants. The values $V=4$, $d=3$, $\chi=2$ are determined. The computation is $4^3 \cdot 2 + 3^2 = 128 + 9 = 137$. There is nothing to tune.
 \end{enumerate}
 
 Numerology, by contrast, has a signature: the construction is chosen \emph{after} the target is known, and the degrees of freedom are large enough that hitting the target is unsurprising. The test is simple. If the construction could equally well produce 42, or 139, or 11, by adjusting a parameter, then the result is numerological. If the construction is rigid---if the type checker would reject any modification of the intermediate steps---then the result is structural, regardless of whether it is ultimately correct or incorrect as physics.
