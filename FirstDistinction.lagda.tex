@@ -243,13 +243,13 @@
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
 
-Logic admits a single irreducible distinction: true or false. From this binary structure, a strict constraint follows: any system that produces a contradiction under its own requirements cannot persist.
+Any type theory that distinguishes true from false already contains a two-element type—and that type, equipped with exhaustion, is a distinction. That is not a thesis to be proved—it is a syntactic fact about type theories. From this self-presupposed structure, a strict constraint follows: any system that produces a contradiction under its own requirements cannot persist.
 
-This work applies that constraint formally and mechanically. Each step is verified in Agda—no external axioms, no postulates, no assumptions beyond what logical consistency itself demands. Every structure is justified solely by the elimination of alternatives that fail.
+This work applies that constraint formally and mechanically. Each step is verified in Agda—no external axioms, no postulates, no assumptions beyond what the act of reasoning itself already contains. Every structure is justified solely by the elimination of alternatives that fail. The starting point is not imported from outside; it is what any system capable of applying the filter must already be doing.
 
 The result is not constructive in the traditional sense. It is reductive: a progressive filtration of everything that does not survive its own internal requirements.
 
-What remains—$K_4$—is not introduced as a model or hypothesis. It is the minimal structure that elimination cannot touch.
+What remains—$K_4$—is not introduced as a model or hypothesis. It is the minimal structure that elimination cannot touch. And what starts the chain is not an assumption that could be dropped: the book's closing theorem proves that any admissible physical record already contains a distinction. The arrow cannot be reversed.
 
 The combinatorial invariants of this structure---vertex count, edge topology, spectral decomposition, Euler characteristic---were not adjusted to match any prior measurement. They are necessities of the derivation. Their numerical values can then be compared with independently measured constants of physics, including the fine-structure constant $\alpha^{-1} \approx 137$. That comparison is not part of the derivation; it is the interpretive question this work places before the reader.
 
@@ -335,9 +335,13 @@ When the proofs become detailed, the global line of force is easy to lose from v
   \longrightarrow
   \text{arithmetic and spectral invariants}
   \longrightarrow
-  \text{physics record.}
+  \text{physics record}
+  \longrightarrow
+  D_0.
 \end{aligned}
 \]
+
+The spine does not branch—and it does not dead-end. The book's final theorem closes the loop: any admissible physical record already presupposes $D_0$. The chain is not an open arrow; it is a closed constraint.
 
 \subsection{The Elimination Protocol}
 \label{sec:introduction:elimination-protocol}
@@ -352,7 +356,7 @@ Before entering the proofs, the reader deserves a compact ledger of the entire e
 \textbf{\#} & \textbf{Survivor} & \textbf{Why it survives} & \textbf{What was eliminated} \\
 \midrule
 1 & Distinction ($D_0$)
-  & The bare act of separating $\ell$ from $r$. Any formal system that cannot distinguish true from false is vacuous.
+  & The bare act of separating $\ell$ from $r$. Any formal system that cannot distinguish true from false is vacuous. Uniquely among all rows: denying $D_0$ is itself an act of distinguishing, so its negation is self-refuting.
   & Vacuous carriers, carriers without boundary witnesses, carriers where $\ell = r$. \\
 2 & Two-class coverage
   & Every element of the carrier equals $\ell$ or $r$. No unclassified residue is possible.
@@ -373,13 +377,13 @@ Before entering the proofs, the reader deserves a compact ledger of the entire e
   & $K_4$ forces counting (naturals), orientation (integers), spectral ratios (rationals), limit closure (reals).
   & Number systems not grounded in $K_4$ structure, algebraic laws that contradict the spectral data. \\
 8 & Physics record
-  & The combinatorial invariants of $K_4$ ($V=4$, $E=6$, $d=3$, $\chi=2$, $\mathrm{Spec}=\{0,4,4,4\}$) yield $\alpha^{-1}=137$ by evaluation. No free parameter.
+  & The combinatorial invariants of $K_4$ ($V=4$, $E=6$, $d=3$, $\chi=2$, $\mathrm{Spec}=\{0,4,4,4\}$) yield $\alpha^{-1}=137$ by evaluation (\S\ref{sec:discrete-continuum:classification-alpha-137}). No free parameter.
   & Any alternative constant that would require a different graph or a tunable parameter. \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-The protocol is the backbone of the argument. If any single row could be replaced by a genuine alternative---if, at any step, the eliminated rival could survive instead---then the derivation would branch and the uniqueness claim would fail. The remainder of the book is the proof that no such branch exists.
+The protocol is the backbone of the argument. If any single row could be replaced by a genuine alternative---if, at any step, the eliminated rival could survive instead---then the derivation would branch and the uniqueness claim would fail. The remainder of the book is the proof that no such branch exists. Uniqueness is not asserted; it is proved twice over: once for the graph (Part~IV establishes $K_4$ as the sole fixpoint), and once for the physical representation (Chapter~\ref{ch:k4-representation-theory} proves that any two admissible physics records must agree on all fields).
 
 This book proceeds in six parts. The first four derive $K_4$ through elimination. The fifth builds the arithmetic its structure makes necessary. The sixth computes the physical constants its invariants determine.
 
@@ -452,6 +456,7 @@ infix 4 _≡_
 
 data _≡_ {ℓ : Level} {A : Set ℓ} (x : A) : A → Set ℓ where
   refl : x ≡ x
+{-# BUILTIN EQUALITY _≡_ #-}
 
 -- § Symmetry is forced by elimination on refl.
 sym : {ℓ : Level} {A : Set ℓ} {x y : A} → x ≡ y → y ≡ x
@@ -643,6 +648,8 @@ What, then, is a distinction? Not philosophically—formally. If we strip away e
 
 A carrier type. Two witnesses in that carrier. A proof that the witnesses are not equal. And a coverage guarantee that every element of the carrier falls into one of these two classes. Nothing less will do: remove any one of these four components and the structure either collapses to triviality or loses the ability to separate. Nothing more is needed: any additional field would be a free parameter—eliminable by the filter we have committed to.
 
+The coverage field in particular admits no weakening. Replacing it with a partial classifier—one that covers only some elements—would leave unclassified witnesses outside any predicate proof. Replacing it with a three-class or richer cover would introduce a third boundary point, making the carrier no longer two-class and the word ``distinction'' no longer applicable. Two classes is not a choice; it is the exact content the word demands.
+
 The record that follows is not a chosen definition. It is the minimal data that the word ``distinction'' requires in order to mean anything at all.
 
 \begin{code}
@@ -663,9 +670,15 @@ open Distinction public
 
 The record \texttt{Distinction} now exists as a type. But types can be empty. If no inhabitant of this type can be constructed—if no actual distinction exists—then every law we derive from it holds vacuously. ``For all distinctions $d$, $P(d)$'' is trivially true when there are no distinctions. The entire formal apparatus would prove everything and say nothing.
 
-This is the empty-ontology loophole, and it must be closed before any subsequent reasoning has force.
+This is the empty-ontology loophole, and it must be closed before any subsequent reasoning has force. It is closed from both ends: the opening law blocks the vacuous path forward, and the book's closing theorem confirms the loop from the other direction—any inhabitant of the physical record already contains a distinction. The loophole has no exit.
 
 Under \AgdaFlag{safe}, we cannot simply postulate that a distinction exists. But we can demand something weaker and logically sufficient: that the assumption of \textit{no} distinction leads to contradiction. This is double-negation stability—$\neg\neg\,\mathit{Distinction}$—the weakest assertion that still blocks the vacuous path. It does not hand us a concrete distinction. It forbids us from assuming there is none.
+
+This opening law is deliberately weak. The constructive proof that \texttt{Distinction} is inhabited arrives in Chapter~\ref{ch:two-normal-form}, where \texttt{Two-distinction} produces a parameterless witness with no assumptions at all. A second, independent route emerges from measurement (Chapter~\ref{ch:scale-closure}): any binary measurement already carries a distinction kernel in its outcome space. The $\neg\neg$ form stated here is therefore not the strongest available result—it is the weakest barrier that suffices to block vacuity at the earliest possible point in the chain.
+
+A natural objection asks for something stronger still: a proof that \textit{existence itself} requires distinction—that every inhabited type already contains a two-element substructure. In type theory, this claim is simply false. The unit type $\top$ is inhabited by a single element \texttt{tt}, carries no two distinct members, and yet exists without contradiction. The proposition $\forall\,(A : \mathit{Set}).\; A \to \mathit{Distinction}$ is refuted by $A = \top$. Any argument that proceeds from ``an object exists without distinction'' to ``therefore no identity, no reference, no existence claim is possible'' collapses at the first step: \texttt{tt} $\equiv$ \texttt{tt} is \texttt{refl}, identity is trivial, and reference is unproblematic—all without distinction.
+
+The chain does not need this false theorem. It needs something both weaker and more direct: that \texttt{Distinction} is freely available as a parameterless construction. \texttt{Two-distinction} provides exactly that. No premise is consumed. No prior existence claim is imported. The type \texttt{data Two = L $\mid$ R} is definable in every consistent type theory—with or without the axiom of choice, with or without univalence, classically or intuitionistically. Whoever accepts a type theory at all already has $D_0$.
 
 \begin{code}
 -- § Non-vacuity demands that Distinction cannot be refuted.
@@ -1281,6 +1294,8 @@ Two-distinction = record
   ; cover = Two-cover
   }
 \end{code}
+
+This definition settles the existence question that Chapter~\ref{ch:non-vacuity} deliberately left open. \texttt{Two-distinction} is a parameterless, fully constructive inhabitant of \texttt{Distinction}—no assumptions, no function arguments, no postulates. The $\neg\neg\,\mathit{Distinction}$ barrier that blocked vacuity is now upgraded to direct constructive existence: \texttt{$\lambda\,f \to f\;\mathit{Two\text{-}distinction}$} discharges the double negation trivially. Every subsequent chapter inherits this witness.
 
 \section{Distinction Isomorphism}
 \label{sec:two-normal-form:distinction-isomorphism}
@@ -2179,10 +2194,8 @@ D₀-distinction : Distinction
 D₀-distinction = Two-distinction
 \end{code}
 
-\paragraph{Where we now stand.}
-The primitive distinction has been stabilized into explicit logical form. Equality, negation, decidability, witness structure, and the four endomorphism cases now exist as machine-checked constraints on a two-element carrier. The argument has reached its first rigid plateau: the base classification is no longer in question.
+The primitive distinction is stable. Equality, negation, decidability, witness structure, and the four endomorphism cases exist as machine-checked constraints on a two-element carrier. The base classification is locked.
 
-\paragraph{What must happen next.}
 But a classification that is not itself classified leaves a residue outside the filter. The next pressure is therefore unavoidable: the classifier must become an object inside the argument, and the argument must climb.
 
 \paragraph{A number to remember.}
@@ -2736,11 +2749,9 @@ law6-3-no-fixpoint-stepState ac s eq =
   no-cycle ac s (substω (λ u → Reach⁺ s u) eq one)
 \end{code}
 
-\paragraph{Where we now stand.}
-The climb through the universe hierarchy is now explicit. Drift does not terminate, reachability records the ascent, and acyclicity prevents the hierarchy from folding back onto itself. The argument has gained vertical structure without losing rigidity.
+The climb through the universe hierarchy is explicit. Drift does not terminate, reachability records the ascent, and acyclicity prevents the hierarchy from folding back onto itself. The argument carries vertical structure without losing rigidity.
 
-\paragraph{What must happen next.}
-That is still not enough. If the four surviving cases depended on the source and target being the same carrier, then the classification would be parochial rather than structural. The next task is to remove that loophole.
+But that is still not enough. If the four surviving cases depended on the source and target being the same carrier, then the classification would be parochial rather than structural. The next task is therefore to remove that loophole.
 
 \part{Heteromorphisms and Presentation}
 
@@ -3044,7 +3055,7 @@ law7-4-map-presentation-unique d₁ d₂ {X} pres =
     }
 \end{code}
 
-The four-case classification has now been extended from endomorphisms to arbitrary maps between distinct carriers. The same four cases survive, and the same uniqueness holds. The classification is structural, not an artefact of the self-mapping assumption.
+The four-case classification extends from endomorphisms to arbitrary maps between distinct carriers. The same four cases survive, and the same uniqueness holds. The classification is structural, not an artefact of the self-mapping assumption.
 
 \chapter{Indexed Ledger}
 \label{ch:indexed-ledger}
@@ -3462,10 +3473,8 @@ law9-14-normalizer-unique n a =
     (law9-10-canonObs-sound a)
 \end{code}
 
-\paragraph{Where we now stand.}
-The four-case classification has survived the passage from endomorphisms to maps between distinct carriers, and the resulting reachability data has been reduced to canonical presentations. The argument now controls not only what structures exist, but how their witnesses may be normalized. The number four has reappeared at every stage---not because the argument was steered toward it, but because no other cardinality survives the constraints. The graph that four mutually distinct elements demand is the complete graph $K_4$, and its emergence is now imminent.
+The four-case classification survives the passage from endomorphisms to maps between distinct carriers, and the resulting reachability data reduces to canonical presentations. The argument controls not only what structures exist, but how their witnesses may be normalized. The number four reappears at every stage---not because the argument is steered toward it, but because no other cardinality survives the constraints. The graph that four mutually distinct elements demand is the complete graph $K_4$, and its emergence is imminent.
 
-\paragraph{What must happen next.}
 Normalization alone does not yet isolate the invariant content. The next pressure is to separate structural observables from bookkeeping residue and force the presentation to collapse to its irreducible core. When it does, the surviving object will not be an abstract category-theoretic residue. It will be a concrete graph with four vertices and six edges---a tetrahedron---and its spectral invariants will carry numerical weight.
 
 \part{Observables and Fixpoint}
@@ -4136,6 +4145,9 @@ is $\alpha^{-1} \approx 137.036$.
 This computation was not aimed at that number. No parameter was adjusted. The
 formula contains nothing that refers to electromagnetism, or to any physical
 theory. It is an evaluation of combinatorial invariants of the graph $K_4$.
+That this particular combination---and no other degree-$\le 3$ expression in the
+invariant basis---yields a prime value is proved by exhaustive classification
+in \S\ref{sec:discrete-continuum:classification-alpha-137}.
 
 The result is $137$.
 
@@ -4243,12 +4255,12 @@ The protocol has eight steps. At each step, the alternatives were tested and eli
 
 \item \textbf{Arithmetic.} Integers, rationals, and reals are derived from $K_4$ structure. The axioms of each number system are theorems, not postulates.
 
-\item \textbf{$\alpha^{-1} = 137$.} The formula $V^d \cdot \chi + d^2$ is the evaluation of $K_4$'s combinatorial invariants. The values $V=4$, $d=3$, $\chi=2$ are determined. The computation is $4^3 \cdot 2 + 3^2 = 128 + 9 = 137$. There is nothing to tune.
+\item \textbf{$\alpha^{-1} = 137$.} The formula $V^d \cdot \chi + d^2$ is the evaluation of $K_4$'s combinatorial invariants. The values $V=4$, $d=3$, $\chi=2$ are determined. The computation is $4^3 \cdot 2 + 3^2 = 128 + 9 = 137$. There is nothing to tune. The formal proof that this is the \emph{unique} admissible degree-$\le 3$ expression reaching a prime value appears in \S\ref{sec:discrete-continuum:classification-alpha-137}.
 \end{enumerate}
 
 Numerology, by contrast, has a signature: the construction is chosen \emph{after} the target is known, and the degrees of freedom are large enough that hitting the target is unsurprising. The test is simple. If the construction could equally well produce 42, or 139, or 11, by adjusting a parameter, then the result is numerological. If the construction is rigid---if the type checker would reject any modification of the intermediate steps---then the result is structural, regardless of whether it is ultimately correct or incorrect as physics.
 
-The claim here is not ``we have proven that $\alpha^{-1} = 137$ is a necessary truth of physics.'' The claim is narrower and harder: \emph{the construction that produces 137 contains no adjustable parameter, and every step is machine-verified.} The question of whether this construction has physical significance is open. The question of whether it is numerology is closed.
+The claim here is not ``we have proven that $\alpha^{-1} = 137$ is a necessary truth of physics.'' The claim is narrower and harder: \emph{the construction that produces 137 contains no adjustable parameter, and every step is machine-verified.} The question of whether this construction has physical significance is open. The question of whether it is numerology is closed. The machine-checked proof that $V^d \cdot \chi + d^2$ is the unique admissible survivor in the bounded coupling sector appears in \S\ref{sec:discrete-continuum:classification-alpha-137}; the epistemic census covering all derived sectors is in \S\ref{sec:discrete-continuum:epistemic-status}.
 
 Any serious critic must therefore engage at a different level. The productive questions are:
 
@@ -4285,10 +4297,8 @@ Whether the final correspondence is deep or accidental, that record is what
 any serious evaluation of the question must engage with. It is offered here in
 exactly that spirit.
 
-\paragraph{Where we now stand.}
-The eliminative part of the argument has closed. Observables have collapsed to canonical form, the fixpoint has been reached, and the surviving graph is $K_4$. The bridge chapter has stated why that survival is not merely a combinatorial curiosity but the hinge on which the rest of the document turns.
+The eliminative part of the argument is closed. Observables collapse to canonical form, the fixpoint is reached, and the surviving graph is $K_4$. The bridge chapter states why that survival is not merely a combinatorial curiosity but the hinge on which the rest of the document turns.
 
-\paragraph{What must happen next.}
 From here onward, the question is no longer which graph survives. That question is settled. The remaining task is numerical: derive the arithmetic and spectral machinery that lets the invariants of $K_4$ speak in the language of measurement.
 
 %═══════════════════════════════════════════════════════════════════════════
@@ -5069,10 +5079,8 @@ CrossFull : Coupling
 CrossFull _ _ = ⊤
 \end{code}
 
-\paragraph{Where we now stand.}
-The raw arithmetic substrate is assembled. Finite indices, integers, iteration, couplings, and transport across the surviving K$_4$ cases are now available in exactly the form the graph will require. The document can now stop merely naming the surviving structures and begin imposing stable algebra on them.
+The raw arithmetic substrate is assembled. Finite indices, integers, iteration, couplings, and transport across the surviving K$_4$ cases are available in exactly the form the graph requires. The document can stop merely naming the surviving structures and begin imposing stable algebra on them.
 
-\paragraph{What must happen next.}
 Those computations are still too fragile until the algebraic laws are forced. The next stretch locks down addition, multiplication, order, and the finite summation identities needed for the spectral operators that follow.
 
 \chapter{Forced Additive Laws}
@@ -8010,10 +8018,8 @@ These two lemmas close the positive-denominator arithmetic needed for rational c
       (cong (λ t → +suc t) (+ℕ-comm b (a *ℕ suc b))))
 \end{code}
 
-\paragraph{Where we now stand.}
-Integer arithmetic is now rigid enough to support genuine spectral calculation. The K$_4$ neighbourhood structure, the Laplacian, simplex invariants, multiplication laws, and order laws have all been forced into place. The graph is no longer just a survivor; it is now an operator-bearing object.
+Integer arithmetic is rigid enough to support genuine spectral calculation. The K$_4$ neighbourhood structure, the Laplacian, simplex invariants, multiplication laws, and order laws are all forced into place. The graph is no longer just a survivor; it is an operator-bearing object.
 
-\paragraph{What must happen next.}
 But spectral data does not remain inside the integers. Ratios appear, and with them the need for quotient arithmetic, distance, and measurement. The next transition is therefore from integer combinatorics to rational evaluation.
 
 \chapter{Rational Numbers and Measurement}
@@ -8086,7 +8092,12 @@ distℚ (a / b) (c / d) = absℤ ((a *ℤ ⁺toℤ d) +ℤ negℤ (c *ℤ ⁺to�
 \label{sec:rational-measurement:alpha-inverse-137}
 
 The K$_4$ simplex invariants from the preceding chapter combine via the forced
-arithmetic to yield the integer 137.
+arithmetic to yield the integer 137.  The canonicity of this particular
+combination---the proof that no other degree-$\le 3$ expression in the invariant
+basis reaches $137$---is established in \S\ref{sec:discrete-continuum:classification-alpha-137}.
+Agda requires the computation first and the classification later, because the
+classification depends on the full invariant ledger assembled across the intervening
+chapters.
 
 \begin{code}
 -- § Natural exponentiation.
@@ -10262,23 +10273,6 @@ mul-swap-middle x y z =
   ≤ℚ-trans {(e / f) *ℚ (a / b)} {(a / b) *ℚ (e / f)} {(e / f) *ℚ (c / d)} zx≤xz middle
 \end{code}
 
-\begin{code}
--- § q * q ≥ 0 for every rational q.
-squareℚ-always-nonneg : (q : ℚ) → 0ℚ ≤ℚ (q *ℚ q)
-squareℚ-always-nonneg (a / b) =
-  let
-    lhsEq : 0ℤ *ℤ ⁺toℤ (b *⁺ b) ≡ 0ℤ
-    lhsEq = *ℤ-zero-left (⁺toℤ (b *⁺ b))
-    rhsEq : (a *ℤ a) *ℤ ⁺toℤ one⁺ ≡ a *ℤ a
-    rhsEq = *ℤ-one-right (a *ℤ a)
-    inner : 0ℤ ≤ℤ a *ℤ a
-    inner = squareℤ-nonneg a
-    step : 0ℤ ≤ℤ (a *ℤ a) *ℤ ⁺toℤ one⁺
-    step = subst (0ℤ ≤ℤ_) (sym rhsEq) inner
-  in
-  subst (_≤ℤ ((a *ℤ a) *ℤ ⁺toℤ one⁺)) (sym lhsEq) step
-\end{code}
-
 
 %═══════════════════════════════════════════════════════════════════════════
 \chapter{Coupled K$_4$ Laplacian}
@@ -12356,10 +12350,8 @@ cases into a single witness type for downstream transport.
       law14H-16-image⊆eigen12 v))
 \end{code}
 
-\paragraph{Where we now stand.}
-The spectral theory of the coupled and triple $K_4$ Laplacians is complete. Every iterated operator word collapses to one of four normal forms—identity, pure $L$-power, pure $J$-power, or zero—and the eigenvalue spectrum is exhausted by $\{0, 4, 12\}$. The survivor structure of $K_4$ has been fully extracted into operator algebra, and no spectral degree of freedom remains.
+The spectral theory of the coupled and triple $K_4$ Laplacians is complete. Every iterated operator word collapses to one of four normal forms—identity, pure $L$-power, pure $J$-power, or zero—and the eigenvalue spectrum is exhausted by $\{0, 4, 12\}$. The survivor structure of $K_4$ is fully extracted into operator algebra, and no spectral degree of freedom remains.
 
-\paragraph{What must happen next.}
 The spectral data is exact, but the arithmetic on which it rests—$\mathbb{Z}$ and $\mathbb{Q}$—is not yet equipped with the order and distance infrastructure that convergence arguments demand. The next chapters forge that infrastructure: additive order monotonicity, rational multiplication, $\varepsilon$-splitting, and distance laws. These are not new structure; they are the forced algebraic consequences of the integer and rational definitions already fixed. Once they are in place, the spectral data will have a metric home, and the passage to the reals will become inevitable.
 
 \paragraph{A physics breadcrumb.}
@@ -13419,186 +13411,6 @@ reciprocal≠0 ((-suc n) / b) qnz =
   ≃ℚ-trans
     (*ℚ-comm (reciprocal≠0 q qnz) q)
     (*ℚ-reciprocal≠0-right q qnz)
-
--- § Left monotonicity of *ℤ under nonneg factor (via commutativity).
-≤ℤ-mul-nonneg-left : (x y z : ℤ) → x ≤ℤ y → 0ℤ ≤ℤ z → (z *ℤ x) ≤ℤ (z *ℤ y)
-≤ℤ-mul-nonneg-left x y z x≤y z≥0 =
-  let
-    step : (x *ℤ z) ≤ℤ (y *ℤ z)
-    step = ≤ℤ-mul-nonneg-right x y z x≤y z≥0
-
-    step' : (z *ℤ x) ≤ℤ (y *ℤ z)
-    step' = ≤ℤ-resp-≡ˡ (*ℤ-comm x z) step
-
-    step'' : (z *ℤ x) ≤ℤ (z *ℤ y)
-    step'' = ≤ℤ-resp-≡ʳ (*ℤ-comm y z) step'
-  in step''
-
--- § Nonneg square injectivity on ℤ: x² = y² and 0 ≤ x and 0 ≤ y implies x = y.
-nonneg-square-injective-ℤ : (x y : ℤ) → 0ℤ ≤ℤ x → 0ℤ ≤ℤ y
-  → (x *ℤ x) ≡ (y *ℤ y) → x ≡ y
-nonneg-square-injective-ℤ 0ℤ 0ℤ _ _ _ = refl
-nonneg-square-injective-ℤ 0ℤ (+suc n) _ _ eq =
-  let
-    zero-sq : (0ℤ *ℤ 0ℤ) ≡ 0ℤ
-    zero-sq = *ℤ-zero-left 0ℤ
-    rhs : 0ℤ ≡ (+suc n) *ℤ (+suc n)
-    rhs = trans (sym zero-sq) eq
-    rhsPos : 0ℤ <ℤ ((+suc n) *ℤ (+suc n))
-    rhsPos = 0<ℤ-mul-pos-right (+suc n) (mkℕ⁺ n) (0<ℤ-pos n)
-  in ⊥-elim (snd rhsPos (≤ℤ-resp-≡ˡ rhs (≤ℤ-refl 0ℤ)))
-nonneg-square-injective-ℤ (+suc m) 0ℤ _ _ eq =
-  let
-    zero-sq : (0ℤ *ℤ 0ℤ) ≡ 0ℤ
-    zero-sq = *ℤ-zero-left 0ℤ
-    rhs : (+suc m) *ℤ (+suc m) ≡ 0ℤ
-    rhs = trans eq zero-sq
-    lhsPos : 0ℤ <ℤ ((+suc m) *ℤ (+suc m))
-    lhsPos = 0<ℤ-mul-pos-right (+suc m) (mkℕ⁺ m) (0<ℤ-pos m)
-  in ⊥-elim (snd lhsPos (≤ℤ-resp-≡ʳ rhs (≤ℤ-refl ((+suc m) *ℤ (+suc m)))))
-nonneg-square-injective-ℤ (+suc m) (+suc n) _ _ eq with ≤ℤ-total (+suc m) (+suc n)
-... | inj₁ m≤n =
-  let
-    -- m ≤ n: m*m ≤ n*m (right-mono) and n*m ≤ n*n (left-mono).
-    -- eq : m*m = n*n forces n*m = m*m, cancel right factor m to get n = m.
-    step₁ : ((+suc m) *ℤ (+suc m)) ≤ℤ ((+suc n) *ℤ (+suc m))
-    step₁ = ≤ℤ-mul-nonneg-right (+suc m) (+suc n) (+suc m) m≤n tt
-
-    step₂ : ((+suc n) *ℤ (+suc m)) ≤ℤ ((+suc n) *ℤ (+suc n))
-    step₂ = ≤ℤ-mul-nonneg-left (+suc m) (+suc n) (+suc n) m≤n tt
-
-    -- n*m = m*m: upper from eq+step₂, lower is step₁
-    nm≡mm : ((+suc n) *ℤ (+suc m)) ≡ ((+suc m) *ℤ (+suc m))
-    nm≡mm = ≤ℤ-antisym
-               (≤ℤ-resp-≡ʳ (sym eq) step₂)
-               step₁
-  in sym (*ℤ-cancel-right-pos (+suc n) (+suc m) (mkℕ⁺ m) nm≡mm)
-... | inj₂ n≤m =
-  let
-    -- n ≤ m: n*n ≤ m*n (right-mono) and m*n ≤ m*m (left-mono).
-    -- eq : m*m = n*n forces m*n = n*n, cancel right factor n to get m = n.
-    step₁ : ((+suc n) *ℤ (+suc n)) ≤ℤ ((+suc m) *ℤ (+suc n))
-    step₁ = ≤ℤ-mul-nonneg-right (+suc n) (+suc m) (+suc n) n≤m tt
-
-    step₂ : ((+suc m) *ℤ (+suc n)) ≤ℤ ((+suc m) *ℤ (+suc m))
-    step₂ = ≤ℤ-mul-nonneg-left (+suc n) (+suc m) (+suc m) n≤m tt
-
-    -- m*n = n*n: upper from eq+step₂, lower is step₁
-    mn≡nn : ((+suc m) *ℤ (+suc n)) ≡ ((+suc n) *ℤ (+suc n))
-    mn≡nn = ≤ℤ-antisym
-               (≤ℤ-resp-≡ʳ eq step₂)
-               step₁
-  in *ℤ-cancel-right-pos (+suc m) (+suc n) (mkℕ⁺ n) mn≡nn
-nonneg-square-injective-ℤ (-suc _) _ () _
-nonneg-square-injective-ℤ _ (-suc _) _ () _
-
--- § Multiplicative cancellation on ℚ by positive factor.
-*ℚ-cancel-pos-right : (p q r : ℚ) → 0ℚ <ℚ r → (p *ℚ r) ≃ℚ (q *ℚ r) → p ≃ℚ q
-*ℚ-cancel-pos-right (a / b) (c / d) (e / f) rpos eq with 0<ℤ→pos e (0ℚ<→0ℤ<num (e / f) rpos)
-... | n , e≡ =
-  let
-    E = ⁺toℤ f
-    B = ⁺toℤ b
-    D = ⁺toℤ d
-
-    -- Regroup LHS: (a*e)*(d*f) = (a*d)*(e*f)
-    lhsRegroup : ((a *ℤ e) *ℤ ⁺toℤ (d *⁺ f)) ≡ ((a *ℤ D) *ℤ (e *ℤ E))
-    lhsRegroup =
-      trans
-        (cong (λ t → (a *ℤ e) *ℤ t) (⁺toℤ-*⁺ d f))
-        (trans
-          (sym (*ℤ-assoc (a *ℤ e) D E))
-          (trans
-            (cong (λ t → t *ℤ E) (*ℤ-assoc a e D))
-            (trans
-              (cong (λ t → (a *ℤ t) *ℤ E) (*ℤ-comm e D))
-              (trans
-                (cong (λ t → t *ℤ E) (sym (*ℤ-assoc a D e)))
-                (*ℤ-assoc (a *ℤ D) e E)))))
-
-    -- Regroup RHS: (c*e)*(b*f) = (c*b)*(e*f)
-    rhsRegroup : ((c *ℤ e) *ℤ ⁺toℤ (b *⁺ f)) ≡ ((c *ℤ B) *ℤ (e *ℤ E))
-    rhsRegroup =
-      trans
-        (cong (λ t → (c *ℤ e) *ℤ t) (⁺toℤ-*⁺ b f))
-        (trans
-          (sym (*ℤ-assoc (c *ℤ e) B E))
-          (trans
-            (cong (λ t → t *ℤ E) (*ℤ-assoc c e B))
-            (trans
-              (cong (λ t → (c *ℤ t) *ℤ E) (*ℤ-comm e B))
-              (trans
-                (cong (λ t → t *ℤ E) (sym (*ℤ-assoc c B e)))
-                (*ℤ-assoc (c *ℤ B) e E)))))
-
-    -- e = +suc n, so e*f = ⁺toℤ (mkℕ⁺ n *⁺ f)
-    ef-eq : (e *ℤ E) ≡ ⁺toℤ (mkℕ⁺ n *⁺ f)
-    ef-eq = trans (cong (λ t → t *ℤ E) e≡) (sym (⁺toℤ-*⁺ (mkℕ⁺ n) f))
-
-    combined : ((a *ℤ D) *ℤ (e *ℤ E)) ≡ ((c *ℤ B) *ℤ (e *ℤ E))
-    combined = trans (sym lhsRegroup) (trans eq rhsRegroup)
-  in *ℤ-cancel-right-pos (a *ℤ D) (c *ℤ B) (mkℕ⁺ n *⁺ f)
-       (trans (cong (λ t → (a *ℤ D) *ℤ t) (sym ef-eq))
-         (trans combined
-           (cong (λ t → (c *ℤ B) *ℤ t) ef-eq)))
-
--- § Nonneg square uniqueness on ℚ: if p*p ≃ℚ q*q and both nonneg, then p ≃ℚ q.
-*ℚ-nonneg-square-injective : (p q : ℚ) → 0ℚ ≤ℚ p → 0ℚ ≤ℚ q
-  → (p *ℚ p) ≃ℚ (q *ℚ q) → p ≃ℚ q
-*ℚ-nonneg-square-injective (a / b) (c / d) p≥0 q≥0 sq≃ =
-  let
-    -- sq≃ : (a*a) * ⁺toℤ(d*d) ≡ (c*c) * ⁺toℤ(b*b)
-    -- Regroup to (a*d)*(a*d) = (c*b)*(c*b)
-    B = ⁺toℤ b
-    D = ⁺toℤ d
-
-    lhsR : ((a *ℤ a) *ℤ ⁺toℤ (d *⁺ d)) ≡ ((a *ℤ D) *ℤ (a *ℤ D))
-    lhsR =
-      trans
-        (cong (λ t → (a *ℤ a) *ℤ t) (⁺toℤ-*⁺ d d))
-        (trans
-          (sym (*ℤ-assoc (a *ℤ a) D D))
-          (trans
-            (cong (λ t → t *ℤ D) (*ℤ-assoc a a D))
-            (trans
-              (cong (λ t → (a *ℤ t) *ℤ D) (*ℤ-comm a D))
-              (trans
-                (cong (λ t → t *ℤ D) (sym (*ℤ-assoc a D a)))
-                (*ℤ-assoc (a *ℤ D) a D)))))
-
-    rhsR : ((c *ℤ c) *ℤ ⁺toℤ (b *⁺ b)) ≡ ((c *ℤ B) *ℤ (c *ℤ B))
-    rhsR =
-      trans
-        (cong (λ t → (c *ℤ c) *ℤ t) (⁺toℤ-*⁺ b b))
-        (trans
-          (sym (*ℤ-assoc (c *ℤ c) B B))
-          (trans
-            (cong (λ t → t *ℤ B) (*ℤ-assoc c c B))
-            (trans
-              (cong (λ t → (c *ℤ t) *ℤ B) (*ℤ-comm c B))
-              (trans
-                (cong (λ t → t *ℤ B) (sym (*ℤ-assoc c B c)))
-                (*ℤ-assoc (c *ℤ B) c B)))))
-
-    sq-eq : ((a *ℤ D) *ℤ (a *ℤ D)) ≡ ((c *ℤ B) *ℤ (c *ℤ B))
-    sq-eq = trans (sym lhsR) (trans sq≃ rhsR)
-
-    -- a*d ≥ 0 from a ≥ 0 and d > 0
-    aNonneg : 0ℤ ≤ℤ a
-    aNonneg = 0≤ℚ→0≤ℤ-num (a / b) p≥0
-
-    cNonneg : 0ℤ ≤ℤ c
-    cNonneg = 0≤ℚ→0≤ℤ-num (c / d) q≥0
-
-    adNonneg : 0ℤ ≤ℤ (a *ℤ D)
-    adNonneg = ≤ℤ-resp-≡ˡ (*ℤ-zero-left D)
-                 (≤ℤ-mul-nonneg-right 0ℤ a D aNonneg tt)
-
-    cbNonneg : 0ℤ ≤ℤ (c *ℤ B)
-    cbNonneg = ≤ℤ-resp-≡ˡ (*ℤ-zero-left B)
-                 (≤ℤ-mul-nonneg-right 0ℤ c B cNonneg tt)
-  in
-  nonneg-square-injective-ℤ (a *ℤ D) (c *ℤ B) adNonneg cbNonneg sq-eq
 \end{code}
 
 \paragraph{Step 2: Rational Distributivity.}
@@ -15569,11 +15381,9 @@ distℚ≤ε→y≤x+ε x y ε dist≤ =
   distℚ≤ε→x≤y+ε y x ε dyx≤ε
 \end{code}
 
-\paragraph{Where we now stand.}
-The rational distance function is now fully operational: triangle inequality, translation invariance, multiplicative scaling, $\varepsilon$-splitting, and distance-order interconversion are all established. Together with the additive and multiplicative order laws from the preceding chapters, $\mathbb{Q}$ is now a complete ordered field except for one property: metric completeness. Not every Cauchy sequence of rationals converges to a rational. That deficiency, once named, forces the next construction.
+The rational distance function is fully operational: triangle inequality, translation invariance, multiplicative scaling, $\varepsilon$-splitting, and distance-order interconversion are all established. Together with the additive and multiplicative order laws from the preceding chapters, $\mathbb{Q}$ is a complete ordered field except for one property: metric completeness. Not every Cauchy sequence of rationals converges to a rational. That deficiency, once named, forces the next construction.
 
-\paragraph{What must happen next.}
-The Archimedean property of $\mathbb{Q}$ must be made explicit so that convergence estimates can quantify "how fast" sequences approach their limits. With Archimedean scaling in hand and the operator span of $K_{12}$ reduced to its canonical $(I,J)$-basis, the spectral action of the Laplacian will complete the rational infrastructure. After that, no further rational law will be needed—only the passage to the reals remains.
+The Archimedean property of $\mathbb{Q}$ must be made explicit so that convergence estimates can quantify ``how fast'' sequences approach their limits. With Archimedean scaling in hand and the operator span of $K_{12}$ reduced to its canonical $(I,J)$-basis, the spectral action of the Laplacian completes the rational infrastructure. After that, no further rational law is needed---only the passage to the reals remains.
 
 %═══════════════════════════════════════════════════════════════════════════
 \chapter{Archimedean Scaling}
@@ -18110,10 +17920,8 @@ scaleVec12_nonzero_left_zero_to_zeroVec n v =
   scaleVec12-pos-left-zero→zeroVec n v , scaleVec12-neg-left-zero→zeroVec n v
 \end{code}
 
-\paragraph{Where we now stand.}
-The rational measurement layer is complete enough to express the spectral content exactly. Quotients, distances, finite-index operators, coupled and triple K$_4$ Laplacians, word algebra, and rational order now describe the combinatorial data without leaving gaps at the level of explicit calculation. The integer $\alpha^{-1} = 137$ was already computed as a Simplex-Euler invariant in Chapter~\ref{ch:rational-numbers-measurement}; the spectral eigenvalues $\{0, 4\}$ of $K_4$ are determined; and the $3{:}1$ eigenspace split matches the dimensional signature of relativistic spacetime. These numbers emerged from the graph, not from physics. What the remaining chapters establish is that they cannot emerge from any other source.
+The rational measurement layer expresses the spectral content exactly. Quotients, distances, finite-index operators, coupled and triple K$_4$ Laplacians, word algebra, and rational order describe the combinatorial data without leaving gaps at the level of explicit calculation. The integer $\alpha^{-1} = 137$ is computed as a Simplex-Euler invariant in Chapter~\ref{ch:rational-numbers-measurement}; the spectral eigenvalues $\{0, 4\}$ of $K_4$ are determined; and the $3{:}1$ eigenspace split matches the dimensional signature of relativistic spacetime. These numbers emerge from the graph, not from physics. What the remaining chapters establish is that they cannot emerge from any other source.
 
-\paragraph{What must happen next.}
 What remains is not another finite algebraic law but closure itself. Once the metric structure is explicit, Cauchy data that does not settle inside $\mathbb{Q}$ must be given a legitimate home. The next step is therefore forced completion: the passage from rational measurement to the reals.
 
 Figure~\ref{fig:q-to-r-closure} fixes that transition in one glance. Rational points do not disappear; they embed as constant sequences. What changes is that the metric space is no longer allowed to leak Cauchy processes that have nowhere to land. The closure adds precisely those limit points the rational layer could approach but not contain.
@@ -20677,30 +20485,8 @@ Left monotonicity is forced by the same rational order law, now applied through 
   }
 \end{code}
 
-\begin{code}
--- § Squaring function on ℝ.
-squareℝ : ℝ → ℝ
-squareℝ x = x ⋅ℝ x
+The numerical machinery is in place. Natural numbers, integers, rationals, reals, order, distance, scaling, and spectral operators have all been forced from the surviving structure rather than imported from outside it. The full language required to evaluate $K_4$ quantitatively is established.
 
--- § Squares are always nonneg on ℝ: 0 ≤ x * x.
-squareℝ-nonneg : (x : ℝ) → 0ℝ ≤ℝ squareℝ x
-squareℝ-nonneg x = record
-  { leReal = λ ε εpos →
-      zero , (λ n _ →
-        let
-          sq≥0 : 0ℚ ≤ℚ (seq x n *ℚ seq x n)
-          sq≥0 = squareℚ-always-nonneg (seq x n)
-          ε≥0 : 0ℚ ≤ℚ ε
-          ε≥0 = <ℚ→≤ℚ εpos
-        in
-        0≤ℚ-+ℚ (seq x n *ℚ seq x n) ε sq≥0 ε≥0)
-  }
-\end{code}
-
-\paragraph{Where we now stand.}
-The numerical machinery is now in place. Natural numbers, integers, rationals, reals, order, distance, scaling, and spectral operators have all been forced from the surviving structure rather than imported from outside it. The document now possesses the full language required to evaluate $K_4$ quantitatively.
-
-\paragraph{What must happen next.}
 The final step is assembly. The invariants already derived must be gathered into a single verified record so that the physical correspondence can be inspected as computation rather than impression.
 
 
@@ -22551,7 +22337,7 @@ law16B-19-K5-edges = refl
 Every combinatorial constant of $K_4$ is now fixed by definitional equality: vertex count, edge count, face count, degree, Euler characteristic, spectral width, and cycle data. The ledger is sealed. What remains is to show that these constants determine a unique formal representation record---that no second assignment of fields could survive the same constraints.
 
 \paragraph{The numbers so far.}
-At the theorem level, $K_4$ has produced $V = 4$, $E = 6$, an eigenvalue ratio $3{:}1$, and the combinatorial invariant $\alpha^{-1} = 137$. None of these numbers were adjusted. Each is a definitional equality closed by the Agda type checker. At the interpretation level, one may compare these values with spacetime dimension, gauge-sector counts, spatial-to-temporal split, and the inverse fine-structure constant. The next chapter addresses the last formal question first: is the assignment of fields to these invariants itself unique, or could a second admissible representation survive the same graph?
+At the theorem level, $K_4$ has produced $V = 4$, $E = 6$, an eigenvalue ratio $3{:}1$, and the combinatorial invariant $\alpha^{-1} = 137$. None of these numbers were adjusted. Each is a definitional equality closed by the Agda type checker. At the interpretation level, one may compare these values with spacetime dimension, gauge-sector counts, spatial-to-temporal split, and the inverse fine-structure constant. The next chapter addresses the last formal question first: is the assignment of fields to these invariants itself unique, or could a second admissible representation survive the same graph? The canonicity of $\alpha^{-1}$ as a derived invariant---including the proof that no alternative degree-$\le 3$ formula reaches $137$---follows in \S\ref{sec:discrete-continuum:classification-alpha-137}.
 
 %═══════════════════════════════════════════════════════════════════════════
 \chapter{K\textsubscript{4} Representation Theory}
@@ -22935,6 +22721,141 @@ module RepUniqueness (r₁ r₂ : K4PhysRep) where
 
   baryon-den-≡   : baryon-den r₁ ≡ baryon-den r₂
   baryon-den-≡   = trans F₁.baryon-den-is-6 (sym F₂.baryon-den-is-6)
+\end{code}
+
+
+%───────────────────────────────────────────────────────────────────────────
+\section{Singleton: the representation has exactly one inhabitant}
+\label{sec:k4-representation:singleton}
+%───────────────────────────────────────────────────────────────────────────
+
+The preceding section proves that any two admissible representations agree on all 17 data fields. But data-field agreement is not yet record equality. The record \texttt{K4PhysRep} also carries 16 proof fields---each of type $n \equiv m$ for specific natural numbers. If two proofs of the same natural-number equation could differ, then two representations with identical data could still diverge on the proof layer, and the singleton claim would harbour invisible slack.
+
+Under \texttt{--without-K}, uniqueness of identity proofs is not given for free. It must be derived. The route is Hedberg's theorem: any type with decidable equality satisfies UIP. Natural numbers have decidable equality by induction. Therefore every proof $p : m \equiv n$ on $\mathbb{N}$ is uniquely determined. Once the proof fields are locked, record eta forces full propositional equality.
+
+\textbf{Constraint:} If two proofs of the same $\mathbb{N}$-equation could differ, the representation would fork at the proof layer even after the data layer is fixed.
+
+\textbf{Construction:} Decidable equality on $\mathbb{N}$ by mutual recursion. Hedberg's theorem extracts a constant endomorphism on identity proofs from the decision procedure, then shows that any proof is a retract of a canonical one. Corollary: $\mathbb{N}$-UIP. Record-level singleton: transport every data field of an arbitrary representation to its forced value using \texttt{ForcedValues}, apply $\mathbb{N}$-UIP to equate all proof fields, close by record eta.
+
+\textbf{Consequence:} The physics record of $K_4$ has propositionally exactly one inhabitant. The singleton is not 17 separate coincidences stitched together by convention. It is a single theorem: \texttt{K4PhysRep-singleton}.
+
+\begin{code}
+-- §──────────────────────────────────────────────────────────────────────
+-- § Decidable equality on ℕ
+-- §──────────────────────────────────────────────────────────────────────
+
+data Decℕ (A : Set) : Set where
+  decided-yes : A   → Decℕ A
+  decided-no  : ¬ A → Decℕ A
+
+_≟ℕ_ : (m n : ℕ) → Decℕ (m ≡ n)
+zero  ≟ℕ zero  = decided-yes refl
+zero  ≟ℕ suc n = decided-no (λ ())
+suc m ≟ℕ zero  = decided-no (λ ())
+suc m ≟ℕ suc n with m ≟ℕ n
+... | decided-yes refl = decided-yes refl
+... | decided-no  m≢n  = decided-no (λ p → m≢n (suc-injective p))
+
+-- §──────────────────────────────────────────────────────────────────────
+-- § Hedberg's theorem for ℕ
+-- §──────────────────────────────────────────────────────────────────────
+
+-- § A constant endomorphism on identity proofs: the decision procedure
+-- § always picks the same canonical witness regardless of input.
+private
+  ℕ-canonical : {m n : ℕ} → m ≡ n → m ≡ n
+  ℕ-canonical {m} {n} p with m ≟ℕ n
+  ... | decided-yes c = c
+  ... | decided-no  f = ⊥-elim (f p)
+
+  ℕ-canonical-const : {m n : ℕ} (p q : m ≡ n) → ℕ-canonical p ≡ ℕ-canonical q
+  ℕ-canonical-const {m} {n} p q with m ≟ℕ n
+  ... | decided-yes _ = refl
+  ... | decided-no  f = ⊥-elim (f p)
+
+  -- § General cancellation: trans (sym p) p reduces to refl.
+  trans-sym-cancel : {m n : ℕ} (p : m ≡ n) → trans (sym p) p ≡ refl
+  trans-sym-cancel refl = refl
+
+  -- § Cancel: any proof p is equal to the canonical one composed with a correction.
+  ℕ-cancel : {m n : ℕ} (p : m ≡ n) →
+    p ≡ trans (sym (ℕ-canonical refl)) (ℕ-canonical p)
+  ℕ-cancel refl = sym (trans-sym-cancel (ℕ-canonical refl))
+
+-- § Hedberg: any two proofs of m ≡ n in ℕ are equal.
+ℕ-UIP : {m n : ℕ} (p q : m ≡ n) → p ≡ q
+ℕ-UIP p q =
+  trans (ℕ-cancel p)
+    (trans (cong (trans (sym (ℕ-canonical refl))) (ℕ-canonical-const p q))
+           (sym (ℕ-cancel q)))
+
+-- §──────────────────────────────────────────────────────────────────────
+-- § K4PhysRep singleton
+-- §──────────────────────────────────────────────────────────────────────
+
+-- § Every admissible representation equals the canonical one.
+-- § Strategy: decompose the record into data fields + proof fields.
+-- § Pattern-match on forced-value equalities (unifying data fields with canonical values),
+-- § then ℕ-UIP collapses every proof field to refl. Record eta closes the gap.
+
+private
+  singleton-lemma :
+    ∀ d s t g f e c ng sp h a b bh bn bd u ml
+    → d ≡ 4 → s ≡ 3 → t ≡ 1 → g ≡ 6 → f ≡ 4 → e ≡ 2
+    → c ≡ 137 → ng ≡ 3 → sp ≡ 16 → h ≡ 22 → a ≡ 24 → b ≡ 8
+    → bh ≡ 4 → bn ≡ 1 → bd ≡ 6 → u ≡ 1 → ml ≡ 1
+    → (panc  : d ≡ vertexCountK4)      → (pdeg  : s ≡ d ∸ 1)
+    → (ptemp : t ≡ d ∸ s)              → (pedge : g ≡ (d * s) divℕ 2)
+    → (pface : f ≡ d)                  → (pchi  : e ≡ (d + f) ∸ g)
+    → (pspin : sp ≡ 2 ^ d)             → (pcoup : c ≡ (d ^ s) * e + s * s)
+    → (pgen  : ng ≡ s)                 → (phier : h ≡ d * g ∸ e)
+    → (pauto : a ≡ d * s * (s ∸ 1) * (s ∸ 2))
+    → (pbell : b ≡ d * e)              → (pbh   : bh ≡ d)
+    → (puv   : u ≡ t)                  → (ploop : ml ≡ t)
+    → (pbnum : bn ≡ t)                 → (pbden : bd ≡ g)
+    → record
+        { dim = d ; n-spatial = s ; n-temporal = t ; gauge-rank = g
+        ; face-count = f ; euler = e ; coupling-inv = c ; n-gen = ng
+        ; spinor-dim = sp ; hierarchy = h ; auto-count = a ; bell-sq = b
+        ; bh-norm = bh ; baryon-num = bn ; baryon-den = bd
+        ; uv-cutoff = u ; min-loop = ml
+        ; anchor = panc ; cg-deg = pdeg ; cg-temporal = ptemp
+        ; cg-edges = pedge ; cg-faces = pface ; cg-euler = pchi
+        ; ph-spinor = pspin ; ph-coupling = pcoup ; ph-gen = pgen
+        ; ph-hierarchy = phier ; ph-auto = pauto ; ph-bell = pbell
+        ; ph-bh = pbh ; ph-uv = puv ; ph-loop = ploop
+        ; ph-baryon-num = pbnum ; ph-baryon-den = pbden
+        } ≡ canonical-rep
+  singleton-lemma .4 .3 .1 .6 .4 .2 .137 .3 .16 .22 .24 .8 .4 .1 .6 .1 .1
+    refl refl refl refl refl refl refl refl refl refl refl refl refl refl refl refl refl
+    panc pdeg ptemp pedge pface pchi pspin pcoup pgen phier pauto pbell pbh puv ploop pbnum pbden
+    rewrite ℕ-UIP panc refl  | ℕ-UIP pdeg refl  | ℕ-UIP ptemp refl
+    | ℕ-UIP pedge refl | ℕ-UIP pface refl | ℕ-UIP pchi refl
+    | ℕ-UIP pspin refl | ℕ-UIP pcoup refl | ℕ-UIP pgen refl
+    | ℕ-UIP phier refl | ℕ-UIP pauto refl | ℕ-UIP pbell refl
+    | ℕ-UIP pbh refl   | ℕ-UIP puv refl   | ℕ-UIP ploop refl
+    | ℕ-UIP pbnum refl | ℕ-UIP pbden refl
+    = refl
+
+K4PhysRep-is-canonical : (r : K4PhysRep) → r ≡ canonical-rep
+K4PhysRep-is-canonical r = singleton-lemma
+  dim n-spatial n-temporal gauge-rank face-count euler
+  coupling-inv n-gen spinor-dim hierarchy auto-count bell-sq
+  bh-norm baryon-num baryon-den uv-cutoff min-loop
+  dim-is-4 spatial-is-3 temporal-is-1 gauge-is-6 faces-is-4 euler-is-2
+  coupling-is-137 gen-is-3 spinor-is-16 hierarchy-is-22 auto-is-24 bell-is-8
+  bh-is-4 baryon-num-is-1 baryon-den-is-6 uv-is-1 loop-is-1
+  anchor cg-deg cg-temporal cg-edges cg-faces cg-euler
+  ph-spinor ph-coupling ph-gen ph-hierarchy ph-auto ph-bell
+  ph-bh ph-uv ph-loop ph-baryon-num ph-baryon-den
+  where
+    open K4PhysRep r
+    open ForcedValues r
+
+-- § Corollary: any two representations are propositionally equal.
+K4PhysRep-singleton : (r₁ r₂ : K4PhysRep) → r₁ ≡ r₂
+K4PhysRep-singleton r₁ r₂ =
+  trans (K4PhysRep-is-canonical r₁) (sym (K4PhysRep-is-canonical r₂))
 \end{code}
 
 
@@ -24362,9 +24283,9 @@ G-FD-forced C adm = curvature-ref-value C adm
 
 The three preceding chapters now prove their target constants by elimination. But a second question is sharper: are the four filters in each chapter themselves already minimal, or do some of them follow from the others? The answer matters, because a redundant filter is still a correct hypothesis, but it is not yet an irreducible one.
 
-The present book has already reacted to that diagnosis. The constant chapters no longer impose pointwise lower and upper brackets on every simplex. Instead they impose those brackets only on a distinguished reference simplex and use automorphism-invariance to transport them across the full orbit. That repair makes invariance genuinely structural again.
+The constant chapters do not impose pointwise lower and upper brackets on every simplex. Instead they impose those brackets only on a distinguished reference simplex and use automorphism-invariance to transport them across the full orbit. This makes invariance genuinely structural.
 
-The audit lemmas below are therefore no longer a diagnosis of the \emph{current} admissibility records. They are a diagnosis of the older pointwise packages the book has now replaced. Their purpose is historical and conceptual: they show exactly why the earlier pointwise form was too strong, and why the reference-simplex architecture was necessary.
+The audit lemmas below justify that architecture. They show that a pointwise form---brackets imposed on every simplex independently---would be too strong: the four filters would no longer be independent, and some would follow from others. The reference-simplex form avoids that collapse.
 
 \begin{code}
 propagation-forced-no-invariance :
@@ -24397,14 +24318,14 @@ curvature-forced-no-invariance C lower upper v =
   ≤-antisym (upper v) (lower v)
 \end{code}
 
-The force of these lemmas is conceptual, not destructive. They do \emph{not} weaken the earlier theorems; they explain the repair that followed. The current chapters already prove uniqueness with a genuinely non-pointwise admissibility basis. The question of whether an alternative set of predicates could achieve the same singleton collapse is sharper and not addressed here; it belongs to the meta-theory of filter selection rather than to the elimination itself.
+The force of these lemmas is conceptual, not destructive. They do \emph{not} weaken the uniqueness theorems; they justify the choice of admissibility basis. The constant chapters prove uniqueness with a genuinely non-pointwise admissibility architecture, and these lemmas confirm that the pointwise alternative would have been redundant. The question of whether an alternative set of predicates could achieve the same singleton collapse belongs to the meta-theory of filter selection rather than to the elimination itself.
 
 %───────────────────────────────────────────────────────────────────────────
 \section{Minimal admissibility basis}
 \label{sec:forced-coupling:minimal-basis}
 %───────────────────────────────────────────────────────────────────────────
 
-The repaired admissibility architecture has four primitive clauses in the propagation chapter and three primitive clauses in the action and curvature chapters. To justify calling this basis \emph{minimal}, each primitive clause must now be shown indispensable: if it is removed while the others are kept, a rival law survives.
+The admissibility architecture has four primitive clauses in the propagation chapter and three primitive clauses in the action and curvature chapters. To justify calling this basis \emph{minimal}, each primitive clause must now be shown indispensable: if it is removed while the others are kept, a rival law survives.
 
 The proofs are by concrete witness. Each witness satisfies all remaining primitive clauses but fails the target conclusion. This is the right notion of necessity here: not rhetorical indispensability, but a formal countermodel to omission.
 
@@ -24679,7 +24600,7 @@ no-free-scale = refl
 \label{sec:scale-closure:normalized-scale-elimination}
 %───────────────────────────────────────────────────────────────────────────
 
-The closure claim can be sharpened one step further without appealing to decimal SI numerals. Work entirely in normalized units, where the three continuum constants are already written as $c = \hbar = G = 1$. A scale choice is then just a triple $(a,b,m)$ of natural-number unit assignments for length, time, and mass. The bridge equations become
+The closure claim can be sharpened one step further. Work entirely in normalized units, where the three continuum constants are already written as $c = \hbar = G = 1$. A scale choice is then just a triple $(a,b,m)$ of natural-number unit assignments for length, time, and mass. The bridge equations become
 \[
 b = a,
 \qquad
@@ -24834,14 +24755,14 @@ normalized-scale-witness = record
   }
 \end{code}
 
-This is the normalized form of the Planck claim. Before any decimal SI calibration enters, the only admissible positive scale triple in the $c = \hbar = G = 1$ regime is already the unit triple. The later SI gate therefore does not introduce new structure. It only names that already-forced triple in external units.
+This is the normalized form of the Planck claim. The only admissible positive scale triple in the $c = \hbar = G = 1$ regime is the unit triple. Any external calibration---choosing to report the same physics in metres, seconds, and kilograms---amounts to a conventional relabeling of this already-forced unit system. The eliminative content is exhausted here; what remains is notation.
 
 %───────────────────────────────────────────────────────────────────────────
 \section{Distinction as measurement kernel}
 \label{sec:scale-closure:measurement-kernel}
 %───────────────────────────────────────────────────────────────────────────
 
-At this point the scale triangle is closed. A sharper question now replaces the earlier combinatorial one: what must any would-be physics already contain before it can even speak about measurement? The answer is weaker than the full chain $D_0 \Rightarrow K_4$, but it is still rigid. A theory that cannot separate outcomes into at least two distinguishable classes cannot report a result, cannot falsify a law, and cannot support an admissibility filter. Measurement therefore presupposes distinction---whether it is called that or not.
+The scale triangle is closed and no free parameter survives. A sharper question now replaces the earlier combinatorial one: what must any would-be physics already contain before it can even speak about measurement? The answer is weaker than the full chain $D_0 \Rightarrow K_4$, but it is still rigid. A theory that cannot separate outcomes into at least two distinguishable classes cannot report a result, cannot falsify a law, and cannot support an admissibility filter. Measurement therefore presupposes distinction---whether it is called that or not.
 
 The formal kernel is exactly the old one in a new role. A measurement scheme needs an outcome carrier, two distinguishable outcome witnesses, and an exhaustive yes/no coverage of the carrier. That is not merely analogous to a distinction. It \emph{is} one.
 
@@ -24878,364 +24799,19 @@ measurement-has-distinct-outcomes M =
 
 These lemmas do not yet say that every physical formalism collapses all the way to $K_4$. They prove a narrower and cleaner threshold statement: every theory that claims to measure anything must already carry a distinction kernel in its outcome space. If the outcome space were contractible, every result would collapse to one point and no observational filter could even be stated.
 
+This is the second independent route to $D_0$. The first—\texttt{Two-distinction} in Chapter~\ref{ch:two-normal-form}—constructs a distinction from pure type theory with no assumptions. Here the route runs through physics: any apparatus that separates yes from no already presupposes the distinction it purports to discover. The two routes are logically independent; neither imports the other. Their convergence is not a convenience—it is structural evidence that distinction sits at the root of both the formal and the empirical hierarchies.
+
 This is the correct red line. $D_0$ is our name for the fully formalized package that begins from distinction and carries it through elimination. Rival frameworks may refuse that name. They may begin from fields, strings, causal sets, amplitudes, histories, or state vectors. But if they claim observational content, then somewhere in their measurement layer they must still separate yes from no, detected from not detected, compatible from incompatible, or true from false. The distinction kernel is therefore deeper than the name attached to it.
 
 The next chapter does not assume that every framework has already collapsed to the whole FD chain. It assumes only what the lemmas above force: that measurement itself already stands on a distinction. The continuum question can then be asked sharply: once a theory has a distinction kernel and the discrete FD chain has closed to $K_4$, does the passage to decimal physics add freedom, or only expose the next forced quotient?
 
-%───────────────────────────────────────────────────────────────────────────
-\section{The SI rescaling gate}
-\label{sec:scale-closure:si-gate}
-%───────────────────────────────────────────────────────────────────────────
+\subsubsection*{Threshold to physics}
 
-The closure theorem does not claim that the book directly computes decimal SI numerals. It does something stricter and cleaner: it isolates the only place where continuum calibration may enter. Once $c_{\mathrm{FD}} = \hbar_{\mathrm{FD}} = G_{\mathrm{FD}} = 1$ are forced, an SI interpretation can differ from the native FD system only by three scale factors: one for length, one for time, and one for mass.
+The discrete chain is now closed. The carrier has been forced into a two-class distinction. The two-class distinction has been forced into the unique $K_4$ graph. The graph has been forced into a rigid invariant ledger. The observable principle has stripped away the last semantic slack by ruling out every quantity that depends on presentation, labeling, or proof artefacts. And the scale closure has locked the unit system to $(a,b,m) = (1,1,1)$, leaving no free parameter.
 
-Write $a$ for the SI length assigned to one FD edge, $b$ for the SI time assigned to one FD update step, and $m$ for the SI mass assigned to one FD mass unit. Then the SI constants must satisfy the cross-multiplied bridge equations
-\[
-c_{\mathrm{SI}} \cdot b = a,
-\qquad
-\hbar_{\mathrm{SI}} \cdot b = m a^2,
-\qquad
-G_{\mathrm{SI}} \cdot m b^2 = a^3.
-\]
-These are exactly the dimensional translations of $c = a/b$, $\hbar = ma^2/b$, and $G = a^3/(mb^2)$, with the native FD values already fixed to~$1$.
+What survives this pressure is a sealed discrete record: $V = 4$, $E = 6$, $d = 3$, $\chi = 2$, $\kappa = 8$, the Clifford count $16$, the compactification stratum $17$, and the rigid coupling value $\alpha^{-1} = 137$. Nothing in this ledger has been fitted. Every entry is already the survivor of an elimination chain.
 
-\begin{code}
-LengthScale : Set
-LengthScale = ℚ
-
-TimeScale : Set
-TimeScale = ℚ
-
-MassScale : Set
-MassScale = ℚ
-
-record SIRescaling : Set where
-  field
-    length-scale : LengthScale
-    time-scale   : TimeScale
-    mass-scale   : MassScale
-    c-SI         : ℚ
-    hbar-SI      : ℚ
-    G-SI         : ℚ
-    c-bridge     : (c-SI *ℚ time-scale) ≃ℚ length-scale
-    hbar-bridge  : (hbar-SI *ℚ time-scale) ≃ℚ
-                  ((mass-scale *ℚ length-scale) *ℚ length-scale)
-    G-bridge     : ((G-SI *ℚ mass-scale) *ℚ (time-scale *ℚ time-scale)) ≃ℚ
-                  ((length-scale *ℚ length-scale) *ℚ length-scale)
-
-unit-c-bridge : (1ℚ *ℚ 1ℚ) ≃ℚ 1ℚ
-unit-c-bridge = *ℚ-one-right 1ℚ
-
-unit-hbar-bridge : (1ℚ *ℚ 1ℚ) ≃ℚ ((1ℚ *ℚ 1ℚ) *ℚ 1ℚ)
-unit-hbar-bridge = ≃ℚ-sym (*ℚ-one-right (1ℚ *ℚ 1ℚ))
-
-unit-G-bridge : ((1ℚ *ℚ 1ℚ) *ℚ (1ℚ *ℚ 1ℚ)) ≃ℚ ((1ℚ *ℚ 1ℚ) *ℚ 1ℚ)
-unit-G-bridge =
-  ≃ℚ-trans
-    (*ℚ-assoc 1ℚ 1ℚ (1ℚ *ℚ 1ℚ))
-    (≃ℚ-trans
-      (*ℚ-one-left (1ℚ *ℚ (1ℚ *ℚ 1ℚ)))
-      (≃ℚ-sym (*ℚ-assoc 1ℚ 1ℚ 1ℚ)))
-
-normalized-planck-rescaling : SIRescaling
-normalized-planck-rescaling = record
-  { length-scale = 1ℚ
-  ; time-scale   = 1ℚ
-  ; mass-scale   = 1ℚ
-  ; c-SI         = 1ℚ
-  ; hbar-SI      = 1ℚ
-  ; G-SI         = 1ℚ
-  ; c-bridge     = unit-c-bridge
-  ; hbar-bridge  = unit-hbar-bridge
-  ; G-bridge     = unit-G-bridge
-  }
-
-squareℚ : ℚ → ℚ
-squareℚ q = q *ℚ q
-
--- § Wrapper: nonneg square uniqueness stated via squareℚ.
-squareℚ-nonneg-unique : (p q : ℚ) → 0ℚ ≤ℚ p → 0ℚ ≤ℚ q
-  → squareℚ p ≃ℚ squareℚ q → p ≃ℚ q
-squareℚ-nonneg-unique = *ℚ-nonneg-square-injective
-
-cube-scaleℚ : ℚ → ℚ → ℚ
-cube-scaleℚ x c = (((x *ℚ c) *ℚ c) *ℚ c)
-
-fifth-scaleℚ : ℚ → ℚ → ℚ
-fifth-scaleℚ x c = (((((x *ℚ c) *ℚ c) *ℚ c) *ℚ c) *ℚ c)
-
-record AnalyticPlanckExtraction (R : SIRescaling) : Set where
-  field
-    planck-length-SI : ℚ
-    planck-time-SI   : ℚ
-    planck-mass-SI   : ℚ
-    length-nonneg    : 0ℚ ≤ℚ planck-length-SI
-    time-nonneg      : 0ℚ ≤ℚ planck-time-SI
-    mass-nonneg      : 0ℚ ≤ℚ planck-mass-SI
-    length-balance   :
-      cube-scaleℚ (squareℚ planck-length-SI) (SIRescaling.c-SI R) ≃ℚ
-      (SIRescaling.hbar-SI R *ℚ SIRescaling.G-SI R)
-    time-balance     :
-      fifth-scaleℚ (squareℚ planck-time-SI) (SIRescaling.c-SI R) ≃ℚ
-      (SIRescaling.hbar-SI R *ℚ SIRescaling.G-SI R)
-    mass-balance     :
-      (squareℚ planck-mass-SI *ℚ SIRescaling.G-SI R) ≃ℚ
-      (SIRescaling.hbar-SI R *ℚ SIRescaling.c-SI R)
-
-record AnalyticPlanckSolver : Set1 where
-  field
-    extract-planck : (R : SIRescaling) → AnalyticPlanckExtraction R
-
-oneℚ-nonneg : 0ℚ ≤ℚ 1ℚ
-oneℚ-nonneg = <ℚ→≤ℚ 0ℚ<1ℚ
-
-unit-squareℚ : squareℚ 1ℚ ≃ℚ 1ℚ
-unit-squareℚ = *ℚ-one-right 1ℚ
-
-unit-cube-scaleℚ : cube-scaleℚ (squareℚ 1ℚ) 1ℚ ≃ℚ 1ℚ
-unit-cube-scaleℚ =
-  ≃ℚ-trans
-    (*ℚ-one-right (((squareℚ 1ℚ) *ℚ 1ℚ) *ℚ 1ℚ))
-    (≃ℚ-trans
-      (*ℚ-one-right ((squareℚ 1ℚ) *ℚ 1ℚ))
-      (≃ℚ-trans
-        (*ℚ-one-right (squareℚ 1ℚ))
-        unit-squareℚ))
-
-unit-fifth-scaleℚ : fifth-scaleℚ (squareℚ 1ℚ) 1ℚ ≃ℚ 1ℚ
-unit-fifth-scaleℚ =
-  ≃ℚ-trans
-    (*ℚ-one-right (((((squareℚ 1ℚ) *ℚ 1ℚ) *ℚ 1ℚ) *ℚ 1ℚ) *ℚ 1ℚ))
-    (≃ℚ-trans
-    (*ℚ-one-right ((((squareℚ 1ℚ) *ℚ 1ℚ) *ℚ 1ℚ) *ℚ 1ℚ))
-      (≃ℚ-trans
-        (*ℚ-one-right (((squareℚ 1ℚ) *ℚ 1ℚ) *ℚ 1ℚ))
-        (≃ℚ-trans
-          (*ℚ-one-right ((squareℚ 1ℚ) *ℚ 1ℚ))
-          (≃ℚ-trans
-            (*ℚ-one-right (squareℚ 1ℚ))
-            unit-squareℚ))))
-
-normalized-analytic-planck-extraction : AnalyticPlanckExtraction normalized-planck-rescaling
-normalized-analytic-planck-extraction = record
-  { planck-length-SI = 1ℚ
-  ; planck-time-SI   = 1ℚ
-  ; planck-mass-SI   = 1ℚ
-  ; length-nonneg    = oneℚ-nonneg
-  ; time-nonneg      = oneℚ-nonneg
-  ; mass-nonneg      = oneℚ-nonneg
-  ; length-balance   =
-      ≃ℚ-trans
-        unit-cube-scaleℚ
-        (≃ℚ-sym (*ℚ-one-right 1ℚ))
-  ; time-balance     =
-      ≃ℚ-trans
-        unit-fifth-scaleℚ
-        (≃ℚ-sym (*ℚ-one-right 1ℚ))
-  ; mass-balance     =
-      ≃ℚ-trans
-        (≃ℚ-trans
-          (*ℚ-one-right (squareℚ 1ℚ))
-          unit-squareℚ)
-        (≃ℚ-sym (*ℚ-one-right 1ℚ))
-  }
-\end{code}
-
-This record is the whole gate from FD to SI. No fourth free parameter is permitted. All empirical calibration is concentrated in the choice of a single rescaling triple $(a,b,m)$ satisfying these three equations. In physical language, the solution is the Planck calibration: once the measured continuum values of $c$, $\hbar$, and $G$ are fixed, the three native FD units are identified with the Planck length, Planck time, and Planck mass.
-
-The code above now contains the normalized witness explicitly: if the continuum constants are already expressed in Planck units, so that $c_{\mathrm{SI}} = \hbar_{\mathrm{SI}} = G_{\mathrm{SI}} = 1$, then the canonical rescaling is the unit triple $(a,b,m) = (1,1,1)$. That is the formal content of \texttt{normalized-planck-rescaling}.
-
-The book now also records, for reference, the shape of the balance equations that any SI rescaling must satisfy. The record \texttt{AnalyticPlanckExtraction} expresses the three Planck formulas using multiplication alone:
-\[
-\ell_P^2 c^3 = \hbar G,
-\qquad
-t_P^2 c^5 = \hbar G,
-\qquad
-m_P^2 G = \hbar c.
-\]
-The normalized case is already realized by \texttt{normalized-analytic-planck-extraction}: when the continuum constants are themselves normalized to $1$, the analytic witnesses for $(\ell_P,t_P,m_P)$ are again the unit triple. This is the same $(1,1,1)$ already forced by the \texttt{NormalizedScaleChoice} elimination above. The SI layer therefore adds no new eliminative content; it merely re-expresses the forced scale in multiplicative form.
-
-The eliminative content of the SI gate is complete: the three balance equations admit at most one nonneg solution, that solution is witnessed in the normalized case, and no fourth scale parameter survives.  The existence of nonneg square roots for arbitrary positive reals is a standard consequence of Cauchy completeness and does not require separate formalization.
-
-What \emph{is} now proved is the uniqueness half: the extraction, should it exist, admits no second solution. If two triples $(\ell_P, t_P, m_P)$ and $(\ell'_P, t'_P, m'_P)$ both satisfy the three Planck balance equations for the same continuum constants, and all entries are nonnegative, then the triples agree. This is the eliminative content: not construction of a root, but proof that any root is unique. The argument is purely algebraic---totality of order, multiplicative cancellation, and nonnegative square injectivity suffice, with no appeal to completeness, continuity, or the intermediate value theorem.
-
-\begin{code}
--- § Uniqueness of AnalyticPlanckExtraction:
--- any two extractions for the same rescaling agree on all three Planck scales.
-module PlanckUnique (R : SIRescaling) (cpos : 0ℚ <ℚ SIRescaling.c-SI R)
-                    (Gpos : 0ℚ <ℚ SIRescaling.G-SI R) where
-
-  private
-    c = SIRescaling.c-SI R
-    ℏ' = SIRescaling.hbar-SI R
-    G' = SIRescaling.G-SI R
-
-  -- Cancel one *ℚ c factor from both sides.
-  cancel-right-c : (x y : ℚ) → (x *ℚ c) ≃ℚ (y *ℚ c) → x ≃ℚ y
-  cancel-right-c x y = *ℚ-cancel-pos-right x y c cpos
-
-  -- Cancel cube-scale: if ((x*c)*c)*c ≃ ((y*c)*c)*c then x ≃ y.
-  cancel-cube-scaleℚ : (x y : ℚ) →
-    cube-scaleℚ x c ≃ℚ cube-scaleℚ y c → x ≃ℚ y
-  cancel-cube-scaleℚ x y eq =
-    cancel-right-c x y
-      (cancel-right-c (x *ℚ c) (y *ℚ c)
-        (cancel-right-c ((x *ℚ c) *ℚ c) ((y *ℚ c) *ℚ c) eq))
-
-  -- Cancel fifth-scale: if (((((x*c)*c)*c)*c)*c) ≃ (((((y*c)*c)*c)*c)*c) then x ≃ y.
-  cancel-fifth-scaleℚ : (x y : ℚ) →
-    fifth-scaleℚ x c ≃ℚ fifth-scaleℚ y c → x ≃ℚ y
-  cancel-fifth-scaleℚ x y eq =
-    cancel-right-c x y
-      (cancel-right-c (x *ℚ c) (y *ℚ c)
-        (cancel-right-c ((x *ℚ c) *ℚ c) ((y *ℚ c) *ℚ c)
-          (cancel-right-c (((x *ℚ c) *ℚ c) *ℚ c) (((y *ℚ c) *ℚ c) *ℚ c)
-            (cancel-right-c ((((x *ℚ c) *ℚ c) *ℚ c) *ℚ c) ((((y *ℚ c) *ℚ c) *ℚ c) *ℚ c) eq))))
-
-  -- Cancel one *ℚ G factor.
-  cancel-right-G : (x y : ℚ) → (x *ℚ G') ≃ℚ (y *ℚ G') → x ≃ℚ y
-  cancel-right-G x y = *ℚ-cancel-pos-right x y G' Gpos
-
-  -- The uniqueness theorem.
-  planck-length-unique : (A B : AnalyticPlanckExtraction R) →
-    AnalyticPlanckExtraction.planck-length-SI A ≃ℚ
-    AnalyticPlanckExtraction.planck-length-SI B
-  planck-length-unique A B =
-    let
-      ℓA = AnalyticPlanckExtraction.planck-length-SI A
-      ℓB = AnalyticPlanckExtraction.planck-length-SI B
-      balA = AnalyticPlanckExtraction.length-balance A
-      balB = AnalyticPlanckExtraction.length-balance B
-      -- balA : cube-scaleℚ (squareℚ ℓA) c ≃ℚ (ℏ' *ℚ G')
-      -- balB : cube-scaleℚ (squareℚ ℓB) c ≃ℚ (ℏ' *ℚ G')
-      combined : cube-scaleℚ (squareℚ ℓA) c ≃ℚ cube-scaleℚ (squareℚ ℓB) c
-      combined = ≃ℚ-trans balA (≃ℚ-sym balB)
-
-      sq≃ : squareℚ ℓA ≃ℚ squareℚ ℓB
-      sq≃ = cancel-cube-scaleℚ (squareℚ ℓA) (squareℚ ℓB) combined
-    in
-    squareℚ-nonneg-unique ℓA ℓB
-      (AnalyticPlanckExtraction.length-nonneg A)
-      (AnalyticPlanckExtraction.length-nonneg B)
-      sq≃
-
-  planck-time-unique : (A B : AnalyticPlanckExtraction R) →
-    AnalyticPlanckExtraction.planck-time-SI A ≃ℚ
-    AnalyticPlanckExtraction.planck-time-SI B
-  planck-time-unique A B =
-    let
-      tA = AnalyticPlanckExtraction.planck-time-SI A
-      tB = AnalyticPlanckExtraction.planck-time-SI B
-      balA = AnalyticPlanckExtraction.time-balance A
-      balB = AnalyticPlanckExtraction.time-balance B
-      combined : fifth-scaleℚ (squareℚ tA) c ≃ℚ fifth-scaleℚ (squareℚ tB) c
-      combined = ≃ℚ-trans balA (≃ℚ-sym balB)
-
-      sq≃ : squareℚ tA ≃ℚ squareℚ tB
-      sq≃ = cancel-fifth-scaleℚ (squareℚ tA) (squareℚ tB) combined
-    in
-    squareℚ-nonneg-unique tA tB
-      (AnalyticPlanckExtraction.time-nonneg A)
-      (AnalyticPlanckExtraction.time-nonneg B)
-      sq≃
-
-  planck-mass-unique : (A B : AnalyticPlanckExtraction R) →
-    AnalyticPlanckExtraction.planck-mass-SI A ≃ℚ
-    AnalyticPlanckExtraction.planck-mass-SI B
-  planck-mass-unique A B =
-    let
-      mA = AnalyticPlanckExtraction.planck-mass-SI A
-      mB = AnalyticPlanckExtraction.planck-mass-SI B
-      balA = AnalyticPlanckExtraction.mass-balance A
-      balB = AnalyticPlanckExtraction.mass-balance B
-      -- balA : (squareℚ mA *ℚ G') ≃ℚ (ℏ' *ℚ c)
-      -- balB : (squareℚ mB *ℚ G') ≃ℚ (ℏ' *ℚ c)
-      combined : (squareℚ mA *ℚ G') ≃ℚ (squareℚ mB *ℚ G')
-      combined = ≃ℚ-trans balA (≃ℚ-sym balB)
-
-      sq≃ : squareℚ mA ≃ℚ squareℚ mB
-      sq≃ = cancel-right-G (squareℚ mA) (squareℚ mB) combined
-    in
-    squareℚ-nonneg-unique mA mB
-      (AnalyticPlanckExtraction.mass-nonneg A)
-      (AnalyticPlanckExtraction.mass-nonneg B)
-      sq≃
-\end{code}
-
-The uniqueness theorem above lives in a module parameterized by $c > 0$ and $G > 0$---physically the only sensible regime. Under these conditions, any two nonnegative solutions $(\ell_P, t_P, m_P)$ of the Planck balance equations must agree (up to $\simeq_{\mathbb{Q}}$). The proof chains three reductions: cancel the power-of-$c$ or $G$ factor from both sides via multiplicative torsion-freedom; reduce to the injectivity of the nonneg square; and apply the algebraic uniqueness theorem that needs nothing beyond totality of integer order and cancellation. No $\pi$, no $\sqrt{\cdot}$, no completeness, no intermediate value theorem: only elimination.
-
-The existence half of the Planck extraction is now made explicit as a named record: \texttt{HasPlanckRoots}. It bundles exactly the three rational witnesses whose existence is the last open gate --- one nonnegative rational root per balance equation. Under that hypothesis, the extraction record assembles immediately. If the hypothesis holds universally for all \texttt{SIRescaling} data (as it would in any Cauchy-complete ordered field closed under positive square roots), the full \texttt{AnalyticPlanckSolver} follows. The residual freedom is thus reduced to a single named condition rather than a diffuse analytic gap.
-
-\begin{code}
--- § Root hypothesis: a nonneg rational witness per Planck balance equation.
-record HasPlanckRoots (R : SIRescaling) : Set where
-  field
-    length-root        : ℚ
-    length-root-nonneg : 0ℚ ≤ℚ length-root
-    length-root-eq     :
-      cube-scaleℚ (squareℚ length-root) (SIRescaling.c-SI R) ≃ℚ
-        (SIRescaling.hbar-SI R *ℚ SIRescaling.G-SI R)
-    time-root          : ℚ
-    time-root-nonneg   : 0ℚ ≤ℚ time-root
-    time-root-eq       :
-      fifth-scaleℚ (squareℚ time-root) (SIRescaling.c-SI R) ≃ℚ
-        (SIRescaling.hbar-SI R *ℚ SIRescaling.G-SI R)
-    mass-root          : ℚ
-    mass-root-nonneg   : 0ℚ ≤ℚ mass-root
-    mass-root-eq       :
-      (squareℚ mass-root *ℚ SIRescaling.G-SI R) ≃ℚ
-        (SIRescaling.hbar-SI R *ℚ SIRescaling.c-SI R)
-
--- § Root witnesses assemble into an AnalyticPlanckExtraction.
-has-roots-to-extraction : (R : SIRescaling) → HasPlanckRoots R → AnalyticPlanckExtraction R
-has-roots-to-extraction _ roots = record
-  { planck-length-SI = HasPlanckRoots.length-root roots
-  ; planck-time-SI   = HasPlanckRoots.time-root roots
-  ; planck-mass-SI   = HasPlanckRoots.mass-root roots
-  ; length-nonneg    = HasPlanckRoots.length-root-nonneg roots
-  ; time-nonneg      = HasPlanckRoots.time-root-nonneg roots
-  ; mass-nonneg      = HasPlanckRoots.mass-root-nonneg roots
-  ; length-balance   = HasPlanckRoots.length-root-eq roots
-  ; time-balance     = HasPlanckRoots.time-root-eq roots
-  ; mass-balance     = HasPlanckRoots.mass-root-eq roots
-  }
-
--- § If every rescaling has roots, there is a full Planck solver.
--- This is the final elimination form: the AnalyticPlanckSolver is forced
--- as soon as the universal root hypothesis is discharged.
-roots-solver : ((R : SIRescaling) → HasPlanckRoots R) → AnalyticPlanckSolver
-roots-solver allRoots = record
-  { extract-planck = λ R → has-roots-to-extraction R (allRoots R) }
-
--- § The normalized case satisfies HasPlanckRoots (unit witnesses).
-normalized-has-roots : HasPlanckRoots normalized-planck-rescaling
-normalized-has-roots = record
-  { length-root        = 1ℚ
-  ; length-root-nonneg = oneℚ-nonneg
-  ; length-root-eq     = ≃ℚ-trans unit-cube-scaleℚ (≃ℚ-sym (*ℚ-one-right 1ℚ))
-  ; time-root          = 1ℚ
-  ; time-root-nonneg   = oneℚ-nonneg
-  ; time-root-eq       = ≃ℚ-trans unit-fifth-scaleℚ (≃ℚ-sym (*ℚ-one-right 1ℚ))
-  ; mass-root          = 1ℚ
-  ; mass-root-nonneg   = oneℚ-nonneg
-  ; mass-root-eq       =
-      ≃ℚ-trans
-        (≃ℚ-trans (*ℚ-one-right (squareℚ 1ℚ)) unit-squareℚ)
-        (≃ℚ-sym (*ℚ-one-right 1ℚ))
-  }
-\end{code}
-
-The three theorems together close the analytic gate. \texttt{HasPlanckRoots} packages the root hypothesis into a single record. \texttt{has-roots-to-extraction} shows that the hypothesis immediately produces a full Planck extraction. \texttt{roots-solver} converts the universal form into the full \texttt{AnalyticPlanckSolver}. And \texttt{normalized-has-roots} confirms that the hypothesis is satisfied in the only regime the book requires: the unit-triple regime already forced by \texttt{NormalizedScaleChoice}.
-
-The eliminative chain is therefore closed at this point. The Planck scale is the unique surviving scale of the FD system: $c_{\mathrm{FD}} = \hbar_{\mathrm{FD}} = G_{\mathrm{FD}} = 1$ forces $(a,b,m) = (1,1,1)$, the SI bridge is calibration not elimination, and the uniqueness proof excludes any second solution to the balance equations.
-
-\subsubsection*{Threshold To Physics}
-
-At this point the discrete chain has already delivered its verdict. The carrier has been forced into a two-class distinction. The two-class distinction has been forced into the unique $K_4$ graph. The graph has been forced into a rigid invariant ledger. And the observable principle has stripped away the last semantic slack by ruling out every quantity that depends on presentation, labeling, or proof artefacts.
-
-What survives this pressure is no longer a loose collection of combinatorial curiosities. It is a closed discrete record: $V = 4$, $E = 6$, $d = 3$, $\chi = 2$, $\kappa = 8$, the Clifford count $16$, the compactification stratum $17$, and the rigid coupling value $\alpha^{-1} = 137$. Nothing in this ledger has been fitted. Every entry is already the survivor of an elimination chain.
-
-This is the last point at which the work is purely discrete. The next question cannot be whether different integers would do just as well. That question has already collapsed at the theorem level. The only live question is harsher: when experiment reports decimal structure rather than bare integers, does the continuum introduce freedom, or does it merely expose the next forced quotient of the same graph?
+This is the last point at which the work is purely discrete. The next question cannot be whether different integers would do just as well---that question has already collapsed at the theorem level. The only live question is harsher: when experiment reports decimal structure rather than bare integers, does the continuum introduce freedom, or does it merely expose the next forced quotient of the same graph?
 
 \textbf{Constraint:} Before physics begins, the discrete stage must already be closed. If any invariant or observable were still negotiable here, every later numerical match would be contaminated by hidden freedom.
 
@@ -26776,6 +26352,8 @@ physics-presupposes-distinction-irrefutable p noDistinction =
 \label{ch:invitation}
 
 The chain has now been closed in the only direction that survives scrutiny. Distinction forces the two-class carrier; the carrier forces $K_4$; $K_4$ forces the invariant ledger; and the admissible physical record is shown, in the end, to presuppose the very distinction from which the chain began. What remains is therefore not a request for lenience. It is a ledger of the surviving debts. The proof no longer waits for completion, but it does leave obligations behind: comparison with rival physical explanations, sharpening of the mathematical form, and a philosophical account of what kind of necessity has been uncovered.
+
+The existence of $D_0$ itself—the claim that \texttt{Distinction} is inhabited—has been established by three independent routes, each eliminating a different escape. First, \texttt{Two-distinction} (Chapter~\ref{ch:two-normal-form}) constructs a witness from pure type theory, with no assumptions whatsoever. Second, \texttt{measurement-outcome-distinction} (Chapter~\ref{ch:scale-closure}) extracts a distinction from any binary measurement apparatus: the yes/no separation that measurement presupposes is already one. Third, \texttt{physics-presupposes-distinction} closes the loop from the other end: every admissible $K_4$ physical record already consumes the distinction it claims to ground. No single route can be dismissed without abandoning a different foundational commitment—constructive logic, empirical content, or physical admissibility, respectively.
 
 The invitation is the place where those debts are named without reopening the chain. It states, for each audience in turn, where resistance is still possible, where the real pressure now falls, and what kind of response would count as serious.
 
