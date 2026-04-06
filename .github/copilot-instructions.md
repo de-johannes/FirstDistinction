@@ -13,11 +13,19 @@ Every section introducing a new concept MUST be split into two distinct, consecu
 - **Required:** "Nature forces...", "If we do not establish X, the system collapses...", "This constraint leaves us with only one path..."
 
 ### Layer 2: Formal (The Iron Logic)
-Immediately following the narrative, harden the logic right before the Agda code block. Use exactly this bolded structure to make the reasoning logically unassailable (Reviewer-Safe):
+Immediately following the narrative, harden the logic right before the Agda code block. Use exactly this bolded structure to make the reasoning logically unassailable (Reviewer-Safe). The middle term depends on what the code does:
 
+**When the code eliminates** (enumerates candidates, filters by absurd patterns, uses sandwich arguments, proves by negation):
 - **\textbf{Constraint:}** What structural force or paradox makes this code physically/logically unavoidable?
-- **\textbf{Construction:}** What is the unique mathematical structure that satisfies this constraint?
+- **\textbf{Elimination:}** What alternatives are annihilated? What is the unique structure that survives?
 - **\textbf{Consequence:}** What weaker alternatives are eliminated? What invariant survives?
+
+**When the code constructs** (defines types/records, builds witnesses, proves by computation/refl, equational chaining):
+- **\textbf{Constraint:}** What structural force or paradox makes this code physically/logically unavoidable?
+- **\textbf{Construction:}** What is the unique structure forced by this constraint? Why does no alternative type/witness/proof exist?
+- **\textbf{Consequence:}** What weaker alternatives are eliminated? What invariant survives?
+
+In constructive type theory, some steps are irreduzibel constructive: type definitions, existence witnesses ($\Sigma$-inhabitants), and computational verification by \texttt{refl} must build terms. Use **Construction:** for these honestly. Use **Elimination:** only where the code genuinely kills candidates (absurd patterns, sandwich arguments, $\neg$-proofs).
 
 ## 3. PROSE TONE: "SURVIVAL OF THE FITTEST"
 - **Narrative:** Logic is the judge, the Agda compiler is the executioner. Every chapter is a verdict.
