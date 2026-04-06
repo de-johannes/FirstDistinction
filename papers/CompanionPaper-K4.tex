@@ -2,7 +2,7 @@
 
 %% ============================================================================
 %% The Forced Derivation of K₄ from Logical Distinction
-%% Companion paper for TYPES / LICS / CSL submission
+%% Companion paper — formal chain, two independent paths
 %% ============================================================================
 
 \usepackage[utf8]{inputenc}
@@ -12,6 +12,7 @@
 \usepackage{inconsolata}
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{amsmath,amsthm}
+\usepackage{booktabs}
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!70!black}
 \usepackage{enumitem}
@@ -19,7 +20,7 @@
 \usetikzlibrary{positioning,arrows.meta,calc}
 \usepackage{newunicodechar}
 
-%% Unicode mappings (subset needed for code excerpts)
+%% Unicode mappings
 \newunicodechar{¬}{\ensuremath{\neg}}
 \newunicodechar{×}{\ensuremath{\times}}
 \newunicodechar{∀}{\ensuremath{\forall}}
@@ -72,47 +73,54 @@
 }
 
 \title{The Forced Derivation of $K_4$ from Logical Distinction\\[0.3em]
-\large A Machine-Verified Eliminative Chain in Agda}
+\large A Machine-Verified Chain in Agda, Reached by Two Independent Paths}
 \author{Johannes Michael Wielsch}
-\date{April 2026}
+\date{April 2026 \quad\texttt{DOI: 10.5281/zenodo.17826218}}
 
 \begin{document}
 \maketitle
 
 %% ============================================================================
 \begin{abstract}
-We present a self-contained derivation, mechanically verified in Agda under
-\texttt{-{}-safe -{}-without-K}, that the complete graph $K_4$ is the unique
-fixpoint of an eliminative filter starting from a single axiom: the existence
-of a distinction.
+\noindent
+The complete graph $K_4$ is the unique fixpoint of a self-consistency filter
+starting from a single axiom: the existence of a distinction.  This result
+is established by two independent machine-verified developments in Agda under
+\texttt{-{}-safe -{}-without-K} with zero postulates.
 
-A \emph{distinction} is a type with two provably unequal inhabitants and
-a coverage guarantee that every element equals one of them.
-From this datum alone, we derive:
-(i)~exactly four mutually distinct endomorphisms,
-(ii)~a well-founded drift hierarchy via universe-level iteration,
-(iii)~a presentation fixpoint collapsing every admissible observable to a
-canonical base,
-and (iv)~the complete graph on four vertices as the unique structure
-surviving all constraints.
+\textit{Void}~\cite{wielsch2026void} derives $K_4$ by elimination: starting
+from abstract type-theoretic infrastructure---propositional equality, universe
+lifting, contractibility, distinct-pair classification---it destroys every
+alternative that fails self-consistency until only $K_4$ remains.
+\textit{Form}~\cite{wielsch2026form} derives $K_4$ by construction: starting
+from concrete inhabited types---$D_0$, $D_1$, $D_2$---it builds upward
+through Bool, $\mathbb{N}$, and $\mathbb{Z}$ until $K_4$ emerges as the
+unique structure the genesis sequence forces.
 
-No postulate, no axiom, and no external import beyond
-\texttt{Agda.Primitive} is used.  The proof artifact is a single literate
-Agda file; this paper is its narrative extract.
+The two developments share no code, no lemmas, no intermediate definitions.
+They converge on the same structure with the same invariants:
+$(V,E,d,\chi,\kappa) = (4,6,3,2,8)$, Laplacian spectrum $\{0,4,4,4\}$.
+This paper is the narrative extract of the formal chain common to both paths.
 \end{abstract}
 
 %% ============================================================================
 \section{Introduction}
 \label{sec:intro}
 
-The question this paper addresses is narrow: given the weakest possible
-starting point---a type with exactly two distinguishable elements---what
-combinatorial structure does self-consistency force?
+Given the weakest possible starting point---a type with exactly two
+distinguishable elements---what combinatorial structure does self-consistency
+force?
 
-The answer is $K_4$, the complete graph on four vertices.  The derivation
-proceeds by elimination: at each stage, every alternative that fails an
-internal consistency requirement is destroyed, and the unique survivor
-is carried forward.  The elimination chain has five links:
+The answer is $K_4$, the complete graph on four vertices.  Two independent
+proof developments arrive at this answer by opposite methods.  The
+eliminative path (\textit{Void}) destroys alternatives until only $K_4$
+survives.  The constructive path (\textit{Form}) builds upward from $D_0$
+until $K_4$ is the unique structure the construction demands.  Neither path
+imports from the other.  Both compile under the same compiler flags with
+zero postulates.
+
+The logical spine is shared: five links force the result regardless of
+whether the method is eliminative or constructive.
 
 \begin{enumerate}[nosep]
   \item Distinction forces four endomorphisms.
@@ -122,10 +130,9 @@ is carried forward.  The elimination chain has five links:
   \item The fixpoint forces $K_4$ as the unique surviving graph.
 \end{enumerate}
 
-Each link is machine-checked.  The Agda source is compiled under
-\texttt{-{}-safe -{}-without-K}, which prohibits postulates, axiom K,
-and any escape from constructive type theory.  The entire development
-uses no library beyond \texttt{Agda.Primitive} for universe levels.
+Each link is machine-checked in both volumes.  This paper presents the
+formal chain itself, independent of its arithmetic and spectral extensions
+(which are treated in the companion physics paper~\cite{wielsch2026physics}).
 
 \paragraph{Related work.}
 Exhaustive classification of finite structures under algebraic constraints
@@ -134,7 +141,7 @@ modern computational algebra).  The novelty here is not classification
 \emph{per se} but the demonstration that a single binary distinction,
 iterated through universe levels, forces exactly one graph through purely
 type-theoretic means.  The work closest in spirit is the programme of
-homotopy type theory \cite{hottbook}, which also derives geometric
+homotopy type theory~\cite{hottbook}, which also derives geometric
 structure from type-theoretic primitives, though the methods and targets differ.
 
 %% ============================================================================
@@ -154,13 +161,13 @@ A \emph{distinction} is a record consisting of:
 In Agda:
 
 \begin{lstlisting}
-record Distinction : Set1 where
+record Distinction : Set₁ where
   field
     S     : Set
     l     : S
     r     : S
-    l!=r  : l != r
-    cover : (x : S) -> (x == l) + (x == r)
+    l≠r   : l ≠ r
+    cover : (x : S) → (x ≡ l) ⊎ (x ≡ r)
 \end{lstlisting}
 
 Coverage is the critical field.  Without it, $S$ could contain hidden
@@ -195,7 +202,7 @@ follows by case analysis and symmetry of equality.  Injectivity is proved
 by a $4 \times 4$ exhaustion: for each pair of distinct cases, the
 assumption $\mathit{interpret}(c) \circeq \mathit{interpret}(c')$ produces a
 contradiction via $\ell \neq r$.  Uniqueness combines soundness and
-injectivity.  All three are verified by Agda. \qed
+injectivity.  All three are verified by Agda in both volumes.  \qed
 \end{proof}
 
 The key consequence: the endomorphism monoid of any distinction is
@@ -356,39 +363,159 @@ The full derivation is summarized in Table~\ref{tab:chain}.
 \end{table}
 
 %% ============================================================================
+\section{Two Paths, One Machine}
+\label{sec:two-paths}
+
+The formal chain above is realized by two independent Agda developments that
+share no code, no imports, and no intermediate definitions.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}lll@{}}
+\toprule
+& \textbf{\textit{Void} (Eliminative)} & \textbf{\textit{Form} (Constructive)} \\
+\midrule
+File         & \texttt{FirstDistinction.lagda.tex} & \texttt{FirstConstruction.lagda.tex} \\
+Lines        & ${\sim}27{,}000$ & ${\sim}25{,}000$ \\
+Module       & \texttt{FirstDistinction} & \texttt{FirstConstruction} \\
+Central verb & Eliminate & Construct \\
+Starting point & Abstract types (propositional equality, Lift, contractibility) & Concrete types ($D_0$, $D_1$, $D_2$, Bool) \\
+Equality     & Propositional ($\text{Dec}\;(x \equiv y)$) & Computational ($X \to X \to \text{Bool}$) \\
+Reduction    & Heavy chains; 17 \texttt{opaque} blocks & Short chains; zero \texttt{opaque} blocks \\
+Integer eq.  & Propositional unfolding & Setoid ($\simeq_\mathbb{Z}$ on pairs) \\
+Graph eq.    & $\text{Dec}\;(v \equiv w)$ & $\texttt{\_\!\equiv\!G?\!\_} : V \to V \to \text{Bool}$ \\
+Flags        & \texttt{-{}-safe -{}-without-K} & \texttt{-{}-safe -{}-without-K} \\
+Postulates   & 0 & 0 \\
+Result       & $(V,E,d,\chi,\kappa) = (4,6,3,2,8)$ & $(4,6,3,2,8)$ \\
+Spectrum     & $\{0,4,4,4\}$ & $\{0,4,4,4\}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The divergence in proof machinery is not a design choice but a consequence of
+the method.  The eliminative path asks ``can this alternative be ruled out?''---a
+propositional question that produces proof terms the type-checker must carry and
+reduce.  As these terms accumulate (integer multiplication chains, Laplacian
+entries), \texttt{opaque} blocks become necessary to bound memory.  The
+constructive path asks ``what does this compute to?''---a computational question
+answered by Bool-returning functions whose results are bits, not proof trees.
+Reduction chains stay short; no \texttt{opaque} blocks are needed.
+
+Neither strategy is interchangeable with the other.  An eliminative proof that
+replaced propositional witnesses with Bool decisions would lose the certification
+required for the next elimination step.  A constructive proof that carried
+propositional Dec types would accumulate dead proof weight it never discharges.
+The method dictates the machinery.
+
+That two developments locked into different technologies, verified by the same
+compiler under the same flags, converge on the same invariants is evidence that
+the result depends on neither strategy---only on the structure.
+
+%% ============================================================================
+\section{Structural Theorems}
+\label{sec:structural}
+
+The following identifiers are machine-verified in both volumes.  Each row is
+a \texttt{refl} or an absurdity witness $\lambda\,()$ closed by the type
+checker.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}lp{8cm}@{}}
+\toprule
+\textbf{Agda identifier} & \textbf{Content} \\
+\midrule
+\texttt{Two-distinction}                          & $D_0$ is explicitly constructed; not just irrefutable \\
+\texttt{EndoCase}                                 & Exactly 4 endomorphisms; 4 constructors, none can be added \\
+\texttt{law13-1-presentation-iso}                 & Any $K_4$ presentation is isomorphic to the canonical one \\
+\texttt{K4PhysRep-singleton}                      & The physics record has exactly one inhabitant \\
+\texttt{theorem-discrete-continuum-map-unique}    & The bridge fractions $11/72$ and $11/576$ are the unique irreducible survivors \\
+\texttt{physics-presupposes-distinction}          & $\mathtt{K4PhysRep} \to D_0$: the loop closes \\
+\texttt{measurement-outcome-distinction}          & Any binary measurement contains $D_0$ \\
+\texttt{NormalizedScaleChoice}                    & $c = \hbar = G = 1$ forced; $\forall S: a = b = m = 1$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%% ============================================================================
+\section{Addressed Objections}
+\label{sec:objections}
+
+\subsection*{``The $K_4$ uniqueness only holds within your self-built system.''}
+
+The isomorphism proof \texttt{law13-1-presentation-iso} shows that any
+alternative presentation of the four-case classification---any type $X$ with its
+own interpretation, classification, soundness, and injectivity---is isomorphic
+to \texttt{EndoCase}.  Alternative presentations do not survive the round-trip.
+The argument is a universal statement over all presentations satisfying the
+same typed interface.
+
+\subsection*{``How do you know the two volumes do not share a hidden assumption?''}
+
+They share exactly one assumption: Agda's core type theory under
+\texttt{-{}-safe -{}-without-K}.  This is not hidden; it is the minimal
+constructive type theory with universes and no axiom~K.  Everything
+else---equality, negation, decidability, natural numbers, integers, rationals,
+graph theory---is built from scratch in each volume independently.
+The Agda modules do not import from each other.
+
+\subsection*{``No dynamics means no physical theory.''}
+
+Correct.  This paper is not a physical theory.  It is a classification
+theorem: a single binary distinction forces $K_4$ through a chain
+in type theory.  The numerical consequences of $K_4$'s invariants, and their
+comparison with measured constants, are treated separately in the physics
+companion~\cite{wielsch2026physics}.  The formal chain stands or falls
+independently of any physical interpretation.
+
+%% ============================================================================
 \section{Formal Environment}
 \label{sec:formal}
 
-The development is a single literate Agda file (\texttt{FirstDistinction.lagda.tex}),
-approximately 25{,}000 lines, compiled under:
+Both developments are single literate Agda files compiled under:
 
 \begin{lstlisting}
 {-# OPTIONS --safe --without-K #-}
-module FirstDistinction where
-open import Agda.Primitive using (Level; lzero; lsuc; _+_; Setw)
 \end{lstlisting}
 
-\noindent No standard library.  No postulates.  No axiom K.  All
+\noindent No standard library.  No postulates.  No axiom~K.  All
 infrastructure---equality, negation, decidability, coproducts, natural
-numbers, ordering---is built from scratch within the file.
+numbers, ordering---is built from scratch within each file.
 
 The \texttt{-{}-safe} flag forbids \texttt{postulate}, \texttt{TERMINATING},
 and other escape hatches.  The \texttt{-{}-without-K} flag forbids
-Streicher's axiom K, ensuring compatibility with homotopy type theory.
+Streicher's axiom~K, ensuring compatibility with homotopy type theory.
 
-The proof artifact is available at
-\url{https://github.com/de-johannes/FirstDistinction}.
+\medskip
+\noindent Verification:
+\begin{lstlisting}
+git clone https://github.com/de-johannes/FirstDistinction
+cd FirstDistinction
+agda --safe --without-K FirstDistinction.lagda.tex   # Void
+agda --safe --without-K FirstConstruction.lagda.tex   # Form
+\end{lstlisting}
+
+\noindent If both files type-check, every theorem stated in this paper
+is verified---twice, by independent proof chains.
 
 %% ============================================================================
 \section{Discussion}
 \label{sec:discussion}
 
 The result is a purely combinatorial classification theorem: the only
-graph that survives the eliminative filter forced by a single distinction
+graph that survives the self-consistency filter forced by a single distinction
 is $K_4$.  The derivation introduces no free parameter and makes no
 appeal to geometry, physics, or model-theoretic semantics.
 
-Several questions remain open for the type-theory community:
+That the result is reached by two independent formal developments
+strengthens the claim.  A structure found only by elimination might depend
+on the eliminative framing.  A structure found only by construction might
+depend on the constructive framing.  A structure found by both depends on
+neither---it depends on the logic alone.
+
+Several questions remain open:
 
 \begin{itemize}[nosep]
   \item Can the exhaustive classification be sharpened to a single
@@ -398,46 +525,51 @@ Several questions remain open for the type-theory community:
   \item Does the presentation fixpoint admit a formulation in terms of
         initial algebras or terminal coalgebras?
   \item Can the result be reproduced in alternative proof assistants
-        (Lean~4, Coq) to confirm independence from Agda-specific
-        features?
+        (Lean~4, Coq) to confirm independence from Agda-specific features?
 \end{itemize}
-
-The companion book~\cite{wielsch2026first} extends the derivation into
-arithmetic and spectral analysis, but those extensions are not part of
-the present claim.  This paper concerns only the formal chain from
-distinction to~$K_4$.
 
 %% ============================================================================
 \section{Conclusion}
 \label{sec:conclusion}
 
-We have shown that a single binary distinction---a type with two provably
-unequal, covering elements---forces, through an eliminative chain
-verified in Agda under \texttt{-{}-safe -{}-without-K}, exactly four
-mutually distinct endomorphisms, a well-founded drift hierarchy, a
-canonical presentation fixpoint, and the complete graph $K_4$ as the
-unique survivor.
+A single binary distinction---a type with two provably unequal, covering
+elements---forces, through a chain verified in Agda under
+\texttt{-{}-safe -{}-without-K}, exactly four mutually distinct
+endomorphisms, a well-founded drift hierarchy, a canonical presentation
+fixpoint, and the complete graph $K_4$ as the unique survivor.
 
-No alternative survives at any stage.  The derivation is not a choice
-among models but the execution of a filter that destroys every unstable
-alternative.  The Agda source serves as both proof and artifact.
+Two independent proof developments, \textit{Void} (eliminative,
+${\sim}27{,}000$ lines) and \textit{Form} (constructive,
+${\sim}25{,}000$ lines), arrive at this result using different proof
+machinery dictated by their respective methods.  Neither imports from
+the other.  Both compile under the same flags with zero postulates.
+The convergence is structural.
 
-\paragraph{Acknowledgements.}
-This paper extracts the formal core of the book \emph{First Distinction:
-A Logical Ontology of Distinction}. The full development is available as
-a literate Agda file at \url{https://github.com/de-johannes/FirstDistinction}.
-
+%% ============================================================================
 \begin{thebibliography}{9}
-\bibitem{hottbook}
-  The Univalent Foundations Program,
-  \emph{Homotopy Type Theory: Univalent Foundations of Mathematics},
-  Institute for Advanced Study, 2013.
 
-\bibitem{wielsch2026first}
-  J.\,M.~Wielsch,
-  \emph{First Distinction: A Logical Ontology of Distinction},
-  2026.
-  \url{https://github.com/de-johannes/FirstDistinction}
+\bibitem{wielsch2026void}
+J.~M.~Wielsch,
+\textit{Void: An Eliminative Ontology of Distinction},
+literate Agda, $\sim$27\,000 lines, April~2026.
+\texttt{DOI:~10.5281/zenodo.17826218}.
+
+\bibitem{wielsch2026form}
+J.~M.~Wielsch,
+\textit{Form: A Constructive Ontology of Distinction},
+literate Agda, $\sim$25\,000 lines, April~2026.
+\texttt{DOI:~10.5281/zenodo.17826218}.
+
+\bibitem{wielsch2026physics}
+J.~M.~Wielsch,
+\textit{Computed Invariants of $K_4$: A Physics Record from Two Formal Derivations},
+companion paper (numerical results), April~2026.
+
+\bibitem{hottbook}
+The Univalent Foundations Program,
+\textit{Homotopy Type Theory: Univalent Foundations of Mathematics},
+Institute for Advanced Study, 2013.
+
 \end{thebibliography}
 
 \end{document}
