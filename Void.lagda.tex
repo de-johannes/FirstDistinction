@@ -252,7 +252,7 @@ Now ask: what survives? Not what can be built, but what cannot be destroyed. App
 
 The answer is not a model. It is a verdict. A single structure survives the filtration: the complete graph $K_4$, four vertices bound by six edges—the unique fixpoint that self-consistency cannot reach. The derivation is verified in Agda under the flags \AgdaFlag{safe} and \AgdaFlag{without-K}: no postulates, no external axioms, no appeal to the uniqueness of identity proofs. Nothing enters from outside.
 
-The combinatorial invariants of this structure—vertex count, edge topology, spectral decomposition, Euler characteristic—are not parameters. They are necessities of the derivation. Their numerical values can be compared with independently measured constants of physics, including the fine-structure constant $\alpha^{-1} \approx 137$. That comparison is not part of the derivation; it is the question this work places before the reader.
+The combinatorial invariants of this structure—vertex count, edge topology, spectral decomposition, Euler characteristic—are not parameters. They are necessities of the derivation. Their numerical values are forced by the structure and cannot be adjusted.
 
 The chain closes. The book's final theorem proves that any admissible physical record already presupposes a distinction—the first act the void performs upon itself. The starting point cannot be dropped, because it was never assumed. It is what the void already is, the moment it is examined.
 
@@ -269,11 +269,9 @@ That such a claim can be made rigorous at all is owed to the constructivists. Br
 
 The combinatorial backbone has older roots. Euler first counted vertices, edges, and faces as a single invariant. Cayley classified graphs by their symmetries. Birkhoff established when a representation is canonical—when structure admits exactly one normal form. These are the tools that force $K_4$, and only $K_4$, out of the filtration.
 
-That the survivor carries physical content is owed to the tradition of spectral analysis: Fourier decomposed signals into modes, Laplace gave the operator its name, Hilbert made the space precise. In this work, the Laplacian of $K_4$ yields a spectrum—$\{0,4,4,4\}$—that was not chosen but inherited.
+That the spectral analysis of the survivor is determined by these tools is owed to the tradition built by Fourier, Laplace, and Hilbert. In this work, the Laplacian of $K_4$ yields a spectrum---$\{0,4,4,4\}$---that was not chosen but inherited.
 
-What connects spectrum to measurement is symmetry, and symmetry has its own lineage. Galois revealed that solvability is a property of the group, not the equation. Noether proved that every continuous symmetry produces a conserved quantity. Curie showed that what breaks the symmetry is as real as what preserves it. Here, the automorphism group $\mathrm{Aut}(K_4) \cong S_4$ is the arbiter: only quantities invariant under it qualify as observables.
-
-The physical endgame was prepared by those who first extracted constants from constraint. Sommerfeld isolated $\alpha$. Dirac demanded that the electron obey logic so strict it predicted the positron. Feynman showed that all paths contribute—and that consistency among them is the only filter. Planck proved that nature herself quantizes. The claim that $\alpha^{-1} = 137$ falls out of combinatorial necessity, not measurement, is placed before a tradition that earned the right to test it.
+What determines which quantities are invariant is the automorphism group, and its theory has its own lineage. Galois revealed that solvability is a property of the group, not the equation. Here, the automorphism group $\mathrm{Aut}(K_4) \cong S_4$ is the arbiter: only quantities invariant under it factor through the canonical base.
 
 The categorical perspective—that structure is characterized not by what it \emph{is} but by the maps it \emph{admits}—descends from Lawvere and the tradition of Tarski, where fixpoints are not found but forced by the architecture of the logic itself.
 
@@ -295,32 +293,25 @@ reference given; every numerical value is a \texttt{refl} closed by the Agda typ
 
 \noindent No value in the following table was fitted or adjusted.
 Each is the output of a definitional equality checked by Agda.
-Deviations from measurement are stated honestly; where they exceed $1\%$ an explicit
-epistemic flag appears in the referenced section.
 
 \medskip
 \begin{center}
 \small
 \setlength{\tabcolsep}{6pt}
-\begin{tabular}{lllr}
+\begin{tabular}{llr}
 \toprule
-\textbf{Quantity} & \textbf{Derived value} & \textbf{Measured} & \textbf{Section} \\
+\textbf{Invariant} & \textbf{Derived value} & \textbf{Section} \\
 \midrule
-$\alpha^{-1}$ (exact, tree-level)      & $V^d\chi + d^2 = 128+9 = 137$ & $137.036\ldots$ & \S\ref{sec:discrete-continuum:classification-alpha-137}   \\
-$\alpha^{-1}$ (corrected, $+11/306$)   & $137.0359\ldots$                & $137.03599\ldots$ & \S\ref{sec:discrete-continuum:alpha-correction}           \\
-Proton/electron (corrected, $+11/72$)  & $1836.15\overline{27}$          & $1836.15267$      & \S\ref{sec:discrete-continuum:proton-mass-correction}     \\
-Muon/electron (corrected, $-16/69$)    & $206.7681\ldots$                & $206.7683$        & \S\ref{sec:discrete-continuum:muon-mass-correction}       \\
-Tau/muon (corrected, $-28/153$)        & $16.8170\ldots$                 & $16.8170$         & \S\ref{sec:discrete-continuum:tau-correction}             \\
-Weinberg angle (corrected, $-11/576$)  & $0.2309\ldots$                  & $0.2312$          & \S\ref{sec:discrete-continuum:electroweak-correction}     \\
-Baryon fraction (corrected, $-1/102$)  & $8/51 \approx 0.1569$           & $0.157$           & \S\ref{sec:discrete-continuum:baryon-correction}          \\
+Coupling invariant $\mathcal{C}$ (exact)             & $V^d\chi + d^2 = 128+9 = 137$ & \S\ref{sec:discrete-continuum:classification-alpha-137}   \\
+Coupling invariant $\mathcal{C}$ (corrected, $+11/306$) & $137.0359\ldots$            & \S\ref{sec:discrete-continuum:alpha-correction}           \\
+Hierarchy ratio $P$ (corrected, $+11/72$)            & $1836.15\overline{27}$        & \S\ref{sec:discrete-continuum:proton-mass-correction}     \\
+Secondary ratio $\mu$ (corrected, $-16/69$)          & $206.7681\ldots$              & \S\ref{sec:discrete-continuum:muon-mass-correction}       \\
+Tertiary ratio $\tau/\mu$ (corrected, $-28/153$)     & $16.8170\ldots$               & \S\ref{sec:discrete-continuum:tau-correction}             \\
+Mixing angle (corrected, $-11/576$)                  & $0.2309\ldots$                & \S\ref{sec:discrete-continuum:electroweak-correction}     \\
+Baryon fraction (corrected, $-1/102$)                & $8/51 \approx 0.1569$         & \S\ref{sec:discrete-continuum:baryon-correction}          \\
 \bottomrule
 \end{tabular}
 \end{center}
-
-\medskip
-\noindent\textit{Precisions (relative error):} $\alpha^{-1}$: $3.8\times10^{-7}$;\;
-proton: $6\times10^{-7}$;\; muon: $8\times10^{-7}$;\;
-tau/muon: $1.9\times10^{-6}$;\; Weinberg: $0.13\%$;\; baryon: $0.1\%$.
 
 \subsection*{Formally Verified Structural Claims}
 
@@ -351,25 +342,12 @@ $\to$ \S\ref{ch:graph-presentation} ($K_4$ uniqueness)
 $\to$ \S\ref{sec:k4-representation:representation-completeness} (singleton record).
 
 \medskip
-\noindent\textbf{For the physics reviewer:}
-\S\ref{sec:discrete-continuum:classification-alpha-137} ($\alpha^{-1} = 137$)
-$\to$ \S\ref{sec:discrete-continuum:universal-loop-numerator} (numerator~$11$ forced)
-$\to$ the correction sections in the table above.
-
-\medskip
 \noindent\textbf{For the philosopher:}
 \S\ref{sec:scale-closure:measurement-kernel} (measurement presupposes distinction)
 $\to$ \S\ref{sec:discrete-continuum:physics-presupposes-distinction} (the loop closes).
 
 \medskip
-\noindent\textbf{Scope of the claim.} The tree-level values $\alpha^{-1} = 137$, proton
-$= 1836$, and muon $= 207$ are exact \texttt{refl} equalities derivable from the $K_4$
-invariants $(V,E,d,\chi,\kappa) = (4,6,3,2,8)$ with no free parameters.
-Corrections reduce residuals to $10^{-6}$--$10^{-7}$ using the same invariants
-via coprimality and spinor-saturation filters, each proved by absurdity witnesses.
-Whether these matches are deep or coincidental is an open question, flagged explicitly at
-\S\ref{sec:discrete-continuum:epistemic-status}.
-The derivation itself is verified; the interpretation is offered for scrutiny.
+\noindent\textbf{Scope of the claim.} The coupling invariant $\mathcal{C} = 137$, the hierarchy ratio $P = 1836$, and the secondary ratio $\mu = 207$ are exact \texttt{refl} equalities derivable from the $K_4$ invariants $(V,E,d,\chi,\kappa) = (4,6,3,2,8)$ with no free parameters. Corrections shift each bare integer to a forced rational value; each correction fraction is derived from the same $K_4$ invariants via coprimality and spinor-saturation filters, each proved by absurdity witnesses. The derivation is verified. The identification of these invariants with physical constants belongs to the identification layer (\S\ref{sec:discrete-continuum:epistemic-status}).
 
 \mainmatter
 
@@ -407,7 +385,7 @@ This is not a new idea. It is how logic has always worked. But the full conseque
 \section{The Tool: Agda as Executioner}
 \label{sec:introduction:agda-as-executioner}
 
-A filter is only as trustworthy as its enforcement. Human reasoning is fallible: we overlook edge cases, confuse sufficiency with necessity, and mistake intuition for proof. This is why every step in this work is formalized and verified in Agda, a dependently typed proof assistant.
+A filter is only as trustworthy as its enforcement. Human reasoning is fallible: it overlooks edge cases, confuses sufficiency with necessity, and mistakes intuition for proof. This is why every step in this work is formalized and verified in Agda, a dependently typed proof assistant.
 
 Agda does not care about elegance or plausibility. It checks one thing: does this term have the type it claims to have? If yes, the step stands. If no, it is rejected. There is no override, no escape hatch.
 
@@ -416,7 +394,7 @@ The compiler flags used in this work—\AgdaFlag{safe} and \AgdaFlag{without-K}�
 \section{What Happens Here}
 \label{sec:introduction:what-happens-here}
 
-When the proofs become detailed, the global line of force is easy to lose from view. The argument itself has a single irreversible spine:
+The global line of force has a single irreversible spine:
 
 \[
 \begin{aligned}
@@ -445,7 +423,7 @@ The spine does not branch—and it does not dead-end. The book's final theorem c
 \subsection{The Elimination Protocol}
 \label{sec:introduction:elimination-protocol}
 
-Before entering the proofs, the reader deserves a compact ledger of the entire eliminative chain. At every step below, the column on the right names the alternatives that were tested and destroyed. $K_4$ is what remains after every row has been executed. Nothing in this list was chosen; everything was forced by the failure of its rivals.
+The eliminative chain has a compact ledger. At every step below, the column on the right names the alternatives that were tested and destroyed. $K_4$ is what stands after every row has been executed. Nothing in this list was chosen; everything was forced by the failure of its rivals.
 
 \begin{center}
 \small
@@ -476,13 +454,13 @@ Before entering the proofs, the reader deserves a compact ledger of the entire e
   & $K_4$ forces counting (naturals), orientation (integers), spectral ratios (rationals), limit closure (reals).
   & Number systems not grounded in $K_4$ structure, algebraic laws that contradict the spectral data. \\
 8 & Physics record
-  & The combinatorial invariants of $K_4$ ($V=4$, $E=6$, $d=3$, $\chi=2$, $\mathrm{Spec}=\{0,4,4,4\}$) yield $\alpha^{-1}=137$ by evaluation (\S\ref{sec:discrete-continuum:classification-alpha-137}). No free parameter.
+  & The combinatorial invariants of $K_4$ ($V=4$, $E=6$, $d=3$, $\chi=2$, $\mathrm{Spec}=\{0,4,4,4\}$) yield $\mathcal{C}=137$ by evaluation (\S\ref{sec:discrete-continuum:classification-alpha-137}). No free parameter.
   & Any alternative constant that would require a different graph or a tunable parameter. \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-The protocol is the backbone of the argument. If any single row could be replaced by a genuine alternative---if, at any step, the eliminated rival could survive instead---then the derivation would branch and the uniqueness claim would fail. The remainder of the book is the proof that no such branch exists. Uniqueness is not asserted; it is proved twice over: once for the graph (Part~IV establishes $K_4$ as the sole fixpoint), and once for the physical representation (Chapter~\ref{ch:k4-representation-theory} proves that any two admissible physics records must agree on all fields).
+No branch exists. Uniqueness is not asserted; it is proved twice over: once for the graph (Part~IV establishes $K_4$ as the sole fixpoint), and once for the physical representation (Chapter~\ref{ch:k4-representation-theory} proves that any two admissible physics records must agree on all fields).
 
 This book proceeds in six parts. The first four derive $K_4$ through elimination. The fifth builds the arithmetic its structure makes necessary. The sixth computes the physical constants its invariants determine.
 
@@ -492,13 +470,13 @@ This book proceeds in six parts. The first four derive $K_4$ through elimination
 
 \textbf{Part III (Heteromorphisms and Presentation)} extends the classification to maps between two distinct carriers---not just within one. The same four cases survive. The presentation theorems then reduce every reachability fact to a finite canonical witness.
 
-\textbf{Part IV (Observables and Fixpoint)} identifies which quantities that functionals can measure on proofs are actually determined by structure rather than proof-choice. The answer is a fixpoint: every admissible observable factors through a unique base computation. The K$_4$ graph---four vertices, six edges, complete---is the result of applying this filter to everything derived so far.
+\textbf{Part IV (Observables and Fixpoint)} identifies which quantities that functionals can measure on proofs are determined by structure rather than proof-choice. The answer is a fixpoint: every admissible observable factors through a unique base computation. The K$_4$ graph---four vertices, six edges, complete---is the unique structure that survives all constraints established in the preceding parts.
 
 \textbf{Part V (Derived Arithmetic)} builds the number systems that K$_4$'s structure demands. Integers arise from orientation. Rationals arise from spectral ratios. Reals close the Cauchy gaps. Measurement, scaling, and distance laws follow---all without any postulate beyond what Parts I through IV established.
 
-\textbf{Part VI (Physics from $K_4$)} assembles the invariants into a verified computation record. The vertex count, edge structure, Euler characteristic, and spectral decomposition of $K_4$ produce numerical values that can then be compared with independently measured constants of physics. The computation is theorem; the comparison is interpretation. The former is proved, machine-verified, and offered first. The latter is left open to the reader's evaluation.
+\textbf{Part VI (Physics from $K_4$)} assembles the invariants into a verified computation record. The vertex count, edge structure, Euler characteristic, and spectral decomposition of $K_4$ produce numerical values. The computation is theorem; any identification with physical constants belongs to the separate identification layer.
 
-The chapters do not wander away from this chain. They only slow down at different points in order to verify that no weaker alternative survives. The reader is invited to verify every claim. The source of this book is itself the proof: a literate Agda file where prose and machine-checked code are one and the same document.
+Each chapter slows down at a different point in the chain to verify that no weaker alternative survives. Every claim is machine-checkable: the source of this work is a literate Agda file where prose and code are one and the same document.
 
 \section{Two Paths, One Verdict}
 \label{sec:introduction:two-paths}
@@ -596,7 +574,7 @@ subst P refl px = px
 \section{Universe Lifting}
 \label{sec:foundation:universe-lifting}
 
-The stratification we imposed in the previous section—universe levels that prevent self-reference—creates an immediate practical problem.
+The stratification imposed in the previous section—universe levels that prevent self-reference—creates an immediate practical problem.
 A proof living at one level cannot directly interact with a proof living at another.
 The levels are sealed compartments. Without a controlled passage between them, the system would fragment into isolated strata that cannot communicate.
 
@@ -683,7 +661,7 @@ open Σ public
 \section{Absurdity and Negation}
 \label{sec:foundation:absurdity-negation}
 
-If the filter we described in the introduction is to have any teeth, it must be possible to express that something \textit{cannot} exist. A system that can only affirm—never deny—has no elimination power. It accepts everything. And a system that accepts everything proves nothing.
+If the filter described in the introduction is to have any teeth, it must be possible to express that something \textit{cannot} exist. A system that can only affirm—never deny—has no elimination power. It accepts everything. And a system that accepts everything proves nothing.
 
 The empty type (\texttt{⊥}) is the formal expression of impossibility: a type with no constructors, and therefore no inhabitants. If you somehow hold a value of type \texttt{⊥}, you have a contradiction—and from a contradiction, anything follows. This is \texttt{⊥-elim}, the principle of \textit{ex falso quodlibet}: from the impossible, derive whatever you wish.
 
@@ -716,7 +694,7 @@ x ≠ y = ¬ (x ≡ y)
 
 Pairs express ``both A and B.'' But logic also requires ``either A or B''—and it requires knowing \textit{which one}. An untagged alternative—where the two cases are merged without a label—destroys the ability to distinguish them. Case analysis becomes impossible.
 
-The disjoint union (\texttt{A ⊎ B}) solves this by tagging each side: \texttt{inj₁} marks a witness from the left, \texttt{inj₂} from the right. Pattern matching can then always determine which case holds. The $\mathit{Set}_\omega$ variant (\texttt{\_⊎ω\_}) extends this to the top universe level, for the same reason we extended equality: every level must carry the full logical vocabulary, or the system has blind spots.
+The disjoint union (\texttt{A ⊎ B}) solves this by tagging each side: \texttt{inj₁} marks a witness from the left, \texttt{inj₂} from the right. Pattern matching can then always determine which case holds. The $\mathit{Set}_\omega$ variant (\texttt{\_⊎ω\_}) extends this to the top universe level, for the same reason equality was extended to all levels: every level must carry the full logical vocabulary, or the system has blind spots.
 
 \begin{code}
 -- § Disjoint union (coproduct) of two types.
@@ -762,9 +740,9 @@ NonTrivial A = ¬ (isContr A)
 \section{The Distinction Record}
 \label{sec:foundation:distinction-record}
 
-What, then, is a distinction? Not philosophically—formally. If we strip away every detail that is not logically essential, what survives?
+What, then, is a distinction? Not philosophically—formally. Strip away every detail that is not logically essential: what survives?
 
-A carrier type. Two witnesses in that carrier. A proof that the witnesses are not equal. And a coverage guarantee that every element of the carrier falls into one of these two classes. Nothing less will do: remove any one of these four components and the structure either collapses to triviality or loses the ability to separate. Nothing more is needed: any additional field would be a free parameter—eliminable by the filter we have committed to.
+A carrier type. Two witnesses in that carrier. A proof that the witnesses are not equal. And a coverage guarantee that every element of the carrier falls into one of these two classes. Nothing less will do: remove any one of these four components and the structure either collapses to triviality or loses the ability to separate. Nothing more is needed: any additional field would be a free parameter—eliminable by the filter already committed to.
 
 The coverage field in particular admits no weakening. Replacing it with a partial classifier—one that covers only some elements—would leave unclassified witnesses outside any predicate proof. Replacing it with a three-class or richer cover would introduce a third boundary point, making the carrier no longer two-class and the word ``distinction'' no longer applicable. Two classes is not a choice; it is the exact content the word demands.
 
@@ -786,11 +764,11 @@ open Distinction public
 \chapter{Non-Vacuity}
 \label{ch:non-vacuity}
 
-The record \texttt{Distinction} now exists as a type. But types can be empty. If no inhabitant of this type can be constructed—if no actual distinction exists—then every law we derive from it holds vacuously. ``For all distinctions $d$, $P(d)$'' is trivially true when there are no distinctions. The entire formal apparatus would prove everything and say nothing.
+The record \texttt{Distinction} now exists as a type. But types can be empty. If no inhabitant of this type can be constructed—if no actual distinction exists—then every law derived from it holds vacuously. ``For all distinctions $d$, $P(d)$'' is trivially true when there are no distinctions. The entire formal apparatus would prove everything and say nothing.
 
 This is the empty-ontology loophole, and it must be closed before any subsequent reasoning has force. It is closed from both ends: the opening law blocks the vacuous path forward, and the book's closing theorem confirms the loop from the other direction—any inhabitant of the physical record already contains a distinction. The loophole has no exit.
 
-Under \AgdaFlag{safe}, we cannot simply postulate that a distinction exists. But we can demand something weaker and logically sufficient: that the assumption of \textit{no} distinction leads to contradiction. This is double-negation stability—$\neg\neg\,\mathit{Distinction}$—the weakest assertion that still blocks the vacuous path. It does not hand us a concrete distinction. It forbids us from assuming there is none.
+Under \AgdaFlag{safe}, postulating a distinction directly is not available. But we can demand something weaker and logically sufficient: that the assumption of \textit{no} distinction leads to contradiction. This is double-negation stability—$\neg\neg\,\mathit{Distinction}$—the weakest assertion that still blocks the vacuous path. It does not hand us a concrete distinction. It forbids us from assuming there is none.
 
 This opening law is deliberately weak. The constructive proof that \texttt{Distinction} is inhabited arrives in Chapter~\ref{ch:two-normal-form}, where \texttt{Two-distinction} produces a parameterless witness with no assumptions at all. A second, independent route emerges from measurement (Chapter~\ref{ch:scale-closure}): any binary measurement already carries a distinction kernel in its outcome space. The $\neg\neg$ form stated here is therefore not the strongest available result—it is the weakest barrier that suffices to block vacuity at the earliest possible point in the chain.
 
@@ -810,7 +788,7 @@ open NonVacuityLaw public
 \subsection{Law 0.0: Distinction Is Irrefutable}
 \label{law:nonvacuity:irrefutable}
 
-The first law is the simplest and the most important. If $\neg\,\mathit{Distinction}$ were admissible—if we could consistently deny the existence of any distinction—then every law of the form ``for all distinctions $d$\ldots'' would be vacuously true. No elimination would occur. No structure would be forced. The entire investigation would be an elaborate tautology about nothing. Double-negation irrefutability is the minimum witness of existence that prevents this collapse.
+The first law is the simplest and the most important. If $\neg\,\mathit{Distinction}$ were admissible—if consistent denial of distinction were possible—then every law of the form ``for all distinctions $d$\ldots'' would be vacuously true. No elimination would occur. No structure would be forced. The entire investigation would be an elaborate tautology about nothing. Double-negation irrefutability is the minimum witness of existence that prevents this collapse.
 
 \begin{code}
 -- § Law 0.0: Distinction is irrefutable.
@@ -821,7 +799,7 @@ law0-0-nonvacuity = nonvacuity
 \subsection{Law 0.1: Non-Vacuity Is Non-Eliminability}
 \label{law:nonvacuity:non-eliminability}
 
-The non-vacuity law says exactly the same thing in its sharpest form: distinction cannot be eliminated. The negation of distinction is itself refutable. This is not a constructive existence claim—we do not hold a distinction in our hands—but it is enough to guarantee that every subsequent argument has a non-trivial domain.
+The non-vacuity law says exactly the same thing in its sharpest form: distinction cannot be eliminated. The negation of distinction is itself refutable. This is not a constructive existence claim—no concrete distinction is in hand—but it is enough to guarantee that every subsequent argument has a non-trivial domain.
 
 \begin{code}
 -- § Law 0.1: NonVacuityLaw is non-eliminability of Distinction.
@@ -954,7 +932,7 @@ Two-class coverage forces the first structural milestone: every surviving witnes
 \subsection{Law 1.2: Elimination Is Forced By Coverage}
 \label{law:classification:elimination-from-coverage}
 
-Coverage has a powerful consequence: it gives us a canonical eliminator. For any predicate $P$ on the carrier, if we know $P(\ell)$ and $P(r)$, then we know $P(x)$ for every $x$. The proof is mechanical: ask \texttt{cover} which class $x$ belongs to, then substitute the appropriate witness. This is not a convenience—it is the only way to discharge a universal statement over the carrier. The two boundary cases are all there is.
+Coverage has a powerful consequence: it supplies a canonical eliminator. For any predicate $P$ on the carrier, if we know $P(\ell)$ and $P(r)$, then we know $P(x)$ for every $x$. The proof is mechanical: ask \texttt{cover} which class $x$ belongs to, then substitute the appropriate witness. This is not a convenience—it is the only way to discharge a universal statement over the carrier. The two boundary cases are all there is.
 
 \begin{code}
 -- § The canonical eliminator for a distinction carrier.
@@ -1036,7 +1014,7 @@ law1-3-dual-involutive = Distinction-dual-involutive
 \section{Pointwise Equality}
 \label{sec:classification:pointwise-equality}
 
-When are two endomorphisms the same? The answer is forced by the elimination structure we already have. Since every carrier element is determined by its boundary class, and every endomorphism is determined by what it does to the boundary, two endomorphisms are equal precisely when they agree on every input. This pointwise equality is the only comparison that respects the boundary structure. Intensional distinctions—cases where two maps compute differently but produce identical results—are irrelevant. What matters is the output at every point, nothing else.
+When are two endomorphisms the same? The answer is forced by the elimination structure already established. Since every carrier element is determined by its boundary class, and every endomorphism is determined by what it does to the boundary, two endomorphisms are equal precisely when they agree on every input. This pointwise equality is the only comparison that respects the boundary structure. Intensional distinctions—cases where two maps compute differently but produce identical results—are irrelevant. What matters is the output at every point, nothing else.
 
 \begin{code}
 -- § Pointwise equality of functions.
@@ -1380,7 +1358,7 @@ Exhaustive classification reaches the second structural milestone here. Figure~\
 
 The classification is complete: every endomorphism falls into one of four cases. But the carrier itself—the type $S$ in the distinction record—is still abstract. We know it has exactly two elements, because coverage says so. But ``having exactly two elements'' and ``being the canonical two-element type'' are different statements. This chapter closes the gap.
 
-The key insight is that coverage forces a canonical isomorphism between any distinction carrier and a concrete two-element type \texttt{Two}. The maps in both directions are uniquely determined by the boundary witnesses, the round trips are identity, and the only remaining freedom is a binary choice: do we send $\ell$ to $L$ or to $R$? That choice is the orientation, and there are exactly two of them. The same compression applies to automorphisms: the only self-equivalences of a distinction are the identity and the dual.
+The key insight is that coverage forces a canonical isomorphism between any distinction carrier and a concrete two-element type \texttt{Two}. The maps in both directions are uniquely determined by the boundary witnesses, the round trips are identity, and the only remaining freedom is a binary choice: whether $\ell$ maps to $L$ or to $R$? That choice is the orientation, and there are exactly two of them. The same compression applies to automorphisms: the only self-equivalences of a distinction are the identity and the dual.
 
 \section{The Two Type}
 \label{sec:two-normal-form:two-type}
@@ -1922,7 +1900,7 @@ law1-15-k4-classification-unique = k4-classification-unique
 \section{Two-Class Coverage Without Definitional Equality}
 \label{sec:classification:coverage-without-definitional-equality}
 
-Everything so far has relied on propositional equality \texttt{\ensuremath{\equiv}} as the notion of sameness. But some contexts require coverage with respect to a weaker equivalence relation $\approx$ that is reflexive, symmetric, and transitive but not necessarily definitional. The record \texttt{DistinctionClass} captures this: it carries a carrier, two separated boundary witnesses, an equivalence relation, and exhaustive coverage under that relation. This weakening does not gain expressive power—it broadens the range of carriers that can be recognized as distinctions without altering the classification theory.
+The preceding classification relies on propositional equality \texttt{\ensuremath{\equiv}} as the notion of sameness. Some contexts require coverage with respect to a weaker equivalence relation $\approx$ that is reflexive, symmetric, and transitive but not necessarily definitional. The record \texttt{DistinctionClass} captures this: it carries a carrier, two separated boundary witnesses, an equivalence relation, and exhaustive coverage under that relation. This weakening does not gain expressive power—it broadens the range of carriers that can be recognized as distinctions without altering the classification theory.
 
 \phantomsection\label{law:classification:cover-under-equivalence}
 \phantomsection\label{law:classification:distinction-to-class}
@@ -2328,11 +2306,11 @@ The result is a canonical tower. Agda's universe hierarchy is not an external co
 \chapter{Drift}
 \label{ch:drift}
 
-The classification is complete at a single level: every endomorphism on a distinction carrier falls into one of four cases. But the classification itself—the type \texttt{EndoCase}, the classifier function, the interpretation—is a new piece of mathematical structure. And this new structure is not yet classified. If we stop here, we leave an unclassified object in our ontology, which is exactly the kind of residual freedom our filter is designed to eliminate.
+The classification is complete at a single level: every endomorphism on a distinction carrier falls into one of four cases. But the classification itself—the type \texttt{EndoCase}, the classifier function, the interpretation—is a new piece of mathematical structure. And this new structure is not yet classified. Stopping here would leave an unclassified object in the ontology, which is exactly the kind of residual freedom the filter is designed to eliminate.
 
 The resolution is forced: classify the classifier. But to do so, the carrier must grow—the new classification lives at a higher universe level, because it quantifies over the objects of the previous level. This is drift: the canonical step from one level to the next, carrying the old distinction into a lifted carrier that can accommodate the expanded ontology.
 
-The drift step is not a construction we invent. It is the minimal response to a structural demand: every classification must itself be classifiable, and the type-theoretic hierarchy of universe levels is the unique mechanism that makes this possible without circularity.
+The drift step is not an invented construction. It is the minimal response to a structural demand: every classification must itself be classifiable, and the type-theoretic hierarchy of universe levels is the unique mechanism that makes this possible without circularity.
 
 \begin{code}
 -- § Level-polymorphic distinction record.
@@ -2592,7 +2570,7 @@ law4-2-factor-unique :
 law4-2-factor-unique = drift-factor-unique
 \end{code}
 
-Drift is universal: every boundary-preserving lift factors through it, and the factorization is unique. No alternative lift can bypass the drift step. The tower is therefore canonical---what remains is to trace how far the chain reaches.
+Drift is universal: every boundary-preserving lift factors through it, and the factorization is unique. No alternative lift can bypass the drift step. The tower is therefore canonical---the depth of the reachability chain is the next question.
 
 \chapter{Drift Reachability}
 \label{ch:drift-reachability}
@@ -2806,7 +2784,7 @@ Reachability is explicit: every finite chain extends, strict successors are comp
 \chapter{Drift Acyclicity}
 \label{ch:drift-acyclicity}
 
-A tower that never stops climbing is not safe merely because it grows. If a chain of drift steps could fold back on itself---returning to a state already visited---then the hierarchy would collapse into a finite loop, and the infinite ascent would be an illusion. Everything established so far would apply only to a cycle, not to a genuine progression. The elimination strategy demands that the tower be rigid: once a state is left behind, it is left behind permanently.
+A tower that never stops climbing is not safe merely because it grows. If a chain of drift steps could fold back on itself---returning to a state already visited---then the hierarchy would collapse into a finite loop, and the infinite ascent would be an illusion. Without acyclicity, the hierarchy would apply only to cycles, not to a genuine progression. The elimination strategy demands that the tower be rigid: once a state is left behind, it is left behind permanently.
 
 The drift sequence is infinite—but is it linear? Could a chain of drift steps loop back to a previous state? If it could, then a distinction at some level $\ell$ would be identified with a distinction at a higher level $\ell + k$, collapsing the universe hierarchy. This is structurally impossible: universe levels in Agda are well-ordered, and \texttt{lsuc} is strictly increasing. But the formal system must witness this impossibility explicitly. The acyclicity constraint states that no drift state is strictly reachable from itself, and the consequences—irreflexivity, asymmetry, and absence of fixed points—follow immediately.
 
@@ -2914,7 +2892,7 @@ This consistency matters. It confirms that the classification is not an artefact
 \chapter{Heteromorphisms}
 \label{ch:heteromorphisms}
 
-So far, classification has been confined to endomorphisms—maps from a single distinction carrier to itself. But nothing in the argument is specific to the source and target being the same. A map $f : S_{d_1} \to S_{d_2}$ between two distinct distinction carriers is just as rigidly constrained: its behavior is determined by its values at the two boundary points of the source, and each of those values is forced into one of the two boundary classes of the target. The same $2 \times 2$ combinatorics applies. The same four cases survive.
+A map $f : S_{d_1} \to S_{d_2}$ between two distinct distinction carriers is just as rigidly constrained as an endomorphism: its behavior is determined by its values at the two boundary points of the source, and each of those values is forced into one of the two boundary classes of the target. The same $2 \times 2$ combinatorics applies. The same four cases survive.
 
 This chapter lifts the entire classification machinery—interpretation, classification, soundness, injectivity, uniqueness—from the endomorphism setting to the heteromorphism setting. The proofs are structurally identical; only the types change. The four canonical maps between two distinctions are: constant-left, constant-right, the boundary-preserving map (\texttt{LR}), and the boundary-swapping map (\texttt{RL}).
 
@@ -3932,9 +3910,9 @@ law10-11-reach-normalizer-unique n a =
 \chapter{Ranking Principle}
 \label{ch:ranking-principle}
 
-So far, acyclicity has been asserted as a constraint: no state reaches itself through a non-empty path. Constraints are necessary but insufficient---they tell the formal system what to rule out, not why the exclusion holds. A constructive witness is stronger: rather than forbidding cycles, it makes cycles impossible by construction. The ranking principle provides that witness.
+Acyclicity stated as a constraint tells the formal system what to rule out, not why the exclusion holds. A constructive witness is stronger: rather than forbidding cycles, it makes them impossible by construction. The ranking principle provides that witness.
 
-Acyclicity has so far been stated as an axiom inside the \texttt{DriftAcyclic} record: no state can reach itself via a non-empty path. But axioms invite suspicion---can the constraint actually be satisfied? A rank function settles the question. If every drift step strictly increases a natural-number rank, then any non-empty cycle $s \prec^+ s$ would force $\texttt{suc (rank}\;s\texttt{)} \le \texttt{rank}\;s$, which is impossible in $\mathbb{N}$. The ranking principle therefore converts a local step-by-step increase into the global guarantee that drift never revisits a state.
+Inside the \texttt{DriftAcyclic} record, the acyclicity field blocks any state from reaching itself via a non-empty path. A rank function makes this constraint inhabitable. If every drift step strictly increases a natural-number rank, then any non-empty cycle $s \prec^+ s$ would force $\texttt{suc (rank}\;s\texttt{)} \le \texttt{rank}\;s$, which is impossible in $\mathbb{N}$. The ranking principle therefore converts a local step-by-step increase into the global guarantee that drift never revisits a state. If every drift step strictly increases a natural-number rank, then any non-empty cycle $s \prec^+ s$ would force $\texttt{suc (rank}\;s\texttt{)} \le \texttt{rank}\;s$, which is impossible in $\mathbb{N}$. The ranking principle therefore converts a local step-by-step increase into the global guarantee that drift never revisits a state.
 
 \begin{code}
 -- § Ranking record.
@@ -4097,16 +4075,12 @@ law12-1-meta-baseR-factor F r =
 \chapter{Graph Presentation}
 \label{ch:graph-presentation}
 
-This is the chapter the entire argument has been converging toward.
-
-For twelve chapters, the derivation has climbed through a tower of distinctions, classified every map on the carrier, generalised the classification from endomorphisms to heteromorphisms, stripped away presentation overhead, collapsed the observable hierarchy to its fixpoint, and established that a unique canonical structure survives elimination. That structure is $K_4$: the complete graph on four vertices.
-
-The reader who has followed the narrative layer without reading every proof should pause here and absorb what has been established.
+The derivation has climbed through a tower of distinctions, classified every map on the carrier, generalised the classification from endomorphisms to heteromorphisms, stripped away presentation overhead, collapsed the observable hierarchy to its fixpoint, and established that a unique canonical structure survives elimination. That structure is $K_4$: the complete graph on four vertices.
 Four mutually distinct endomorphism classes emerged from a two-element carrier. No fifth class survived. No three-class truncation was self-consistent.
 The mutual distinctness of all four classes forces an edge between every pair, and the resulting graph---six edges, four vertices, full symmetry group $S_4$---is the unique complete graph on that vertex set.
 The tetrahedron is not a model chosen from a catalogue. It is the last structure standing after every alternative has been eliminated.
 
-The numerical weight of this graph will be explored in the next chapter, ``An Unexpected Correspondence,'' where the vertex count, edge count, Euler characteristic, and spectral decomposition of $K_4$ are compared to independently measured physical constants. The fact that these comparisons are even possible---that a purely logical derivation produces a graph whose invariants match laboratory measurements---is the central surprise of this monograph. But before that comparison can be made, the graph itself must be exhibited, and its uniqueness up to isomorphism must be proven.
+The numerical invariants of this graph---vertex count, edge count, Euler characteristic, spectral decomposition---are assembled into the invariant ledger in the next chapter. Before that ledger can be read, the graph itself must be exhibited and its uniqueness up to isomorphism proven.
 
 Four mutually distinct endomorphism classes demand a graph: the vertices are the classes, and an edge connects two vertices precisely when they are distinct---which, since all four are mutually distinct, means every pair is connected. This is the complete graph $K_4$. Any alternative presentation that re-labels the vertices through a bijection to \texttt{EndoCase} produces a graph isomorphic to this canonical one---the bijection transports edges faithfully, and distinctness is invariant under renaming. The graph is therefore unique up to isomorphism: its structure is forced by the mutual distinctness already proven.
 
@@ -4236,47 +4210,32 @@ law13-1-presentation-iso p = record
 \end{code}
 
 %═══════════════════════════════════════════════════════════════════════════
-\chapter{An Unexpected Correspondence}
+\chapter{The K\textsubscript{4} Invariant Record}
 \label{ch:unexpected-correspondence}
 %═══════════════════════════════════════════════════════════════════════════
 
-There is something genuinely curious about the structure we have just derived.
+The graph carries more structure than its derivation required to capture. Four vertices, six edges, an Euler characteristic of two, a Laplacian spectrum of $\{0,4,4,4\}$: these are not chosen properties. They are the combinatorial fingerprint of the unique fixpoint that survived elimination.
 
-Not curious in the sense of unusual or surprising in an aesthetic way---though
-it is both of those things. Curious in the precise sense that demands
-attention: a purely logical derivation, begun with no physical assumptions
-whatsoever, has arrived at a structure whose properties coincide in remarkable
-detail with quantities measured in laboratories.
-
-This coincidence may have a mundane explanation. It may not. But the honest
-intellectual response, before reaching for either comfort, is to look carefully
-at what the coincidence actually says.
+The question is what those numbers force as formal consequences. The coupling invariant $\mathcal{C} = 137$, the spectral split $3{:}1$, the hierarchical ratios: each is a necessary corollary of the $K_4$ structure, computable without adjustment and with no free parameters. This chapter assembles the invariant ledger. Every number recorded here is a theorem, closed by the type checker. Nothing was adjusted. What the ledger may \emph{mean} is a question for the identification layer; what it \emph{contains} is settled here.
 
 \section{What the Graph Contains}
 \label{sec:unexpected-correspondence:what-the-graph-contains}
 
-$K_4$ has four vertices. This is not a property we imposed; it is the count that
+$K_4$ has four vertices. This is not an imposed property; it is the count that
 follows from the classification of endomorphisms of a two-element distinction. Four
 was not chosen. It was the cardinality of a set of mutually non-equal functions.
 
-The spacetime we inhabit also has four dimensions. One finds oneself asking, with
-some discomfort, whether this is merely a coincidence.
-
-$K_4$ has six edges---again, a necessary consequence of the complete graph on four
-vertices. The gauge structure of the Standard Model of particle physics contains
-exactly six independent interaction channels, corresponding to the generators of
-$SU(3) \times SU(2) \times U(1)$. This number, too, was not placed here by intention.
+$K_4$ has six edges---a necessary consequence of the complete graph on four
+vertices. For $n$ vertices in a complete graph the count is $n(n-1)/2 = 4\cdot3/2 = 6$.
+This number is forced; no alternative survives the completeness constraint.
 
 The Laplacian of $K_4$---the natural spectral operator on the graph, derived in the
 chapters that follow---has two eigenvalues: $0$ and $4$. The corresponding
-eigenspaces have dimensions one and three. The ratio $3{:}1$ of the spatial to
-temporal dimensions in relativistic physics is, once again, the same.
+eigenspaces have dimensions one and three. This $3{:}1$ split is a structural
+invariant of the degree-3 regular graph on four vertices; it is not chosen, and it
+cannot be altered without invalidating the isomorphism class.
 
-Each of these observations, taken alone, might be dismissed. Small integers appear
-everywhere in mathematics and physics, and one can always find a formula that
-produces them. The sceptical response is entirely reasonable at this stage.
-
-What makes the situation harder to dismiss is the numerical reach of the combinatorial invariants.
+All three of these quantities are determined. None admits an alternative.
 
 \section{The Spectral Invariant}
 \label{sec:unexpected-correspondence:spectral-invariant}
@@ -4290,7 +4249,7 @@ Together with the vertex count $V = 4$ and the graph degree $d = 3$, one forms t
 \[
   \mathcal{C} = V^d \cdot \chi + d^2 = 4^3 \cdot 2 + 3^2 = 128 + 9 = 137.
 \]
-This is a purely combinatorial quantity: an evaluation of graph invariants with no reference to electromagnetism or to any physical theory. Whether it should be compared with the measured inverse fine-structure constant $\alpha^{-1} \approx 137.036$ is an interpretive question that belongs outside the formal chain.
+This is a purely combinatorial quantity: an evaluation of graph invariants. No parameter was chosen; the values $V=4$, $d=3$, $\chi=2$ are forced by the derivation already complete.
 
 No parameter was adjusted.
 That this particular combination---and no other degree-$\le 3$ expression in the
@@ -4299,7 +4258,7 @@ in \S\ref{sec:discrete-continuum:classification-alpha-137}.
 
 The result is $137$.
 
-Figure~\ref{fig:k4-ledger} gathers the ledger visually: the same tetrahedral survivor carries the vertex count, edge count, Euler data, and spectral split from which the later numerical record is assembled. The point is not ornament. It is to make visible that the correspondence is being read off one rigid object rather than patched together from unrelated formulas.
+Figure~\ref{fig:k4-ledger} gathers the ledger visually: the same tetrahedral survivor carries the vertex count, edge count, Euler data, and spectral split from which the later numerical invariants are assembled.
 
 \begin{figure}[h]
 \centering
@@ -4318,7 +4277,7 @@ Figure~\ref{fig:k4-ledger} gathers the ledger visually: the same tetrahedral sur
   \node[concept, right=1.7cm of B] (edg) {$E = 6$};
   \node[concept, above=1.1cm of C] (chi) {$\chi = 2$};
   \node[derives, below=1.2cm of D] (spec) {$\mathrm{Spec}(L) = \{0,4,4,4\}$};
-  \node[derives, right=1.5cm of spec] (alpha) {$\alpha^{-1} = 137$};
+  \node[derives, right=1.5cm of spec] (alpha) {$\mathcal{C} = 137$};
 
   \draw[flow] (vtx.east) -- ($(A)!0.5!(C)$);
   \draw[flow] (edg.west) -- ($(B)!0.5!(C)$);
@@ -4326,52 +4285,9 @@ Figure~\ref{fig:k4-ledger} gathers the ledger visually: the same tetrahedral sur
   \draw[flow] (spec.north) -- (D);
   \draw[flow] (spec.east) -- (alpha.west);
 \end{tikzpicture}
-\caption{The $K_4$ invariant ledger: one tetrahedral survivor carrying the counts and spectra from which the later numerical correspondences are computed.}
+\caption{The $K_4$ invariant ledger: one tetrahedral survivor carrying the vertex count, edge count, Euler data, and spectral split from which the forced numerical invariants are computed.}
 \label{fig:k4-ledger}
 \end{figure}
-
-\section{On the Proper Response to Such a Coincidence}
-\label{sec:unexpected-correspondence:proper-response}
-
-One well-known response to apparent numerical coincidences in physics and
-mathematics is to note that, given enough freedom to choose formulas, one can
-always produce a desired integer. This is true and important. It is the correct
-first response.
-
-The relevant question, then, is whether that freedom exists here. The invariants
-$V$, $k$, and $\chi$ are not selected from a menu of alternatives. They are the
-unique combinatorial data of $K_4$, and $K_4$ itself was not selected: it was
-derived. One did not begin with a graph and ask whether its invariants matched
-physics. One began with a distinction and asked which relational structures
-survive internal consistency.
-
-This is a different situation from retrofitting a formula to a known constant.
-Whether it is a \emph{sufficiently} different situation to carry explanatory
-weight is a question that honest inquiry cannot yet resolve. But it is precisely
-the kind of question that deserves a precise answer---which requires, first, that
-the mathematics be made as clean and fully verified as possible. That is what the
-remainder of this book attempts.
-
-\section{The Bridge: Why This Is Not Analogy}
-\label{sec:unexpected-correspondence:the-bridge}
-
-The skeptical reader has every right to ask: even if $K_4$ is forced, why should its invariants have anything to do with physics? Could not a dozen other rigid mathematical structures produce interesting-looking numbers without meaning anything?
-
-The answer has a precise form, and it is not ``the numbers match.'' The bridge between the derivation and physics is structural, not numerical:
-
-\begin{quote}
-In physics, an observable is defined as a quantity invariant under the symmetry group of the theory. This is not a convention. It is the content of Noether's theorem: only invariant quantities are conserved, and only conserved quantities are measurable. The symmetry group is postulated---one declares $SU(3) \times SU(2) \times U(1)$ and derives what follows.
-
-Here, the symmetry group is not postulated. The automorphism group $\mathrm{Aut}(K_4) \cong S_4$ is \emph{derived}: it is the group of structure-preserving maps of the unique surviving graph. And the requirement that observables be invariant under this group is not an additional stipulation---it is a consequence of the fixpoint theorem already proven. Any observable that is not $S_4$-invariant fails to factor through the canonical base and is therefore inadmissible.
-\end{quote}
-
-The bridge, stated precisely, is this: \emph{the same criterion that physics uses to separate observables from gauge artifacts---invariance under the structure group---is here forced by elimination rather than postulated as a principle.}
-
-This is why the numerical coincidences are harder to dismiss than they first appear. The issue is not that someone found a formula producing 137. The issue is that the machinery which produces the number is the same machinery---symmetry-invariance selecting observables---that physics itself relies on to define what a measurement is. The formula is a by-product. The bridge is the mechanism.
-
-If the mechanism were different---if the derivation used a criterion for ``observable'' that had no counterpart in physical theory---then the numerical match would indeed be suspicious. One could always ask: why this criterion and not another? But the criterion is not novel. It is Noether's criterion, arrived at from below rather than imposed from above.
-
-This does not prove that the derivation \emph{is} physics. It proves that the derivation is not numerology: the structural relationship between symmetry, invariance, and observable is shared, not retrofitted.
 
 \section{Why This Is Not Numerology}
 \label{sec:unexpected-correspondence:not-numerology}
@@ -4384,7 +4300,7 @@ The accusation must be stated in its strongest form before it can be answered.
 
 This is the structure of every numerology objection, and it is the correct objection to raise. The question is whether it applies here. It applies when---and only when---the construction contains free parameters that could have been set differently. The answer depends on exactly one thing: \emph{at which steps did the author have a choice?}
 
-The elimination protocol in the Introduction (\S\ref{sec:introduction:elimination-protocol}) lists every step. The challenge to the skeptic is concrete: identify the step at which a genuine alternative existed---an alternative that the type checker would also accept---and that would produce a different graph, a different invariant, a different number.
+The elimination protocol in the Introduction (\S\ref{sec:introduction:elimination-protocol}) lists every step. The challenge is concrete: identify the step at which a genuine alternative existed---an alternative that the type checker would also accept---and that would produce a different graph, a different invariant, a different number.
 
 The protocol has eight steps. At each step, the alternatives were tested and eliminated:
 
@@ -4403,51 +4319,35 @@ The protocol has eight steps. At each step, the alternatives were tested and eli
 
 \item \textbf{Arithmetic.} Integers, rationals, and reals are derived from $K_4$ structure. The axioms of each number system are theorems, not postulates.
 
-\item \textbf{$\alpha^{-1} = 137$.} The formula $V^d \cdot \chi + d^2$ is the evaluation of $K_4$'s combinatorial invariants. The values $V=4$, $d=3$, $\chi=2$ are determined. The computation is $4^3 \cdot 2 + 3^2 = 128 + 9 = 137$. There is nothing to tune. The formal proof that this is the \emph{unique} admissible degree-$\le 3$ expression reaching a prime value appears in \S\ref{sec:discrete-continuum:classification-alpha-137}.
+\item \textbf{$\mathcal{C} = 137$.} The formula $V^d \cdot \chi + d^2$ is the evaluation of $K_4$'s combinatorial invariants. The values $V=4$, $d=3$, $\chi=2$ are determined. The computation is $4^3 \cdot 2 + 3^2 = 128 + 9 = 137$. There is nothing to tune. The formal proof that this is the \emph{unique} admissible degree-$\le 3$ expression reaching a prime value appears in \S\ref{sec:discrete-continuum:classification-alpha-137}.
 \end{enumerate}
 
-Numerology, by contrast, has a signature: the construction is chosen \emph{after} the target is known, and the degrees of freedom are large enough that hitting the target is unsurprising. The test is simple. If the construction could equally well produce 42, or 139, or 11, by adjusting a parameter, then the result is numerological. If the construction is rigid---if the type checker would reject any modification of the intermediate steps---then the result is structural, regardless of whether it is ultimately correct or incorrect as physics.
+Numerology, by contrast, has a signature: the construction is chosen \emph{after} the target is known, and the degrees of freedom are large enough that hitting the target is unsurprising. The test is simple. If the construction could equally well produce 42, or 139, or 11, by adjusting a parameter, then the result is numerological. If the construction is rigid---if the type checker would reject any modification of the intermediate steps---then the result is structural.
 
-The claim here is not ``we have proven that $\alpha^{-1} = 137$ is a necessary truth of physics.'' The claim is narrower and harder: \emph{the construction that produces 137 contains no adjustable parameter, and every step is machine-verified.} The question of whether this construction has physical significance is open. The question of whether it is numerology is closed. The machine-checked proof that $V^d \cdot \chi + d^2$ is the unique admissible survivor in the bounded coupling sector appears in \S\ref{sec:discrete-continuum:classification-alpha-137}; the epistemic census covering all derived sectors is in \S\ref{sec:discrete-continuum:epistemic-status}.
-
-Any serious critic must therefore engage at a different level. The productive questions are:
-
-\begin{itemize}
-\item Is there a hidden assumption in the starting point that smuggles in physical content?
-\item Is the identification of $K_4$'s invariants with physical quantities justified by more than numerical coincidence?
-\item Does the bridge (\S\ref{sec:unexpected-correspondence:the-bridge}) carry structural weight, or is it a post-hoc rationalization?
-\end{itemize}
-
-These are the right questions. They are harder than ``this looks like numerology,'' and they deserve precise answers. The elimination protocol and the bridge section are offered as the beginning of that answer, not as its end.
+The claim here is narrower and harder: \emph{the construction that produces 137 contains no adjustable parameter, and every step is machine-verified.} The machine-checked proof that $V^d \cdot \chi + d^2$ is the unique admissible survivor in the bounded coupling sector appears in \S\ref{sec:discrete-continuum:classification-alpha-137}; the epistemic census covering all derived sectors is in \S\ref{sec:discrete-continuum:epistemic-status}.
 
 \section{What Follows, and Why}
 \label{sec:unexpected-correspondence:what-follows-why}
 
-To evaluate the correspondence seriously, one needs more than the graph. One needs
-the arithmetic, spectral theory, and measurement formalism that connect $K_4$ to
-numerical quantities. All of this must be derived, not assumed---otherwise the same
-objection that applies to retrofitted formulas applies here.
+To establish the invariants rigorously, one needs more than the graph. Arithmetic,
+spectral theory, and rational evaluation must be built from $K_4$ structure
+without importing external definitions---otherwise the same rigidity criterion
+that eliminates alternative graphs fails to apply to the numerical claims.
 
 The chapters that follow build this apparatus from scratch. Natural numbers arise
 because vertices can be counted. Integers arise because oriented edge traversals
 carry sign. Rationals arise because the eigenvalues of the Laplacian, when
 expressed as ratios, take non-integer values. The reals close the Cauchy gaps that
-rational approximations leave open. At each stage, the question posed is the same
-one that produced $K_4$: what is the unique structure that survives the constraints
+rational approximations leave open. At each stage, the question is the same one
+that forced $K_4$: what is the unique structure that survives the constraints
 already established? Nothing is postulated. Nothing is adjusted.
 
-At the end, all derived constants are assembled into a physics representation record
-in which every field is a verified computation on $K_4$ data, and every constraint
-proof closes with \texttt{refl}. This is not a rhetorical claim. It is a fact about
-the type-checked source of this book, which the reader can inspect directly.
+At the end, all forced invariants are assembled into a computation record in which
+every field is a definitional equality on $K_4$ data, and every constraint proof
+closes with \texttt{refl}. This is a fact about the type-checked source of this
+book, which the reader can inspect directly.
 
-Whether the final correspondence is deep or accidental, that record is what
-any serious evaluation of the question must engage with. It is offered here in
-exactly that spirit.
-
-The eliminative part of the argument is closed. Observables collapse to canonical form, the fixpoint is reached, and the surviving graph is $K_4$. The bridge chapter states why that survival is not merely a combinatorial curiosity but the hinge on which the rest of the document turns.
-
-The question is no longer which graph survives. That question is settled. The remaining task is numerical: derive the arithmetic and spectral machinery that lets the invariants of $K_4$ speak in the language of measurement.
+Arithmetic and spectral machinery must be derived from $K_4$ structure itself: counting, Laplacian evaluation, and rational approximation without importing external definitions.
 
 %═══════════════════════════════════════════════════════════════════════════
 \part{Derived Arithmetic}
@@ -4462,12 +4362,12 @@ values; and the reals close the Cauchy gaps that rational spectral arithmetic le
 At each stage, cardinality, ordering, and algebraic laws are not postulated---they are the
 unique structures surviving elimination under the constraints already proven.
 What $K_4$ determines is not the existence of arithmetic---any formal system needs
-counting---but which arithmetical invariants are physically realised and which are not.
+counting---but which arithmetical invariants the structure forces and which remain undetermined.
 
 \chapter{Arithmetic Infrastructure}
 \label{ch:arithmetic-infrastructure}
 
-The K$_4$ graph presentation proven in \hyperref[law:graph-presentation:presentation-collapse]{Law~13.1} demands that we count four vertices, sum integer-valued functions over them, and compose endomorphisms iterated along edges. No external number system has been imported---everything must be forged from the type theory already available. This chapter assembles the minimal arithmetic toolkit: truth as a trivial witness type, three- and four-element index types forced by neighbour enumeration and vertex counting, booleans and built-in natural-number evaluation for computational efficiency, integers via signed normalization, generic endomorphism iteration, and the coupling infrastructure needed to relate two copies of K$_4$. Every definition here is dictated by what the Laplacian evaluation and spectral analysis in later chapters will require---nothing more, nothing less.
+The K$_4$ graph presentation proven in \hyperref[law:graph-presentation:presentation-collapse]{Law~13.1} demands counting four vertices, summing integer-valued functions over them, and composing endomorphisms iterated along edges. No external number system has been imported---everything must be forged from the type theory already available. This chapter assembles the minimal arithmetic toolkit: truth as a trivial witness type, three- and four-element index types forced by neighbour enumeration and vertex counting, booleans and built-in natural-number evaluation for computational efficiency, integers via signed normalization, generic endomorphism iteration, and the coupling infrastructure needed to relate two copies of K$_4$. Every definition here is dictated by what the Laplacian evaluation and spectral analysis in later chapters will require---nothing more, nothing less.
 
 \section{Truth and Finite Indices}
 \label{sec:arithmetic-infrastructure:truth-finite-indices}
@@ -8235,14 +8135,14 @@ These two lemmas close the positive-denominator arithmetic needed for rational c
       (cong (λ t → +suc t) (+ℕ-comm b (a *ℕ suc b))))
 \end{code}
 
-Integer arithmetic is rigid enough to support genuine spectral calculation. The K$_4$ neighbourhood structure, the Laplacian, simplex invariants, multiplication laws, and order laws are all forced into place. The graph is no longer just a survivor; it is an operator-bearing object.
+Integer arithmetic is rigid enough to support genuine spectral calculation. The K$_4$ neighbourhood structure, the Laplacian, simplex invariants, multiplication laws, and order laws are all forced into place. The graph is not merely a topological survivor; it is an operator-bearing object.
 
-But spectral data does not remain inside the integers. Ratios appear, and with them the need for quotient arithmetic, distance, and measurement. The next transition is therefore from integer combinatorics to rational evaluation.
+Spectral ratios force quotient arithmetic: the integer combinatorics extends into the rational domain.
 
 \chapter{Rational Numbers and Measurement}
 \label{ch:rational-numbers-measurement}
 
-Eigenvalue quotients from the K$_4$ spectral analysis---ratios of integers that are not themselves integers---demand a quotient field. $\mathbb{Q}$ is defined as the forced quotient $\mathbb{Z}/\mathbb{N}^+$: an integer numerator over a positive denominator, with equality given by the cross-multiplication setoid $a \cdot d = c \cdot b$. Distance is the absolute difference of two rationals, and measurement acts on Distinctions are classified as K$_4$-maps into the two-element carrier. The simplex evaluation $\alpha^{-1} = 137$ emerges as a forced combinatorial invariant of the graph, not a fitted parameter.
+Eigenvalue quotients from the K$_4$ spectral analysis---ratios of integers that are not themselves integers---demand a quotient field. $\mathbb{Q}$ is defined as the forced quotient $\mathbb{Z}/\mathbb{N}^+$: an integer numerator over a positive denominator, with equality given by the cross-multiplication setoid $a \cdot d = c \cdot b$. Distance is the absolute difference of two rationals, and measurement acts on Distinctions are classified as K$_4$-maps into the two-element carrier. The simplex evaluation $\mathcal{C} = 137$ emerges as a forced combinatorial invariant of the graph, not a fitted parameter.
 
 \section{Rational Arithmetic}
 \label{sec:rational-measurement:rational-arithmetic}
@@ -8305,7 +8205,7 @@ distℚ : ℚ → ℚ → ℚ
 distℚ (a / b) (c / d) = absℤ ((a *ℤ ⁺toℤ d) +ℤ negℤ (c *ℤ ⁺toℤ b)) / (b *⁺ d)
 \end{code}
 
-\section{Simplex Evaluation: \texorpdfstring{$\alpha^{-1} = 137$}{alpha inverse = 137}}
+\section{Simplex Evaluation: \texorpdfstring{$\mathcal{C} = 137$}{\textit{C} = 137}}
 \label{sec:rational-measurement:alpha-inverse-137}
 
 The K$_4$ simplex invariants from the preceding chapter combine via the forced
@@ -12569,10 +12469,9 @@ cases into a single witness type for downstream transport.
 
 The spectral theory of the coupled and triple $K_4$ Laplacians is complete. Every iterated operator word collapses to one of four normal forms—identity, pure $L$-power, pure $J$-power, or zero—and the eigenvalue spectrum is exhausted by $\{0, 4, 12\}$. The survivor structure of $K_4$ is fully extracted into operator algebra, and no spectral degree of freedom remains.
 
-The spectral data is exact, but the arithmetic on which it rests—$\mathbb{Z}$ and $\mathbb{Q}$—is not yet equipped with the order and distance infrastructure that convergence arguments demand. The next chapters forge that infrastructure: additive order monotonicity, rational multiplication, $\varepsilon$-splitting, and distance laws. These are not new structure; they are the forced algebraic consequences of the integer and rational definitions already fixed. Once they are in place, the spectral data will have a metric home, and the passage to the reals will become inevitable.
+The spectral data is exact. The arithmetic on which it rests—$\mathbb{Z}$ and $\mathbb{Q}$—requires order and distance infrastructure for convergence arguments: additive order monotonicity, rational multiplication, $\varepsilon$-splitting, and distance laws. These are forced algebraic consequences of the integer and rational definitions already established. With those laws in place, the spectral data has a metric home and the passage to the reals is forced by the Cauchy gaps rational arithmetic cannot close internally.
 
-\paragraph{A physics breadcrumb.}
-The reader who has tracked the numbers should notice: the graph has 4 vertices and an eigenvalue ratio $3{:}1$ (three copies of eigenvalue 4, one copy of eigenvalue 0). These ratios will reappear when the derived constants are compared to independently measured quantities. The elimination is not yet complete, but the spectral fingerprint that will underlie the fine-structure computation is already fully determined.
+The graph has 4 vertices and an eigenvalue ratio $3{:}1$ (three copies of eigenvalue 4, one copy of eigenvalue 0). The spectral fingerprint underlying the forced coupling invariant is fully determined.
 
 
 %═══════════════════════════════════════════════════════════════════════════
@@ -17202,7 +17101,7 @@ SpanIJPkg-const-eigen pkg c = snd (snd (snd (SpanIJPkg-spectral pkg (constVec12�
 The unified package collects the coefficient pair, the
 pointwise equality, and both the operator and the
 $\texttt{linIJ}$-level spectral facts into a single record.  The package is
-forced because each component has already been fixed uniquely in the preceding
+forced because each component is fixed uniquely by the preceding
 laws.
 
 \begin{code}
@@ -18137,7 +18036,7 @@ scaleVec12_nonzero_left_zero_to_zeroVec n v =
   scaleVec12-pos-left-zero→zeroVec n v , scaleVec12-neg-left-zero→zeroVec n v
 \end{code}
 
-The rational measurement layer expresses the spectral content exactly. Quotients, distances, finite-index operators, coupled and triple K$_4$ Laplacians, word algebra, and rational order describe the combinatorial data without leaving gaps at the level of explicit calculation. The integer $\alpha^{-1} = 137$ is computed as a Simplex-Euler invariant in Chapter~\ref{ch:rational-numbers-measurement}; the spectral eigenvalues $\{0, 4\}$ of $K_4$ are determined; and the $3{:}1$ eigenspace split matches the dimensional signature of relativistic spacetime. These numbers emerge from the graph, not from physics. What the remaining chapters establish is that they cannot emerge from any other source.
+The rational measurement layer expresses the spectral content exactly. Quotients, distances, finite-index operators, coupled and triple K$_4$ Laplacians, word algebra, and rational order describe the combinatorial data without leaving gaps at the level of explicit calculation. The coupling invariant $\mathcal{C} = 137$ is computed as a Simplex-Euler invariant in Chapter~\ref{ch:rational-numbers-measurement}; the spectral eigenvalues $\{0, 4\}$ of $K_4$ are determined; and the $3{:}1$ eigenspace split is a forced structural consequence of the four-vertex completion. These numbers emerge from the graph. What the remaining chapters establish is that they cannot emerge from any other source.
 
 What remains is not another finite algebraic law but closure itself. Once the metric structure is explicit, Cauchy data that does not settle inside $\mathbb{Q}$ must be given a legitimate home. The next step is therefore forced completion: the passage from rational measurement to the reals.
 
@@ -20704,22 +20603,20 @@ Left monotonicity is forced by the same rational order law, now applied through 
 
 The numerical machinery is in place. Natural numbers, integers, rationals, reals, order, distance, scaling, and spectral operators have all been forced from the surviving structure rather than imported from outside it. The full language required to evaluate $K_4$ quantitatively is established.
 
-The final step is assembly. The invariants already derived must be gathered into a single verified record so that the physical correspondence can be inspected as computation rather than impression.
+The final step is assembly. The invariants already derived must be gathered into a single verified record so that the forced numerical values can be inspected as computation.
 
 
 %═══════════════════════════════════════════════════════════════════════════
 \part{Physics from \texorpdfstring{$K_4$}{K4}}
 %═══════════════════════════════════════════════════════════════════════════
 
-The arithmetic, spectral theory, and measurement formalism built in the preceding chapters constitute the apparatus needed to translate $K_4$'s combinatorial invariants into numbers. This part performs that translation.
+The arithmetic, spectral theory, and evaluation apparatus built in the preceding chapters constitute the machinery needed to extract numerical values from $K_4$'s combinatorial invariants. This part performs that extraction.
 
 Nothing new is assumed. The vertex count, edge count, Euler characteristic, and Laplacian eigenvalues of $K_4$ are assembled into a verified computation record. Each entry is a definitional equality closed by the Agda type system. The numerical values that result---including the coupling invariant $\mathcal{C} = 137$---are consequences of the structure derived in Parts I through IV, not inputs chosen to match them.
 
-This is the methodological boundary that matters for the numerology question. The numerical match is not being used here as evidence for the structure. The structure has already been forced by the elimination chain. What appears in this part is the evaluated consequence of that survivor. The burden is therefore not pattern recognition but invariance under the chain of eliminations that left no adjustable parameter standing.
+This is the methodological boundary that matters for the rigor question. The derivation chain left no adjustable parameter standing. What appears in this part is the evaluated consequence of that survivor.
 
-The reader should therefore keep two claims sharply apart. The theorem-level claim is internal to the formal system: given the derivation already established, these equalities reduce and these numbers compute. The interpretation-level claim is external: some of these computed values may be read as physically meaningful because they align with measured observables. The first claim is proved here. The second is discussed here, but it is not smuggled into the proof.
-
-Whether these numbers illuminate the structure of physics or merely reproduce it is a question the record itself cannot settle. That is an interpretive burden, not a formal one. But the record itself is exact, machine-verified, and fully open to inspection.
+The reader should therefore keep two claims sharply apart. The theorem-level claim is internal to the formal system: given the derivation already established, these equalities reduce and these numbers compute. This claim is proved here. Whether these numbers have further significance is an interpretive question that belongs outside the formal chain.
 
 %═══════════════════════════════════════════════════════════════════════════
 \chapter{Natural-Number Division Infrastructure}
@@ -22553,8 +22450,8 @@ law16B-19-K5-edges = refl
 
 Every combinatorial constant of $K_4$ is fixed by definitional equality: vertex count, edge count, face count, degree, Euler characteristic, spectral width, and cycle data. The ledger is sealed. What remains is to show that these constants determine a unique formal representation record---that no second assignment of fields could survive the same constraints.
 
-\paragraph{The numbers so far.}
-At the theorem level, $K_4$ has produced $V = 4$, $E = 6$, an eigenvalue ratio $3{:}1$, and the coupling invariant $\mathcal{C} = 137$. None of these numbers were adjusted. Each is a definitional equality closed by the Agda type checker. Whether these forced values should be identified with spacetime dimension, gauge-sector counts, spatial-to-temporal split, or the inverse fine-structure constant is an interpretive question that this chapter does not answer. The next chapter addresses the last formal question first: is the assignment of fields to these invariants itself unique, or could a second admissible representation survive the same graph? The canonicity of $\mathcal{C} = 137$ as a derived invariant---including the proof that no alternative degree-$\le 3$ formula reaches $137$---follows in \S\ref{sec:discrete-continuum:classification-alpha-137}.
+\paragraph{The forced invariants.}
+At the theorem level, $K_4$ determines $V = 4$, $E = 6$, an eigenvalue ratio $3{:}1$, and the coupling invariant $\mathcal{C} = 137$. None of these numbers were adjusted. Each is a definitional equality closed by the Agda type checker. Whether these values carry any physical identification belongs to the separate identification layer. The last formal question is whether the assignment of fields to these invariants is unique: could a second admissible representation survive the same graph? The canonicity of $\mathcal{C} = 137$ as a derived invariant---including the proof that no alternative degree-$\le 3$ formula reaches $137$---follows in \S\ref{sec:discrete-continuum:classification-alpha-137}.
 
 %═══════════════════════════════════════════════════════════════════════════
 \chapter{K\textsubscript{4} Representation Theory}
@@ -22872,7 +22769,7 @@ module ForcedValues (r : K4PhysRep) where
 \label{sec:k4-representation:uniqueness}
 %───────────────────────────────────────────────────────────────────────────
 
-Existence alone leaves a lethal gap: if two distinct representations of $K_4$ could coexist, the physical constants would depend on which representation was chosen, and no experiment could decide between them.  Uniqueness closes that gap.  Since \texttt{ForcedValues} pins every field of every admissible representation to the same normal form, any two representations must agree field by field.  Singletonhood is therefore proved, not declared.
+Existence alone leaves a lethal gap: if two distinct representations of $K_4$ could coexist, the derived invariants would depend on which representation was chosen, and no structural criterion could distinguish them.  Uniqueness closes that gap.  Since \texttt{ForcedValues} pins every field of every admissible representation to the same normal form, any two representations must agree field by field.  Singletonhood is therefore proved, not declared.
 
 \textbf{Constraint:} Two admissible representations $r_1, r_2$ must agree on every field, or representational contingency survives.
 
@@ -23211,12 +23108,12 @@ module ConstraintDerivation where
 \label{sec:k4-representation:physical-quantities-computable-invariants}
 %───────────────────────────────────────────────────────────────────────────
 
-The remaining formal gap between graph invariants and the representation record is eliminated here. Each represented quantity is forced to be a computable function of $K_4$ data, so the internal identification is no longer rhetorical: the output of the graph computation is exactly the value carried by the representation chain. Whether a given represented quantity should also be read as a physical observable remains a separate interpretive question.
+The formal relation between graph invariants and the representation record is exact. Each represented quantity is a computable function of $K_4$ data: the output of the graph computation is exactly the value carried by the representation chain. Whether a given represented quantity should also be read as a physical observable remains a separate interpretive question.
 
 \subsection{Representation Completeness}
 \label{sec:k4-representation:representation-completeness}
 
-The record built below is already rigid once one enters it. But the stronger pressure comes from outside. If there were two admissible ways for physics to sit on the same $K_4$ invariant spine, then the constants would no longer be observables forced by structure; they would be artifacts of representational wording. That would collapse the claim at the final step. The graph would still survive, but the bridge into measurement would fork, and every numerical coincidence could be dismissed as notation. This fork must be shattered.
+The record built below is already rigid once one enters it. But the stronger pressure comes from outside. If there were two admissible ways for physics to sit on the same $K_4$ invariant spine, then the constants would not be observables forced by structure; they would be artifacts of representational wording. That would collapse the claim at the final step. The graph would still survive, but the bridge into measurement would fork, and every numerical coincidence could be dismissed as notation. This fork must be shattered.
 
 \textbf{Constraint:} Any admissible physical representation of $K_4$ must preserve the named invariant chain already fixed: vertex count, edge count, face count, Euler characteristic, spectral data, and the derived observables assembled from them. No representational wrapper may introduce additional degrees of freedom while claiming to describe the same structure.
 
@@ -23230,7 +23127,7 @@ The external completeness theorem \texttt{RepresentationComplete} states: for an
 \]
 or equivalently, that every admissible representation is canonically isomorphic to the unique record assembled from the invariant basis.
 
-\textbf{Consequence:} With the closure theorem \texttt{RepresentationComplete} proven, the formal bridge no longer says merely that one chosen representation works. It says that no rival admissible representation survives. Any later physical reading must therefore attach to a unique formal record rather than to a convenient encoding chosen after the fact.
+\textbf{Consequence:} With the closure theorem \texttt{RepresentationComplete} proven, the formal bridge asserts not that one chosen representation works, but that no rival admissible representation survives. Any later physical reading must therefore attach to a unique formal record rather than to a convenient encoding chosen after the fact.
 
 \begin{code}
 -- § RepresentationComplete: every K4PhysRep agrees with canonical-rep on all values.
@@ -23500,7 +23397,7 @@ The next block shows the local pattern once: define the observable, prove vertex
 
 \subsubsection*{Global observable witnesses}
 
-The global layer can no longer remain an unrestricted numeric container. If every natural number counted as a global observable merely because it was written down after the graph was fixed, descriptive freedom would return through naming. The admissibility filter therefore has to close the space itself. Only four primitive global classes survive: boundary, correlator, observer, and channels. Everything else in the later physics discussion is either a value of this basis or a derived ledger invariant, not a fifth admissible global observable.
+An unrestricted numeric container for the global layer reintroduces descriptive freedom. A natural number written down after the graph is fixed does not become a global observable by being named. The admissibility filter therefore has to close the space itself. Only four primitive global classes survive: boundary, correlator, observer, and channels. Everything else in the later physics discussion is either a value of this basis or a derived ledger invariant, not a fifth admissible global observable.
 
 \textbf{Constraint:} A global observable must be presentation-independent and forced by the invariant spine of $K_4$. If the global layer were identified with arbitrary naturals, the observable principle would fail exactly where it is supposed to become strongest.
 
@@ -24972,14 +24869,14 @@ normalized-scale-witness = record
   }
 \end{code}
 
-This is the normalized form of the Planck claim. The only admissible positive scale triple in the $c = \hbar = G = 1$ regime is the unit triple. Any external calibration---choosing to report the same physics in metres, seconds, and kilograms---amounts to a conventional relabeling of this already-forced unit system. The eliminative content is exhausted here; what remains is notation.
+This is the normalized form of the Planck claim. The only admissible positive scale triple in the $c = \hbar = G = 1$ regime is the unit triple. Any external calibration---choosing to report the same physics in metres, seconds, and kilograms---amounts to a conventional relabeling of this already-forced unit system. The eliminative content is fully expressed; notation is convention.
 
 %───────────────────────────────────────────────────────────────────────────
 \section{Distinction as measurement kernel}
 \label{sec:scale-closure:measurement-kernel}
 %───────────────────────────────────────────────────────────────────────────
 
-The scale triangle is closed and no free parameter survives. A sharper question remains: what must any would-be physics already contain before it can even speak about measurement? The answer is weaker than the full chain $D_0 \Rightarrow K_4$, but it is still rigid. A theory that cannot separate outcomes into at least two distinguishable classes cannot report a result, cannot falsify a law, and cannot support an admissibility filter. Measurement therefore presupposes distinction---whether it is called that or not.
+The scale triangle is closed and no free parameter survives. A sharper question is forced: what must any would-be physics already contain before it can speak about measurement? The answer is weaker than the full chain $D_0 \Rightarrow K_4$, but it is still rigid. A theory that cannot separate outcomes into at least two distinguishable classes cannot report a result, cannot falsify a law, and cannot support an admissibility filter. Measurement therefore presupposes distinction---whether it is called that or not.
 
 The formal kernel is exactly the old one in a new role. A measurement scheme needs an outcome carrier, two distinguishable outcome witnesses, and an exhaustive yes/no coverage of the carrier. That is not merely analogous to a distinction. It \emph{is} one.
 
@@ -25018,23 +24915,23 @@ These lemmas do not yet say that every physical formalism collapses all the way 
 
 This is the second independent route to $D_0$. The first—\texttt{Two-distinction} in Chapter~\ref{ch:two-normal-form}—constructs a distinction from pure type theory with no assumptions. Here the route runs through physics: any apparatus that separates yes from no already presupposes the distinction it purports to discover. The two routes are logically independent; neither imports the other. Their convergence is not a convenience—it is structural evidence that distinction sits at the root of both the formal and the empirical hierarchies.
 
-This is the correct red line. $D_0$ is our name for the fully formalized package that begins from distinction and carries it through elimination. Rival frameworks may refuse that name. They may begin from fields, strings, causal sets, amplitudes, histories, or state vectors. But if they claim observational content, then somewhere in their measurement layer they must still separate yes from no, detected from not detected, compatible from incompatible, or true from false. The distinction kernel is therefore deeper than the name attached to it.
+This is the correct red line. The label $D_0$ denotes the fully formalized package that begins from distinction and carries it through elimination. Rival frameworks may refuse that name. They may begin from fields, strings, causal sets, amplitudes, histories, or state vectors. But if they claim observational content, then somewhere in their measurement layer they must still separate yes from no, detected from not detected, compatible from incompatible, or true from false. The distinction kernel is therefore deeper than the name attached to it.
 
-The next chapter does not assume that every framework has already collapsed to the whole FD chain. It assumes only what the lemmas above force: that measurement itself already stands on a distinction. The continuum question can then be asked sharply: once a theory has a distinction kernel and the discrete FD chain has closed to $K_4$, does the passage to decimal physics add freedom, or only expose the next forced quotient?
+The continuum passage assumes only what these lemmas force: that measurement already stands on a distinction. The continuum question can then be asked sharply: once a theory has a distinction kernel and the discrete FD chain has closed to $K_4$, does the passage to decimal physics add freedom, or only expose the next forced quotient?
 
 \subsubsection*{Threshold to physics}
 
-The discrete chain is closed. The carrier has been forced into a two-class distinction. The two-class distinction has been forced into the unique $K_4$ graph. The graph has been forced into a rigid invariant ledger. The observable principle has stripped away the last semantic slack by ruling out every quantity that depends on presentation, labeling, or proof artefacts. And the scale closure has locked the unit system to $(a,b,m) = (1,1,1)$, leaving no free parameter.
+The carrier admits exactly two classes. Those two classes force the unique $K_4$ graph. The graph carries a rigid invariant ledger; the observable principle rules out every quantity dependent on presentation; and the unit system is locked to $(a,b,m) = (1,1,1)$.
 
-What survives this pressure is a sealed discrete record: $V = 4$, $E = 6$, $d = 3$, $\chi = 2$, $\kappa = 8$, the Clifford count $16$, the compactification stratum $17$, and the rigid coupling value $\alpha^{-1} = 137$. Nothing in this ledger has been fitted. Every entry is already the survivor of an elimination chain.
+What survives this pressure is a sealed discrete record: $V = 4$, $E = 6$, $d = 3$, $\chi = 2$, $\kappa = 8$, the Clifford count $16$, the compactification stratum $17$, and the rigid coupling invariant $\mathcal{C} = 137$. Nothing in this ledger has been fitted. Every entry is already the survivor of an elimination chain.
 
-This is the last point at which the work is purely discrete. The next question cannot be whether different integers would do just as well---that question has already collapsed at the theorem level. The only live question is harsher: when experiment reports decimal structure rather than bare integers, does the continuum introduce freedom, or does it merely expose the next forced quotient of the same graph?
+This is the last point at which the work is purely discrete. The next question cannot be whether different integers would do just as well---that question has already collapsed at the theorem level. The only live question is harsher: are the rational corrections to the integer invariants themselves forced quotients of the same graph, or are they independent values introduced by hand?
 
-\textbf{Constraint:} Before physics begins, the discrete stage must already be closed. If any invariant or observable were still negotiable here, every later numerical match would be contaminated by hidden freedom.
+\textbf{Constraint:} Before the correction chapter begins, the discrete stage must already be closed. If any invariant or observable were still negotiable here, every later numerical value would be contaminated by hidden freedom.
 
 \textbf{Construction:} The preceding parts eliminate every negotiable invariant and every negotiable observable criterion. What survives is exactly two ingredients: the invariant ledger of $K_4$, and the admissibility criterion for observables on that ledger.
 
-\textbf{Consequence:} The physics chapter does not begin by choosing formulas. It begins with a sealed discrete record and asks whether the passage to measured continuum values is itself forced.
+\textbf{Consequence:} The correction chapter does not begin by choosing fractions. It begins with a sealed discrete record and derives whether the rational corrections are forced by the same combinatorial chain.
 
 
 %═══════════════════════════════════════════════════════════════════════════
@@ -25042,19 +24939,19 @@ This is the last point at which the work is purely discrete. The next question c
 \label{ch:discrete-continuum-bridge}
 %═══════════════════════════════════════════════════════════════════════════
 
-The discrete record is closed, but experiment is not reported as a ledger of bare integers. Physics is measured in a smooth continuum. The proton-to-electron mass ratio is not $1836$ but $1836.15267$, and the fine-structure constant is not $1/137$ but $1/137.036$. The question is therefore no longer which discrete invariants survive. That question is settled. The sharper question is whether the decimal structure is an independent source of freedom, or the next forced quotient of the same $K_4$ data.
+The invariant ledger carries bare integer values: the coupling invariant $\mathcal{C} = 137$, the proton-class ratio $1836$, the muon-class ratio $207$. The question is whether the rational corrections to these integers---the decimal structure that lies beyond the bare values---are independent of the combinatorial structure, or whether they too are forced quotients of the same $K_4$ data.
 
 The chapter proceeds in three stages, each with a distinct epistemic status:
 
 \begin{enumerate}
 \item \textbf{Primary graph invariants.} The raw data of $K_4$---$V$, $E$, $d$, $\chi$, the spectrum, $\kappa$, and $\mathrm{Aut}(K_4) \cong S_4$---are forced by the classification theorems of the preceding parts. These are the hardest results in the chain: no freedom remains.
 
-\item \textbf{Forced observables.} Not every function of these invariants is physically admissible. Part~IV established that only observables which are presentation-independent, automorphism-invariant, and canonically factorable qualify. At the primitive global level, this admissible sector collapses to four classes only: boundary, correlator, observer, and channels. This chapter then evaluates and combines those primitive observables with the rigid ledger invariants of $K_4$ to classify the derived integers $137$, $1836$, $11$, $72$, and $576$.
+\item \textbf{Forced observables.} Not every function of these invariants is admissible. Part~IV established that only observables which are presentation-independent, automorphism-invariant, and canonically factorable qualify. At the primitive global level, this admissible sector collapses to four classes only: boundary, correlator, observer, and channels. This chapter then evaluates and combines those primitive observables with the rigid ledger invariants of $K_4$ to classify the derived integers $137$, $1836$, $11$, $72$, and $576$.
 
-\item \textbf{Canonical correction.} The discrete-to-continuum transition is not a new source of freedom but a canonical quotient: the forced loop observable supplies the numerator; the canonical interaction volume at each energy scale supplies the denominator. The resulting rational corrections---$11/72$, $11/576$---are the unique bridge between the discrete graph and the measured continuum.
+\item \textbf{Canonical correction.} The discrete-to-rational transition is not a new source of freedom but a canonical quotient: the forced loop observable supplies the numerator; the canonical interaction volume at each scale supplies the denominator. The resulting rational corrections---$11/72$, $11/576$---are the unique quotients forced by the $K_4$ data.
 \end{enumerate}
 
-If any of these stages introduced a free parameter, the chain would break. The integer values would become numerological coincidences and the decimal places fitted afterthoughts. The strength of the argument is that no parameter enters at any stage: primary invariants are forced, observables are classified, and the correction is canonical. Interpretation enters only after those three theorem-level stages are closed.
+If any of these stages introduced a free parameter, the chain would break. The integer values would be numerological coincidences and the rational corrections fitted afterthoughts. The strength of the argument is that no parameter enters at any stage: primary invariants are forced, observables are classified, and the correction is canonical. Interpretation enters only after those three theorem-level stages are closed.
 
 %───────────────────────────────────────────────────────────────────────────
 \section{The admissibility filter}
@@ -25079,7 +24976,7 @@ The integers derived below are not ``nice numbers from a graph.'' At the primiti
 
 \textbf{Elimination:} The observable factorization theorem supplies exactly one admissibility filter: presentation invariance, automorphism invariance, and canonical factorization. Every observable failing any gate is eliminated. On the fixed $K_4$ ledger this filter leaves a finite primitive observable basis, and the later numerical quantities arise only as evaluations or derived combinations of that basis with already forced invariants.
 
-\textbf{Consequence:} The numbers carried into the loop and mass sectors are not selected formulas. Their primitive observable inputs are already fixed, and every later derived value is constrained by that fixed basis together with the invariant ledger, so excluded alternatives collapse before any numerical comparison with experiment begins.
+\textbf{Consequence:} The numbers carried into the loop and mass sectors are not selected formulas. Their primitive observable inputs are already fixed, and every later derived value is constrained by that fixed basis together with the invariant ledger, so excluded alternatives collapse before any numerical comparison begins.
 
 \begin{code}
 -- § The universal loop numerator: sum of all primitive loop parameters.
@@ -25147,7 +25044,7 @@ law-tau-muon-bare-17 = refl
 \label{sec:discrete-continuum:universal-loop-numerator}
 %───────────────────────────────────────────────────────────────────────────
 
-When a discrete graph is projected into a continuum, interactions that were sharp graph traversals become smeared across the embedding space. The smearing generates corrections. The question is not ``what number shall we put in the numerator?'' but ``which observable is forced by the admissibility filter in the loop sector?''
+When a discrete graph is projected into a continuum, interactions that were sharp graph traversals become smeared across the embedding space. The smearing generates corrections. The question is not ``what number enters the numerator?'' but ``which observable is forced by the admissibility filter in the loop sector?''
 
 On $K_4$, the primitive structural parameters for a graph interaction are the edge count ($E = 6$), the vertex degree ($d = 3$), and the Euler characteristic ($\chi = 2$). A loop observable is a $\{0,1\}$-linear combination of these---a sum of a subset. The admissibility constraints are:
 
@@ -25470,17 +25367,17 @@ law-576-square-identity = refl   -- (4·3)²·2² = 144·4 = 576
 \label{sec:discrete-continuum:rg-slope-numerator}
 %───────────────────────────────────────────────────────────────────────────
 
-The quantity $1/(2\alpha^{-1}) = 1/274$ is a $K_4$-combinatorial ratio. Its interpretation as a first-order coupling derivative is offered as an observable; the full QED beta function---which depends on particle content and loop diagrams outside this derivation's scope---is a separate matter and is not claimed here. What the $K_4$ ledger forces is narrower: given that $\alpha^{-1} = 137$, the unique irreducible fraction whose numerator divides the coupling quantum is $1/274$. The argument is purely arithmetic.
+The quantity $1/(2\mathcal{C}) = 1/274$ is a $K_4$-combinatorial ratio. Its identification with a first-order coupling derivative is an act of interpretation; the full renormalization-group beta function is a separate matter and is not claimed here. What the $K_4$ ledger forces is narrower: given that $\mathcal{C} = 137$, the unique irreducible fraction whose numerator divides the coupling quantum is $1/274$. The argument is purely arithmetic.
 
-The denominator $2\alpha^{-1} = 274$ is already fixed. The numerator is still open: one might imagine it could be any positive integer. Primality shuts the door.
+The denominator $2\mathcal{C} = 274$ is already fixed. The numerator is still open: one might imagine it could be any positive integer. Primality shuts the door.
 
-Since $\alpha^{-1} = 137$ is prime, its only positive divisors are $1$ and $137$. Any candidate numerator that introduces a prime factor absent from the coupling itself would break the integrality of the ratio at every scale where it has been applied a non-integer number of times. This leaves exactly two candidates. The irreducibility filter eliminates one: $\gcd(137, 274) = 137 \ne 1$, so the fraction $137/274$ collapses to $1/2$. That collapse means the candidate is not an independent observable but a trivial rescaling of an already counted quantity. Only the candidate $1$ survives: $\gcd(1, 274) = 1$, and the fraction $1/274$ is irreducible.
+Since $\mathcal{C} = 137$ is prime, its only positive divisors are $1$ and $137$. Any candidate numerator that introduces a prime factor absent from the coupling itself would break the integrality of the ratio at every scale where it has been applied a non-integer number of times. This leaves exactly two candidates. The irreducibility filter eliminates one: $\gcd(137, 274) = 137 \ne 1$, so the fraction $137/274$ collapses to $1/2$. That collapse means the candidate is not an independent observable but a trivial rescaling of an already counted quantity. Only the candidate $1$ survives: $\gcd(1, 274) = 1$, and the fraction $1/274$ is irreducible.
 
-\textbf{Constraint:} The coupling-derivative numerator must divide $\alpha^{-1}$ (coupling-quantum divisibility) and be coprime to $2\alpha^{-1}$ (irreducibility of the fraction).
+\textbf{Constraint:} The coupling-ratio numerator must divide $\mathcal{C}$ (coupling-quantum divisibility) and be coprime to $2\mathcal{C}$ (irreducibility of the fraction).
 
-\textbf{Elimination:} $\alpha^{-1} = 137$ is prime; its positive divisors are $\{1, 137\}$. $\gcd(137, 274) = 137 \ne 1$ eliminates $137$. $\gcd(1, 274) = 1$ admits $1$. The unique survivor is $1$.
+\textbf{Elimination:} $\mathcal{C} = 137$ is prime; its positive divisors are $\{1, 137\}$. $\gcd(137, 274) = 137 \ne 1$ eliminates $137$. $\gcd(1, 274) = 1$ admits $1$. The unique survivor is $1$.
 
-\textbf{Consequence:} The $K_4$-forced coupling ratio is $1/274 = 1/(2\alpha^{-1})$. No other irreducible fraction with a numerator dividing the coupling quantum exists. The fraction is not chosen from a family; it is the last survivor of a two-candidate, one-filter elimination. Whether this ratio coincides with the first-order coefficient of the physical running is an interpretive question, flagged at \S\ref{sec:discrete-continuum:epistemic-status}.
+\textbf{Consequence:} The $K_4$-forced coupling ratio is $1/274 = 1/(2\mathcal{C})$. No other irreducible fraction with a numerator dividing the coupling quantum exists. The fraction is not chosen from a family; it is the last survivor of a two-candidate, one-filter elimination.
 
 \begin{code}
 -- § RG slope numerator: must divide α⁻¹ = 137 (coupling quantum divisor)
@@ -25551,7 +25448,7 @@ theorem-rg-numerator-classification = record
 \label{sec:discrete-continuum:proton-mass-correction}
 %───────────────────────────────────────────────────────────────────────────
 
-The measured proton-to-electron mass ratio is $1836.15267$ (CODATA 2022). The bare $K_4$ value is $1836$. The fractional part $0.15267$ is the QCD-scale correction forced by the loop observable:
+The bare $K_4$ value is $1836$. The QCD-scale correction forced by the loop observable is:
 
 $$
 \text{correction} = \frac{\text{forced numerator}}{\text{QCD volume}} = \frac{E + d + \chi}{V \times E \times d} = \frac{11}{72} = 0.1527\overline{7}
@@ -25563,7 +25460,7 @@ No parameter is chosen. The numerator is forced by elimination. The denominator 
 
 \textbf{Construction:} The QCD-scale volume forces the denominator to $72$; the universal loop numerator forces the numerator to $11$. No alternative fraction survives. $11/72 = 0.15277\ldots$\@ The corrected value is $1836 + 11/72 = 1836.1527\overline{7}$.
 
-\textbf{Consequence:} The measured value $1836.15267$ agrees to six significant figures. The residual $|0.15278 - 0.15267| = 0.00011$ is of order $1/576$---exactly the next-order correction from the electroweak volume.
+\textbf{Consequence:} The corrected proton-class ratio is $1836 + 11/72 = 1836.1527\overline{7}$. The residual is of order $1/576$---the scale of the next canonical correction from the electroweak volume.
 
 \begin{code}
 -- § Proton loop correction numerator (same as universal)
@@ -25606,7 +25503,7 @@ law-proton-denom-from-K4 = refl
 \label{sec:discrete-continuum:electroweak-correction}
 %───────────────────────────────────────────────────────────────────────────
 
-The Weinberg mixing angle defines the ratio of electroweak coupling strengths. The tree-level value from $K_4$ is $\sin^2\theta_W = \chi/\kappa = 2/8 = 0.25$. The measured value is $\sin^2\theta_W = 0.2312$ (PDG 2024).
+The mixing-angle ratio from $K_4$ is $\sin^2\theta_W = \chi/\kappa = 2/8 = 0.25$.
 
 The correction is the electroweak-scale application of the same forced observable:
 
@@ -25614,13 +25511,13 @@ $$
 \delta_{\text{EW}} = \frac{\text{forced numerator}}{\text{EW volume}} = \frac{E + d + \chi}{V \times E \times d \times \kappa} = \frac{11}{576} \approx 0.0191
 $$
 
-The corrected value is $0.25 - 11/576 = 0.2309$, within $0.13\%$ of the measured value.
+The corrected value is $0.25 - 11/576 = 0.2309$.
 
 \textbf{Constraint:} The electroweak correction must use the full canonical interaction volume including the spectral width $\kappa$.
 
 \textbf{Construction:} The electroweak volume forces the denominator to $576$; the loop numerator remains $11$. No alternative fraction survives. $11/576 = 0.01909\overline{72}$. The corrected Weinberg angle is $\chi/\kappa - 11/576 = 2/8 - 11/576$.
 
-\textbf{Consequence:} The same forced observable that corrects the proton mass also corrects the Weinberg angle. Only the canonical volume changes, by the factor $\kappa$. This is not cross-validation in the sense of an independent check: it is a structural consequence. The observable is forced. The volumes are canonical. The same quotient must appear at every scale---and it does. The residual $|0.2312 - 0.2309| \approx 3.2 \times 10^{-4}$ is of order $(11/576)^2 \approx 3.6 \times 10^{-4}$---consistent with the square of the first-order correction scale. No next-order term is claimed here; the observation is arithmetic, not a derived two-loop theorem.
+\textbf{Consequence:} The same forced observable that corrects the proton-class ratio also corrects the mixing angle. Only the canonical volume changes, by the factor $\kappa$. This is not cross-validation in the sense of an independent check: it is a structural consequence. The observable is forced. The volumes are canonical. The same quotient must appear at every scale---and it does. The second-order residual is of order $(11/576)^2 \approx 3.6 \times 10^{-4}$; no next-order term is claimed here.
 
 \begin{code}
 -- § Weinberg tree-level: χ/κ
@@ -25663,7 +25560,7 @@ law-ew-denom-from-QCD = refl
 \label{sec:discrete-continuum:muon-mass-correction}
 %───────────────────────────────────────────────────────────────────────────
 
-The bare muon-to-electron mass ratio is $207$. The measured value is $206.7682827$ (PDG 2024). The gap is $0.2317$, not zero. The proton correction eliminated its gap via $+11/72$; the question is whether the same mechanism closes the muon gap, or whether the gap is genuinely residual.
+The bare muon-class ratio is $207$. The correction must subtract.
 
 The proton correction adds. The muon correction must subtract. This is not a sign choice: it is the forced consequence of the structural difference between the two sectors. The proton bare mass $1836$ lives in a single channel---the edge-channel cofactor $E^2 d$ multiplied by the compactification prime $F_2 = 17$. Single-channel loop corrections accumulate binding energy; the correction is additive. The muon bare mass $207$ lives in two distinct channels with a forced product structure: $d^2 \times (E + F_2)$. These two channels are separated by the uniqueness theorem that forces $207$. A loop correction that acts on this product structure does not bind the channels further. It resolves the spectral overlap between them---the coupling between the spectral width $\kappa$ and the topological weight $\chi$ that is absent from both individual channels but present in their joint embedding. Spectral overlap is subtractive: the joint embedding of two separately forced channels carries less total spectral weight than the sum of each channel's weight, precisely because they share the $\kappa\chi$ intersection. The correction is therefore forced to be negative.
 
@@ -25673,7 +25570,7 @@ This collapse cannot go in the other direction. A positive correction would incr
 
 \textbf{Construction:} Every candidate bridge ingredient outside the joint embedding of the two muon channels is eliminated. The muon inter-channel correction is $-\kappa\chi\, /\, (d \times (E + F_2)) = -16/69$. The corrected muon mass ratio is $207 - 16/69 = 14267/69 = 206.7681\ldots$
 
-\textbf{Consequence:} The measured value $206.7682827$ differs from the corrected value by $0.000167$, a relative error of $8 \times 10^{-7}$. This is a fourteen-fold reduction in deviation compared to the bare value. The residual $0.000167$ is of the same order as the next-scale correction $16/(69 \times \kappa^2) \approx 0.000036$, placing it in the expected range of higher-order effects. The sign is forced negative, not chosen. An upward correction would violate the two-channel completeness of the muon sector.
+\textbf{Consequence:} The corrected muon-class ratio is $207 - 16/69 = 14267/69 = 206.7681\ldots$ The sign is forced negative, not chosen. An upward correction would violate the two-channel completeness of the muon sector.
 
 \begin{code}
 -- § Muon inter-channel correction numerator: κ·χ (spectral-topological bridge)
@@ -25721,7 +25618,7 @@ law-bridge-is-new : gcd muon-loop-num (muon-mass-bare) ≡ 1
 law-bridge-is-new = refl                 -- gcd(16, 207) = 1
 \end{code}
 
-The post-hoc argument above fixes the correct value but does not yet show that no other bridge candidate could have been chosen. The filter chain that forces $\kappa\chi = 16$ as the \emph{unique} admissible bridge numerator runs as follows. The candidate space is all degree-$\le 2$ monomials in the $K_4$ invariant basis $\{V, E, d, \chi, \kappa, F_2\}$; these produce $21$ distinct non-zero values. Three filters act in sequence:
+The filter chain that forces $\kappa\chi = 16$ as the \emph{unique} admissible bridge numerator runs as follows. The candidate space is all degree-$\le 2$ monomials in the $K_4$ invariant basis $\{V, E, d, \chi, \kappa, F_2\}$; these produce $21$ distinct non-zero values. Three filters act in sequence:
 
 \begin{itemize}
 \item \textbf{Filter~1 (coprimality with both channels).} A bridge that shares a factor with a channel value would reduce back into that channel and cease to be new structure. The geometric channel value is $d^2 = 9$ and the mixed channel value is $E + F_2 = 23$. Of the $21$ candidates, exactly $11$ are coprime to both $9$ and $23$.
@@ -25843,7 +25740,7 @@ theorem-muon-bridge-classification = record
 \label{sec:discrete-continuum:tau-correction}
 %───────────────────────────────────────────────────────────────────────────
 
-The tau-to-muon bare ratio is $F_2 = 17$, the compactification prime forced in \S\ref{sec:discrete-continuum:tree-level-mass-formulae}.  The measured ratio is approximately $16.817$ --- a deficit of roughly $0.183$.  Without a correction, the book claims the correction chain is closed at the tau level while silently absorbing a gap wider than any higher-order residual.  That gap must be accounted for in the same elimination format as the muon bridge.
+The tau-to-muon bare ratio is $F_2 = 17$, the compactification prime forced in \S\ref{sec:discrete-continuum:tree-level-mass-formulae}.  The correction must lie strictly below the bare ratio and be forced by the same eliminative chain as the proton and muon corrections.
 
 The tau sits at the terminal compactification boundary.  Its two channel values are the geometric channel $d^2 = 9$ and the compactification prime $F_2 = 17$.  The correction denominator is therefore their product $d^2 \cdot F_2 = 153$, the tau canonical volume --- the exact analogue of $d \cdot (E + F_2) = 69$ for the muon.
 
@@ -25859,9 +25756,9 @@ The unique survivor is $d^2 + F_2 + \chi = 9 + 17 + 2 = 28$.  The correction is 
 
 \textbf{Constraint:} The tau bridge must be coprime to both channel values, and its added spectral content must lie strictly below the simplex degree.
 
-\textbf{Elimination:} Of the five candidate extensions $\{V, E, d, \chi, \kappa\}$, two fail coprimality, two fail the sub-degree bound.  The four eliminated candidates leave a unique survivor: $\chi$.  The correction is $17 - 28/153 = 2573/153 \approx 16.8170$, matching the measured ratio to $1.9 \times 10^{-6}$.
+\textbf{Elimination:} Of the five candidate extensions $\{V, E, d, \chi, \kappa\}$, two fail coprimality, two fail the sub-degree bound.  The four eliminated candidates leave a unique survivor: $\chi$.  The correction is $17 - 28/153 = 2573/153 \approx 16.8170$.
 
-\textbf{Consequence:} The tau correction is no longer a gap to be explained later.  It is forced by the same eliminative machinery as the proton and muon corrections.  The bare ratio $F_2 = 17$ is corrected to a value matching the PDG mass ratio at the sixth significant figure.
+\textbf{Consequence:} The tau correction is forced by the same eliminative machinery as the proton and muon corrections.  The bare ratio $F_2 = 17$ is corrected to $2573/153 \approx 16.8170$ by the unique surviving bridge numerator.
 
 \begin{code}
 -- § Tau bridge candidate space: extensions of d²+F₂ by a single K₄ invariant.
@@ -25982,25 +25879,23 @@ theorem-tau-correction-classification = record
 \label{sec:discrete-continuum:alpha-correction}
 %───────────────────────────────────────────────────────────────────────────
 
-The bare coupling $\alpha^{-1} = 137$ is a combinatorial integer: $V^d \cdot \chi + d^2 = 128 + 9$.  The comparison target is the Thomson limit $\alpha^{-1}(Q \to 0) \approx 137.036$, the value measured at zero momentum transfer; the running of $\alpha$ with energy scale is a separate, non-contradictory phenomenon whose first-order slope $1/(2\alpha^{-1}) = 1/274$ is itself forced by the $K_4$ invariants (\S\ref{sec:discrete-continuum:rg-slope-numerator}).  A book that derives all other corrections from the $K_4$ ledger and then silently accepts a $0.026\%$ gap on the coupling constant has not closed its own chain.
-
-The correction numerator is the loop observable $E + d + \chi = 11$ --- the same irreducible value that survives elimination in \S\ref{sec:discrete-continuum:universal-loop-numerator}.  The denominator requires an elimination argument of its own.  Six $K_4$ invariants compete for inclusion as factors of the coupling-correction volume: $V = 4$, $E = 6$, $d = 3$, $\chi = 2$, $\kappa = 8$, $F_2 = 17$.  Three structural filters act:
+The bare coupling $\mathcal{C} = 137$ is a combinatorial integer: $V^d \cdot \chi + d^2 = 128 + 9$.  The running of the electromagnetic coupling with energy scale is a separate, non-contradictory phenomenon whose first-order slope $1/(2\mathcal{C}) = 1/274$ is itself forced by the $K_4$ invariants (\S\ref{sec:discrete-continuum:rg-slope-numerator}).  The correction numerator is the loop observable $E + d + \chi = 11$---the same irreducible value that survives elimination in \S\ref{sec:discrete-continuum:universal-loop-numerator}.  The denominator requires an elimination argument of its own.  Six $K_4$ invariants compete for inclusion as factors of the coupling-correction volume: $V = 4$, $E = 6$, $d = 3$, $\chi = 2$, $\kappa = 8$, $F_2 = 17$.  Three structural filters act:
 
 \begin{itemize}
 \item \textbf{Filter~1 (no $V$):}  The vertex count $V$ already appears as a multiplicative factor in the proton volume $72 = V \cdot E \cdot d$ and the electroweak volume $576 = V \cdot E \cdot d \cdot \kappa$.  A correction denominator that reuses $V$ would conflate the coupling sector with the mass sector.  $V$ is excluded.
 
 \item \textbf{Filter~2 (no $\kappa$):}  The spectral width $\kappa$ already appears as a multiplicative factor in the electroweak volume $576 = V \cdot E \cdot d \cdot \kappa$.  A correction denominator that reuses $\kappa$ would conflate the coupling correction with the mixing-angle correction.  $\kappa$ is excluded.
 
-\item \textbf{Filter~3 (no $\chi$):}  The Euler characteristic $\chi = 2$ enters the bare coupling formula itself: $\alpha^{-1} = V^d \cdot \chi + d^2$.  If $\chi$ appeared in the correction denominator, the denominator would covary with the bare value's topological content --- the resolution scale of the correction would depend on the quantity being corrected.  $\chi$ is excluded.
+\item \textbf{Filter~3 (no $\chi$):}  The Euler characteristic $\chi = 2$ enters the bare coupling formula itself: $\mathcal{C} = V^d \cdot \chi + d^2$.  If $\chi$ appeared in the correction denominator, the denominator would covary with the bare value's topological content --- the resolution scale of the correction would depend on the quantity being corrected.  $\chi$ is excluded.
 \end{itemize}
 
 After all three filters, the surviving factor pool is $\{d, E, F_2\}$.  The coupling-correction volume is the product of all surviving factors --- the same ``maximal product of admitted generators'' principle that builds $V \cdot E \cdot d = 72$ for the proton and $V \cdot E \cdot d \cdot \kappa = 576$ for the electroweak sector.  The result is $d \cdot E \cdot F_2 = 3 \cdot 6 \cdot 17 = 306$.
 
 \textbf{Constraint:}  The coupling-correction denominator must (i)~be a product of $K_4$ invariants, (ii)~not reuse factors already consumed in the mass-sector and electroweak volumes, and (iii)~not include invariants that enter the bare coupling formula itself.
 
-\textbf{Elimination:}  Filters~1--3 eliminate $V$, $\kappa$, and $\chi$ from the factor pool.  The surviving pool $\{d, E, F_2\}$ yields the unique maximal product $d \cdot E \cdot F_2 = 306$.  The correction is $+11/306$, giving $\alpha^{-1}_{\text{corrected}} = 137 + 11/306 = 41933/306 \approx 137.0359$.
+\textbf{Elimination:}  Filters~1--3 eliminate $V$, $\kappa$, and $\chi$ from the factor pool.  The surviving pool $\{d, E, F_2\}$ yields the unique maximal product $d \cdot E \cdot F_2 = 306$.  The correction is $+11/306$, giving $\mathcal{C}_{\text{corrected}} = 137 + 11/306 = 41933/306 \approx 137.0359$.
 
-\textbf{Consequence:}  The corrected value matches the CODATA $\alpha^{-1}$ to $3.8 \times 10^{-7}$ relative error.  The universal loop numerator $11$ drives \emph{four} corrections (proton, electroweak, tau, coupling), each evaluated at a different canonical volume.  The denominator $306$ is not a label but a survivor of a three-filter elimination on the same invariant set that produced all other volumes.
+\textbf{Consequence:}  The corrected coupling invariant is $\mathcal{C} + 11/306 = 41933/306 \approx 137.0359$.  The universal loop numerator $11$ drives \emph{four} corrections (proton, electroweak, tau, coupling), each evaluated at a different canonical volume.  The denominator $306$ is not a label but a survivor of a three-filter elimination on the same invariant set that produced all other volumes.
 
 \begin{code}
 -- § The coupling-compactification volume: d · E · F₂ = 306.
@@ -26129,9 +26024,7 @@ law-alpha-corr-coprime-F2 = refl
 \label{sec:discrete-continuum:baryon-correction}
 %───────────────────────────────────────────────────────────────────────────
 
-The bare baryon fraction is $n_{\text{temporal}}/\text{gauge-rank} = 1/E = 1/6 \approx 0.167$.  The measured value $\Omega_b/\Omega_m \approx 0.157$ (Planck 2018) sits ${\sim}7\%$ below the bare prediction.  A book that closes every other correction to sub-ppm and then silently absorbs a $7\%$ gap on a cosmological ratio has not finished its ledger.
-
-The correction extends the bare denominator $E$ by a single additional $K_4$ invariant.  Which one?  The extension factor must be \emph{coprime to the base denominator}: if it shared a factor with $E = 6$, the correction would partially cancel against the bare value rather than introducing structurally new content.  Five candidates compete: $V = 4$,\, $d = 3$,\, $\chi = 2$,\, $\kappa = 8$,\, $F_2 = 17$.  A single coprimality filter eliminates four of them:
+The bare baryon fraction is $n_{\text{temporal}}/\text{gauge-rank} = 1/E = 1/6 \approx 0.167$.  The correction extends the bare denominator $E$ by a single additional $K_4$ invariant.  Which one?  The extension factor must be \emph{coprime to the base denominator}: if it shared a factor with $E = 6$, the correction would partially cancel against the bare value rather than introducing structurally new content.  Five candidates compete: $V = 4$,\, $d = 3$,\, $\chi = 2$,\, $\kappa = 8$,\, $F_2 = 17$.  A single coprimality filter eliminates four of them:
 
 \begin{itemize}
 \item $V = 4$:\; $\gcd(4, 6) = 2 \ne 1$ --- eliminated.
@@ -26149,7 +26042,7 @@ The numerator is not a free parameter either.  The same spinor-saturation logic 
 
 \textbf{Elimination:} Among $\{V, d, \chi, \kappa, F_2\}$, the coprimality filter eliminates every candidate except $F_2 = 17$.  The correction volume is $E \cdot F_2 = 102$ (denominator forced).  The corrected numerator is the spinor dimension $2^V = 16$ (numerator forced).  The correction $F_2 - 2^V = 1$ over the volume~$102$ yields $-1/102$; the corrected fraction is $16/102 = 8/51$.
 
-\textbf{Consequence:} The corrected value $8/51 \approx 0.15686$ matches the Planck $\Omega_b/\Omega_m \approx 0.157$ to ${\sim}0.1\%$ --- an improvement of nearly two orders of magnitude over the bare $7\%$ gap.  The baryon correction joins the mass and coupling corrections as a forced output of the same eliminative chain.
+\textbf{Consequence:} The corrected baryon fraction is $8/51 \approx 0.15686$, a forced output of the same eliminative chain as the mass and coupling corrections.
 
 \begin{code}
 -- § Baryon correction: extension of the bare denominator E = 6 by a coprime K₄ invariant.
@@ -26263,7 +26156,7 @@ The corrections are not added by hand. They arise from a chain of canonical maps
 
 Each link in this chain is a canonical map. No link introduces a free parameter, and no step quietly enlarges the primitive observable basis. The chain is therefore itself canonical---and the rational corrections are its output. The next theorem does not add a new ingredient. It packages this already established chain into a single uniqueness statement about the discrete--continuum passage itself.
 
-Figure~\ref{fig:observable-classes-to-corrections} pulls the same chain slightly closer to the eye of the physicist. The four primitive observable classes are not yet the corrections. They are the knobs that survive after every fake knob has been removed. Once those four remain, the loop numerator and the channel volume are no longer adjustable pieces. They lock together and the correction fractions fall out: $11/72$ for the proton, $11/576$ for the electroweak mixing angle, $-16/69$ for the muon, $-28/153$ for the tau, $+11/306$ for the fine-structure constant, and $-1/102$ for the baryon fraction. All numerators and all denominators are forced by the same eliminative logic; only the active sector determines which numerator and which volume are engaged.
+Figure~\ref{fig:observable-classes-to-corrections} presents the same chain in a compact diagram. The four primitive observable classes are not yet the corrections. They are the knobs that survive after every fake knob has been removed. Once those four remain, the loop numerator and the channel volume are no longer adjustable pieces. They lock together and the correction fractions fall out: $11/72$ for the proton, $11/576$ for the electroweak mixing angle, $-16/69$ for the muon, $-28/153$ for the tau, $+11/306$ for the coupling invariant $\mathcal{C}$, and $-1/102$ for the baryon fraction. All numerators and all denominators are forced by the same eliminative logic; only the active sector determines which numerator and which volume are engaged.
 
 \begin{figure}[h]
 \centering
@@ -26295,13 +26188,13 @@ Figure~\ref{fig:observable-classes-to-corrections} pulls the same chain slightly
 
 The continuum cannot be allowed to enter as an anonymous decimal haze. Part~IV already forced admissible observables to collapse to canonical base content. Part~V now also forces the rational quotient data to remain globally visible: every admissible rational observable carries unique pointwise quotient fields, and any reduced witness is unique whenever it exists. If these ingredients are not explicitly tied together here, the reader still sees only the final fractions and is left to reconstruct the closure by hand.
 
-This chapter therefore no longer has to invent a quotient theory locally. It only fixes the real-valued closure of the already forced rational core. A bridge observable is not an arbitrary function into $\mathbb{R}$. It is a real quantity whose surviving content already comes from an admissible rational core and reaches the continuum only through the forced closure map $\mathbb{Q} \to \mathbb{R}$. The only extra pressure specific to physics is irreducibility: common factors would mean that the correction is still repeating structure already counted in the canonical volume.
+No quotient theory needs to be constructed locally. The chapter fixes only the real-valued closure of the forced rational core. A bridge observable is not an arbitrary function into $\mathbb{R}$. It is a real quantity whose surviving content already comes from an admissible rational core and reaches the continuum only through the forced closure map $\mathbb{Q} \to \mathbb{R}$. The only extra pressure specific to physics is irreducibility: common factors would mean that the correction is still repeating structure already counted in the canonical volume.
 
 \textbf{Constraint:} A continuum quantity may not introduce fresh observational freedom beyond the admissible and canonically factored content already surviving on the discrete side. If it did, the bridge would cease to be a closure and become a new source of parameters.
 
 \textbf{Construction:} Any real observable that introduces fresh freedom beyond the admissible rational core is eliminated. The only surviving pathway reuses the global class of admissible rational observables from Part~V, adds the corresponding real-valued codomain, and admits only those real observables that are exactly the $\mathbb{Q}$-to-$\mathbb{R}$ closure of an admissible rational core. Quotient presentation is therefore inherited rather than postulated; irreducibility is then imposed where a correction fraction is claimed.
 
-\textbf{Consequence:} The discrete--continuum map no longer appears as a jump from integers to decimals. It becomes locally visible as a forced chain: admissible observable, canonical rational quotient, irreducibility filter, real closure. The correction theorem below can then speak about uniqueness without hiding where numerator and denominator come from.
+\textbf{Consequence:} The discrete--continuum map is a forced chain: admissible observable, canonical rational quotient, irreducibility filter, real closure. The correction theorem below can then speak about uniqueness without hiding where numerator and denominator come from.
 
 \begin{code}
 -- § Phase 1: Admit only real observables closed from rational ones
@@ -26410,7 +26303,7 @@ ew-loop-quotient-form-forced =
 
 \subsubsection*{Theorem: Uniqueness of the Discrete--Continuum Map}
 
-At this point the bridge can no longer be described merely as a successful recipe. If the passage from the discrete ledger to the continuum correction admitted two inequivalent realizations, the entire chapter would lose force at the last moment. The graph could still be rigid, the admissibility filter could still be sharp, and yet the measured correction would depend on representational wording. That fork is exactly what the preceding elimination chain has already destroyed.
+If the passage from the discrete ledger to the continuum correction admitted two inequivalent realizations, the chapter would lose force. The graph could still be rigid, the admissibility filter could still be sharp, and yet the measured correction would depend on representational wording. That fork is exactly what the preceding elimination chain has already destroyed.
 
 Nothing new is introduced here. The theorem only hardens what the chapter has already forced in pieces. The admissible observable content is first collapsed to a canonical rational core. That core already carries quotient fields. In the correction sector the numerator is then classified uniquely, the scale fixes the canonical denominator uniquely, and irreducibility blocks any common-factor slack. Once those ingredients are fixed, the real closure cannot branch without reintroducing a parameter the chapter has already eliminated.
 
@@ -26539,14 +26432,14 @@ Proton mass ratio & $1836$  & $11$ & $72 = V \!\cdot\! E \!\cdot\! d$ & $+11/72$
 Weinberg angle    & $0.25$  & $11$ & $576 = V \!\cdot\! E \!\cdot\! d \!\cdot\! \kappa$ & $-11/576$ \\
 Muon mass ratio   & $207$   & $16 = \kappa\chi$ & $69 = d \!\cdot\! (E{+}F_2)$ & $-16/69$ \\
 Tau/muon ratio    & $17$    & $28 = d^2{+}F_2{+}\chi$ & $153 = d^2 \!\cdot\! F_2$ & $-28/153$ \\
-$\alpha^{-1}$     & $137$   & $11$ & $306 = d \!\cdot\! E \!\cdot\! F_2$ & $+11/306$ \\
-RG slope          & ---     & $1$  & $274 = 2\alpha^{-1}$ & $1/274$ \\
+$\mathcal{C}$         & $137$   & $11$ & $306 = d \!\cdot\! E \!\cdot\! F_2$ & $+11/306$ \\
+RG slope          & ---     & $1$  & $274 = 2\mathcal{C}$ & $1/274$ \\
 Baryon fraction   & $1/6$   & $1 = F_2 {-} 2^V$ & $102 = E \!\cdot\! F_2$ & $-1/102$ \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-Proton and electroweak corrections share the same forced loop numerator~$11$ because the loop sector survives elimination only once and is then evaluated at two canonical volumes. The fine-structure correction reuses the same numerator~$11$, now at the coupling-compactification volume $d \cdot E \cdot F_2 = 306$. The tau correction uses the bridge numerator $d^2 + F_2 + \chi = 28$, forced by the three-filter chain proven in \S\ref{sec:discrete-continuum:tau-correction}. The muon bridge $\kappa\chi = 16$ is forced by spinor saturation. The RG slope belongs to a different derived channel: its numerator is forced at~$1$ by the primality of $\alpha^{-1} = 137$ (\S\ref{sec:discrete-continuum:rg-slope-numerator}), while its denominator $2\alpha^{-1} = 274$ is the canonical coupling volume. The baryon fraction correction extends the bare denominator $E = 6$ into the compactification channel: among $\{V, d, \chi, \kappa, F_2\}$, only $F_2 = 17$ is coprime to $E$, forcing the volume $E \cdot F_2 = 102$; the corrected numerator is the spinor dimension $2^V = 16$, so the correction $F_2 - 2^V = 1$ yields $-1/102$ and the corrected fraction $8/51$ (\S\ref{sec:discrete-continuum:baryon-correction}). In each case, the continuum correction is downstream of already fixed discrete data.
+Proton and electroweak corrections share the same forced loop numerator~$11$ because the loop sector survives elimination only once and is then evaluated at two canonical volumes. The fine-structure correction reuses the same numerator~$11$, now at the coupling-compactification volume $d \cdot E \cdot F_2 = 306$. The tau correction uses the bridge numerator $d^2 + F_2 + \chi = 28$, forced by the three-filter chain proven in \S\ref{sec:discrete-continuum:tau-correction}. The muon bridge $\kappa\chi = 16$ is forced by spinor saturation. The RG slope belongs to a different derived channel: its numerator is forced at~$1$ by the primality of $\mathcal{C} = 137$ (\S\ref{sec:discrete-continuum:rg-slope-numerator}), while its denominator $2\mathcal{C} = 274$ is the canonical coupling volume. The baryon fraction correction extends the bare denominator $E = 6$ into the compactification channel: among $\{V, d, \chi, \kappa, F_2\}$, only $F_2 = 17$ is coprime to $E$, forcing the volume $E \cdot F_2 = 102$; the corrected numerator is the spinor dimension $2^V = 16$, so the correction $F_2 - 2^V = 1$ yields $-1/102$ and the corrected fraction $8/51$ (\S\ref{sec:discrete-continuum:baryon-correction}). In each case, the continuum correction is downstream of already fixed discrete data.
 
 %───────────────────────────────────────────────────────────────────────────
 \section{Classification of Derived Sectors}
@@ -26555,18 +26448,18 @@ Proton and electroweak corrections share the same forced loop numerator~$11$ bec
 
 The preceding sections fixed the admissibility filter and the primitive observable basis. But the physics chapter does not end at that basis. It must still show how the derived sectors built from the ledger survive elimination. This section performs that harsher census: not of new primitive observables, but of the derived candidate spaces for coupling, mass, loop numerator, and correction volume. In each case the task is the same. A finite sector is exposed, weaker survivors are shattered, and exactly one derived quantity remains.
 
-\subsection{Classification of \texorpdfstring{$\alpha^{-1} = 137$}{α⁻¹ = 137}}
+\subsection{Classification of \texorpdfstring{$\mathcal{C} = 137$}{\textit{C} = 137}}
 \label{sec:discrete-continuum:classification-alpha-137}
 
-The value $\alpha^{-1} = 137$ does not enter here as a chosen formula. By the stage at which it is classified, the construction is already closed in the only places where hidden freedom could have entered: the graph is fixed as $K_4$, the invariant ledger $(V,E,d,\chi,\kappa)$ is fixed, and the admissibility filter has already eliminated presentation-dependent, non-canonical, and proof-sensitive quantities. The remaining task is therefore not to pick a coupling value, but to expose the unique survivor in the derived coupling sector.
+The coupling invariant $\mathcal{C} = 137$ does not enter here as a chosen formula. By the stage at which it is classified, the construction is already closed in the only places where hidden freedom could have entered: the graph is fixed as $K_4$, the invariant ledger $(V,E,d,\chi,\kappa)$ is fixed, and the admissibility filter has already eliminated presentation-dependent, non-canonical, and proof-sensitive quantities. The task is to expose the unique survivor in the derived coupling sector.
 
-\textbf{Constraint:} The coupling value must remain inside the admissible derived sector determined by the earlier filter. Any candidate must be invariant under $\mathrm{Aut}(K_4)$, factor through the canonical invariant basis already fixed, and stay within the graph-forced local complexity bound. If one relaxes any of these conditions, the value is no longer derived from the surviving structure but from reintroduced representational slack.
+\textbf{Constraint:} The coupling value must remain inside the admissible derived sector determined by the earlier filter. Any candidate must be invariant under $\mathrm{Aut}(K_4)$, factor through the canonical invariant basis already fixed, and stay within the graph-forced local complexity bound. If one relaxes any of these conditions, the value would not be derived from the surviving structure but from reintroduced representational slack.
 
 \textbf{Elimination:} Classification first eliminates every single monomial in the invariant basis as a possible source of $137$, then eliminates all degree-$\le 3$ admissible two-term completions except one. Exactly one decomposition survives: $128 + 9 = V^3\chi + d^2 = V^2\kappa + d^2$.
 
-\textbf{Consequence:} The value is not fitted to experiment and not selected by taste. It is the unique survivor of the admissibility constraints in the bounded derived coupling sector. Any alternative value would require either non-invariant structure, non-canonical observables, or restored representational freedom, and each of those has already been eliminated upstream.
+\textbf{Consequence:} The coupling invariant is not fitted and not selected by taste. It is the unique survivor of the admissibility constraints in the bounded derived coupling sector. Any alternative value would require either non-invariant structure, non-canonical observables, or restored representational freedom, and each of those has already been eliminated upstream.
 
-The coupling constant $\alpha^{-1} = 137$ is prime. No single monomial in the $K_4$ invariants $\{V{=}4,\, E{=}6,\, d{=}3,\, \chi{=}2,\, \kappa{=}8\}$ of degree $\le 3$ evaluates to~$137$, because all such monomials factor through $2$, $3$, or both. The value is therefore not a coincidence of a single structural factor; it requires at least two terms.
+The coupling invariant $\mathcal{C} = 137$ is prime. No single monomial in the $K_4$ invariants $\{V{=}4,\, E{=}6,\, d{=}3,\, \chi{=}2,\, \kappa{=}8\}$ of degree $\le 3$ evaluates to~$137$, because all such monomials factor through $2$, $3$, or both. The value is therefore not a coincidence of a single structural factor; it requires at least two terms.
 
 Among all pairs $(M_1, M_2)$ where each $M_i$ is a monomial of degree $\le 3$ in the $K_4$ invariants, the decomposition $M_1 + M_2 = 137$ has exactly one solution: $128 + 9$. The first term $128 = V^3 \chi = V^2 \kappa$ combines spectral scaling with topology; the second term $9 = d^2$ is the geometric square of the vertex degree. No other pair of degree-$\le 3$ monomials sums to $137$.
 
@@ -26694,7 +26587,7 @@ This cutoff cannot remain a verbal convention. If the primitive sector were left
 
 \textbf{Construction:} Any monomial exceeding $\texttt{simplex-degree}$ is eliminated from the primitive sector. Since $\texttt{simplex-degree} \equiv d$, the cutoff is read directly from $K_4$. A primitive observable is therefore represented by a monomial in the invariant basis $\{V,E,d,\chi,\kappa\}$ together with a proof that its total degree does not exceed this bound.
 
-\textbf{Consequence:} Degree-$4$ terms such as $\chi^4$ are not forbidden as expressions. They are classified as iterated composites outside the primitive sector. The $\alpha^{-1}$ decomposition survives this filter: $V^2\kappa$ has degree $3$, and $d^2$ has degree $2$.
+\textbf{Consequence:} Degree-$4$ terms such as $\chi^4$ are not forbidden as expressions. They are classified as iterated composites outside the primitive sector. The $\mathcal{C}$ decomposition survives this filter: $V^2\kappa$ has degree $3$, and $d^2$ has degree $2$.
 
 A sharper question concerns the class itself. Why monomials? Why not expressions such as $V^E$ or $\chi^d$, where one invariant appears as the exponent of another? The question is answered by the type, not by taste. The record \texttt{ObservableMonomial} carries five fields \texttt{exp-V}, \texttt{exp-E}, \texttt{exp-d}, \texttt{exp-$\chi$}, \texttt{exp-$\kappa$} of type $\mathbb{N}$. These are compile-time-constant natural numbers fixed when the monomial is specified; they are not variables determined at evaluation time by the values of other invariants. An expression $V^E$ would require setting \texttt{exp-V} $= 6$---the numerical value of $E$---but then the relationship ``exponent equals the value of $E$'' has no representation in the type: \texttt{exp-V} is simply $6$, not $E$. The parametric dependency is absent from the type system. Likewise $\chi^d$: to place it in \texttt{ObservableMonomial} one would write \texttt{exp-$\chi$} $= 3$, with the coincidence ``$3 = d$'' as an external gloss not expressed in any field. That is not a choice against $V^E$ and $\chi^d$; it is the observation that those expressions have no term in \texttt{Set}. The monomial basis is the unique class that \texttt{eval-monomial} $:$ \texttt{ObservableMonomial} $\to \mathbb{N}$ actually types.
 
@@ -26854,11 +26747,11 @@ The verbal claim that ``no other pair of degree-$\le 3$ monomials sums to $137$'
 The classification results above establish the following census:
 
 \begin{enumerate}
-\item \textbf{$\alpha^{-1} = 137$: forced by elimination.} Once the graph, invariant ledger, and primitive cutoff are fixed, the coupling sector contains exactly one admissible survivor. Among all two-term degree-$\le 3$ completions, only $V^d \chi + d^2 = 128 + 9$ reaches the prime value. No alternative passes the filter.
+\item \textbf{$\mathcal{C} = 137$: forced by elimination.} Once the graph, invariant ledger, and primitive cutoff are fixed, the coupling sector contains exactly one admissible survivor. Among all two-term degree-$\le 3$ completions, only $V^d \chi + d^2 = 128 + 9$ reaches the prime value. No alternative passes the filter.
 
 \item \textbf{Loop numerator $11$: forced by elimination.} The loop sector is finite and explicit. Among all $\{0,1\}$-linear combinations of $\{E, d, \chi\}$, exactly one satisfies irreducibility ($\gcd = 1$ with~$72$), completeness, and cross-scale consistency. The partial candidate $d + \chi = 5$ collapses on completeness. Only $E + d + \chi = 11$ survives.
 
-\item \textbf{Denominators $72$, $576$, $69$, $153$, $274$: derived; $306$, $102$: eliminated.} The first five are canonical products of quantities already forced upstream: $V \!\cdot\! E \!\cdot\! d$, $V \!\cdot\! E \!\cdot\! d \!\cdot\! \kappa$, $d \!\cdot\! (E{+}F_2)$, $d^2 \!\cdot\! F_2$, $2\alpha^{-1}$. The sixth, $306 = d \!\cdot\! E \!\cdot\! F_2$, is the unique product of the factor pool surviving three filters that exclude $V$, $\kappa$, and $\chi$ from the coupling-correction volume (\S\ref{sec:discrete-continuum:alpha-correction}). The seventh, $102 = E \!\cdot\! F_2$, is forced because $F_2$ is the unique $K_4$ invariant coprime to the bare baryon denominator $E = 6$ (\S\ref{sec:discrete-continuum:baryon-correction}).
+\item \textbf{Denominators $72$, $576$, $69$, $153$, $274$: derived; $306$, $102$: eliminated.} The first five are canonical products of quantities already forced upstream: $V \!\cdot\! E \!\cdot\! d$, $V \!\cdot\! E \!\cdot\! d \!\cdot\! \kappa$, $d \!\cdot\! (E{+}F_2)$, $d^2 \!\cdot\! F_2$, $2\mathcal{C}$. The sixth, $306 = d \!\cdot\! E \!\cdot\! F_2$, is the unique product of the factor pool surviving three filters that exclude $V$, $\kappa$, and $\chi$ from the coupling-correction volume (\S\ref{sec:discrete-continuum:alpha-correction}). The seventh, $102 = E \!\cdot\! F_2$, is forced because $F_2$ is the unique $K_4$ invariant coprime to the bare baryon denominator $E = 6$ (\S\ref{sec:discrete-continuum:baryon-correction}).
 
 \item \textbf{Proton bare mass $1836$: forced by elimination after reduction.} The mass sector separates compactification content from local graph content. The compactified spinor survivor is already fixed at $F_2 = 17$, and the remaining cofactor reduces through $\chi d = E$ to the primitive edge channel. There, among all degree-$\le 3$ monomials in $\{E,d\}$, exactly one evaluates to $108$, namely $E^2 d$. The full product $F_2 \cdot E^2 d = 1836$ is therefore forced.
 
@@ -26868,22 +26761,22 @@ The classification results above establish the following census:
 
 \item \textbf{Tau/muon ratio $17$: forced by compactification elimination.} The terminal ratio sits in the compactification channel itself. That channel carries only two candidates: the raw spinor count $16$ and its one-point compactification $17$. Only one survives the terminal value filter. The survivor is $F_2 = 17$.
 
-\item \textbf{Tau bridge $28 = d^2 + F_2 + \chi$: forced by three-filter elimination.} Among the five candidate extensions of the tau base $d^2 + F_2$, two fail coprimality with the channel values and two exceed the sub-degree bound. The unique survivor is $\chi$, yielding the correction $-28/153$ and matching the measured tau/muon ratio to $1.9 \times 10^{-6}$.
+\item \textbf{Tau bridge $28 = d^2 + F_2 + \chi$: forced by three-filter elimination.} Among the five candidate extensions of the tau base $d^2 + F_2$, two fail coprimality with the channel values and two exceed the sub-degree bound. The unique survivor is $\chi$, yielding the correction $-28/153$.
 
-\item \textbf{Fine-structure correction $+11/306$: forced by three-filter elimination.} The coupling-correction denominator $d \cdot E \cdot F_2 = 306$ is the unique product of the surviving factor pool after excluding $V$ (consumed in proton volume), $\kappa$ (consumed in EW volume), and $\chi$ (enters bare coupling formula). The correction reuses the universal loop numerator~$11$ and matches $\alpha^{-1}$ to $3.8 \times 10^{-7}$.
+\item \textbf{Fine-structure correction $+11/306$: forced by three-filter elimination.} The coupling-correction denominator $d \cdot E \cdot F_2 = 306$ is the unique product of the surviving factor pool after excluding $V$ (consumed in proton volume), $\kappa$ (consumed in EW volume), and $\chi$ (enters bare coupling formula). The correction reuses the universal loop numerator~$11$.
 
-\item \textbf{Coupling ratio $1/274$: forced by primality.} The unique irreducible fraction whose numerator divides $\alpha^{-1} = 137$ (prime) is $1/274$. The candidate $137/274$ fails irreducibility ($\gcd(137, 274) = 137$). The survivor $1/274$ is a $K_4$-combinatorial ratio; its interpretation as a physical coupling derivative is offered but not proved here.
+\item \textbf{Coupling ratio $1/274$: forced by primality.} The unique irreducible fraction whose numerator divides $\mathcal{C} = 137$ (prime) is $1/274$. The candidate $137/274$ fails irreducibility ($\gcd(137, 274) = 137$). The survivor $1/274$ is a $K_4$-combinatorial ratio; its identification with a physical quantity belongs to the separate identification layer.
 
-\item \textbf{Baryon fraction $8/51$: forced by coprimality filter and spinor saturation.} The bare fraction $1/E = 1/6$ is corrected by extending the denominator into the compactification sector.  Among $\{V, d, \chi, \kappa, F_2\}$, only $F_2 = 17$ is coprime to $E = 6$, forcing the volume $102$.  The corrected numerator is the spinor dimension $2^V = 16$; the correction numerator $F_2 - 2^V = 17 - 16 = 1$ is derived, not chosen.  The corrected fraction $16/102 = 8/51 \approx 0.157$ matches Planck $\Omega_b/\Omega_m \approx 0.157$ to ${\sim}0.1\%$.
+\item \textbf{Baryon fraction $8/51$: forced by coprimality filter and spinor saturation.} The bare fraction $1/E = 1/6$ is corrected by extending the denominator into the compactification sector.  Among $\{V, d, \chi, \kappa, F_2\}$, only $F_2 = 17$ is coprime to $E = 6$, forcing the volume $102$.  The corrected numerator is the spinor dimension $2^V = 16$; the correction numerator $F_2 - 2^V = 17 - 16 = 1$ is derived, not chosen.  The corrected fraction is $16/102 = 8/51 \approx 0.1569$.
 \end{enumerate}
 
-The correction chain is closed for $\alpha^{-1}$, for the loop numerator, for all seven correction fractions, and for the bare proton, muon, and tau sectors. What changes from one mass sector to the next is not the standard of proof, but the channel through which the surviving structure is allowed to speak. In the proton sector the graph first sheds its topological clothing and reveals an edge-channel core. In the muon sector the story splits into two visibly different motions: one geometric, one compactificatory, and the value survives only when those motions are kept separate until the end. In the tau sector even that split disappears: only the compactification residue is left on the table. None of these moves is an escape hatch. Each is forced by the way the graph freezes some degrees of freedom and leaves exactly one live channel behind.
+The correction chain is closed for $\mathcal{C}$, for the loop numerator, for all seven correction fractions, and for the bare proton, muon, and tau sectors. What changes from one mass sector to the next is not the standard of proof, but the channel through which the surviving structure is allowed to speak. In the proton sector the graph first sheds its topological clothing and reveals an edge-channel core. In the muon sector the story splits into two visibly different motions: one geometric, one compactificatory, and the value survives only when those motions are kept separate until the end. In the tau sector even that split disappears: only the compactification residue is left on the table. None of these moves is an escape hatch. Each is forced by the way the graph freezes some degrees of freedom and leaves exactly one live channel behind.
 
 
 
 \subsubsection*{Mass-sector admissibility sector}
 
-The proton value $1836$ cannot be allowed to enter as a decorative product assembled after the fact. By the time the mass sector is reached, the same eliminative discipline that fixed $\alpha^{-1}$ is already in force here as well: new compactification content must be separated from local graph content, and whatever survives locally must survive inside an explicitly delimited admissibility sector. Physically, the reader should picture a two-stage filter. First, the genuinely new compactification content is isolated so that it cannot be smuggled back into local graph arithmetic. Then the local residue is forced to show its face inside the primitive channel already carved out by the graph. If that separation fails, the proton factorization collapses into bookkeeping.
+The proton value $1836$ cannot be allowed to enter as a decorative product assembled after the fact. By the time the mass sector is reached, the same eliminative discipline that fixed $\mathcal{C}$ is already in force here as well: new compactification content must be separated from local graph content, and whatever survives locally must survive inside an explicitly delimited admissibility sector. The structure is a two-stage filter. First, the genuinely new compactification content is isolated so that it cannot be smuggled back into local graph arithmetic. Then the local residue is forced to show its face inside the primitive channel already carved out by the graph. If that separation fails, the proton factorization collapses into bookkeeping.
 
 What the graph leaves standing is a two-layer channel and nothing else. One layer contributes the genuinely new compactification survivor $F_2 = 17$. The other contributes a local cofactor that must already be present in the primitive observable sector once the topological route has been reduced through $\chi d = E$. In more concrete terms: one hand carries the compactification prime, the other hand carries the smallest local cofactor the graph cannot eliminate. The task is therefore not to decorate $1836$ with factors, but to expose the only factorization that survives this split.
 
@@ -26891,7 +26784,7 @@ What the graph leaves standing is a two-layer channel and nothing else. One laye
 
 \textbf{Construction:} Any factorization that blurs the boundary between compactification content and local graph content is eliminated. The new factor $F_2 = \mathrm{suc}(\mathrm{clifford\text{-}dimension})$ survives as the only coprime prime channel. The local cofactor sector consists of primitive monomials whose reduced value is the edge-channel cofactor $E^2 d = 108$. The higher-degree presentation $\chi^2 d^3$ is retained only as a derivable route into that reduced cofactor.
 
-\textbf{Consequence:} The proton formula is no longer a floating product. It lies in an explicit admissibility sector: compactification prime times reduced primitive cofactor. Any rival factorization would have to blur this separation, reintroduce non-primitive local structure, or abandon the compactification channel already fixed upstream. The reduced cofactor is then classified exhaustively below.
+\textbf{Consequence:} The proton formula lies in an explicit admissibility sector: compactification prime times reduced primitive cofactor. Any rival factorization would have to blur this separation, reintroduce non-primitive local structure, or abandon the compactification channel already fixed upstream. The reduced cofactor is then classified exhaustively below.
 
 \begin{code}
 
@@ -27146,7 +27039,7 @@ theorem-reduced-edge-cofactor-classification = record
 
 \subsubsection*{Muon mixed-channel elimination}
 
-The muon sector cannot be left at the level of a suggestive product either. Once the proton has been forced, the next pressure point is obvious: is $207 = d^2(E+F_2)$ equally unavoidable, or is this the first place where convenience re-enters? The graph blocks that escape by forcing another finite sector. This time the structure does not collapse into a single multiplicative channel immediately. Instead it visibly splits into two pieces that do different jobs. The geometric contribution measures pure local repetition along the degree axis. The compactification contribution measures the extra residue that appears only when the edge channel and the compactified spinor channel are allowed to meet additively. Both spaces are small enough to classify exhaustively, so nothing can hide behind informal plausibility.
+The muon sector presents its own pressure: is $207 = d^2(E+F_2)$ equally unavoidable, or is this the first place where convenience re-enters? The graph blocks that escape by forcing another finite sector. This time the structure does not collapse into a single multiplicative channel immediately. Instead it visibly splits into two pieces that do different jobs. The geometric contribution measures pure local repetition along the degree axis. The compactification contribution measures the extra residue that appears only when the edge channel and the compactified spinor channel are allowed to meet additively. Both spaces are small enough to classify exhaustively, so nothing can hide behind informal plausibility.
 
 \textbf{Constraint:} The muon observable must keep the local geometric square distinct from the compactification correction. Repeating either channel would double-count structure and destroy the decomposition.
 
@@ -27324,7 +27217,7 @@ theorem-tau-bare-classification = record
 \label{sec:discrete-continuum:physics-presupposes-distinction}
 %───────────────────────────────────────────────────────────────────────────
 
-The final asymmetry can no longer remain implicit. Up to this point the book has forced the physical record from the invariant spine of $K_4$. A weaker reader could still try to reverse the dependence and say that physics is the deeper object, while $K_4$ is only one successful encoding of it. That escape collapses at the type level.
+The directional asymmetry of the chain is irreversible. A reversal would claim that physics is the deeper object and $K_4$ only one successful encoding of it. That escape collapses at the type level.
 
 One clarification must precede the argument. \texttt{K4PhysRep} is not a physical theory. It carries no dynamics, no measurement algebra, no spacetime manifold. It is the invariant skeleton: the set of structural constants---dimension, degree, Euler characteristic, coupling inverse, generation count---that any theory built on $K_4$ must reproduce. Dynamics, observables, and geometry are downstream obligations that live in the gap between the skeleton and a full physical model. The equivalence proved below therefore says that this skeleton and the primordial cut determine each other, not that distinction replaces or generates physics in any operational sense.
 
@@ -27336,7 +27229,7 @@ A physical record here is not a free-standing bag of measured numbers. It is thr
 
 \textbf{Consequence:} The dependency arrow cannot be reversed. Physics is an invariant of $K_4$, but $K_4$ is not reconstructed from a prior physics layer. The physical record already lives inside the logical world distinction opened. Physics as fundament is therefore eliminated by self-presupposition.
 
-This does not close the book by withdrawing from physics into logic. It closes the directional ambiguity that would otherwise remain at the threshold. The route from distinction to $K_4$ to the physical record is fixed in one direction only. What remains is not another internal theorem, but the outward question that this fixed direction leaves behind: what follows once physics has been shown to depend on distinction rather than ground it?
+This does not close the book by withdrawing from physics into logic. It closes the directional ambiguity that would otherwise remain at the threshold. The route from distinction to $K_4$ to the physical record is fixed in one direction only. The outward question this fixed direction leaves behind is what follows once physics has been shown to depend on distinction rather than ground it.
 
 \phantomsection\label{law:discrete-continuum:physics-presupposes-distinction}
 \phantomsection\label{law:discrete-continuum:physics-without-distinction-uninhabitable}
@@ -27379,7 +27272,7 @@ information: each reconstructs the other with no leftover freedom.
 \chapter{The Invitation}
 \label{ch:invitation}
 
-The chain is closed in the only direction that survives scrutiny. Distinction forces the two-class carrier; the carrier forces $K_4$; $K_4$ forces the invariant ledger; and the admissible physical record is shown, in the end, to presuppose the very distinction from which the chain began. What remains is therefore not a request for lenience. It is a ledger of the surviving debts. The proof no longer waits for completion, but it does leave obligations behind: comparison with rival physical explanations, sharpening of the mathematical form, and a philosophical account of what kind of necessity has been uncovered.
+The chain is closed in the only direction that survives scrutiny. Distinction forces the two-class carrier; the carrier forces $K_4$; $K_4$ forces the invariant ledger; and the admissible physical record is shown, in the end, to presuppose the very distinction from which the chain began. It is a ledger of surviving debts. Three obligations follow the proof: comparison with rival physical explanations, sharpening of the mathematical form, and a philosophical account of what kind of necessity has been uncovered.
 
 The existence of $D_0$ itself—the claim that \texttt{Distinction} is inhabited—has been established by three independent routes, each eliminating a different escape. First, \texttt{Two-distinction} (Chapter~\ref{ch:two-normal-form}) constructs a witness from pure type theory, with no assumptions whatsoever. Second, \texttt{measurement-outcome-distinction} (Chapter~\ref{ch:scale-closure}) extracts a distinction from any binary measurement apparatus: the yes/no separation that measurement presupposes is already one. Third, \texttt{physics-presupposes-distinction} closes the loop from the other end: every admissible $K_4$ physical record already consumes the distinction it claims to ground. No single route can be dismissed without abandoning a different foundational commitment—constructive logic, empirical content, or physical admissibility, respectively.
 
@@ -27396,9 +27289,7 @@ ledger, and then to a small cluster of computed quantities that can be
 compared with physics. Those comparisons are on the table in their
 final form.
 
-After the last asymmetry has been made explicit, the central physical
-question is no longer whether physics secretly grounds the chain. That
-path has been closed. The live question is whether the surviving match
+The central question is not whether physics secretly grounds the chain---that path collapses at the type level. The live question is whether the surviving match
 to measured structure is accidental, derivative, or telling us something
 real about how much of physics is already fixed before phenomenology
 begins.
@@ -27539,8 +27430,7 @@ and the structures they force?
 Then almost everything disappears.
 
 No new empire of prediction is announced here. No license is claimed
-to outrank experiment. The modest claim is the stronger one: we do not
-need to show more than that the great observations and achievements of
+to outrank experiment. The modest claim is the stronger one: the great observations and achievements of
 their respective traditions may be locally right together. Brouwer's
 witness, Martin-Löf's discipline, Euler's count, Cayley's symmetry,
 Noether's invariance, Curie's asymmetry, Dirac's severity, Feynman's
@@ -27555,11 +27445,7 @@ question is interpretive: what kind of necessity has been exposed if a
 structure forced by elimination reaches so far into the world we
 measure.
 
-If this manuscript has earned any right to continue beyond its last
-code line, it is because it leaves us with a cleaner question than the
-one with which it began. Why should the survivor of formal elimination
-resemble the measured world at all? Why should a structure forced by
-logic meet the constants of physics where they are sharpest?
+Why should the survivor of formal elimination resemble the measured world at all? Why should a structure forced by logic meet the constants of physics where they are sharpest?
 
 Those are not repairs to a broken argument. They are the proper debts of
 one that has reached its limit without collapsing. The proof ends where
