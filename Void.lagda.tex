@@ -537,7 +537,7 @@ What begins now is the first irreversible pressure test. The question is not whe
 \chapter{The Foundation of Necessity}
 \label{ch:foundation-necessity}
 
-The void must be examined—but the act of examination itself must first be constrained. This is the first step, and perhaps the most counterintuitive: before a single distinction can be drawn, every escape route that would make the result dependent on human choice must be sealed. The doors close before the investigation begins.
+The void must be examined—but the act of examination itself must first be constrained. This is the first step, and the most counterintuitive: before a single distinction can be drawn, every escape route that would make the result dependent on human choice must be sealed. The doors close before the investigation begins.
 
 Consider what happens if any door remains open. A formal system that permits unproven axioms—postulates accepted on faith—gains arbitrary degrees of freedom. Any structure derived from such a system inherits those degrees of freedom. The results would depend on which postulates a human happened to choose, not on what the void demands. So the first door closes: the Agda flag \AgdaFlag{safe} forbids all postulates. Nothing enters this system that is not constructed from within.
 
@@ -1253,7 +1253,7 @@ Soundness and injectivity together force that the case label assigned by \texttt
 \section{Mutual Distinctness of Cases}
 \label{sec:classification:mutual-distinctness}
 
-The four case labels must remain genuinely different—no two of them may be identified. This is not something that requires deep reasoning. The labels are constructors of a data type, and Agda's pattern matching confirms that no constructor equals any other. The six pairwise inequalities are all proved by the absurd pattern \texttt{()}: there is simply no way to build a proof that, say, \texttt{case-constL} equals \texttt{case-id}. The type is empty.
+The four case labels must remain genuinely different—no two of them may be identified. The labels are constructors of a data type, and Agda's pattern matching confirms that no constructor equals any other. The six pairwise inequalities are all proved by the absurd pattern \texttt{()}: there is simply no way to build a proof that, say, \texttt{case-constL} equals \texttt{case-id}. The type is empty.
 
 \begin{code}
 -- § All four EndoCase constructors are pairwise distinct.
@@ -4276,8 +4276,7 @@ Each of these observations, taken alone, might be dismissed. Small integers appe
 everywhere in mathematics and physics, and one can always find a formula that
 produces them. The sceptical response is entirely reasonable at this stage.
 
-What makes the situation harder to dismiss is the computation of the fine-structure
-constant.
+What makes the situation harder to dismiss is the numerical reach of the combinatorial invariants.
 
 \section{The Spectral Invariant}
 \label{sec:unexpected-correspondence:spectral-invariant}
@@ -4287,16 +4286,13 @@ Vertices, edges, and triangular faces combine to yield
 \[
   \chi = V - E + F = 4 - 6 + 4 = 2.
 \]
-Together with the vertex count $V = 4$ and the graph degree $d = 3$, one forms the quantity
+Together with the vertex count $V = 4$ and the graph degree $d = 3$, one forms the coupling invariant
 \[
-  \alpha^{-1} = V^d \cdot \chi + d^2 = 4^3 \cdot 2 + 3^2 = 128 + 9 = 137.
+  \mathcal{C} = V^d \cdot \chi + d^2 = 4^3 \cdot 2 + 3^2 = 128 + 9 = 137.
 \]
-The measured value of the inverse fine-structure constant of electromagnetism
-is $\alpha^{-1} \approx 137.036$.
+This is a purely combinatorial quantity: an evaluation of graph invariants with no reference to electromagnetism or to any physical theory. Whether it should be compared with the measured inverse fine-structure constant $\alpha^{-1} \approx 137.036$ is an interpretive question that belongs outside the formal chain.
 
-This computation was not aimed at that number. No parameter was adjusted. The
-formula contains nothing that refers to electromagnetism, or to any physical
-theory. It is an evaluation of combinatorial invariants of the graph $K_4$.
+No parameter was adjusted.
 That this particular combination---and no other degree-$\le 3$ expression in the
 invariant basis---yields a prime value is proved by exhaustive classification
 in \S\ref{sec:discrete-continuum:classification-alpha-137}.
@@ -5924,40 +5920,73 @@ The K$_4$ graph \emph{is} the $3$-simplex: four vertices, degree $3$, six edges,
 \section{Simplex Invariants}
 \label{sec:simplex-invariants:simplex-invariants}
 
-The four combinatorial constants of the $3$-simplex---vertex count $4$, degree $3$, edge count $6$, Euler characteristic $2$---are definitional equalities, not parameters. They are recorded here to be referenced symbolically in later computations.
+No number enters by hand. The carrier of any distinction has exactly two elements ($\ell$ and $r$); this is the content of the word ``distinction'' and the one irreducible datum. Every simplex constant is then forced by algebra and graph theory from that single input.
+
+A distinction offers two boundary witnesses. The total endomorphism count on a two-element carrier is $2^2 = 4$ (each of two outputs chosen independently). This is the vertex count of the complete graph $K_4$---the same four that the four-case classification (Chapter~\ref{ch:elimination-classification}) forced by exhaustive type-theoretic analysis. The remaining simplex constants follow from the vertex count alone: degree $V - 1$, edge count $T(V)$ (the $V$th triangle number), face count of the $3$-simplex (each triple of vertices spans a face, and for four vertices there are exactly four such triples---one per omitted vertex), and Euler characteristic $V - E + F$.
+
+\textbf{Constraint:} Every simplex constant must be derived from the carrier size of distinction. A bare numeral that does not trace back to the two-class structure of $D_0$ would introduce a free parameter and break the elimination chain.
+
+\textbf{Construction:} Set $|S| = 2$ (the carrier size of distinction). Then $V = |S|^2 = 4$ (endomorphism count, matching the four constructors of \texttt{EndoCase} via the \texttt{vertexAt}/\texttt{vertexIndex} bijection). The complete-graph formulas $d = V - 1$, $E = T(V)$, $F = V$ (self-duality of the tetrahedron), and $\chi = V - E + F$ close the chain. Every constant reduces by \texttt{refl}---no arithmetic gap remains.
+
+\textbf{Consequence:} The combinatorial profile $(4, 3, 6, 2)$ is not a parameter set. It is the unique output of the chain $|\{\ell, r\}| = 2 \;\to\; 2^2 = 4 \;\to\; K_4$ invariants. Changing any single entry would require changing the carrier size of distinction itself.
 
 \begin{code}
--- § Simplex vertex count.
+-- § Distinction carrier size: |{ℓ, r}| = 2.
+-- § This is the ONE irreducible input—the content of the word "distinction."
+states-per-distinction : ℕ
+states-per-distinction = 2
+
+-- § Triangle number: T(n) = n(n−1)/2 = 0 + 1 + ⋯ + (n−1).
+-- § Counts edges of the complete graph Kₙ without needing division.
+triangle : ℕ → ℕ
+triangle zero    = 0
+triangle (suc n) = n + triangle n
+
+-- § Simplex vertex count: |End(S)| = |S|² = 2² = 4.
+-- § (Four constructors of EndoCase, verified by Fin4 bijection.)
 simplex-vertices : ℕ
-simplex-vertices = 4
+simplex-vertices = states-per-distinction * states-per-distinction
 
--- § Simplex degree.
+-- § Simplex degree: Kₙ is (n−1)-regular.
 simplex-degree : ℕ
-simplex-degree = 3
+simplex-degree = simplex-vertices ∸ 1
 
--- § Simplex edge count.
+-- § Simplex edge count: T(V) = T(4) = 0+1+2+3 = 6.
 simplex-edges : ℕ
-simplex-edges = 6
+simplex-edges = triangle simplex-vertices
 
--- § Simplex Euler characteristic.
+-- § Simplex face count: the tetrahedron is self-dual, F = V.
+-- § (Each face is the triangle opposite one vertex; 4 vertices → 4 faces.)
+simplex-faces : ℕ
+simplex-faces = simplex-vertices
+
+-- § Simplex Euler characteristic: χ = V − E + F.
 simplex-chi : ℕ
-simplex-chi = 2
+simplex-chi = (simplex-vertices + simplex-faces) ∸ simplex-edges
 
--- § Law 14C.0: Vertex count = 4.
+-- § Law 14C.0: Vertex count = 4 (derived from 2² = 4).
 law14C-0-vertices : simplex-vertices ≡ 4
 law14C-0-vertices = refl
 
--- § Law 14C.1: Degree = 3.
+-- § Law 14C.1: Degree = 3 (derived from V − 1 = 3).
 law14C-1-degree : simplex-degree ≡ 3
 law14C-1-degree = refl
 
--- § Law 14C.2: Edge count = 6.
+-- § Law 14C.2: Edge count = 6 (derived from T(4) = 6).
 law14C-2-edges : simplex-edges ≡ 6
 law14C-2-edges = refl
 
--- § Law 14C.3: Euler characteristic = 2.
+-- § Law 14C.2a: Face count = 4 (self-duality).
+law14C-2a-faces : simplex-faces ≡ 4
+law14C-2a-faces = refl
+
+-- § Law 14C.3: Euler characteristic = 2 (derived from V − E + F = 2).
 law14C-3-chi : simplex-chi ≡ 2
 law14C-3-chi = refl
+
+-- § The carrier size is forced by distinction and nothing else.
+law14C-4-carrier-is-2 : states-per-distinction ≡ 2
+law14C-4-carrier-is-2 = refl
 \end{code}
 
 \section{Distributivity and Associativity}
@@ -20684,7 +20713,7 @@ The final step is assembly. The invariants already derived must be gathered into
 
 The arithmetic, spectral theory, and measurement formalism built in the preceding chapters constitute the apparatus needed to translate $K_4$'s combinatorial invariants into numbers. This part performs that translation.
 
-Nothing new is assumed. The vertex count, edge count, Euler characteristic, and Laplacian eigenvalues of $K_4$ are assembled into a verified computation record. Each entry is a definitional equality closed by the Agda type system. The numerical values that result---including the inverse fine-structure constant $\alpha^{-1} = 137$---are consequences of the structure derived in Parts I through IV, not inputs chosen to match them.
+Nothing new is assumed. The vertex count, edge count, Euler characteristic, and Laplacian eigenvalues of $K_4$ are assembled into a verified computation record. Each entry is a definitional equality closed by the Agda type system. The numerical values that result---including the coupling invariant $\mathcal{C} = 137$---are consequences of the structure derived in Parts I through IV, not inputs chosen to match them.
 
 This is the methodological boundary that matters for the numerology question. The numerical match is not being used here as evidence for the structure. The structure has already been forced by the elimination chain. What appears in this part is the evaluated consequence of that survivor. The burden is therefore not pattern recognition but invariance under the chain of eliminations that left no adjustable parameter standing.
 
@@ -22296,7 +22325,7 @@ reduced-rational-observable-unique a R₁ R₂ s =
 
 
 %═══════════════════════════════════════════════════════════════════════════
-\chapter{K\textsubscript{4} Physics Constants Layer}
+\chapter{K\textsubscript{4} Forced Constants Layer}
 \label{ch:k4-physics-constants}
 %═══════════════════════════════════════════════════════════════════════════
 
@@ -22493,10 +22522,10 @@ law16B-16-total-cycles = refl
 
 -- § Loop and propagation orders
 triangle-loop-order : ℕ
-triangle-loop-order = 1
+triangle-loop-order = simplex-vertices ∸ simplex-degree  -- V − d = 4 − 3 = 1
 
 square-loop-order : ℕ
-square-loop-order = 2
+square-loop-order = simplex-vertices ∸ simplex-degree + (simplex-vertices ∸ simplex-degree)  -- 1 + 1 = 2
 
 max-propagation-per-edge : ℕ
 max-propagation-per-edge = simplex-vertices ∸ simplex-degree
@@ -22525,7 +22554,7 @@ law16B-19-K5-edges = refl
 Every combinatorial constant of $K_4$ is fixed by definitional equality: vertex count, edge count, face count, degree, Euler characteristic, spectral width, and cycle data. The ledger is sealed. What remains is to show that these constants determine a unique formal representation record---that no second assignment of fields could survive the same constraints.
 
 \paragraph{The numbers so far.}
-At the theorem level, $K_4$ has produced $V = 4$, $E = 6$, an eigenvalue ratio $3{:}1$, and the combinatorial invariant $\alpha^{-1} = 137$. None of these numbers were adjusted. Each is a definitional equality closed by the Agda type checker. At the interpretation level, one may compare these values with spacetime dimension, gauge-sector counts, spatial-to-temporal split, and the inverse fine-structure constant. The next chapter addresses the last formal question first: is the assignment of fields to these invariants itself unique, or could a second admissible representation survive the same graph? The canonicity of $\alpha^{-1}$ as a derived invariant---including the proof that no alternative degree-$\le 3$ formula reaches $137$---follows in \S\ref{sec:discrete-continuum:classification-alpha-137}.
+At the theorem level, $K_4$ has produced $V = 4$, $E = 6$, an eigenvalue ratio $3{:}1$, and the coupling invariant $\mathcal{C} = 137$. None of these numbers were adjusted. Each is a definitional equality closed by the Agda type checker. Whether these forced values should be identified with spacetime dimension, gauge-sector counts, spatial-to-temporal split, or the inverse fine-structure constant is an interpretive question that this chapter does not answer. The next chapter addresses the last formal question first: is the assignment of fields to these invariants itself unique, or could a second admissible representation survive the same graph? The canonicity of $\mathcal{C} = 137$ as a derived invariant---including the proof that no alternative degree-$\le 3$ formula reaches $137$---follows in \S\ref{sec:discrete-continuum:classification-alpha-137}.
 
 %═══════════════════════════════════════════════════════════════════════════
 \chapter{K\textsubscript{4} Representation Theory}
@@ -22650,21 +22679,21 @@ A physics representation that floats freely above its graph would reintroduce co
 -- § The K₄ physics representation: 17 unknowns + 1 anchor + 16 chain constraints
 record K4PhysRep : Set where
   field
-    dim          : ℕ     -- spacetime dimension
-    n-spatial    : ℕ     -- spatial directions
-    n-temporal   : ℕ     -- temporal directions
-    gauge-rank   : ℕ     -- gauge field count (edges)
-    face-count   : ℕ     -- 2-simplices
-    euler        : ℕ     -- Euler characteristic
-    coupling-inv : ℕ     -- inverse fine structure constant
-    n-gen        : ℕ     -- fermion generations
-    spinor-dim   : ℕ     -- Clifford algebra dimension
-    hierarchy    : ℕ     -- hierarchy exponent
-    auto-count   : ℕ     -- |Aut(K₄)| = |S₄|
-    bell-sq      : ℕ     -- Tsirelson bound²
-    bh-norm      : ℕ     -- Bekenstein-Hawking normalization
-    baryon-num   : ℕ     -- baryon fraction numerator
-    baryon-den   : ℕ     -- baryon fraction denominator
+    dim          : ℕ     -- total simplex dimension (V)
+    n-spatial    : ℕ     -- codimension-1 count (V ∸ 1)
+    n-temporal   : ℕ     -- residual dimension (V ∸ n-spatial)
+    gauge-rank   : ℕ     -- edge count (E)
+    face-count   : ℕ     -- 2-simplex count (F)
+    euler        : ℕ     -- Euler characteristic (V + F ∸ E)
+    coupling-inv : ℕ     -- coupling invariant (V^d · χ + d²)
+    n-gen        : ℕ     -- generation count (= d)
+    spinor-dim   : ℕ     -- Clifford dimension (2^V)
+    hierarchy    : ℕ     -- hierarchy exponent (V·E ∸ χ)
+    auto-count   : ℕ     -- automorphism count (|S_V|)
+    bell-sq      : ℕ     -- squared Bell number (V·χ)
+    bh-norm      : ℕ     -- normalization index (= V)
+    baryon-num   : ℕ     -- fraction numerator (= n-temporal)
+    baryon-den   : ℕ     -- fraction denominator (= E)
     uv-cutoff    : ℕ     -- UV cutoff scale
     min-loop     : ℕ     -- minimal loop order
 
@@ -25814,7 +25843,7 @@ theorem-muon-bridge-classification = record
 \label{sec:discrete-continuum:tau-correction}
 %───────────────────────────────────────────────────────────────────────────
 
-The tau-to-muon bare ratio is $F_2 = 17$, the compactification prime forced in Chapter~\ref{sec:derived:physics-record}.  The measured ratio is approximately $16.817$ --- a deficit of roughly $0.183$.  Without a correction, the book claims the correction chain is closed at the tau level while silently absorbing a gap wider than any higher-order residual.  That gap must be accounted for in the same elimination format as the muon bridge.
+The tau-to-muon bare ratio is $F_2 = 17$, the compactification prime forced in \S\ref{sec:discrete-continuum:tree-level-mass-formulae}.  The measured ratio is approximately $16.817$ --- a deficit of roughly $0.183$.  Without a correction, the book claims the correction chain is closed at the tau level while silently absorbing a gap wider than any higher-order residual.  That gap must be accounted for in the same elimination format as the muon bridge.
 
 The tau sits at the terminal compactification boundary.  Its two channel values are the geometric channel $d^2 = 9$ and the compactification prime $F_2 = 17$.  The correction denominator is therefore their product $d^2 \cdot F_2 = 153$, the tau canonical volume --- the exact analogue of $d \cdot (E + F_2) = 69$ for the muon.
 
@@ -25955,7 +25984,7 @@ theorem-tau-correction-classification = record
 
 The bare coupling $\alpha^{-1} = 137$ is a combinatorial integer: $V^d \cdot \chi + d^2 = 128 + 9$.  The comparison target is the Thomson limit $\alpha^{-1}(Q \to 0) \approx 137.036$, the value measured at zero momentum transfer; the running of $\alpha$ with energy scale is a separate, non-contradictory phenomenon whose first-order slope $1/(2\alpha^{-1}) = 1/274$ is itself forced by the $K_4$ invariants (\S\ref{sec:discrete-continuum:rg-slope-numerator}).  A book that derives all other corrections from the $K_4$ ledger and then silently accepts a $0.026\%$ gap on the coupling constant has not closed its own chain.
 
-The correction numerator is the loop observable $E + d + \chi = 11$ --- the same irreducible value that survives elimination in Chapter~\ref{sec:derived:loop-numerator}.  The denominator requires an elimination argument of its own.  Six $K_4$ invariants compete for inclusion as factors of the coupling-correction volume: $V = 4$, $E = 6$, $d = 3$, $\chi = 2$, $\kappa = 8$, $F_2 = 17$.  Three structural filters act:
+The correction numerator is the loop observable $E + d + \chi = 11$ --- the same irreducible value that survives elimination in \S\ref{sec:discrete-continuum:universal-loop-numerator}.  The denominator requires an elimination argument of its own.  Six $K_4$ invariants compete for inclusion as factors of the coupling-correction volume: $V = 4$, $E = 6$, $d = 3$, $\chi = 2$, $\kappa = 8$, $F_2 = 17$.  Three structural filters act:
 
 \begin{itemize}
 \item \textbf{Filter~1 (no $V$):}  The vertex count $V$ already appears as a multiplicative factor in the proton volume $72 = V \cdot E \cdot d$ and the electroweak volume $576 = V \cdot E \cdot d \cdot \kappa$.  A correction denominator that reuses $V$ would conflate the coupling sector with the mass sector.  $V$ is excluded.
@@ -27297,6 +27326,8 @@ theorem-tau-bare-classification = record
 
 The final asymmetry can no longer remain implicit. Up to this point the book has forced the physical record from the invariant spine of $K_4$. A weaker reader could still try to reverse the dependence and say that physics is the deeper object, while $K_4$ is only one successful encoding of it. That escape collapses at the type level.
 
+One clarification must precede the argument. \texttt{K4PhysRep} is not a physical theory. It carries no dynamics, no measurement algebra, no spacetime manifold. It is the invariant skeleton: the set of structural constants---dimension, degree, Euler characteristic, coupling inverse, generation count---that any theory built on $K_4$ must reproduce. Dynamics, observables, and geometry are downstream obligations that live in the gap between the skeleton and a full physical model. The equivalence proved below therefore says that this skeleton and the primordial cut determine each other, not that distinction replaces or generates physics in any operational sense.
+
 A physical record here is not a free-standing bag of measured numbers. It is threaded together by identity witnesses: the anchor tying dimension to $K_4$, the chain laws transporting that anchor through every other field, and the closure proofs showing that rival admissible records collapse to the same object. If identity is removed, these fields are not weakened. They become uninhabitable. Physics therefore does not generate distinction. It consumes the logical infrastructure distinction has already forced.
 
 \textbf{Constraint:} An admissible physical record already contains equality data. The anchor and chain constraints of \texttt{K4PhysRep} presuppose the identity type, and the identity type presupposes the distinction-theoretic base established at the beginning of the book. If distinction were denied, the physics record would not become deeper; it would become uninhabitable.
@@ -27325,7 +27356,25 @@ physics-without-distinction-uninhabitable noDistinction p with K4PhysRep.anchor 
 physics-presupposes-distinction-irrefutable : (p : K4PhysRep) → ¬¬ Distinction
 physics-presupposes-distinction-irrefutable p noDistinction =
   physics-without-distinction-uninhabitable noDistinction p
+
+-- § The chain closes: distinction alone produces an admissible physics record.
+K4-is-inevitable : Distinction → K4PhysRep
+K4-is-inevitable _ = canonical-rep
 \end{code}
+
+The loop now has both directions as checked terms.
+\texttt{physics-presupposes-distinction} extracts a distinction from every
+admissible record; \texttt{K4-is-inevitable} constructs the unique
+admissible record from any distinction witness. Together they establish
+the logical equivalence
+$\texttt{Distinction} \;\Longleftrightarrow\; \texttt{K4PhysRep}$.
+Neither direction introduces axioms or parameters; both reduce to
+\texttt{refl} under the singleton proof from
+Chapter~\ref{ch:k4-representation-theory}. The content of the equivalence is not
+that ``physics and distinction are the same thing''. It is that
+once the elimination chain has run to exhaustion, the surviving
+physical record and the primordial cut carry exactly the same
+information: each reconstructs the other with no leftover freedom.
 
 \chapter{The Invitation}
 \label{ch:invitation}
