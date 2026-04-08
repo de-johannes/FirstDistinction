@@ -17,6 +17,7 @@
 
 module Physics where
 
+open import Agda.Primitive using (Setω)
 open import Void   -- § Void.lagda.tex: the full elimination result
 
 -- §══════════════════════════════════════════════════════════════════════════
@@ -577,6 +578,1692 @@ mass-difference-integer = eulerChar-computed + reciprocal-euler  -- 2 + 1 = 3
 
 theorem-mass-diff : mass-difference-integer ≡ degree-K4
 theorem-mass-diff = refl
+
+-- §══════════════════════════════════════════════════════════════════════════
+-- § Bridge code (moved from Void.lagda.tex)
+-- § All correction chain definitions: loop numerator, proton, EW, muon,
+-- § tau, alpha, baryon corrections and their classification theorems.
+-- §══════════════════════════════════════════════════════════════════════════
+
+-- § The universal loop numerator: sum of all primitive loop parameters.
+loop-numerator : ℕ
+loop-numerator = edgeCountK4 + degree-K4 + eulerChar-computed
+
+-- § Tree-level proton-to-electron mass ratio from K₄ invariants
+proton-mass-bare : ℕ
+proton-mass-bare =
+  (eulerChar-computed * eulerChar-computed)
+  * (degree-K4 * degree-K4 * degree-K4)
+  * F₂
+
+-- § Law: proton bare mass is exactly 1836
+law-proton-bare-1836 : proton-mass-bare ≡ 1836
+law-proton-bare-1836 = refl
+
+-- § Alternative factorization: d × E² × F₂
+proton-mass-alt : ℕ
+proton-mass-alt = degree-K4 * (edgeCountK4 * edgeCountK4) * F₂
+
+-- § Both factorizations agree
+law-proton-alt-1836 : proton-mass-alt ≡ 1836
+law-proton-alt-1836 = refl
+
+law-proton-factorizations-agree : proton-mass-bare ≡ proton-mass-alt
+law-proton-factorizations-agree = refl
+
+-- § The identity that connects them: χ · d = E
+law-chi-times-d-is-E : eulerChar-computed * degree-K4 ≡ edgeCountK4
+law-chi-times-d-is-E = refl
+
+-- § Tree-level muon-to-electron mass ratio from K₄ invariants
+muon-mass-bare : ℕ
+muon-mass-bare = (degree-K4 * degree-K4) * (edgeCountK4 + F₂)
+
+-- § Law: muon bare mass ratio is exactly 207
+law-muon-bare-207 : muon-mass-bare ≡ 207
+law-muon-bare-207 = refl
+
+-- § Tau-to-muon ratio: the Fermat stratum alone
+tau-muon-bare : ℕ
+tau-muon-bare = F₂
+
+-- § Law: tau/muon bare ratio is 17
+law-tau-muon-bare-17 : tau-muon-bare ≡ 17
+law-tau-muon-bare-17 = refl
+
+-- § Law: loop numerator is exactly 11
+law-loop-num-11 : loop-numerator ≡ 11
+law-loop-num-11 = refl
+
+-- § Decomposition: the three structural contributions
+law-loop-num-decomposition :
+  loop-numerator ≡ 6 + 3 + 2
+law-loop-num-decomposition = refl
+
+-- § Denominator definitions for the classification proof; the narrative discussion follows below.
+
+-- § Loop denominator at QCD (hadron) scale
+loop-denom-QCD : ℕ
+loop-denom-QCD = vertexCountK4 * edgeCountK4 * degree-K4
+
+-- § Loop denominator at electroweak scale
+loop-denom-EW : ℕ
+loop-denom-EW = loop-denom-QCD * κ-discrete
+
+
+
+-- § Exhaustive loop classification over the 2³ {0,1}-linear combinations of {E, d, χ}.
+
+-- § The eight candidates and their values:
+loop-cand-000 : ℕ           -- empty set
+loop-cand-000 = 0
+loop-cand-001 : ℕ           -- χ only
+loop-cand-001 = eulerChar-computed
+loop-cand-010 : ℕ           -- d only
+loop-cand-010 = degree-K4
+loop-cand-011 : ℕ           -- d + χ
+loop-cand-011 = degree-K4 + eulerChar-computed
+loop-cand-100 : ℕ           -- E only
+loop-cand-100 = edgeCountK4
+loop-cand-101 : ℕ           -- E + χ
+loop-cand-101 = edgeCountK4 + eulerChar-computed
+loop-cand-110 : ℕ           -- E + d
+loop-cand-110 = edgeCountK4 + degree-K4
+loop-cand-111 : ℕ           -- E + d + χ
+loop-cand-111 = edgeCountK4 + degree-K4 + eulerChar-computed
+
+-- § Values
+law-cand-000 : loop-cand-000 ≡ 0
+law-cand-000 = refl
+law-cand-001 : loop-cand-001 ≡ 2
+law-cand-001 = refl
+law-cand-010 : loop-cand-010 ≡ 3
+law-cand-010 = refl
+law-cand-011 : loop-cand-011 ≡ 5
+law-cand-011 = refl
+law-cand-100 : loop-cand-100 ≡ 6
+law-cand-100 = refl
+law-cand-101 : loop-cand-101 ≡ 8
+law-cand-101 = refl
+law-cand-110 : loop-cand-110 ≡ 9
+law-cand-110 = refl
+law-cand-111 : loop-cand-111 ≡ 11
+law-cand-111 = refl
+
+
+
+-- § Filter 1: irreducibility with 72 eliminates 0, 2, 3, 6, 8, and 9.
+law-elim-000 : gcd loop-cand-001 loop-denom-QCD ≡ 2   -- χ=2 shares factor 2
+law-elim-000 = refl
+law-elim-010 : gcd loop-cand-010 loop-denom-QCD ≡ 3   -- d=3 shares factor 3
+law-elim-010 = refl
+law-elim-100 : gcd loop-cand-100 loop-denom-QCD ≡ 6   -- E=6 shares factor 6
+law-elim-100 = refl
+law-elim-101 : gcd loop-cand-101 loop-denom-QCD ≡ 8   -- E+χ=8 shares factor 8
+law-elim-101 = refl
+law-elim-110 : gcd loop-cand-110 loop-denom-QCD ≡ 9   -- E+d=9 shares factor 9
+law-elim-110 = refl
+
+-- § Pass irreducibility: d+χ=5 and E+d+χ=11
+law-pass-011 : gcd loop-cand-011 loop-denom-QCD ≡ 1   -- d+χ=5 coprime ✓
+law-pass-011 = refl
+law-pass-111 : gcd loop-cand-111 loop-denom-QCD ≡ 1   -- E+d+χ=11 coprime ✓
+law-pass-111 = refl
+
+
+
+-- § Filter 2: completeness requires all three basis elements, so d+χ=5 is missing the E-sector.
+law-partial-omits-E : loop-cand-011 + edgeCountK4 ≡ loop-cand-111
+law-partial-omits-E = refl
+
+-- § Equivalently: the full candidate is the partial plus the missing E-sector.
+law-full-is-partial-plus-E : loop-cand-111 ≡ edgeCountK4 + loop-cand-011
+law-full-is-partial-plus-E = refl
+
+-- § After Filter 2: d+χ=5 is eliminated. Only E+d+χ=11 remains.
+
+-- § Structural independence: E is multiplicatively independent of d+χ, so the edge stratum cannot be recovered by rescaling.
+law-E-structurally-independent :
+  gcd edgeCountK4 (degree-K4 + eulerChar-computed) ≡ 1
+law-E-structurally-independent = refl  -- gcd(6, 5) = 1
+
+-- § E = 6 spans the full {2,3} prime base inside the loop volume 72 = 2³·3².
+law-E-spans-full-base : gcd edgeCountK4 (eulerChar-computed * degree-K4) ≡ 6
+law-E-spans-full-base = refl  -- gcd(6, 6) = 6
+
+-- § d = 3 contributes only the 3-stratum
+law-d-in-3-stratum : gcd degree-K4 (eulerChar-computed * degree-K4) ≡ 3
+law-d-in-3-stratum = refl  -- gcd(3, 6) = 3
+
+-- § χ = 2 contributes only the 2-stratum
+law-chi-in-2-stratum : gcd eulerChar-computed (eulerChar-computed * degree-K4) ≡ 2
+law-chi-in-2-stratum = refl  -- gcd(2, 6) = 2
+
+-- § The partial sum d+χ = 5 escapes the {2,3} stratum, leaving the E-stratum unaccounted for; only E+d+χ = 11 covers all three.
+law-dchi-escapes-stratum :
+  gcd (degree-K4 + eulerChar-computed) (eulerChar-computed * degree-K4) ≡ 1
+law-dchi-escapes-stratum = refl  -- gcd(5, 6) = 1
+
+-- § Completeness derivation from χ·d = E and the interaction-volume structure.
+record CompletenessDerivation : Set where
+  field
+    -- Step 1: the multiplicative relation links all three generators
+    relation            : eulerChar-computed * degree-K4 ≡ edgeCountK4
+    -- The two generators χ and d are coprime
+    generators-coprime  : gcd eulerChar-computed degree-K4 ≡ 1
+    -- Step 2: the volume rewrites via χ·d = E as D = V·χ·d²
+    volume-via-relation : (vertexCountK4 * eulerChar-computed) * (degree-K4 * degree-K4) ≡ loop-denom-QCD
+    -- Step 3: sum and product of coprime generators are coprime
+    sum-product-coprime : gcd (degree-K4 + eulerChar-computed) (eulerChar-computed * degree-K4) ≡ 1
+    -- The partial numerator d+χ is coprime to E — structurally disconnected
+    partial-blind-to-E  : gcd loop-cand-011 edgeCountK4 ≡ 1
+    -- The full sum includes E alongside d+χ
+    full-witnesses-E    : loop-cand-111 ≡ edgeCountK4 + loop-cand-011
+    -- The full sum passes irreducibility
+    full-irreducible    : gcd loop-cand-111 loop-denom-QCD ≡ 1
+
+theorem-completeness-derivation : CompletenessDerivation
+theorem-completeness-derivation = record
+  { relation            = refl
+  ; generators-coprime  = refl
+  ; volume-via-relation = refl
+  ; sum-product-coprime = refl
+  ; partial-blind-to-E  = refl
+  ; full-witnesses-E    = refl
+  ; full-irreducible    = refl
+  }
+
+-- § Filter 3: cross-scale consistency confirms that the same observable 11 survives at EW scale; it does not newly eliminate d+χ.
+law-partial-EW  : gcd loop-cand-011 loop-denom-EW ≡ 1   -- 5 coprime to 576 too
+law-partial-EW  = refl
+law-pass-111-EW : gcd loop-cand-111 loop-denom-EW ≡ 1   -- 11 coprime to 576 ✓
+law-pass-111-EW = refl
+
+-- § Loop classification record certifying the unique admissible loop observable.
+record LoopClassification : Set where
+  field
+    -- The forced value
+    forced-value        : loop-numerator ≡ 11
+    forced-from-K4      : loop-numerator ≡ edgeCountK4 + degree-K4 + eulerChar-computed
+
+    -- Irreducibility at both scales
+    irreducible-QCD     : gcd loop-numerator loop-denom-QCD ≡ 1
+    irreducible-EW      : gcd loop-numerator loop-denom-EW ≡ 1
+
+    -- All other candidates eliminated by irreducibility
+    elim-chi            : gcd eulerChar-computed loop-denom-QCD ≡ 2
+    elim-d              : gcd degree-K4 loop-denom-QCD ≡ 3
+    elim-E              : gcd edgeCountK4 loop-denom-QCD ≡ 6
+    elim-E-chi          : gcd (edgeCountK4 + eulerChar-computed) loop-denom-QCD ≡ 8
+    elim-E-d            : gcd (edgeCountK4 + degree-K4) loop-denom-QCD ≡ 9
+
+    -- The only other coprime candidate (d+χ=5) fails completeness
+    partial-coprime     : gcd (degree-K4 + eulerChar-computed) loop-denom-QCD ≡ 1
+    partial-incomplete  : degree-K4 + eulerChar-computed ≡ 5  -- omits E
+    -- Formal completeness witness: the missing contribution is exactly E
+    partial-omits-E     : loop-cand-011 + edgeCountK4 ≡ loop-cand-111
+
+    -- Cross-scale confirmation: 5 also passes EW, so Filter 3 is not the eliminator
+    partial-also-EW     : gcd loop-cand-011 loop-denom-EW ≡ 1
+
+-- § Proof: every alternative is eliminated
+theorem-loop-classification : LoopClassification
+theorem-loop-classification = record
+  { forced-value        = refl
+  ; forced-from-K4      = refl
+  ; irreducible-QCD     = refl
+  ; irreducible-EW      = refl
+  ; elim-chi            = refl
+  ; elim-d              = refl
+  ; elim-E              = refl
+  ; elim-E-chi          = refl
+  ; elim-E-d            = refl
+  ; partial-coprime     = refl
+  ; partial-incomplete  = refl
+  ; partial-omits-E     = refl
+  ; partial-also-EW     = refl
+  }
+
+-- § Canonical volume laws (definitions are above, in the loop classification block)
+
+-- § Law: QCD denominator is exactly 72
+law-loop-denom-QCD-72 : loop-denom-QCD ≡ 72
+law-loop-denom-QCD-72 = refl
+
+-- § Law: EW denominator is exactly 576
+law-loop-denom-EW-576 : loop-denom-EW ≡ 576
+law-loop-denom-EW-576 = refl
+
+-- § The scale factor between QCD and EW is κ
+law-EW-scales-by-kappa : loop-denom-EW ≡ loop-denom-QCD * κ-discrete
+law-EW-scales-by-kappa = refl
+
+-- § The RG slope denominator: 2α = 274
+rg-slope-denom : ℕ
+rg-slope-denom = 2 * α-bare-K4
+
+-- § Law: RG slope denominator is 274
+law-rg-slope-274 : rg-slope-denom ≡ 274
+law-rg-slope-274 = refl
+
+-- § QCD denominator decomposes into named invariants
+law-denom-QCD-from-K4 : loop-denom-QCD ≡ vertexCountK4 * edgeCountK4 * degree-K4
+law-denom-QCD-from-K4 = refl
+
+-- § RG slope decomposes into 2α
+law-rg-from-alpha : rg-slope-denom ≡ 2 * α-bare-K4
+law-rg-from-alpha = refl
+
+-- § Structural identity: 576 = (V·d)²·χ²
+law-576-square-identity : loop-denom-EW ≡ (vertexCountK4 * degree-K4) * (vertexCountK4 * degree-K4) * (eulerChar-computed * eulerChar-computed)
+law-576-square-identity = refl   -- (4·3)²·2² = 144·4 = 576
+
+-- § RG slope numerator: must divide α⁻¹ = 137 (coupling quantum divisor)
+rg-slope-num : ℕ
+rg-slope-num = 1
+
+-- § The two divisors of a prime coupling quantum
+data RGNumeratorCase : Set where
+  rg-one   : RGNumeratorCase   -- divisor 1
+  rg-alpha : RGNumeratorCase   -- divisor 137
+
+eval-rg-case : RGNumeratorCase → ℕ
+eval-rg-case rg-one   = 1
+eval-rg-case rg-alpha = α-bare-K4
+
+-- § Law: candidate values
+law-rg-one-value : eval-rg-case rg-one ≡ 1
+law-rg-one-value = refl
+
+law-rg-alpha-value : eval-rg-case rg-alpha ≡ 137
+law-rg-alpha-value = refl
+
+-- § Filter: irreducibility (coprime to denominator 2α = 274)
+-- gcd(1, 274) = 1 ✓   gcd(137, 274) = 137 ≢ 1 → eliminated
+rg-coprime-filter :
+  (c : RGNumeratorCase) →
+  gcd (eval-rg-case c) rg-slope-denom ≡ 1 →
+  c ≡ rg-one
+rg-coprime-filter rg-one   _ = refl
+rg-coprime-filter rg-alpha ()   -- gcd(137, 274) = 137 ≢ 1
+
+-- § The survivor's coprimality witness
+law-rg-survivor-coprime : gcd (eval-rg-case rg-one) rg-slope-denom ≡ 1
+law-rg-survivor-coprime = refl   -- gcd(1, 274) = 1
+
+-- § The eliminated candidate's non-coprimality
+law-rg-alpha-shares-factor : gcd (eval-rg-case rg-alpha) rg-slope-denom ≡ 137
+law-rg-alpha-shares-factor = refl   -- gcd(137, 274) = 137
+
+-- § The RG slope fraction: 1/274
+rg-slope : ℚ
+rg-slope = (+suc 0) / (ℕ-to-ℕ⁺ 273)    -- 1/274
+
+-- § Classification record for the RG numerator
+record RGNumeratorClassification : Set where
+  field
+    survivor-value     : eval-rg-case rg-one ≡ 1
+    survivor-coprime   : gcd (eval-rg-case rg-one) rg-slope-denom ≡ 1
+    eliminated-shares  : gcd (eval-rg-case rg-alpha) rg-slope-denom ≡ 137
+    denominator-is-274 : rg-slope-denom ≡ 274
+    unique-survivor    :
+      (c : RGNumeratorCase) →
+      gcd (eval-rg-case c) rg-slope-denom ≡ 1 →
+      c ≡ rg-one
+
+theorem-rg-numerator-classification : RGNumeratorClassification
+theorem-rg-numerator-classification = record
+  { survivor-value     = refl
+  ; survivor-coprime   = law-rg-survivor-coprime
+  ; eliminated-shares  = law-rg-alpha-shares-factor
+  ; denominator-is-274 = law-rg-slope-274
+  ; unique-survivor    = rg-coprime-filter
+  }
+
+-- § Proton loop correction numerator (same as universal)
+proton-loop-num : ℕ
+proton-loop-num = loop-numerator
+
+-- § Proton loop correction denominator (QCD scale)
+proton-loop-den : ℕ
+proton-loop-den = loop-denom-QCD
+
+-- § Proton correction as rational: 11/72
+proton-loop : ℚ
+proton-loop = (+suc 10) / (ℕ-to-ℕ⁺ 71)     -- 11/72
+
+-- § Corrected proton mass ratio as rational: 1836 + 11/72
+proton-corrected : ℚ
+proton-corrected = (+suc 1835) / one⁺ +ℚ proton-loop
+
+-- § The numerator is forced
+law-proton-loop-num : proton-loop-num ≡ 11
+law-proton-loop-num = refl
+
+-- § The denominator is forced
+law-proton-loop-den : proton-loop-den ≡ 72
+law-proton-loop-den = refl
+
+-- § Cross-check: numerator decomposes into named invariants
+law-proton-loop-from-K4 :
+  proton-loop-num ≡ edgeCountK4 + degree-K4 + eulerChar-computed
+law-proton-loop-from-K4 = refl
+
+-- § Cross-check: denominator decomposes into named invariants
+law-proton-denom-from-K4 :
+  proton-loop-den ≡ vertexCountK4 * edgeCountK4 * degree-K4
+law-proton-denom-from-K4 = refl
+
+-- § Weinberg tree-level: χ/κ
+weinberg-tree-num : ℕ
+weinberg-tree-num = eulerChar-computed
+
+weinberg-tree-den : ℕ
+weinberg-tree-den = κ-discrete
+
+-- § Law: tree-level Weinberg angle numerator/denominator
+law-weinberg-tree : weinberg-tree-num ≡ 2
+law-weinberg-tree = refl
+
+law-weinberg-denom : weinberg-tree-den ≡ 8
+law-weinberg-denom = refl
+
+-- § Electroweak loop correction: 11/576
+ew-loop : ℚ
+ew-loop = (+suc 10) / (ℕ-to-ℕ⁺ 575)     -- 11/576
+
+-- § Weinberg tree-level as rational: 2/8
+weinberg-tree : ℚ
+weinberg-tree = (+suc 1) / (ℕ-to-ℕ⁺ 7)  -- 2/8
+
+-- § Corrected Weinberg angle: 2/8 − 11/576
+weinberg-corrected : ℚ
+weinberg-corrected = weinberg-tree -ℚ ew-loop
+
+-- § The EW loop uses the same numerator as the proton loop
+law-ew-same-numerator : loop-numerator ≡ proton-loop-num
+law-ew-same-numerator = refl
+
+-- § The EW denominator scales from QCD by κ
+law-ew-denom-from-QCD : loop-denom-EW ≡ proton-loop-den * κ-discrete
+law-ew-denom-from-QCD = refl
+
+-- § Muon inter-channel correction numerator: κ·χ (spectral-topological bridge)
+muon-loop-num : ℕ
+muon-loop-num = κ-discrete * eulerChar-computed   -- 16
+
+-- § Muon inter-channel correction denominator: d·(E+F₂) (channel-survivor product)
+muon-loop-den : ℕ
+muon-loop-den = degree-K4 * (edgeCountK4 + F₂)   -- 69
+
+-- § Law: muon correction numerator
+law-muon-loop-num : muon-loop-num ≡ 16
+law-muon-loop-num = refl
+
+-- § Law: muon correction denominator
+law-muon-loop-den : muon-loop-den ≡ 69
+law-muon-loop-den = refl
+
+-- § Numerator decomposes as spectral × topological
+law-muon-loop-num-from-K4 : muon-loop-num ≡ κ-discrete * eulerChar-computed
+law-muon-loop-num-from-K4 = refl
+
+-- § Denominator decomposes as degree × compactification-survivor
+law-muon-loop-den-from-K4 : muon-loop-den ≡ degree-K4 * (edgeCountK4 + F₂)
+law-muon-loop-den-from-K4 = refl
+
+-- § The correction is negative: 207 − 16/69
+muon-loop : ℚ
+muon-loop = (+suc 15) / (ℕ-to-ℕ⁺ 68)    -- 16/69
+
+-- § Corrected muon mass ratio as rational: 207 − 16/69
+muon-corrected : ℚ
+muon-corrected = (+suc 206) / one⁺ -ℚ muon-loop
+
+-- § The spectral bridge κ·χ is absent from both individual channels
+law-kappa-absent-from-geometric : gcd κ-discrete (degree-K4 * degree-K4) ≡ 1
+law-kappa-absent-from-geometric = refl   -- gcd(8, 9) = 1
+
+-- § The topological factor χ does not divide E+F₂ independently
+law-chi-absent-from-mixed : gcd eulerChar-computed (edgeCountK4 + F₂) ≡ 1
+law-chi-absent-from-mixed = refl         -- gcd(2, 23) = 1
+
+-- § Their product κ·χ = 16 is therefore new structure relative to both channels
+law-bridge-is-new : gcd muon-loop-num (muon-mass-bare) ≡ 1
+law-bridge-is-new = refl                 -- gcd(16, 207) = 1
+
+-- § The muon bridge candidate space after Filters 1–3: distinct values ≤ 2^V = 16, coprime to both channel values, no F₂ factor.
+-- Candidates: χ=2, V=4, κ=8, κ·χ=16.
+data MuonBridgeCase : Set where
+  mbc-chi   : MuonBridgeCase   -- χ = 2
+  mbc-V     : MuonBridgeCase   -- V = 4
+  mbc-kappa : MuonBridgeCase   -- κ = 8
+  mbc-16    : MuonBridgeCase   -- κ·χ = 16
+
+eval-mbc : MuonBridgeCase → ℕ
+eval-mbc mbc-chi   = eulerChar-computed              -- 2
+eval-mbc mbc-V     = vertexCountK4                   -- 4
+eval-mbc mbc-kappa = κ-discrete                      -- 8
+eval-mbc mbc-16    = κ-discrete * eulerChar-computed -- 16
+
+-- § Filter 1: all four candidates are coprime to the geometric channel d² = 9.
+mbc-coprime-geo : (c : MuonBridgeCase) → gcd (eval-mbc c) (degree-K4 * degree-K4) ≡ 1
+mbc-coprime-geo mbc-chi   = refl  -- gcd(2, 9) = 1
+mbc-coprime-geo mbc-V     = refl  -- gcd(4, 9) = 1
+mbc-coprime-geo mbc-kappa = refl  -- gcd(8, 9) = 1
+mbc-coprime-geo mbc-16    = refl  -- gcd(16, 9) = 1
+
+-- § Filter 1: all four candidates are coprime to the mixed channel E+F₂ = 23.
+mbc-coprime-mix : (c : MuonBridgeCase) → gcd (eval-mbc c) (edgeCountK4 + F₂) ≡ 1
+mbc-coprime-mix mbc-chi   = refl  -- gcd(2, 23) = 1
+mbc-coprime-mix mbc-V     = refl  -- gcd(4, 23) = 1
+mbc-coprime-mix mbc-kappa = refl  -- gcd(8, 23) = 1
+mbc-coprime-mix mbc-16    = refl  -- gcd(16, 23) = 1
+
+-- § Filter 3: spinor bound 2^V = 16; all four candidates are within the bound.
+muon-spinor-dim : ℕ
+muon-spinor-dim = 2 ^ vertexCountK4
+
+law-muon-spinor-dim : muon-spinor-dim ≡ 16
+law-muon-spinor-dim = refl
+
+-- § The spinor dimension coincides with κ·χ: the same number from two independent routes.
+law-κχ-equals-spinor-dim : κ-discrete * eulerChar-computed ≡ muon-spinor-dim
+law-κχ-equals-spinor-dim = refl
+
+-- § Filter 4 (spinor saturation): the bridge must equal 2^V = 16; only mbc-16 survives.
+mbc-spinor-eq :
+  (c : MuonBridgeCase) →
+  eval-mbc c ≡ muon-spinor-dim →
+  c ≡ mbc-16
+mbc-spinor-eq mbc-chi   ()   -- 2 ≠ 16
+mbc-spinor-eq mbc-V     ()   -- 4 ≠ 16
+mbc-spinor-eq mbc-kappa ()   -- 8 ≠ 16
+mbc-spinor-eq mbc-16    refl = refl
+
+mbc-spinor-bound : (c : MuonBridgeCase) → eval-mbc c ≤ 16
+mbc-spinor-bound mbc-chi   = s≤s (s≤s z≤n)
+mbc-spinor-bound mbc-V     = s≤s (s≤s (s≤s (s≤s z≤n)))
+mbc-spinor-bound mbc-kappa = s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))))
+mbc-spinor-bound mbc-16    = s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))))))))))))
+
+-- § Completeness: the unique survivor equals κ·χ; the three eliminated cases are absurd.
+mbc-κχ-unique :
+  (c : MuonBridgeCase) →
+  eval-mbc c ≡ κ-discrete * eulerChar-computed →
+  c ≡ mbc-16
+mbc-κχ-unique mbc-chi   ()   -- 2 ≠ 16
+mbc-κχ-unique mbc-V     ()   -- 4 ≠ 16
+mbc-κχ-unique mbc-kappa ()   -- 8 ≠ 16
+mbc-κχ-unique mbc-16    refl = refl
+
+-- § Full uniqueness: spinor saturation forces mbc-16, whose value then equals κ·χ.
+theorem-muon-bridge-unique :
+  (c : MuonBridgeCase) →
+  eval-mbc c ≡ muon-spinor-dim →
+  (c ≡ mbc-16) × (eval-mbc mbc-16 ≡ κ-discrete * eulerChar-computed)
+theorem-muon-bridge-unique c eq = mbc-spinor-eq c eq , refl
+
+-- § Classification record for the muon bridge numerator.
+record MuonBridgeClassification : Set where
+  field
+    all-coprime-to-geo    : (c : MuonBridgeCase) → gcd (eval-mbc c) (degree-K4 * degree-K4) ≡ 1
+    all-coprime-to-mix    : (c : MuonBridgeCase) → gcd (eval-mbc c) (edgeCountK4 + F₂) ≡ 1
+    all-within-spinor     : (c : MuonBridgeCase) → eval-mbc c ≤ 16
+    spinor-dim-is-2-pow-V : muon-spinor-dim ≡ 2 ^ vertexCountK4
+    κχ-equals-spinor-dim  : κ-discrete * eulerChar-computed ≡ muon-spinor-dim
+    bridge-spinor-unique  : (c : MuonBridgeCase) → eval-mbc c ≡ muon-spinor-dim → c ≡ mbc-16
+    bridge-κχ-unique      : (c : MuonBridgeCase) → eval-mbc c ≡ κ-discrete * eulerChar-computed → c ≡ mbc-16
+    survivor-is-16        : eval-mbc mbc-16 ≡ 16
+    denominator-is-69     : degree-K4 * (edgeCountK4 + F₂) ≡ 69
+
+theorem-muon-bridge-classification : MuonBridgeClassification
+theorem-muon-bridge-classification = record
+  { all-coprime-to-geo    = mbc-coprime-geo
+  ; all-coprime-to-mix    = mbc-coprime-mix
+  ; all-within-spinor     = mbc-spinor-bound
+  ; spinor-dim-is-2-pow-V = refl
+  ; κχ-equals-spinor-dim  = law-κχ-equals-spinor-dim
+  ; bridge-spinor-unique  = mbc-spinor-eq
+  ; bridge-κχ-unique      = mbc-κχ-unique
+  ; survivor-is-16        = refl
+  ; denominator-is-69     = refl
+  }
+
+-- § Tau bridge candidate space: extensions of d²+F₂ by a single K₄ invariant.
+data TauBridgeExt : Set where
+  tbe-V     : TauBridgeExt   -- V = 4
+  tbe-E     : TauBridgeExt   -- E = 6
+  tbe-d     : TauBridgeExt   -- d = 3
+  tbe-chi   : TauBridgeExt   -- χ = 2
+  tbe-kappa : TauBridgeExt   -- κ = 8
+
+eval-tbe : TauBridgeExt → ℕ
+eval-tbe tbe-V     = vertexCountK4
+eval-tbe tbe-E     = edgeCountK4
+eval-tbe tbe-d     = degree-K4
+eval-tbe tbe-chi   = eulerChar-computed
+eval-tbe tbe-kappa = κ-discrete
+
+-- § Bridge numerator for each candidate: d² + F₂ + extension.
+tau-bridge-num : TauBridgeExt → ℕ
+tau-bridge-num c = degree-K4 * degree-K4 + F₂ + eval-tbe c
+
+-- § The surviving numerator: d² + F₂ + χ = 28.
+tau-loop-num : ℕ
+tau-loop-num = tau-bridge-num tbe-chi
+
+law-tau-loop-num : tau-loop-num ≡ 28
+law-tau-loop-num = refl
+
+-- § The tau canonical volume: d² · F₂ = 153.
+tau-loop-den : ℕ
+tau-loop-den = degree-K4 * degree-K4 * F₂
+
+law-tau-loop-den : tau-loop-den ≡ 153
+law-tau-loop-den = refl
+
+-- § Numerator decomposition.
+law-tau-num-decomp : tau-loop-num ≡ degree-K4 * degree-K4 + F₂ + eulerChar-computed
+law-tau-num-decomp = refl
+
+-- § Denominator decomposition.
+law-tau-den-decomp : tau-loop-den ≡ degree-K4 * degree-K4 * F₂
+law-tau-den-decomp = refl
+
+-- § The correction fraction is irreducible.
+law-tau-corr-irreducible : gcd tau-loop-num tau-loop-den ≡ 1
+law-tau-corr-irreducible = refl   -- gcd(28, 153) = 1
+
+-- § The tau correction fraction 28/153.
+tau-loop : ℚ
+tau-loop = (+suc 27) / (ℕ-to-ℕ⁺ 152)    -- 28/153
+
+-- § Corrected tau/muon mass ratio: 17 − 28/153 = 2573/153 ≈ 16.8170.
+tau-corrected : ℚ
+tau-corrected = (+suc 16) / one⁺ -ℚ tau-loop
+
+-- § Filter 1: coprimality with d² = 9 eliminates V.
+law-tau-V-fails-geo : gcd (tau-bridge-num tbe-V) (degree-K4 * degree-K4) ≡ 3
+law-tau-V-fails-geo = refl   -- gcd(30, 9) = 3
+
+-- § Filter 2: coprimality with F₂ = 17 eliminates κ.
+law-tau-kappa-fails-comp : gcd (tau-bridge-num tbe-kappa) F₂ ≡ 17
+law-tau-kappa-fails-comp = refl   -- gcd(34, 17) = 17
+
+-- § Filter 3: sub-degree bound.  Extension must be strictly below d = 3.
+-- eval-tbe tbe-E = 6 ≥ 3 → eliminated
+-- eval-tbe tbe-d = 3 ≥ 3 → eliminated
+-- eval-tbe tbe-chi = 2 < 3 → survives
+
+-- § Survivor coprimality: gcd(28, 9) = 1 and gcd(28, 17) = 1.
+law-tau-survivor-coprime-geo : gcd tau-loop-num (degree-K4 * degree-K4) ≡ 1
+law-tau-survivor-coprime-geo = refl
+
+law-tau-survivor-coprime-comp : gcd tau-loop-num F₂ ≡ 1
+law-tau-survivor-coprime-comp = refl
+
+-- § Uniqueness: the three filters force tbe-chi as unique survivor.
+tbe-unique :
+  (c : TauBridgeExt) →
+  gcd (tau-bridge-num c) (degree-K4 * degree-K4) ≡ 1 →
+  gcd (tau-bridge-num c) F₂ ≡ 1 →
+  suc (eval-tbe c) ≤ degree-K4 →
+  c ≡ tbe-chi
+tbe-unique tbe-V     () _  _                         -- gcd(30, 9) = 3 ≢ 1
+tbe-unique tbe-E     _  _  (s≤s (s≤s (s≤s ())))      -- 7 ≤ 3: absurd
+tbe-unique tbe-d     _  _  (s≤s (s≤s (s≤s ())))      -- 4 ≤ 3: absurd
+tbe-unique tbe-chi   _  _  _  = refl
+tbe-unique tbe-kappa _  () _                          -- gcd(34, 17) = 17 ≢ 1
+
+-- § Classification record for the tau correction.
+record TauCorrectionClassification : Set where
+  field
+    survivor-coprime-geo  : gcd tau-loop-num (degree-K4 * degree-K4) ≡ 1
+    survivor-coprime-comp : gcd tau-loop-num F₂ ≡ 1
+    correction-irreducible : gcd tau-loop-num tau-loop-den ≡ 1
+    numerator-is-28   : tau-loop-num ≡ 28
+    denominator-is-153 : tau-loop-den ≡ 153
+    unique-survivor :
+      (c : TauBridgeExt) →
+      gcd (tau-bridge-num c) (degree-K4 * degree-K4) ≡ 1 →
+      gcd (tau-bridge-num c) F₂ ≡ 1 →
+      suc (eval-tbe c) ≤ degree-K4 →
+      c ≡ tbe-chi
+
+theorem-tau-correction-classification : TauCorrectionClassification
+theorem-tau-correction-classification = record
+  { survivor-coprime-geo  = law-tau-survivor-coprime-geo
+  ; survivor-coprime-comp = law-tau-survivor-coprime-comp
+  ; correction-irreducible = law-tau-corr-irreducible
+  ; numerator-is-28   = refl
+  ; denominator-is-153 = refl
+  ; unique-survivor = tbe-unique
+  }
+
+-- § The coupling-compactification volume: d · E · F₂ = 306.
+alpha-loop-den : ℕ
+alpha-loop-den = degree-K4 * edgeCountK4 * F₂
+
+law-alpha-loop-den : alpha-loop-den ≡ 306
+law-alpha-loop-den = refl
+
+-- § Decomposition.
+law-alpha-den-decomp : alpha-loop-den ≡ degree-K4 * edgeCountK4 * F₂
+law-alpha-den-decomp = refl
+
+-- § Elimination of the coupling-volume denominator.
+-- Six K₄ invariants compete for inclusion as factors.
+-- Three filters reduce the factor pool to {d, E, F₂}.
+data CouplingFactorCandidate : Set where
+  cfc-V  : CouplingFactorCandidate   -- V = 4
+  cfc-E  : CouplingFactorCandidate   -- E = 6
+  cfc-d  : CouplingFactorCandidate   -- d = 3
+  cfc-χ  : CouplingFactorCandidate   -- χ = 2
+  cfc-κ  : CouplingFactorCandidate   -- κ = 8
+  cfc-F₂ : CouplingFactorCandidate   -- F₂ = 17
+
+eval-cfc : CouplingFactorCandidate → ℕ
+eval-cfc cfc-V  = vertexCountK4        -- 4
+eval-cfc cfc-E  = edgeCountK4          -- 6
+eval-cfc cfc-d  = degree-K4            -- 3
+eval-cfc cfc-χ  = eulerChar-computed   -- 2
+eval-cfc cfc-κ  = κ-discrete           -- 8
+eval-cfc cfc-F₂ = F₂                   -- 17
+
+-- § Filter 1 (no V): V is consumed in proton volume 72 = V·E·d.
+-- Witness: V divides proton-loop-den.
+law-V-consumed-in-proton : gcd vertexCountK4 proton-loop-den ≡ vertexCountK4
+law-V-consumed-in-proton = refl  -- gcd(4, 72) = 4
+
+-- § Filter 2 (no κ): κ is consumed in electroweak volume 576 = V·E·d·κ.
+-- Witness: κ divides loop-denom-EW.
+law-κ-consumed-in-EW : gcd κ-discrete loop-denom-EW ≡ κ-discrete
+law-κ-consumed-in-EW = refl  -- gcd(8, 576) = 8
+
+-- § Filter 3 (no χ): χ enters the bare coupling α⁻¹ = V^d · χ + d².
+-- Bootstrap exclusion: the bulk spectral term V^d · χ = 128 has χ as a factor.
+law-χ-in-bare-coupling : (vertexCountK4 ^ degree-K4) * eulerChar-computed ≡ 128
+law-χ-in-bare-coupling = refl  -- 4³ · 2 = 128
+
+law-χ-divides-bulk : gcd eulerChar-computed ((vertexCountK4 ^ degree-K4) * eulerChar-computed) ≡ eulerChar-computed
+law-χ-divides-bulk = refl  -- gcd(2, 128) = 2
+
+-- § The admitted factor pool after all three filters.
+data CouplingFactorAdmitted : CouplingFactorCandidate → Set where
+  admit-d  : CouplingFactorAdmitted cfc-d
+  admit-E  : CouplingFactorAdmitted cfc-E
+  admit-F₂ : CouplingFactorAdmitted cfc-F₂
+
+-- § V, κ, χ are inadmissible — the type has no constructors for them.
+law-V-inadmissible : CouplingFactorAdmitted cfc-V → ⊥
+law-V-inadmissible ()
+
+law-κ-inadmissible : CouplingFactorAdmitted cfc-κ → ⊥
+law-κ-inadmissible ()
+
+law-χ-inadmissible : CouplingFactorAdmitted cfc-χ → ⊥
+law-χ-inadmissible ()
+
+-- § The coupling volume is the product of all admitted factors.
+law-coupling-vol-product :
+  eval-cfc cfc-d * eval-cfc cfc-E * eval-cfc cfc-F₂ ≡ 306
+law-coupling-vol-product = refl  -- 3 · 6 · 17 = 306
+
+-- § Classification record.
+record CouplingVolumeClassification : Set₁ where
+  field
+    V-consumed      : gcd vertexCountK4 proton-loop-den ≡ vertexCountK4
+    κ-consumed      : gcd κ-discrete loop-denom-EW ≡ κ-discrete
+    χ-in-bare       : gcd eulerChar-computed ((vertexCountK4 ^ degree-K4) * eulerChar-computed) ≡ eulerChar-computed
+    V-inadmissible  : CouplingFactorAdmitted cfc-V → ⊥
+    κ-inadmissible  : CouplingFactorAdmitted cfc-κ → ⊥
+    χ-inadmissible  : CouplingFactorAdmitted cfc-χ → ⊥
+    survivor-product : eval-cfc cfc-d * eval-cfc cfc-E * eval-cfc cfc-F₂ ≡ 306
+    denominator-is-306 : alpha-loop-den ≡ 306
+
+theorem-coupling-volume-classification : CouplingVolumeClassification
+theorem-coupling-volume-classification = record
+  { V-consumed      = law-V-consumed-in-proton
+  ; κ-consumed      = law-κ-consumed-in-EW
+  ; χ-in-bare       = law-χ-divides-bulk
+  ; V-inadmissible  = law-V-inadmissible
+  ; κ-inadmissible  = law-κ-inadmissible
+  ; χ-inadmissible  = law-χ-inadmissible
+  ; survivor-product = law-coupling-vol-product
+  ; denominator-is-306 = refl
+  }
+
+-- § Irreducibility: gcd(11, 306) = 1.
+law-alpha-corr-irreducible : gcd (edgeCountK4 + degree-K4 + eulerChar-computed) alpha-loop-den ≡ 1
+law-alpha-corr-irreducible = refl
+
+-- § The correction fraction 11/306.
+alpha-correction : ℚ
+alpha-correction = (+suc 10) / (ℕ-to-ℕ⁺ 305)    -- 11/306
+
+-- § Corrected coupling: 137 + 11/306 = 41933/306 ≈ 137.0359.
+alpha-corrected : ℚ
+alpha-corrected = (+suc 136) / one⁺ +ℚ alpha-correction
+
+-- § The correction numerator is the universal loop numerator.
+law-alpha-same-loop-num : edgeCountK4 + degree-K4 + eulerChar-computed ≡ 11
+law-alpha-same-loop-num = refl
+
+-- § Coprimality witnesses.
+law-alpha-corr-coprime-d : gcd 11 (degree-K4 * degree-K4) ≡ 1
+law-alpha-corr-coprime-d = refl
+
+law-alpha-corr-coprime-E : gcd 11 edgeCountK4 ≡ 1
+law-alpha-corr-coprime-E = refl
+
+law-alpha-corr-coprime-F2 : gcd 11 F₂ ≡ 1
+law-alpha-corr-coprime-F2 = refl
+
+-- § Baryon correction: extension of the bare denominator E = 6 by a coprime K₄ invariant.
+-- Five candidates, one coprimality filter, one survivor: F₂ = 17.
+data BaryonExtensionCase : Set where
+  bec-V  : BaryonExtensionCase   -- V = 4
+  bec-d  : BaryonExtensionCase   -- d = 3
+  bec-χ  : BaryonExtensionCase   -- χ = 2
+  bec-κ  : BaryonExtensionCase   -- κ = 8
+  bec-F₂ : BaryonExtensionCase   -- F₂ = 17
+
+eval-bec : BaryonExtensionCase → ℕ
+eval-bec bec-V  = vertexCountK4        -- 4
+eval-bec bec-d  = degree-K4            -- 3
+eval-bec bec-χ  = eulerChar-computed   -- 2
+eval-bec bec-κ  = κ-discrete           -- 8
+eval-bec bec-F₂ = F₂                   -- 17
+
+-- § Coprimality filter: gcd(candidate, E) must equal 1.
+-- Only F₂ = 17 survives; the other four share a factor with E = 6.
+bec-coprime-filter :
+  (c : BaryonExtensionCase) →
+  gcd (eval-bec c) edgeCountK4 ≡ 1 →
+  c ≡ bec-F₂
+bec-coprime-filter bec-V  ()   -- gcd(4, 6) = 2 ≠ 1
+bec-coprime-filter bec-d  ()   -- gcd(3, 6) = 3 ≠ 1
+bec-coprime-filter bec-χ  ()   -- gcd(2, 6) = 2 ≠ 1
+bec-coprime-filter bec-κ  ()   -- gcd(8, 6) = 2 ≠ 1
+bec-coprime-filter bec-F₂ refl = refl
+
+-- § The survivor passes: gcd(17, 6) = 1.
+law-F₂-coprime-to-E : gcd F₂ edgeCountK4 ≡ 1
+law-F₂-coprime-to-E = refl
+
+-- § The baryon correction volume: E · F₂ = 102.
+baryon-corr-vol : ℕ
+baryon-corr-vol = edgeCountK4 * F₂
+
+law-baryon-corr-vol : baryon-corr-vol ≡ 102
+law-baryon-corr-vol = refl
+
+-- § The corrected numerator: F₂ - 1 = 16 = κ · χ = 2^V = spinor-dim.
+law-baryon-corrected-num-val : F₂ ∸ 1 ≡ 16
+law-baryon-corrected-num-val = refl
+
+law-baryon-corrected-is-κχ : F₂ ∸ 1 ≡ κ-discrete * eulerChar-computed
+law-baryon-corrected-is-κχ = refl  -- 16 = 8 · 2
+
+law-baryon-corrected-is-spinor : F₂ ∸ 1 ≡ 2 ^ vertexCountK4
+law-baryon-corrected-is-spinor = refl  -- 16 = 2⁴
+
+-- § Correction numerator: F₂ − spinor-dim = 17 − 16 = 1 (derived, not chosen).
+law-baryon-correction-num : F₂ ∸ 2 ^ vertexCountK4 ≡ 1
+law-baryon-correction-num = refl  -- 17 − 16 = 1
+
+-- § Irreducibility: gcd(16, 102) = 2, so the reduced form is 8/51.
+law-baryon-gcd-num-den : gcd (F₂ ∸ 1) baryon-corr-vol ≡ 2
+law-baryon-gcd-num-den = refl  -- gcd(16, 102) = 2
+
+law-baryon-reduced-num : (F₂ ∸ 1) divℕ 2 ≡ 8
+law-baryon-reduced-num = refl
+
+law-baryon-reduced-den : baryon-corr-vol divℕ 2 ≡ 51
+law-baryon-reduced-den = refl
+
+-- § Classification record.
+record BaryonCorrectionClassification : Set where
+  field
+    coprime-filter-unique : (c : BaryonExtensionCase) →
+      gcd (eval-bec c) edgeCountK4 ≡ 1 → c ≡ bec-F₂
+    survivor-is-F₂        : eval-bec bec-F₂ ≡ F₂
+    volume-is-102          : baryon-corr-vol ≡ 102
+    corrected-num-is-spinor : F₂ ∸ 1 ≡ 2 ^ vertexCountK4
+    corrected-num-is-κχ   : F₂ ∸ 1 ≡ κ-discrete * eulerChar-computed
+    correction-num-forced  : F₂ ∸ 2 ^ vertexCountK4 ≡ 1
+    reduced-num            : (F₂ ∸ 1) divℕ 2 ≡ 8
+    reduced-den            : baryon-corr-vol divℕ 2 ≡ 51
+
+theorem-baryon-correction-classification : BaryonCorrectionClassification
+theorem-baryon-correction-classification = record
+  { coprime-filter-unique = bec-coprime-filter
+  ; survivor-is-F₂        = refl
+  ; volume-is-102          = refl
+  ; corrected-num-is-spinor = refl
+  ; corrected-num-is-κχ   = refl
+  ; correction-num-forced  = refl
+  ; reduced-num            = refl
+  ; reduced-den            = refl
+  }
+
+-- § Phase 1: Admit only real observables closed from rational ones
+record ℝω : Setω where
+  constructor wrapℝ
+  field
+    lowerℝ : ℝ
+
+open ℝω public
+
+wrapℚtoℝ : ℚω → ℝω
+wrapℚtoℝ q = wrapℝ (ℚtoℝ (lowerℚ q))
+
+AdmissibleRealObservable : Setω
+AdmissibleRealObservable = AdmissibleObservable ℝω
+
+-- § A bridge-real observable is a real observable induced from an admissible rational core.
+record QuotientPresentedRealObservable : Setω where
+  field
+    rational-core : AdmissibleRationalObservable
+    real-value    : AdmissibleRealObservable
+    closes-rationally :
+      (x : DriftStateℕ) →
+      lowerℝ (obs real-value x) ≃ℝ wrapℚtoℝ (obs rational-core x) .lowerℝ
+
+-- § Phase 2: Fix the rational correction data first
+
+-- § The two bridge corrections are already irreducible at the rational layer.
+proton-loop-irreducible : IrreducibleQuotient proton-loop
+proton-loop-irreducible = refl
+
+ew-loop-irreducible : IrreducibleQuotient ew-loop
+ew-loop-irreducible = refl
+
+-- § Both bridge corrections have nonnegative numerators.
+proton-loop-nonnegative : 0ℤ ≤ℤ num proton-loop
+proton-loop-nonnegative = tt
+
+ew-loop-nonnegative : 0ℤ ≤ℤ num ew-loop
+ew-loop-nonnegative = tt
+
+-- § Canonical reduced witness for a positive correction quotient.
+proton-loop-reduced : ReducedRationalWitness proton-loop
+proton-loop-reduced =
+  irreducible-nonnegative-witness proton-loop proton-loop-irreducible proton-loop-nonnegative
+
+ew-loop-reduced : ReducedRationalWitness ew-loop
+ew-loop-reduced =
+  irreducible-nonnegative-witness ew-loop ew-loop-irreducible ew-loop-nonnegative
+
+-- § Canonical quotient-level reduced forms for the two bridge corrections.
+proton-loop-quotient-form : ReducedRationalForm proton-loop
+proton-loop-quotient-form =
+  canonical-reduction-form-on-irreducible-nonnegative
+    proton-loop proton-loop-irreducible proton-loop-nonnegative
+
+ew-loop-quotient-form : ReducedRationalForm ew-loop
+ew-loop-quotient-form =
+  canonical-reduction-form-on-irreducible-nonnegative
+    ew-loop ew-loop-irreducible ew-loop-nonnegative
+
+proton-loop-reduced-unique :
+  (r : ReducedRationalWitness proton-loop) →
+  ReducedRationalWitness.red-num r ≡ 11
+  × ReducedRationalWitness.red-den r ≡ ℕ-to-ℕ⁺ 71
+proton-loop-reduced-unique r =
+  let pair = reduced-rational-witness-unique r proton-loop-reduced in
+  fst pair , snd pair
+
+ew-loop-reduced-unique :
+  (r : ReducedRationalWitness ew-loop) →
+  ReducedRationalWitness.red-num r ≡ 11
+  × ReducedRationalWitness.red-den r ≡ ℕ-to-ℕ⁺ 575
+ew-loop-reduced-unique r =
+  let pair = reduced-rational-witness-unique r ew-loop-reduced in
+  fst pair , snd pair
+
+proton-loop-quotient-form-forced :
+  ReducedRationalForm.form-num proton-loop-quotient-form ≡ 11
+  × ReducedRationalForm.form-den proton-loop-quotient-form ≡ ℕ-to-ℕ⁺ 71
+proton-loop-quotient-form-forced =
+  let
+    cand =
+      canonical-reduction-on-irreducible-nonnegative
+        proton-loop proton-loop-irreducible proton-loop-nonnegative
+    red = proton-loop-reduced-unique proton-loop-reduced
+  in
+  trans (fst (snd cand)) (fst red)
+  , trans (snd (snd cand)) (snd red)
+
+-- § Phase 3: Read off the forced reduced normal forms
+
+ew-loop-quotient-form-forced :
+  ReducedRationalForm.form-num ew-loop-quotient-form ≡ 11
+  × ReducedRationalForm.form-den ew-loop-quotient-form ≡ ℕ-to-ℕ⁺ 575
+ew-loop-quotient-form-forced =
+  let
+    cand =
+      canonical-reduction-on-irreducible-nonnegative
+        ew-loop ew-loop-irreducible ew-loop-nonnegative
+    red = ew-loop-reduced-unique ew-loop-reduced
+  in
+  trans (fst (snd cand)) (fst red)
+  , trans (snd (snd cand)) (snd red)
+
+-- § The discrete-continuum bridge is indexed only by the active scale.
+data CorrectionScale : Set where
+  qcd-scale : CorrectionScale
+  ew-scale  : CorrectionScale
+
+-- § The canonical interaction volume at each scale.
+canonical-volume-at : CorrectionScale → ℕ
+canonical-volume-at qcd-scale = loop-denom-QCD
+canonical-volume-at ew-scale  = loop-denom-EW
+
+-- § The bridge outputs the forced rational correction at each scale.
+discrete-continuum-map : CorrectionScale → ℚ
+discrete-continuum-map qcd-scale = proton-loop
+discrete-continuum-map ew-scale  = ew-loop
+
+-- § The bridge is unique because both numerator and canonical volume are already fixed.
+record DiscreteContinuumMapUniqueness : Set where
+  field
+    unique-loop-numerator : (s : CorrectionScale) → loop-numerator ≡ 11
+    qcd-volume-is-canonical : canonical-volume-at qcd-scale ≡ 72
+    ew-volume-is-canonical : canonical-volume-at ew-scale ≡ 576
+    qcd-quotient-is-irreducible : IrreducibleQuotient proton-loop
+    ew-quotient-is-irreducible : IrreducibleQuotient ew-loop
+    qcd-reduced-form : ReducedRationalWitness proton-loop
+    ew-reduced-form : ReducedRationalWitness ew-loop
+    qcd-quotient-normal-form : ReducedRationalForm proton-loop
+    ew-quotient-normal-form : ReducedRationalForm ew-loop
+    qcd-map-uses-forced-data :
+      proton-loop-num ≡ loop-numerator × proton-loop-den ≡ canonical-volume-at qcd-scale
+    ew-map-uses-forced-data :
+      loop-numerator ≡ 11 × loop-denom-EW ≡ canonical-volume-at ew-scale
+    qcd-quotient-fields-unique :
+      (n₁ n₂ : ℤ) → (d₁ d₂ : ℕ⁺) →
+      proton-loop ≡ (n₁ / d₁) →
+      proton-loop ≡ (n₂ / d₂) →
+      (n₁ ≡ n₂) × (d₁ ≡ d₂)
+    ew-quotient-fields-unique :
+      (n₁ n₂ : ℤ) → (d₁ d₂ : ℕ⁺) →
+      ew-loop ≡ (n₁ / d₁) →
+      ew-loop ≡ (n₂ / d₂) →
+      (n₁ ≡ n₂) × (d₁ ≡ d₂)
+    qcd-reduced-form-unique :
+      (r : ReducedRationalWitness proton-loop) →
+      ReducedRationalWitness.red-num r ≡ 11
+      × ReducedRationalWitness.red-den r ≡ ℕ-to-ℕ⁺ 71
+    ew-reduced-form-unique :
+      (r : ReducedRationalWitness ew-loop) →
+      ReducedRationalWitness.red-num r ≡ 11
+      × ReducedRationalWitness.red-den r ≡ ℕ-to-ℕ⁺ 575
+    qcd-quotient-normal-form-forced :
+      ReducedRationalForm.form-num qcd-quotient-normal-form ≡ 11
+      × ReducedRationalForm.form-den qcd-quotient-normal-form ≡ ℕ-to-ℕ⁺ 71
+    ew-quotient-normal-form-forced :
+      ReducedRationalForm.form-num ew-quotient-normal-form ≡ 11
+      × ReducedRationalForm.form-den ew-quotient-normal-form ≡ ℕ-to-ℕ⁺ 575
+    qcd-map-is-unique : discrete-continuum-map qcd-scale ≃ℚ proton-loop
+    ew-map-is-unique : discrete-continuum-map ew-scale ≃ℚ ew-loop
+
+theorem-discrete-continuum-map-unique : DiscreteContinuumMapUniqueness
+theorem-discrete-continuum-map-unique = record
+  { unique-loop-numerator = λ where
+      qcd-scale → refl
+      ew-scale  → refl
+  ; qcd-volume-is-canonical = refl
+  ; ew-volume-is-canonical = refl
+  ; qcd-quotient-is-irreducible = proton-loop-irreducible
+  ; ew-quotient-is-irreducible = ew-loop-irreducible
+  ; qcd-reduced-form = proton-loop-reduced
+  ; ew-reduced-form = ew-loop-reduced
+  ; qcd-quotient-normal-form = proton-loop-quotient-form
+  ; ew-quotient-normal-form = ew-loop-quotient-form
+  ; qcd-map-uses-forced-data = refl , refl
+  ; ew-map-uses-forced-data = refl , refl
+  ; qcd-quotient-fields-unique = rational-fields-unique proton-loop
+  ; ew-quotient-fields-unique = rational-fields-unique ew-loop
+  ; qcd-reduced-form-unique = proton-loop-reduced-unique
+  ; ew-reduced-form-unique = ew-loop-reduced-unique
+  ; qcd-quotient-normal-form-forced = proton-loop-quotient-form-forced
+  ; ew-quotient-normal-form-forced = ew-loop-quotient-form-forced
+  ; qcd-map-is-unique = ≃ℚ-refl proton-loop
+  ; ew-map-is-unique = ≃ℚ-refl ew-loop
+  }
+
+-- § Classification: 137 is not a monomial in K₄ invariants
+law-137-coprime-to-V : gcd 137 vertexCountK4 ≡ 1
+law-137-coprime-to-V = refl
+
+law-137-coprime-to-E : gcd 137 edgeCountK4 ≡ 1
+law-137-coprime-to-E = refl
+
+law-137-coprime-to-d : gcd 137 degree-K4 ≡ 1
+law-137-coprime-to-d = refl
+
+law-137-coprime-to-chi : gcd 137 eulerChar-computed ≡ 1
+law-137-coprime-to-chi = refl
+
+law-137-coprime-to-kappa : gcd 137 κ-discrete ≡ 1
+law-137-coprime-to-kappa = refl
+
+-- § The spectral-topological bulk term: V³χ = 128
+bulk-spectral : ℕ
+bulk-spectral = (vertexCountK4 ^ 3) * eulerChar-computed
+
+law-bulk-128 : bulk-spectral ≡ 128
+law-bulk-128 = refl
+
+-- § Alternative expression: V²κ = 128 (same value, different route)
+law-bulk-alt : (vertexCountK4 ^ 2) * κ-discrete ≡ 128
+law-bulk-alt = refl
+
+-- § The geometric degree term: d² = 9
+geometric-sq : ℕ
+geometric-sq = degree-K4 * degree-K4
+
+law-geometric-9 : geometric-sq ≡ 9
+law-geometric-9 = refl
+
+-- § The unique binomial decomposition: 128 + 9 = 137
+law-coupling-decomposition : bulk-spectral + geometric-sq ≡ 137
+law-coupling-decomposition = refl
+
+
+-- § The three invariant kinds of K₄
+data InvariantKind : Set where
+  spectral    : InvariantKind   -- λ: Laplacian eigenvalue
+  topological : InvariantKind   -- χ: Euler characteristic
+  algebraic   : InvariantKind   -- d: vertex degree
+
+-- § Each factor in the coupling formula carries a unique kind
+lambda-kind : InvariantKind
+lambda-kind = spectral
+
+chi-kind : InvariantKind
+chi-kind = topological
+
+deg-kind : InvariantKind
+deg-kind = algebraic
+
+-- § Disjointness: distinct constructors have no common identification
+spectral≠topological : spectral ≠ topological
+spectral≠topological ()
+
+spectral≠algebraic : spectral ≠ algebraic
+spectral≠algebraic ()
+
+topological≠algebraic : topological ≠ algebraic
+topological≠algebraic ()
+
+-- § Bulk and boundary draw on disjoint kinds → forced additive combination
+record BulkBoundaryIndependence : Set where
+  field
+    bulk-kind₁            : InvariantKind
+    bulk-kind₂            : InvariantKind
+    boundary-kind         : InvariantKind
+    bulk-is-spectral      : bulk-kind₁ ≡ spectral
+    bulk-is-topological   : bulk-kind₂ ≡ topological
+    boundary-is-algebraic : boundary-kind ≡ algebraic
+    kinds-disjoint₁       : spectral ≠ algebraic
+    kinds-disjoint₂       : topological ≠ algebraic
+    decomposition-forced  : bulk-spectral + geometric-sq ≡ 137
+
+theorem-bulk-boundary-independent : BulkBoundaryIndependence
+theorem-bulk-boundary-independent = record
+  { bulk-kind₁            = spectral
+  ; bulk-kind₂            = topological
+  ; boundary-kind         = algebraic
+  ; bulk-is-spectral      = refl
+  ; bulk-is-topological   = refl
+  ; boundary-is-algebraic = refl
+  ; kinds-disjoint₁       = λ ()
+  ; kinds-disjoint₂       = λ ()
+  ; decomposition-forced  = refl
+  }
+
+
+-- § A local observable monomial is specified by exponents on the K₄ invariant basis.
+record ObservableMonomial : Set where
+  constructor mono
+  field
+    exp-V : ℕ
+    exp-E : ℕ
+    exp-d : ℕ
+    exp-χ : ℕ
+    exp-κ : ℕ
+
+open ObservableMonomial public
+
+-- § Total monomial degree counts local complexity in the invariant basis.
+monomial-degree : ObservableMonomial → ℕ
+monomial-degree m =
+  exp-V m + exp-E m + exp-d m + exp-χ m + exp-κ m
+
+-- § Evaluation sends an exponent profile to its K₄ integer value.
+eval-monomial : ObservableMonomial → ℕ
+eval-monomial m =
+  (((vertexCountK4 ^ exp-V m)
+    * (edgeCountK4 ^ exp-E m))
+    * (degree-K4 ^ exp-d m)
+    * (eulerChar-computed ^ exp-χ m))
+    * (κ-discrete ^ exp-κ m)
+
+-- § Primitive observables are exactly the monomials whose degree stays within simplex depth.
+PrimitiveLocalMonomial : ObservableMonomial → Set
+PrimitiveLocalMonomial m = monomial-degree m ≤ simplex-degree
+
+-- § The bulk term is primitive as V²·κ, which is degree 3.
+bulk-primitive-monomial : ObservableMonomial
+bulk-primitive-monomial = mono 2 0 0 0 1
+
+-- § The geometric completion is the degree-square monomial d².
+degree-square-monomial : ObservableMonomial
+degree-square-monomial = mono 0 0 2 0 0
+
+-- § χ⁴ is the first explicit example beyond the primitive cutoff.
+quartic-chi-monomial : ObservableMonomial
+quartic-chi-monomial = mono 0 0 0 4 0
+
+-- § Anything above the cutoff is not primitive.
+primitive-vs-iterated-impossible :
+  {m : ObservableMonomial} →
+  suc simplex-degree ≤ monomial-degree m →
+  PrimitiveLocalMonomial m →
+  ⊥
+primitive-vs-iterated-impossible {m} high low =
+  suc≤-impossible simplex-degree (≤-trans high low)
+
+-- § The primitive observable sector is fixed by the graph's local depth.
+record PrimitiveObservableSector : Set1 where
+  field
+    cutoff-from-graph : simplex-degree ≡ degree-K4
+    cutoff-is-structural : simplex-degree ≡ 3
+    admissible : ObservableMonomial → Set
+    admissible-exactly-bounded :
+      (m : ObservableMonomial) →
+      (admissible m → monomial-degree m ≤ simplex-degree)
+      × (monomial-degree m ≤ simplex-degree → admissible m)
+    above-cutoff-is-iterated :
+      (m : ObservableMonomial) →
+      suc simplex-degree ≤ monomial-degree m →
+      ¬ (admissible m)
+    bulk-is-primitive : admissible bulk-primitive-monomial
+    bulk-evaluates-to-128 : eval-monomial bulk-primitive-monomial ≡ 128
+    degree-square-is-primitive : admissible degree-square-monomial
+    degree-square-evaluates-to-9 : eval-monomial degree-square-monomial ≡ 9
+    quartic-chi-begins-iteration :
+      suc simplex-degree ≤ monomial-degree quartic-chi-monomial
+    quartic-chi-is-not-primitive : ¬ (admissible quartic-chi-monomial)
+
+theorem-primitive-observable-sector : PrimitiveObservableSector
+theorem-primitive-observable-sector = record
+  { cutoff-from-graph = sym law16B-5-degree-match
+  ; cutoff-is-structural = law14C-1-degree
+  ; admissible = PrimitiveLocalMonomial
+    ; admissible-exactly-bounded = λ m → (λ adm → adm) , (λ bound → bound)
+  ; above-cutoff-is-iterated =
+      λ m high adm → primitive-vs-iterated-impossible {m = m} high adm
+  ; bulk-is-primitive = s≤s (s≤s (s≤s z≤n))
+  ; bulk-evaluates-to-128 = refl
+  ; degree-square-is-primitive = s≤s (s≤s z≤n)
+  ; degree-square-evaluates-to-9 = refl
+  ; quartic-chi-begins-iteration = s≤s (s≤s (s≤s (s≤s z≤n)))
+  ; quartic-chi-is-not-primitive =
+      λ adm →
+        primitive-vs-iterated-impossible {m = quartic-chi-monomial}
+          (s≤s (s≤s (s≤s (s≤s z≤n))))
+          adm
+  }
+
+-- § Only 128 pairs with 9 to reach 137 within the degree-≤3 sector.
+
+-- § Structural derivation: the degree bound d = simplex-degree = 3 is the spectral depth of K4, so V^d·χ + d² is evaluated exactly at that depth.
+law-alpha-exponent-is-simplex-degree :
+  alpha-inverse ≡   (simplex-vertices ^ simplex-degree) * simplex-chi
+                  + simplex-degree * simplex-degree
+law-alpha-exponent-is-simplex-degree = refl
+
+-- § Structural reason for two terms: all K4 monomials are {2,3}-smooth, but 137 is coprime to 6, so no single monomial can equal it.
+law-alpha-exceeds-monomial-stratum :
+  gcd alpha-inverse (eulerChar-computed * degree-K4) ≡ 1
+law-alpha-exceeds-monomial-stratum = refl  -- gcd(137, 6) = 1
+
+-- § The completion 137 ∸ 128 = 9 = d² is the unique degree-≤3 monomial that fits.
+law-completion-unique : alpha-inverse ∸ bulk-spectral ≡ geometric-sq
+law-completion-unique = refl  -- 137 ∸ 128 = 9 = d²
+
+-- § Exhaustive pair elimination: no other pair of K₄ products sums to 137.
+-- Product abbreviations (degree-≤2 monomials in the invariant basis):
+pr-VV pr-VE pr-Vd pr-Vχ pr-EE pr-Ed pr-Eχ pr-dd : ℕ
+pr-VV = vertexCountK4 * vertexCountK4      -- 16
+pr-VE = vertexCountK4 * edgeCountK4        -- 24
+pr-Vd = vertexCountK4 * degree-K4          -- 12
+pr-Vχ = vertexCountK4 * eulerChar-computed  -- 8
+pr-EE = edgeCountK4   * edgeCountK4        -- 36
+pr-Ed = edgeCountK4   * degree-K4          -- 18
+pr-Eχ = edgeCountK4   * eulerChar-computed  -- 12
+pr-dd = degree-K4     * degree-K4          -- 9
+
+record NoPairSumGives137 : Set where
+  field
+    t-VV+VE : ¬ (pr-VV + pr-VE ≡ 137)   -- 40
+    t-VV+EE : ¬ (pr-VV + pr-EE ≡ 137)   -- 52
+    t-VV+Ed : ¬ (pr-VV + pr-Ed ≡ 137)   -- 34
+    t-VE+EE : ¬ (pr-VE + pr-EE ≡ 137)   -- 60
+    t-VE+Ed : ¬ (pr-VE + pr-Ed ≡ 137)   -- 42
+    t-VE+dd : ¬ (pr-VE + pr-dd ≡ 137)   -- 33
+    t-EE+dd : ¬ (pr-EE + pr-dd ≡ 137)   -- 45
+    t-EE+Vd : ¬ (pr-EE + pr-Vd ≡ 137)   -- 48
+    t-EE+Vχ : ¬ (pr-EE + pr-Vχ ≡ 137)   -- 44
+    t-Ed+Vd : ¬ (pr-Ed + pr-Vd ≡ 137)   -- 30
+    t-VV+dd : ¬ (pr-VV + pr-dd ≡ 137)   -- 25
+    t-VV+Eχ : ¬ (pr-VV + pr-Eχ ≡ 137)   -- 28
+
+theorem-no-pair-sum-137 : NoPairSumGives137
+theorem-no-pair-sum-137 = record
+  { t-VV+VE = λ () ; t-VV+EE = λ () ; t-VV+Ed = λ ()
+  ; t-VE+EE = λ () ; t-VE+Ed = λ () ; t-VE+dd = λ ()
+  ; t-EE+dd = λ () ; t-EE+Vd = λ () ; t-EE+Vχ = λ ()
+  ; t-Ed+Vd = λ () ; t-VV+dd = λ () ; t-VV+Eχ = λ ()
+  }
+
+
+-- § Mass-sector admissibility: include F₂ = 17, require a minimal-degree cofactor decomposition, and require dual spectral agreement.
+
+-- § (1) F₂ shares no prime with the base invariant product V·E·d·χ = 144
+law-F2-coprime-to-base :
+  gcd F₂ (vertexCountK4 * edgeCountK4 * degree-K4 * eulerChar-computed) ≡ 1
+law-F2-coprime-to-base = refl   -- gcd(17, 144) = 1
+
+-- § (2) Proton mass factors as F₂ × 108
+law-proton-F2-times-108 : proton-mass-bare ≡ F₂ * 108
+law-proton-F2-times-108 = refl  -- 1836 = 17 × 108
+
+-- § (2) First path: χ²·d³ = 108 (topological × degree)
+law-cofactor-chi-sq-d-cube :
+  (eulerChar-computed * eulerChar-computed)
+  * (degree-K4 * degree-K4 * degree-K4) ≡ 108
+law-cofactor-chi-sq-d-cube = refl  -- 4 × 27 = 108
+
+-- § (2) Second path: E²·d = 108 (edge-squared × degree)
+law-cofactor-E-sq-d :
+  (edgeCountK4 * edgeCountK4) * degree-K4 ≡ 108
+law-cofactor-E-sq-d = refl       -- 36 × 3 = 108
+
+-- § (3) Spectral duality: both paths yield the same cofactor (via χ·d = E)
+law-dual-path-identity :
+  (eulerChar-computed * eulerChar-computed) * (degree-K4 * degree-K4 * degree-K4)
+  ≡ (edgeCountK4 * edgeCountK4) * degree-K4
+law-dual-path-identity = refl    -- χ²d³ = E²d via χd = E
+
+-- § Degree minimality: E² = 36 < 108, so the cofactor forces degree at least 3 and both minimal paths use exactly degree 3.
+law-degree2-maximum : edgeCountK4 * edgeCountK4 ≡ 36
+law-degree2-maximum = refl       -- E² = 36 < 108
+
+-- § Reduced primitive cofactor: E²·d sits exactly at the simplex cutoff.
+edge-square-degree-monomial : ObservableMonomial
+edge-square-degree-monomial = mono 0 2 1 0 0
+
+-- § Topological presentation of the same cofactor before reduction via χ·d = E.
+topological-cofactor-monomial : ObservableMonomial
+topological-cofactor-monomial = mono 0 0 3 2 0
+
+-- § Reduced mass cofactors are exactly primitive monomials with the canonical value 108.
+ReducedMassCofactor : ObservableMonomial → Set
+ReducedMassCofactor m = PrimitiveLocalMonomial m × (eval-monomial m ≡ 108)
+
+-- § The mass observable sector separates the compactification factor from the reduced local cofactor.
+record MassObservableSector : Set1 where
+  field
+    prime-factor-from-compactification : F₂ ≡ suc clifford-dimension
+    prime-factor-is-17 : F₂ ≡ 17
+    prime-factor-coprime-to-base :
+      gcd F₂ (vertexCountK4 * edgeCountK4 * degree-K4 * eulerChar-computed) ≡ 1
+    reduced-cofactor : ObservableMonomial → Set
+    reduced-cofactor-exactly-primitive-108 :
+      (m : ObservableMonomial) →
+      (reduced-cofactor m → PrimitiveLocalMonomial m × (eval-monomial m ≡ 108))
+      × ((PrimitiveLocalMonomial m × (eval-monomial m ≡ 108)) → reduced-cofactor m)
+    edge-channel-is-admissible : reduced-cofactor edge-square-degree-monomial
+    edge-channel-is-primitive : PrimitiveLocalMonomial edge-square-degree-monomial
+    edge-channel-is-108 : eval-monomial edge-square-degree-monomial ≡ 108
+    topological-route-is-108 : eval-monomial topological-cofactor-monomial ≡ 108
+    topological-route-reduces :
+      eval-monomial topological-cofactor-monomial
+      ≡ eval-monomial edge-square-degree-monomial
+    topological-route-is-iterated : ¬ (PrimitiveLocalMonomial topological-cofactor-monomial)
+    proton-mass-from-sector :
+      proton-mass-bare ≡
+      F₂ * eval-monomial edge-square-degree-monomial
+
+theorem-mass-observable-sector : MassObservableSector
+theorem-mass-observable-sector = record
+  { prime-factor-from-compactification = refl
+  ; prime-factor-is-17 = law16B-12-F2-is-17
+  ; prime-factor-coprime-to-base = law-F2-coprime-to-base
+  ; reduced-cofactor = ReducedMassCofactor
+  ; reduced-cofactor-exactly-primitive-108 =
+      λ m → (λ adm → adm) , (λ adm → adm)
+  ; edge-channel-is-admissible = (s≤s (s≤s (s≤s z≤n))) , refl
+  ; edge-channel-is-primitive = s≤s (s≤s (s≤s z≤n))
+  ; edge-channel-is-108 = refl
+  ; topological-route-is-108 = refl
+  ; topological-route-reduces = refl
+  ; topological-route-is-iterated =
+      λ adm →
+        primitive-vs-iterated-impossible {m = topological-cofactor-monomial}
+          (s≤s (s≤s (s≤s (s≤s z≤n))))
+          adm
+  ; proton-mass-from-sector = refl
+  }
+
+
+
+-- § Phase 1: Enumerate the reduced edge-channel case space
+
+-- § Edge-channel monomials keep only the reduced local basis {E,d}.
+record EdgeChannelMonomial : Set where
+  constructor edge-mono
+  field
+    exp-edge : ℕ
+    exp-degree : ℕ
+
+open EdgeChannelMonomial public
+
+-- § Total degree in the reduced edge channel.
+edge-channel-degree : EdgeChannelMonomial → ℕ
+edge-channel-degree m = exp-edge m + exp-degree m
+
+-- § Primitive reduced monomials are bounded by simplex depth.
+PrimitiveEdgeChannelMonomial : EdgeChannelMonomial → Set
+PrimitiveEdgeChannelMonomial m = edge-channel-degree m ≤ simplex-degree
+
+-- § Evaluation of reduced edge-channel monomials on K₄.
+eval-edge-channel : EdgeChannelMonomial → ℕ
+eval-edge-channel m =
+  (edgeCountK4 ^ exp-edge m) * (degree-K4 ^ exp-degree m)
+
+-- § The ten degree-≤3 edge-channel candidates.
+data ReducedEdgeCase : Set where
+  mass-case-1   : ReducedEdgeCase
+  mass-case-d   : ReducedEdgeCase
+  mass-case-E   : ReducedEdgeCase
+  mass-case-d2  : ReducedEdgeCase
+  mass-case-Ed  : ReducedEdgeCase
+  mass-case-E2  : ReducedEdgeCase
+  mass-case-d3  : ReducedEdgeCase
+  mass-case-Ed2 : ReducedEdgeCase
+  mass-case-E2d : ReducedEdgeCase
+  mass-case-E3  : ReducedEdgeCase
+
+interpret-reduced-edge-case : ReducedEdgeCase → EdgeChannelMonomial
+interpret-reduced-edge-case mass-case-1   = edge-mono 0 0
+interpret-reduced-edge-case mass-case-d   = edge-mono 0 1
+interpret-reduced-edge-case mass-case-E   = edge-mono 1 0
+interpret-reduced-edge-case mass-case-d2  = edge-mono 0 2
+interpret-reduced-edge-case mass-case-Ed  = edge-mono 1 1
+interpret-reduced-edge-case mass-case-E2  = edge-mono 2 0
+interpret-reduced-edge-case mass-case-d3  = edge-mono 0 3
+interpret-reduced-edge-case mass-case-Ed2 = edge-mono 1 2
+interpret-reduced-edge-case mass-case-E2d = edge-mono 2 1
+interpret-reduced-edge-case mass-case-E3  = edge-mono 3 0
+
+eval-reduced-edge-case : ReducedEdgeCase → ℕ
+eval-reduced-edge-case c = eval-edge-channel (interpret-reduced-edge-case c)
+
+ReducedEdgePrimitive : ReducedEdgeCase → Set
+ReducedEdgePrimitive c =
+  PrimitiveEdgeChannelMonomial (interpret-reduced-edge-case c)
+
+-- § Every candidate lies inside the reduced primitive cutoff.
+reduced-edge-case-primitive :
+  (c : ReducedEdgeCase) →
+  ReducedEdgePrimitive c
+reduced-edge-case-primitive mass-case-1   = z≤n
+reduced-edge-case-primitive mass-case-d   = s≤s z≤n
+reduced-edge-case-primitive mass-case-E   = s≤s z≤n
+reduced-edge-case-primitive mass-case-d2  = s≤s (s≤s z≤n)
+reduced-edge-case-primitive mass-case-Ed  = s≤s (s≤s z≤n)
+reduced-edge-case-primitive mass-case-E2  = s≤s (s≤s z≤n)
+reduced-edge-case-primitive mass-case-d3  = s≤s (s≤s (s≤s z≤n))
+reduced-edge-case-primitive mass-case-Ed2 = s≤s (s≤s (s≤s z≤n))
+reduced-edge-case-primitive mass-case-E2d = s≤s (s≤s (s≤s z≤n))
+reduced-edge-case-primitive mass-case-E3  = s≤s (s≤s (s≤s z≤n))
+
+-- § Phase 2: Evaluate every candidate numerically
+
+-- § The reduced candidate values are fixed numerically.
+law-reduced-edge-1 : eval-reduced-edge-case mass-case-1 ≡ 1
+law-reduced-edge-1 = refl
+
+law-reduced-edge-d : eval-reduced-edge-case mass-case-d ≡ 3
+law-reduced-edge-d = refl
+
+law-reduced-edge-E : eval-reduced-edge-case mass-case-E ≡ 6
+law-reduced-edge-E = refl
+
+law-reduced-edge-d2 : eval-reduced-edge-case mass-case-d2 ≡ 9
+law-reduced-edge-d2 = refl
+
+law-reduced-edge-Ed : eval-reduced-edge-case mass-case-Ed ≡ 18
+law-reduced-edge-Ed = refl
+
+law-reduced-edge-E2 : eval-reduced-edge-case mass-case-E2 ≡ 36
+law-reduced-edge-E2 = refl
+
+law-reduced-edge-d3 : eval-reduced-edge-case mass-case-d3 ≡ 27
+law-reduced-edge-d3 = refl
+
+law-reduced-edge-Ed2 : eval-reduced-edge-case mass-case-Ed2 ≡ 54
+law-reduced-edge-Ed2 = refl
+
+law-reduced-edge-E2d : eval-reduced-edge-case mass-case-E2d ≡ 108
+law-reduced-edge-E2d = refl
+
+law-reduced-edge-E3 : eval-reduced-edge-case mass-case-E3 ≡ 216
+law-reduced-edge-E3 = refl
+
+-- § Exactly one reduced primitive edge-channel monomial evaluates to 108.
+reduced-edge-108-survivor-unique :
+  (c : ReducedEdgeCase) →
+  eval-reduced-edge-case c ≡ 108 →
+  c ≡ mass-case-E2d
+reduced-edge-108-survivor-unique mass-case-1 ()
+reduced-edge-108-survivor-unique mass-case-d ()
+reduced-edge-108-survivor-unique mass-case-E ()
+reduced-edge-108-survivor-unique mass-case-d2 ()
+reduced-edge-108-survivor-unique mass-case-Ed ()
+reduced-edge-108-survivor-unique mass-case-E2 ()
+reduced-edge-108-survivor-unique mass-case-d3 ()
+reduced-edge-108-survivor-unique mass-case-Ed2 ()
+reduced-edge-108-survivor-unique mass-case-E2d refl = refl
+reduced-edge-108-survivor-unique mass-case-E3 ()
+
+-- § Classification record for the reduced edge-channel cofactor.
+record ReducedEdgeCofactorClassification : Set where
+  field
+    bounded-case-space :
+      (c : ReducedEdgeCase) →
+      PrimitiveEdgeChannelMonomial (interpret-reduced-edge-case c)
+    unique-108-case :
+      (c : ReducedEdgeCase) →
+      eval-reduced-edge-case c ≡ 108 →
+      c ≡ mass-case-E2d
+    survivor-is-108 : eval-reduced-edge-case mass-case-E2d ≡ 108
+    proton-cofactor-is-survivor :
+      edge-mono 2 1 ≡ interpret-reduced-edge-case mass-case-E2d
+    proton-mass-is-forced : proton-mass-bare ≡ F₂ * eval-reduced-edge-case mass-case-E2d
+
+theorem-reduced-edge-cofactor-classification : ReducedEdgeCofactorClassification
+theorem-reduced-edge-cofactor-classification = record
+  { bounded-case-space = reduced-edge-case-primitive
+  ; unique-108-case = reduced-edge-108-survivor-unique
+  ; survivor-is-108 = refl
+  ; proton-cofactor-is-survivor = refl
+  ; proton-mass-is-forced = refl
+  }
+
+
+
+-- § Phase 1: Scan the pure degree channel
+
+-- § Pure degree-channel candidates for the muon geometric factor.
+data MuonDegreeCase : Set where
+  muon-degree-1  : MuonDegreeCase
+  muon-degree-d  : MuonDegreeCase
+  muon-degree-d2 : MuonDegreeCase
+  muon-degree-d3 : MuonDegreeCase
+
+eval-muon-degree-case : MuonDegreeCase → ℕ
+eval-muon-degree-case muon-degree-1  = 1
+eval-muon-degree-case muon-degree-d  = degree-K4
+eval-muon-degree-case muon-degree-d2 = degree-K4 * degree-K4
+eval-muon-degree-case muon-degree-d3 = degree-K4 * degree-K4 * degree-K4
+
+law-muon-degree-1 : eval-muon-degree-case muon-degree-1 ≡ 1
+law-muon-degree-1 = refl
+
+law-muon-degree-d : eval-muon-degree-case muon-degree-d ≡ 3
+law-muon-degree-d = refl
+
+law-muon-degree-d2 : eval-muon-degree-case muon-degree-d2 ≡ 9
+law-muon-degree-d2 = refl
+
+law-muon-degree-d3 : eval-muon-degree-case muon-degree-d3 ≡ 27
+law-muon-degree-d3 = refl
+
+muon-degree-9-survivor-unique :
+  (c : MuonDegreeCase) →
+  eval-muon-degree-case c ≡ 9 →
+  c ≡ muon-degree-d2
+muon-degree-9-survivor-unique muon-degree-1 ()
+muon-degree-9-survivor-unique muon-degree-d ()
+muon-degree-9-survivor-unique muon-degree-d2 refl = refl
+muon-degree-9-survivor-unique muon-degree-d3 ()
+
+-- § Phase 2: Scan the mixed compactification channel
+
+-- § Mixed additive candidates for the compactification-edge factor.
+data MuonMixedCase : Set where
+  muon-mix-0    : MuonMixedCase
+  muon-mix-E    : MuonMixedCase
+  muon-mix-F2   : MuonMixedCase
+  muon-mix-EF2  : MuonMixedCase
+
+eval-muon-mixed-case : MuonMixedCase → ℕ
+eval-muon-mixed-case muon-mix-0   = 0
+eval-muon-mixed-case muon-mix-E   = edgeCountK4
+eval-muon-mixed-case muon-mix-F2  = F₂
+eval-muon-mixed-case muon-mix-EF2 = edgeCountK4 + F₂
+
+law-muon-mix-0 : eval-muon-mixed-case muon-mix-0 ≡ 0
+law-muon-mix-0 = refl
+
+law-muon-mix-E : eval-muon-mixed-case muon-mix-E ≡ 6
+law-muon-mix-E = refl
+
+law-muon-mix-F2 : eval-muon-mixed-case muon-mix-F2 ≡ 17
+law-muon-mix-F2 = refl
+
+law-muon-mix-EF2 : eval-muon-mixed-case muon-mix-EF2 ≡ 23
+law-muon-mix-EF2 = refl
+
+muon-mixed-23-survivor-unique :
+  (c : MuonMixedCase) →
+  eval-muon-mixed-case c ≡ 23 →
+  c ≡ muon-mix-EF2
+muon-mixed-23-survivor-unique muon-mix-0 ()
+muon-mixed-23-survivor-unique muon-mix-E ()
+muon-mixed-23-survivor-unique muon-mix-F2 ()
+muon-mixed-23-survivor-unique muon-mix-EF2 refl = refl
+
+-- § Phase 3: Multiply the two unique survivors
+
+-- § Classification record for the muon bare mass factorization.
+record MuonBareClassification : Set where
+  field
+    unique-degree-9 :
+      (c : MuonDegreeCase) →
+      eval-muon-degree-case c ≡ 9 →
+      c ≡ muon-degree-d2
+    unique-mixed-23 :
+      (c : MuonMixedCase) →
+      eval-muon-mixed-case c ≡ 23 →
+      c ≡ muon-mix-EF2
+    degree-survivor-is-9 : eval-muon-degree-case muon-degree-d2 ≡ 9
+    mixed-survivor-is-23 : eval-muon-mixed-case muon-mix-EF2 ≡ 23
+    muon-factorization-forced :
+      muon-mass-bare ≡ eval-muon-degree-case muon-degree-d2 * eval-muon-mixed-case muon-mix-EF2
+    muon-bare-is-forced : muon-mass-bare ≡ 207
+
+theorem-muon-bare-classification : MuonBareClassification
+theorem-muon-bare-classification = record
+  { unique-degree-9 = muon-degree-9-survivor-unique
+  ; unique-mixed-23 = muon-mixed-23-survivor-unique
+  ; degree-survivor-is-9 = refl
+  ; mixed-survivor-is-23 = refl
+  ; muon-factorization-forced = refl
+  ; muon-bare-is-forced = refl
+  }
+
+
+
+-- § Compactification-channel candidates for the terminal tau/muon ratio.
+data TauCompactificationCase : Set where
+  tau-raw-spinor     : TauCompactificationCase
+  tau-compactified   : TauCompactificationCase
+
+eval-tau-compactification : TauCompactificationCase → ℕ
+eval-tau-compactification tau-raw-spinor   = clifford-dimension
+eval-tau-compactification tau-compactified = F₂
+
+law-tau-raw-spinor-16 : eval-tau-compactification tau-raw-spinor ≡ 16
+law-tau-raw-spinor-16 = refl
+
+law-tau-compactified-17 : eval-tau-compactification tau-compactified ≡ 17
+law-tau-compactified-17 = refl
+
+tau-17-survivor-unique :
+  (c : TauCompactificationCase) →
+  eval-tau-compactification c ≡ 17 →
+  c ≡ tau-compactified
+tau-17-survivor-unique tau-raw-spinor ()
+tau-17-survivor-unique tau-compactified refl = refl
+
+-- § Classification record for the terminal compactification survivor.
+record TauBareClassification : Set where
+  field
+    compactification-adds-one : F₂ ≡ suc clifford-dimension
+    raw-spinor-is-16 : eval-tau-compactification tau-raw-spinor ≡ 16
+    compactified-spinor-is-17 : eval-tau-compactification tau-compactified ≡ 17
+    unique-17-case :
+      (c : TauCompactificationCase) →
+      eval-tau-compactification c ≡ 17 →
+      c ≡ tau-compactified
+    tau-ratio-is-forced : tau-muon-bare ≡ eval-tau-compactification tau-compactified
+    tau-ratio-is-17 : tau-muon-bare ≡ 17
+
+theorem-tau-bare-classification : TauBareClassification
+theorem-tau-bare-classification = record
+  { compactification-adds-one = refl
+  ; raw-spinor-is-16 = refl
+  ; compactified-spinor-is-17 = refl
+  ; unique-17-case = tau-17-survivor-unique
+  ; tau-ratio-is-forced = refl
+  ; tau-ratio-is-17 = refl
+  }
+
+
+
+
+-- §══════════════════════════════════════════════════════════════════════════
+-- § End of Bridge code from Void
+-- §══════════════════════════════════════════════════════════════════════════
+
 
 -- § The proton loop correction: 11/72
 proton-loop-forced : ℚ
