@@ -248,11 +248,13 @@
 
 Begin with nothing. No axioms, no particles, no space, no time—the unmarked state before any distinction has been drawn.
 
-Now ask: what survives? Not what can be built, but what cannot be destroyed. Apply the filter of self-consistency—mechanically, without exception—and trace what remains when every structure that contradicts itself has been annihilated.
+Now ask: what survives? Not what can be built, but what cannot be destroyed. Apply the filter of self-consistency—mechanically, without exception—and trace what remains when every structure that contradicts itself has been annihilated. The method is elimination: twenty-five thousand lines of machine-verified destruction, not construction, carried out in Agda under the flags \AgdaFlag{safe} and \AgdaFlag{without-K}, with no postulates and no external axioms.
 
-The answer is not a model. It is a verdict. A single structure survives the filtration: the complete graph $K_4$, four vertices bound by six edges—the unique fixpoint that self-consistency cannot reach. The derivation is verified in Agda under the flags \AgdaFlag{safe} and \AgdaFlag{without-K}: no postulates, no external axioms, no appeal to the uniqueness of identity proofs. Nothing enters from outside.
+The answer is not a model. It is a verdict—and a specific one. A single structure survives the filtration: the complete graph $K_4$, four vertices bound by six edges. Not ``some graph exists'' but ``exactly one graph survives, and its invariant record is unique.'' The gap between starting with nothing and arriving at a named, rigid object is the central surprise of the derivation.
 
-The combinatorial invariants of this structure—vertex count, edge topology, spectral decomposition, Euler characteristic—are not parameters. They are necessities of the derivation. Their numerical values are forced by the structure and cannot be adjusted.
+The survivor is austere but fertile. Its combinatorial invariants—vertex count, edge topology, spectral decomposition, Euler characteristic—are necessities, not parameters. From these invariants, the number systems themselves are forced: the naturals by counting, the integers by orientation, the rationals by spectral ratio, the reals by Cauchy closure. No number system is imported. Every algebraic law is a theorem.
+
+Two independent routes reach the same root. The eliminative chain derives distinction as the necessary starting point of any consistent formal system. The measurement kernel derives it from the opposite end: any apparatus that separates yes from no already presupposes the distinction it claims to discover. The two routes share no lemma and no definition; their convergence is structural.
 
 The chain closes. The book's final theorem proves that any admissible invariant record already presupposes a distinction—the first act the void performs upon itself. The starting point cannot be dropped, because it was never assumed. It is what the void already is, the moment it is examined.
 
@@ -283,18 +285,15 @@ What this work contributes is not a new insight. It is a tool applied: the Agda 
 %───────────────────────────────────────────────────────────────────────────
 
 \begin{quote}
-\textit{Machine-verified in Agda (\AgdaFlag{safe} \AgdaFlag{without-K}, zero postulates,
-${\sim}27{,}000$ lines). If you are reading this to evaluate the formal claims rather than
+\textit{Machine-verified in Agda (\AgdaFlag{safe} \AgdaFlag{without-K}, zero postulates, about
+${\sim}25{,}000$ lines). If you are reading this to evaluate the formal claims rather than
 the narrative, begin here. Every entry in the tables below is a theorem at the line
 reference given; every numerical value is a \texttt{refl} closed by the Agda type checker.}
 \end{quote}
 
-\subsection*{Formally Verified Numerical Claims}
+Five claims thread through every chapter: (\textit{i})~the method is purely eliminative---no axiom is posited, every survivor is what destruction could not reach; (\textit{ii})~the survivor is specific---a named object, $K_4$, with determined invariants; (\textit{iii})~the invariant record is unique---proved to be a singleton, not merely shown to exist; (\textit{iv})~the arithmetic is forced---naturals, integers, rationals, and reals are theorems, not imports; (\textit{v})~the starting point is overdetermined---two independent routes converge on the same distinction $D_0$, and the final theorem loops back to it.
 
-\noindent No value in the following table was fitted or adjusted.
-Each is the output of a definitional equality checked by Agda.
-
-\subsection*{Formally Verified Structural Claims}
+\subsection*{Formally Verified Claims}
 
 \begin{center}
 \small
@@ -307,9 +306,8 @@ Distinction is the unique minimal two-class type (\texttt{Two-distinction}) & \S
 Exactly 4 endomorphisms on the two-class carrier (\texttt{EndoCase}, 4 constructors) & \S\ref{sec:classification:four-case-endomorphism-classification} \\
 All 6 pairs are mutually distinct (6 absurdity witnesses $\lambda\,()$) & \S\ref{sec:classification:mutual-distinctness} \\
 $K_4$ is the unique forced graph (\texttt{law13-1-presentation-iso}) & \S\ref{ch:graph-presentation} \\
-$c = \hbar = G = 1$ forced; zero free parameters (\texttt{NormalizedScaleChoice})  & \S\ref{sec:scale-closure:no-free-scale} \\
+Three simplicial weights forced to $1$; zero free parameters (\texttt{NormalizedScaleChoice})  & \S\ref{sec:scale-closure:no-free-scale} \\
 $K_4$ invariant record is a singleton---no rival survives   & \S\ref{sec:k4-representation:representation-completeness} \\
-Any admissible record presupposes a distinction (loop closes) & \S\ref{sec:discrete-continuum:physics-presupposes-distinction} \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -324,10 +322,10 @@ $\to$ \S\ref{sec:k4-representation:representation-completeness} (singleton recor
 \medskip
 \noindent\textbf{For the philosopher:}
 \S\ref{sec:scale-closure:measurement-kernel} (measurement presupposes distinction)
-$\to$ \S\ref{sec:discrete-continuum:physics-presupposes-distinction} (the loop closes).
+$\to$ \S\ref{sec:discrete-continuum:record-presupposes-distinction} (the loop closes).
 
 \medskip
-\noindent\textbf{Scope of the claim.} The coupling invariant $\mathcal{C} = 137$, the hierarchy ratio $P = 1836$, and the eigenvalue ratio $3{:}1$ are exact \texttt{refl} equalities derivable from the $K_4$ invariants $(V,E,d,\chi,\kappa) = (4,6,3,2,8)$ with no free parameters. No value was adjusted; each is the definitional output of the graph's combinatorial data. Whether these invariants carry further significance beyond the formal chain is a separate question, addressed in the companion module \texttt{Physics.agda}.
+\noindent\textbf{Scope of the claim.} The graph evaluation $\mathcal{C} = 137$, the tower product $P = 1836$, and the eigenvalue ratio $3{:}1$ are exact \texttt{refl} equalities derivable from the $K_4$ invariants $(V,E,d,\chi,\kappa) = (4,6,3,2,8)$ with no free parameters. No value was adjusted; each is the definitional output of the graph's combinatorial data. Whether these invariants carry further significance beyond the formal chain is a separate question, addressed in the companion volume \textit{Form}.
 
 \mainmatter
 
@@ -360,6 +358,8 @@ This work begins from the opposite end—the void.
 Nothing is assumed. Nothing is postulated. The starting point is not a structure but the absence of structure, and then a relentless filter is applied. At every stage, the question is the same: which structures survive their own consistency requirements? Those that do not are annihilated. Those that do, persist—not by choice, but because elimination could not reach them.
 
 This is not a new idea. It is how logic has always worked. But the full consequences of applying this filter mechanically, from the ground up, without exception, have not been traced before. This book traces them.
+
+The filter produces something disconcerting: the more rigorously nothing is assumed, the more specific the forced conclusion. This is the inverse of what ordinary formal work suggests---fewer axioms should give more models, not fewer. What the derivation shows is that the absolute minimum forces the maximum specificity. One graph. One record. One arithmetic. One loop.
 
 \section{The Tool: Agda as Executioner}
 \label{sec:introduction:agda-as-executioner}
@@ -443,17 +443,17 @@ No branch exists. Uniqueness is not asserted; it is proved twice over: once for 
 
 This book proceeds in six parts. The first four derive $K_4$ through elimination. The fifth builds the arithmetic its structure makes necessary. The sixth assembles the invariant record its combinatorial data determine.
 
-\textbf{Part I (Foundation)} establishes the minimal infrastructure that any consistent formal system must carry: equality, pairing, negation, decidability, and the natural numbers. None is introduced by fiat. Each is shown to be the unique survivor when the alternative is tested for internal consistency and fails.
+\textbf{Part I (Foundation)} establishes the minimal infrastructure that any consistent formal system must carry: equality, pairing, negation, decidability, and the natural numbers. None is introduced by fiat. Each is the unique survivor when the alternative is tested for internal consistency and fails. The eliminative discipline begins here: even the infrastructure is not imported but forced.
 
-\textbf{Part II (Drift and Reachability)} discovers what happens when classification is applied to classification itself. Each level of the type hierarchy is forced by the unclassified residue of the level below it. The reach proofs in this part track that ascent through the tower.
+\textbf{Part II (Drift and Reachability)} discovers what happens when classification is applied to classification itself. Each level of the type hierarchy is forced by the unclassified residue of the level below it. The tower that emerges has a structure rigid enough to determine its own height---the first sign that the survivor will be specific, not generic.
 
-\textbf{Part III (Heteromorphisms and Presentation)} extends the classification to maps between two distinct carriers---not just within one. The same four cases survive. The presentation theorems then reduce every reachability fact to a finite canonical witness.
+\textbf{Part III (Heteromorphisms and Presentation)} extends the classification to maps between two distinct carriers---not just within one. The same four cases survive. The presentation theorems reduce every reachability fact to a unique canonical witness---the uniqueness that later transmits to the singleton invariant record.
 
-\textbf{Part IV (Observables and Fixpoint)} identifies which quantities that functionals can measure on proofs are determined by structure rather than proof-choice. The answer is a fixpoint: every admissible observable factors through a unique base computation. The K$_4$ graph---four vertices, six edges, complete---is the unique structure that survives all constraints established in the preceding parts.
+\textbf{Part IV (Observables and Fixpoint)} identifies which quantities can be measured on proofs without depending on proof-choice. The answer is a fixpoint: every admissible observable factors through a unique base. The $K_4$ graph---four vertices, six edges, complete---is the unique structure that survives all constraints. The gap between nothing and this named, rigid object is now fully exposed.
 
-\textbf{Part V (Derived Arithmetic)} builds the number systems that K$_4$'s structure demands. Integers arise from orientation. Rationals arise from spectral ratios. Reals close the Cauchy gaps. Measurement, scaling, and distance laws follow---all without any postulate beyond what Parts I through IV established.
+\textbf{Part V (Derived Arithmetic)} builds the number systems that $K_4$'s structure demands. Naturals arise from counting, integers from orientation, rationals from spectral ratios, reals from Cauchy closure. Every algebraic law is a theorem, not a postulate. No number system is imported. This is the methodological extreme of the derivation: the arithmetic used to evaluate the survivor is itself a consequence of the survivor.
 
-\textbf{Part VI (Derived Constants of $K_4$)} assembles the invariants into a verified computation record. The vertex count, edge structure, Euler characteristic, and spectral decomposition of $K_4$ produce numerical values. The computation is theorem; whether these values carry further significance is a separate question.
+\textbf{Part VI (Derived Constants of $K_4$)} assembles the invariants into a verified computation record, proves that record to be a singleton, establishes the measurement kernel as an independent route to the starting point, and closes the loop: any admissible invariant record already presupposes the distinction from which the chain began.
 
 Each chapter slows down at a different point in the chain to verify that no weaker alternative survives. Every claim is machine-checkable: the source of this work is a literate Agda file where prose and code are one and the same document.
 
@@ -487,12 +487,12 @@ The protocol has eight steps. At each step, the alternatives were tested and eli
 
 \item \textbf{Arithmetic.} Integers, rationals, and reals are derived from $K_4$ structure. The axioms of each number system are theorems, not postulates.
 
-\item \textbf{$\mathcal{C} = 137$.} The formula $V^d \cdot \chi + d^2$ is the evaluation of $K_4$'s combinatorial invariants. The values $V=4$, $d=3$, $\chi=2$ are determined. The computation is $4^3 \cdot 2 + 3^2 = 128 + 9 = 137$. There is nothing to tune. The formal proof that this is the \emph{unique} admissible degree-$\le 3$ expression reaching a prime value appears in \texttt{Physics.agda}.
+\item \textbf{$\mathcal{C} = 137$.} The formula $V^d \cdot \chi + d^2$ is the evaluation of $K_4$'s combinatorial invariants. The values $V=4$, $d=3$, $\chi=2$ are determined. The computation is $4^3 \cdot 2 + 3^2 = 128 + 9 = 137$. There is nothing to tune. The formal proof that this is the \emph{unique} admissible degree-$\le 3$ expression reaching a prime value appears in the companion volume \textit{Form}.
 \end{enumerate}
 
 Numerology, by contrast, has a signature: the construction is chosen \emph{after} the target is known, and the degrees of freedom are large enough that hitting the target is unsurprising. The test is simple. If the construction could equally well produce 42, or 139, or 11, by adjusting a parameter, then the result is numerological. If the construction is rigid---if the type checker would reject any modification of the intermediate steps---then the result is structural.
 
-The claim here is narrower and harder: \emph{the construction that produces 137 contains no adjustable parameter, and every step is machine-verified.} The machine-checked proof that $V^d \cdot \chi + d^2$ is the unique admissible survivor in the bounded coupling sector, together with the epistemic census of all derived sectors, appears in the companion module \texttt{Physics.agda}.
+The claim here is narrower and harder: \emph{the construction that produces 137 contains no adjustable parameter, and every step is machine-verified.} The machine-checked proof that $V^d \cdot \chi + d^2$ is the unique admissible survivor in the bounded evaluation sector, together with the epistemic census of all derived sectors, appears in the companion volume \textit{Form}.
 
 \section{Two Paths, One Verdict}
 \label{sec:introduction:two-paths}
@@ -513,18 +513,13 @@ The two volumes converge on the same invariants: $(V,E,d,\chi,\kappa) = (4,6,3,2
 
 The reader who has access to both volumes may verify this convergence directly. The reader who has only this one loses nothing: the eliminative derivation is self-contained.
 
-\section{How To Read This Book}
-\label{sec:introduction:how-to-read}
-
-This document can be entered from more than one side.
-
-\textbf{For the reader following the main argument:} read the Abstract, this Introduction, the opening paragraphs of each Part, \emph{Graph Presentation}, \emph{An Unexpected Correspondence}, \emph{K\textsubscript{4} Forced Constants Layer}, and the Conclusion. That path carries the global claim from distinction to $K_4$ to the invariant record without demanding that every intermediate proof be read in full on the first pass.
-
-\textbf{For the reader testing the formal necessity:} follow the code blocks and their immediate narrative wrappers. The prose states what pressure is being applied; the Agda code shows exactly which constructions survive it.
-
-What begins now is the first irreversible pressure test. The question is not whether something can be pulled from the void—it is whether the void can remain unmarked at all. If it can, nothing follows. If it cannot, then what the void already contains is not a choice but a necessity—and the derivation is a sentence the void passes on itself.
+What begins now is the first irreversible pressure test. The question is not whether something can be pulled from the void---it is whether the void can remain unmarked at all. If it can, nothing follows. If it cannot, then what the void already contains is not a choice but a necessity---and the derivation is a sentence the void passes on itself.
 
 \part{Foundation}
+
+The eliminative chain begins with its most radical demand: if the infrastructure is not itself forced, the entire derivation rests on borrowed ground and the specificity of the later survivor carries no weight. Equality, pairing, negation, decidability, and the natural numbers---the tools every later chapter requires---must survive the filter, not precede it.
+
+The stakes are higher than they appear. In standard formal work, the natural numbers are an import---a foundation that the system stands on but never justifies. Here, nature forces a different discipline: the naturals must emerge as the unique survivor of an elimination, or the chain does not begin at all. This is the first instance of a pattern that reaches its extremity in Part~V, where the integers, rationals, and reals follow the same path. But the discipline starts here, at the most elementary boundary: the moment the void is examined, it marks itself, and the infrastructure of marking is not optional.
 
 \chapter{The Foundation of Necessity}
 \label{ch:foundation-necessity}
@@ -2321,14 +2316,14 @@ Every act of classification produces a new unclassified object: the classificati
 
 The result is a canonical tower. Agda's universe hierarchy is not an external convention imposed on the argument; it is the shape the argument is forced to take. The reachability proofs in this part are the formal record of ascent through that tower: which levels are accessible from which, and by what minimal paths.
 
+The specificity begins here. What emerges is not ``a tower of some height'' but a tower whose structure determines its successor and whose reachability relation admits no cycles. This rigidity is what later forces the survivor to be a single named graph rather than a family of candidates---and what later forces the arithmetic built on that graph to be similarly locked. The eliminative method, applied to its own infrastructure, leaves no room for choice.
+
 \chapter{Drift}
 \label{ch:drift}
 
-The classification is complete at a single level: every endomorphism on a distinction carrier falls into one of four cases. But the classification itself—the type \texttt{EndoCase}, the classifier function, the interpretation—is a new piece of mathematical structure. And this new structure is not yet classified. Stopping here would leave an unclassified object in the ontology, which is exactly the kind of residual freedom the filter is designed to eliminate.
+The new classification lives at a higher universe level, because it quantifies over the objects of the previous level. This is drift: the canonical step from one level to the next, carrying the old distinction into a lifted carrier that can accommodate the expanded ontology.
 
-The resolution is forced: classify the classifier. But to do so, the carrier must grow—the new classification lives at a higher universe level, because it quantifies over the objects of the previous level. This is drift: the canonical step from one level to the next, carrying the old distinction into a lifted carrier that can accommodate the expanded ontology.
-
-The drift step is not an invented construction. It is the minimal response to a structural demand: every classification must itself be classifiable, and the type-theoretic hierarchy of universe levels is the unique mechanism that makes this possible without circularity.
+The drift step is not an invented construction. The structural demand is precise: every classification must itself be classifiable, and the type-theoretic hierarchy of universe levels is the unique mechanism that makes this possible without circularity.
 
 \begin{code}
 -- § Level-polymorphic distinction record.
@@ -2905,14 +2900,16 @@ But that is still not enough. If the four surviving cases depended on the source
 
 Part II built a tower: every self-classification step carries the structure one level higher, and the reachability facts between those levels form a well-founded order. The drift hierarchy is not circular, and no level collapses back into a previous one. What the tower established, though, is a picture of maps within a single carrier---endomorphisms of the distinction. The question now presses from a different direction. Two carriers exist; maps between them should face the same combinatorial constraints as maps within one.
 
-The classification established in Part~I was confined to maps from a distinction carrier to itself. The question now is whether relaxing that restriction changes anything. It does not. Maps between two distinct carriers face the same combinatorial constraints that produced four endomorphisms, and exactly four cases survive here as well.
+The classification established in Part~I was confined to maps from a distinction carrier to itself. The question now is whether relaxing that restriction changes anything. It does not---the same two-boundary combinatorics governs every map, regardless of whether domain and codomain coincide.
 
 This consistency matters---but it matters more than it might first appear. If maps \emph{between} carriers are just as constrained as maps \emph{within} a single carrier, then the four-case structure is not an artifact of the self-mapping assumption. It is a property of the two-class distinction itself, holding regardless of which carrier provides the domain and which the codomain. The confirmation shuts another door: there is no freedom in the map type, and there is no freedom in how the map type is represented. The presentation theorems that follow press this further: every reachability fact between levels reduces to a finite canonical record, and every canonical record to its minimal representative.
+
+The singleton character of the survivor begins to crystallize here. If the presentation admitted more than one canonical form, the chain would fork and the later invariant record could not be unique. That the canonical form is itself unique---not merely existent---is what transmits the eliminative pressure forward: from infrastructure through the tower, through the cross-carrier maps, toward the single graph and the forced arithmetic that graph demands.
 
 \chapter{Heteromorphisms}
 \label{ch:heteromorphisms}
 
-A map $f : S_{d_1} \to S_{d_2}$ between two distinct distinction carriers is just as rigidly constrained as an endomorphism: its behavior is determined by its values at the two boundary points of the source, and each of those values is forced into one of the two boundary classes of the target. The same $2 \times 2$ combinatorics applies. The same four cases survive.
+A map $f : S_{d_1} \to S_{d_2}$ between two distinct distinction carriers is governed by the same two-boundary constraint as the endomorphisms of Part~I: its behavior is determined by its values on the two source classes, each forced into one of the two target classes. The $2 \times 2$ combinatorics is identical; injectivity, soundness, and uniqueness carry over without modification.
 
 This chapter lifts the entire classification machinery—interpretation, classification, soundness, injectivity, uniqueness—from the endomorphism setting to the heteromorphism setting. The proofs are structurally identical; only the types change. The four canonical maps between two distinctions are: constant-left, constant-right, the boundary-preserving map (\texttt{LR}), and the boundary-swapping map (\texttt{RL}).
 
@@ -3629,13 +3626,13 @@ Normalization alone does not yet isolate the invariant content. The next pressur
 
 \part{Observables and Fixpoint}
 
-Parts I through III established that only four cases survive at every level and in every map direction. The tower rises without branching; the map space closes without remainder. But a new pressure arises. Two proof witnesses that trace the same logical path may differ entirely in their internal bookkeeping---the tick indices, the staging records, the intermediate certificates. A measurement that depends on that bookkeeping is not measuring the path; it is measuring the notation.
+Parts I through III established that only four cases survive at every level and in every map direction. The tower rises without branching; the map space closes without remainder. But a new pressure arises. Two proof witnesses that trace the same logical path may differ entirely in their internal bookkeeping---the tick indices, the staging records, the intermediate certificates. A measurement that depends on such bookkeeping is not an observable of the path; it is a reading of the ledger that recorded it.
 
-The question this pressure forces is precise: which observables on reachability proofs survive the replacement of any proof by any other proof of the same proposition? The admissible ones---those that depend only on the path, not on how the path was recorded. Everything else is stripped away. The filter is the same one that ran through the preceding parts: test every candidate, eliminate anything that depends on a choice, keep only what survives.
+The question this pressure forces is precise: which observables on reachability proofs survive the replacement of any proof by any other proof of the same proposition? An observable that disagrees with itself when bookkeeping changes is not measuring the path---it is measuring the notation. The admissible observables are those that survive unchanged. Everything else is stripped away. The filter is the same one that ran through the preceding parts: test every candidate, eliminate anything that depends on a choice, keep only what survives.
 
-Two proofs of the same proposition may differ entirely in their internal structure while agreeing on every observable consequence. Where this happens systematically, the observable is not measuring the proof---it is measuring what the proof is about.
+This part identifies which observables on reachability proofs have that property: the admissible ones, determined solely by the underlying path rather than the bookkeeping that traced it. The answer converges to a fixpoint. Every admissible observable factors through a base computation that discards staging, tick-indexing, and witness detail, retaining only the irreducible logical content. That content is exactly $K_4$. This is not a construction arriving at it from outside; it is the proof that $K_4$ is what all the preceding elimination steps were closing toward. The K$_4$ graph presentation at the close of this part is that content---the single minimal certificate of everything the four preceding parts established.
 
-This part identifies which observables on reachability proofs have that property: the admissible ones, determined solely by the underlying path rather than the bookkeeping that traced it. The answer converges to a fixpoint. Every admissible observable factors through a base computation that discards staging, tick-indexing, and witness detail, retaining only the irreducible logical content. That content is exactly the $K_4$ graph: four vertices, six edges, complete. This is not a construction arriving at $K_4$ from outside; it is the proof that $K_4$ is what all the preceding elimination steps were closing toward. The K$_4$ graph presentation at the close of this part is that content---the single minimal certificate of everything the four preceding parts established.
+The poverty-to-richness gap is now fully visible. The derivation began with nothing---no axioms, no structure, no numbers---and has arrived at a named, rigid object whose combinatorial invariants are determined. The arithmetic required to evaluate those invariants must be forced by the same discipline: if the naturals, integers, rationals, or reals were imported rather than derived, the derivation's claim to self-sufficiency would collapse. That arithmetic is the work of Part~V. The invariant record it produces is the work of Part~VI---where the record is proved to be a singleton, the measurement kernel establishes an independent route to the root, and the final theorem closes the loop from the invariant record back to the distinction that started the chain.
 
 \chapter{Admissible Reach Observables}
 \label{ch:admissible-reach-observables}
@@ -4240,7 +4237,9 @@ law13-1-presentation-iso p = record
 
 The graph carries more structure than its derivation required to capture. Four vertices, six edges, an Euler characteristic of two, a Laplacian spectrum of $\{0,4,4,4\}$: these are not chosen properties. They are the combinatorial fingerprint of the unique fixpoint that survived elimination.
 
-The question is what those numbers force as formal consequences. The coupling invariant $\mathcal{C} = 137$, the spectral split $3{:}1$, the hierarchical ratios: each is a necessary corollary of the $K_4$ structure, computable without adjustment and with no free parameters. This chapter assembles the invariant ledger. Every number recorded here is a theorem, closed by the type checker. Nothing was adjusted. What the ledger may \emph{mean} is a question for the identification layer; what it \emph{contains} is settled here.
+The question is what those numbers force as formal consequences. The graph evaluation $\mathcal{C} = 137$, the spectral split $3{:}1$, the hierarchical ratios: each is a necessary corollary of the $K_4$ structure, computable without adjustment and with no free parameters. This chapter assembles the invariant ledger. Every number recorded here is a theorem, closed by the type checker. Nothing was adjusted. What the ledger may \emph{mean} is a question for the companion volume; what it \emph{contains} is settled here.
+
+What makes the ledger rigid is not merely that its entries are determined but that the arithmetic used to compute them is itself derived---not imported, but forced by the same eliminative chain that produced the graph. That derivation is Part~V. The entries in this ledger are therefore locked at two levels: by the graph's combinatorial data and by the arithmetic that evaluates it. The singleton proof in Chapter~\ref{ch:k4-representation-theory} will show that no second ledger can survive the same constraints.
 
 \section{What the Graph Contains}
 \label{sec:unexpected-correspondence:what-the-graph-contains}
@@ -4269,7 +4268,7 @@ Vertices, edges, and triangular faces combine to yield
 \[
   \chi = V - E + F = 4 - 6 + 4 = 2.
 \]
-Together with the vertex count $V = 4$ and the graph degree $d = 3$, one forms the coupling invariant
+Together with the vertex count $V = 4$ and the graph degree $d = 3$, one forms the graph evaluation
 \[
   \mathcal{C} = V^d \cdot \chi + d^2 = 4^3 \cdot 2 + 3^2 = 128 + 9 = 137.
 \]
@@ -4278,7 +4277,7 @@ This is a purely combinatorial quantity: an evaluation of graph invariants. No p
 No parameter was adjusted.
 That this particular combination---and no other degree-$\le 3$ expression in the
 invariant basis---yields a prime value is proved by exhaustive classification
-in \texttt{Physics.agda}.
+in the companion volume \textit{Form}.
 
 The result is $137$.
 
@@ -4331,15 +4330,15 @@ every field is a definitional equality on $K_4$ data, and every constraint proof
 closes with \texttt{refl}. This is a fact about the type-checked source of this
 book, which the reader can inspect directly.
 
-Arithmetic and spectral machinery must be derived from $K_4$ structure itself: counting, Laplacian evaluation, and rational approximation without importing external definitions.
-
 %═══════════════════════════════════════════════════════════════════════════
 \part{Derived Arithmetic}
 %═══════════════════════════════════════════════════════════════════════════
 
 The fixpoint is reached. $K_4$ stands as the unique structure that survives every filter applied in Parts I through IV: the classification count, the drift acyclicity, the map universality, the observable reduction. The graph carries combinatorial invariants---vertex count, edge count, Euler characteristic, Laplacian spectrum---and those invariants have numerical values. The chain now demands that those values be computed.
 
-But a difficulty arises immediately. Computing numerical values requires arithmetic. And arithmetic is not free: it must be derived from the same $K_4$ chain, or it carries hidden degrees of freedom that undermine the rigidity already established. Importing a number library would mean trusting it---trusting that its axioms are consistent with the spectral data $K_4$ forces. That trust is not available here. Every algebraic law must be a theorem, not a postulate.
+But a difficulty arises immediately. Computing numerical values requires arithmetic. And arithmetic is not free: it must be derived from the same $K_4$ chain, or it carries hidden degrees of freedom that undermine the rigidity already established. Importing a number library would mean trusting it---trusting that its axioms are consistent with the spectral data $K_4$ forces. That trust is not available here.
+
+The methodological demand is therefore extreme: that the number systems used to evaluate a structure are themselves consequences of that structure. No comparable formal derivation exists in the literature. The reason is not that the idea is novel---it is that the price of execution is punishing, and only becomes payable once the eliminative chain has produced a survivor specific enough to ground the arithmetic. A generic ``some graph survives'' could not force counting; it takes the particular $K_4$, with its four vertices and six edges and determined spectrum, to generate the naturals, the integers, the rationals, and the reals. Specificity is what makes the forced arithmetic possible, and the forced arithmetic is what makes the singleton invariant record in Part~VI evaluable.
 
 Every number, every ordering relation, every algebraic law in the remainder of this
 monograph is \emph{derived}: not imported from a library but forged from the type theory
@@ -8195,12 +8194,12 @@ distℚ (a / b) (c / d) = absℤ ((a *ℤ ⁺toℤ d) +ℤ negℤ (c *ℤ ⁺to�
 \end{code}
 
 \section{Simplex Evaluation: \texorpdfstring{$\mathcal{C} = 137$}{\textit{C} = 137}}
-\label{sec:rational-measurement:alpha-inverse-137}
+\label{sec:rational-measurement:simplex-eval-137}
 
 The K$_4$ simplex invariants from the preceding chapter combine via the forced
 arithmetic to yield the integer 137.  The canonicity of this particular
 combination---the proof that no other degree-$\le 3$ expression in the invariant
-basis reaches $137$---is established in \texttt{Physics.agda}.
+basis reaches $137$---is established in the companion volume \textit{Form}.
 Agda requires the computation first and the classification later, because the
 classification depends on the full invariant ledger assembled across the intervening
 chapters.
@@ -8211,13 +8210,13 @@ _^_ : ℕ → ℕ → ℕ
 x ^ zero = suc zero
 x ^ suc n = x * (x ^ n)
 
--- § Alpha inverse from simplex invariants.
-alpha-inverse : ℕ
-alpha-inverse = (simplex-vertices ^ simplex-degree) * simplex-chi + (simplex-degree * simplex-degree)
+-- § Simplex evaluation from K₄ invariants.
+simplex-eval : ℕ
+simplex-eval = (simplex-vertices ^ simplex-degree) * simplex-chi + (simplex-degree * simplex-degree)
 
 -- § Law 15A.0: the derived integer is exactly 137.
-law15A-0-alpha-inverse-137 : alpha-inverse ≡ 137
-law15A-0-alpha-inverse-137 = refl
+law15A-0-simplex-eval-137 : simplex-eval ≡ 137
+law15A-0-simplex-eval-137 = refl
 
 -- § Redundant witness (same computation, explicit name).
 derived-integer : ℕ
@@ -12460,7 +12459,7 @@ The spectral theory of the coupled and triple $K_4$ Laplacians is complete. Ever
 
 The spectral data is exact. The arithmetic on which it rests—$\mathbb{Z}$ and $\mathbb{Q}$—requires order and distance infrastructure for convergence arguments: additive order monotonicity, rational multiplication, $\varepsilon$-splitting, and distance laws. These are forced algebraic consequences of the integer and rational definitions already established. With those laws in place, the spectral data has a metric home and the passage to the reals is forced by the Cauchy gaps rational arithmetic cannot close internally.
 
-The graph has 4 vertices and an eigenvalue ratio $3{:}1$ (three copies of eigenvalue 4, one copy of eigenvalue 0). The spectral fingerprint underlying the forced coupling invariant is fully determined.
+The graph has 4 vertices and an eigenvalue ratio $3{:}1$ (three copies of eigenvalue 4, one copy of eigenvalue 0). The spectral fingerprint underlying the forced graph evaluation is fully determined.
 
 
 %═══════════════════════════════════════════════════════════════════════════
@@ -18025,7 +18024,7 @@ scaleVec12_nonzero_left_zero_to_zeroVec n v =
   scaleVec12-pos-left-zero→zeroVec n v , scaleVec12-neg-left-zero→zeroVec n v
 \end{code}
 
-The rational measurement layer expresses the spectral content exactly. Quotients, distances, finite-index operators, coupled and triple K$_4$ Laplacians, word algebra, and rational order describe the combinatorial data without leaving gaps at the level of explicit calculation. The coupling invariant $\mathcal{C} = 137$ is computed as a Simplex-Euler invariant in Chapter~\ref{ch:rational-numbers-measurement}; the spectral eigenvalues $\{0, 4\}$ of $K_4$ are determined; and the $3{:}1$ eigenspace split is a forced structural consequence of the four-vertex completion. These numbers emerge from the graph. What the remaining chapters establish is that they cannot emerge from any other source.
+The rational measurement layer expresses the spectral content exactly. Quotients, distances, finite-index operators, coupled and triple K$_4$ Laplacians, word algebra, and rational order describe the combinatorial data without leaving gaps at the level of explicit calculation. The graph evaluation $\mathcal{C} = 137$ is computed as a Simplex-Euler invariant in Chapter~\ref{ch:rational-numbers-measurement}; the spectral eigenvalues $\{0, 4\}$ of $K_4$ are determined; and the $3{:}1$ eigenspace split is a forced structural consequence of the four-vertex completion. These numbers emerge from the graph. What the remaining chapters establish is that they cannot emerge from any other source.
 
 What remains is not another finite algebraic law but closure itself. Once the metric structure is explicit, Cauchy data that does not settle inside $\mathbb{Q}$ must be given a legitimate home. The next step is therefore forced completion: the passage from rational measurement to the reals.
 
@@ -18919,7 +18918,7 @@ x ⋅ℝ y = mkℝ (λ n → seq x n *ℚ seq y n) record
 \label{sec:reals:multiplicative-algebra-laws}
 %───────────────────────────────────────────────────────────────────────────
 
-Addition forms a group, but a group alone cannot support the invariant chain: the coupling constants that will emerge from $K_4$ are multiplicative invariants, and the spectral identities interleave products with sums.  If multiplication on~$\mathbb{R}$ does not obey the same algebra as multiplication on~$\mathbb{Q}$, the constants lose their ring-theoretic home and the later invariants cannot be defined.
+Addition forms a group, but a group alone cannot support the invariant chain: the evaluation constants that will emerge from $K_4$ are multiplicative invariants, and the spectral identities interleave products with sums.  If multiplication on~$\mathbb{R}$ does not obey the same algebra as multiplication on~$\mathbb{Q}$, the constants lose their ring-theoretic home and the later invariants cannot be defined.
 
 Once multiplication is forced on representatives, its algebraic laws have no remaining freedom: each one is the pointwise lift of the corresponding rational law. The witness pattern is again uniform, with threshold $N = 0$, the rational identity at stage $n$, and immediate elimination of the induced distance by \texttt{distℚ-≃0}.
 
@@ -20590,22 +20589,24 @@ Left monotonicity is forced by the same rational order law, now applied through 
   }
 \end{code}
 
-The numerical machinery is in place. Natural numbers, integers, rationals, reals, order, distance, scaling, and spectral operators have all been forced from the surviving structure rather than imported from outside it. The full language required to evaluate $K_4$ quantitatively is established.
+The numerical machinery is in place. Natural numbers, integers, rationals, reals, order, distance, scaling, and spectral operators have all been forced from the surviving structure rather than imported from outside it. The full language required to evaluate $K_4$ quantitatively is established---and every law in that language is a theorem, not a postulate. This is the methodological extreme the eliminative discipline demands: the arithmetic that measures the survivor is itself a consequence of the survivor.
 
-The final step is assembly. The invariants already derived must be gathered into a single verified record so that the forced numerical values can be inspected as computation.
+The final step is assembly. The invariants already derived must be gathered, their values evaluated, and the logical closure of the chain confirmed.
 
 
 %═══════════════════════════════════════════════════════════════════════════
 \part{Derived Constants of \texorpdfstring{$K_4$}{K4}}
 %═══════════════════════════════════════════════════════════════════════════
 
-The arithmetic, spectral theory, and evaluation apparatus built in the preceding chapters constitute the machinery needed to extract numerical values from $K_4$'s combinatorial invariants. This part performs that extraction.
+The arithmetic, spectral theory, and evaluation apparatus built in Part~V constitute the machinery needed to extract numerical values from $K_4$'s combinatorial invariants. This part performs that extraction---and then closes the loop.
 
-Nothing new is assumed. The vertex count, edge count, Euler characteristic, and Laplacian eigenvalues of $K_4$ are assembled into a verified computation record. Each entry is a definitional equality closed by the Agda type system. The numerical values that result---including the coupling invariant $\mathcal{C} = 137$---are consequences of the structure derived in Parts I through IV, not inputs chosen to match them.
+Nothing new is assumed. The vertex count, edge count, Euler characteristic, and Laplacian eigenvalues of $K_4$ are assembled into a verified computation record. Each entry is a definitional equality closed by the Agda type system. The numerical values that result---including the graph evaluation $\mathcal{C} = 137$---are consequences of the structure derived in Parts I through IV, evaluated by the arithmetic derived in Part~V. Not one import, not one postulate, not one adjustable parameter.
 
-This is the methodological boundary that matters for the rigor question. The derivation chain left no adjustable parameter standing. What appears in this part is the evaluated consequence of that survivor.
+The invariant record is then proved to be a singleton: any two admissible records must agree on every field. This is the sharpest conclusion the eliminative method can deliver---not merely that $K_4$ exists, but that its invariant description is the only one that survives.
 
-The reader should therefore keep two claims sharply apart. The theorem-level claim is internal to the formal system: given the derivation already established, these equalities reduce and these numbers compute. This claim is proved here. Whether these numbers have further significance is an interpretive question that belongs outside the formal chain.
+Two further results close the derivation. The measurement kernel establishes that any apparatus capable of binary discrimination already presupposes the distinction $D_0$ from which the chain began---an independent route to the same root, sharing no lemma with the eliminative chain. And the final theorem proves that every admissible invariant record already consumes a distinction, closing the loop: $D_0 \Longrightarrow K_4 \Longrightarrow \text{record} \Longrightarrow D_0$.
+
+The reader should keep two claims sharply apart. The theorem-level claim is internal to the formal system: given the derivation already established, these equalities reduce and these numbers compute. This claim is proved here. Whether these numbers have further significance is an interpretive question that belongs outside the formal chain.
 
 %═══════════════════════════════════════════════════════════════════════════
 \chapter{Natural-Number Division Infrastructure}
@@ -22293,7 +22294,7 @@ law16B-6-euler-match = refl
 \label{sec:k4-constants:clifford-spectral-constants}
 %───────────────────────────────────────────────────────────────────────────
 
-These constants are forced from the same combinatorial core, so no separate parameter enters. Clifford dimension, hierarchy exponent, and the discrete coupling data are computed as rigid consequences of the already fixed $K_4$ profile.
+These constants are forced from the same combinatorial core, so no separate parameter enters. Clifford dimension, hierarchy exponent, and the discrete evaluation data are computed as rigid consequences of the already fixed $K_4$ profile.
 
 \begin{code}
 -- § Clifford algebra dimension: 2^V
@@ -22304,16 +22305,16 @@ clifford-dimension = 2 ^ vertexCountK4
 law16B-7-clifford : clifford-dimension ≡ 16
 law16B-7-clifford = refl
 
--- § Spinor mode count (alias)
-spinor-modes : ℕ
-spinor-modes = clifford-dimension
+-- § Clifford mode count (alias)
+clifford-modes : ℕ
+clifford-modes = clifford-dimension
 
 -- § Fermat-like combinatorial strata
 F₂ : ℕ
-F₂ = suc spinor-modes
+F₂ = suc clifford-modes
 
 F₃ : ℕ
-F₃ = suc (spinor-modes * spinor-modes)
+F₃ = suc (clifford-modes * clifford-modes)
 
 -- § Discrete κ: spectral width × 2
 κ-discrete : ℕ
@@ -22332,12 +22333,12 @@ law16B-9-hierarchy : hierarchy-exponent ≡ 22
 law16B-9-hierarchy = refl
 
 -- § Alpha denominator: deg · (1 + E²)
-α-denominator-K4 : ℕ
-α-denominator-K4 = degree-K4 * suc (edgeCountK4 * edgeCountK4)
+simplex-denom-K4 : ℕ
+simplex-denom-K4 = degree-K4 * suc (edgeCountK4 * edgeCountK4)
 
--- § Law 16B-10: α-denominator = 111
-law16B-10-alpha-denom : α-denominator-K4 ≡ 111
-law16B-10-alpha-denom = refl
+-- § Law 16B-10: simplex denominator = 111
+law16B-10-simplex-denom : simplex-denom-K4 ≡ 111
+law16B-10-simplex-denom = refl
 
 -- § Edge pair count: E²
 EdgePairCount-early : ℕ
@@ -22377,20 +22378,20 @@ K4-F   = faceCountK4
 K4-deg = degree-K4
 K4-chi = eulerChar-computed
 
--- § Redundant aliases used in cosmology/baryon sections
+-- § Redundant aliases for K₄ invariant fields
 K₄-vertices-count K₄-edges-count K₄-degree-count K₄-triangles : ℕ
 K₄-vertices-count = vertexCountK4
 K₄-edges-count    = edgeCountK4
 K₄-degree-count   = degree-K4
 K₄-triangles      = faceCountK4
 
--- § Bare inverse fine structure constant from K₄ topology
-α-bare-K4 : ℕ
-α-bare-K4 = alpha-inverse
+-- § Simplex evaluation alias for K₄
+simplex-eval-K4 : ℕ
+simplex-eval-K4 = simplex-eval
 
--- § Law 16B-15: α⁻¹ = 137
-law16B-15-alpha-bare : α-bare-K4 ≡ 137
-law16B-15-alpha-bare = refl
+-- § Law 16B-15: simplex evaluation = 137
+law16B-15-simplex-eval-bare : simplex-eval-K4 ≡ 137
+law16B-15-simplex-eval-bare = refl
 
 -- § Triangle and square cycle counts
 count-triangles : ℕ
@@ -22440,14 +22441,14 @@ law16B-19-K5-edges = refl
 Every combinatorial constant of $K_4$ is fixed by definitional equality: vertex count, edge count, face count, degree, Euler characteristic, spectral width, and cycle data. The ledger is sealed. What remains is to show that these constants determine a unique formal representation record---that no second assignment of fields could survive the same constraints.
 
 \paragraph{The forced invariants.}
-At the theorem level, $K_4$ determines $V = 4$, $E = 6$, an eigenvalue ratio $3{:}1$, and the coupling invariant $\mathcal{C} = 137$. None of these numbers were adjusted. Each is a definitional equality closed by the Agda type checker. Whether these values carry any downstream identification belongs to the separate identification layer. The last formal question is whether the assignment of fields to these invariants is unique: could a second admissible representation survive the same graph? The canonicity of $\mathcal{C} = 137$ as a derived invariant---including the proof that no alternative degree-$\le 3$ formula reaches $137$---is established in the companion module \texttt{Physics.agda}.
+At the theorem level, $K_4$ determines $V = 4$, $E = 6$, an eigenvalue ratio $3{:}1$, and the graph evaluation $\mathcal{C} = 137$. None of these numbers were adjusted. Each is a definitional equality closed by the Agda type checker. Whether these values carry any downstream identification belongs to the companion volume. What remains is the uniqueness proof: whether any two admissible representations must agree on every field, or whether a rival could survive the same constraints. That proof is Chapter~\ref{ch:k4-representation-theory}. The canonicity of $\mathcal{C} = 137$ as a derived invariant---including the proof that no alternative degree-$\le 3$ formula reaches the same prime---is in the companion volume \textit{Form}.
 
 %═══════════════════════════════════════════════════════════════════════════
 \chapter{K\textsubscript{4} Representation Theory}
 \label{ch:k4-representation-theory}
 %═══════════════════════════════════════════════════════════════════════════
 
-The admissible invariant representation of $K_4$ must be unique: otherwise the passage from graph invariants to represented quantities would reintroduce contingency. This chapter forces uniqueness by anchoring one field to the simplex cardinality and chaining every remaining field to previously fixed invariants until no representational freedom survives.
+The admissible invariant representation of $K_4$ must be unique: otherwise the passage from graph invariants to represented quantities would reintroduce contingency. This chapter forces uniqueness by anchoring one field to the simplex cardinality and chaining every remaining field to previously fixed invariants until no representational freedom survives. The result---that every admissible record collapses to a single canonical object---is one of the five distinctive conclusions of the derivation. It is not merely that $K_4$ exists, or that its invariants are determined, but that the invariant record is a \emph{singleton}: any two inhabitants of the record type must agree on every field.
 
 %───────────────────────────────────────────────────────────────────────────
 \section{Structural infrastructure}
@@ -22568,19 +22569,19 @@ record K4Record : Set where
     dim          : ℕ     -- total simplex dimension (V)
     n-spatial    : ℕ     -- codimension-1 count (V ∸ 1)
     n-temporal   : ℕ     -- residual dimension (V ∸ n-spatial)
-    gauge-rank   : ℕ     -- edge count (E)
+    edge-count   : ℕ     -- edge count (E)
     face-count   : ℕ     -- 2-simplex count (F)
     euler        : ℕ     -- Euler characteristic (V + F ∸ E)
-    coupling-inv : ℕ     -- coupling invariant (V^d · χ + d²)
-    n-gen        : ℕ     -- generation count (= d)
-    spinor-dim   : ℕ     -- Clifford dimension (2^V)
+    graph-eval : ℕ     -- graph evaluation (V^d · χ + d²)
+    codim        : ℕ     -- codimension count (= d)
+    clifford-dim   : ℕ     -- Clifford dimension (2^V)
     hierarchy    : ℕ     -- hierarchy exponent (V·E ∸ χ)
     auto-count   : ℕ     -- automorphism count (|S_V|)
     bell-sq      : ℕ     -- squared Bell number (V·χ)
-    bh-norm      : ℕ     -- normalization index (= V)
-    baryon-num   : ℕ     -- fraction numerator (= n-temporal)
-    baryon-den   : ℕ     -- fraction denominator (= E)
-    uv-cutoff    : ℕ     -- UV cutoff scale
+    norm-index      : ℕ     -- normalization index (= V)
+    frac-num   : ℕ     -- fraction numerator (= n-temporal)
+    frac-den   : ℕ     -- fraction denominator (= E)
+    res-index    : ℕ     -- UV cutoff scale
     min-loop     : ℕ     -- minimal loop order
 
     -- The anchor: exactly ONE connection to K₄
@@ -22589,22 +22590,22 @@ record K4Record : Set where
     -- Graph structure chain (from complete graph K_dim)
     cg-deg      : n-spatial ≡ dim ∸ 1
     cg-temporal : n-temporal ≡ dim ∸ n-spatial
-    cg-edges    : gauge-rank ≡ (dim * n-spatial) divℕ 2
+    cg-edges    : edge-count ≡ (dim * n-spatial) divℕ 2
     cg-faces    : face-count ≡ dim
-    cg-euler    : euler ≡ (dim + face-count) ∸ gauge-rank
+    cg-euler    : euler ≡ (dim + face-count) ∸ edge-count
 
     -- Structural chain (invariant correspondences)
-    ph-spinor   : spinor-dim ≡ 2 ^ dim
-    ph-coupling : coupling-inv ≡ (dim ^ n-spatial) * euler + n-spatial * n-spatial
-    ph-gen      : n-gen ≡ n-spatial
-    ph-hierarchy : hierarchy ≡ dim * gauge-rank ∸ euler
+    ph-clifford   : clifford-dim ≡ 2 ^ dim
+    ph-eval : graph-eval ≡ (dim ^ n-spatial) * euler + n-spatial * n-spatial
+    ph-codim      : codim ≡ n-spatial
+    ph-hierarchy : hierarchy ≡ dim * edge-count ∸ euler
     ph-auto     : auto-count ≡ dim * n-spatial * (n-spatial ∸ 1) * (n-spatial ∸ 2)
     ph-bell     : bell-sq ≡ dim * euler
-    ph-bh       : bh-norm ≡ dim
-    ph-uv       : uv-cutoff ≡ n-temporal
+    ph-norm       : norm-index ≡ dim
+    ph-res       : res-index ≡ n-temporal
     ph-loop     : min-loop ≡ n-temporal
-    ph-baryon-num : baryon-num ≡ n-temporal
-    ph-baryon-den : baryon-den ≡ gauge-rank
+    ph-frac-num : frac-num ≡ n-temporal
+    ph-frac-den : frac-den ≡ edge-count
 \end{code}
 
 
@@ -22628,19 +22629,19 @@ canonical-rep = record
   { dim          = 4
   ; n-spatial    = 3
   ; n-temporal   = 1
-  ; gauge-rank   = 6
+  ; edge-count   = 6
   ; face-count   = 4
   ; euler        = 2
-  ; coupling-inv = 137
-  ; n-gen        = 3
-  ; spinor-dim   = 16
+  ; graph-eval = 137
+  ; codim        = 3
+  ; clifford-dim   = 16
   ; hierarchy    = 22
   ; auto-count   = 24
   ; bell-sq      = 8
-  ; bh-norm      = 4
-  ; baryon-num   = 1
-  ; baryon-den   = 6
-  ; uv-cutoff    = 1
+  ; norm-index      = 4
+  ; frac-num   = 1
+  ; frac-den   = 6
+  ; res-index    = 1
   ; min-loop     = 1
   ; anchor       = refl   -- 4 ≡ vertexCountK4
   ; cg-deg       = refl   -- 3 ≡ 4 ∸ 1
@@ -22648,17 +22649,17 @@ canonical-rep = record
   ; cg-edges     = refl   -- 6 ≡ (4 * 3) divℕ 2
   ; cg-faces     = refl   -- 4 ≡ 4
   ; cg-euler     = refl   -- 2 ≡ (4 + 4) ∸ 6
-  ; ph-spinor    = refl   -- 16 ≡ 2⁴
-  ; ph-coupling  = refl   -- 137 ≡ 4³·2 + 3²
-  ; ph-gen       = refl   -- 3 ≡ 3
+  ; ph-clifford    = refl   -- 16 ≡ 2⁴
+  ; ph-eval  = refl   -- 137 ≡ 4³·2 + 3²
+  ; ph-codim       = refl   -- 3 ≡ 3
   ; ph-hierarchy = refl   -- 22 ≡ 4·6 ∸ 2
   ; ph-auto      = refl   -- 24 ≡ 4·3·2·1
   ; ph-bell      = refl   -- 8 ≡ 4·2
-  ; ph-bh        = refl   -- 4 ≡ 4
-  ; ph-uv        = refl   -- 1 ≡ 1
+  ; ph-norm        = refl   -- 4 ≡ 4
+  ; ph-res        = refl   -- 1 ≡ 1
   ; ph-loop      = refl   -- 1 ≡ 1
-  ; ph-baryon-num = refl  -- 1 ≡ 1
-  ; ph-baryon-den = refl  -- 6 ≡ 6
+  ; ph-frac-num = refl  -- 1 ≡ 1
+  ; ph-frac-den = refl  -- 6 ≡ 6
   }
 \end{code}
 
@@ -22694,8 +22695,8 @@ module ForcedValues (r : K4Record) where
     (trans (cong (λ d → d ∸ n-spatial) dim-is-4)
            (cong (λ s → 4 ∸ s) spatial-is-3))
 
-  gauge-is-6 : gauge-rank ≡ 6
-  gauge-is-6 = trans cg-edges
+  edge-is-6 : edge-count ≡ 6
+  edge-is-6 = trans cg-edges
     (trans (cong (λ d → (d * n-spatial) divℕ 2) dim-is-4)
            (cong (λ s → (4 * s) divℕ 2) spatial-is-3))
 
@@ -22704,26 +22705,26 @@ module ForcedValues (r : K4Record) where
 
   euler-is-2 : euler ≡ 2
   euler-is-2 = trans cg-euler
-    (trans (cong (λ d → (d + face-count) ∸ gauge-rank) dim-is-4)
-    (trans (cong (λ f → (4 + f) ∸ gauge-rank) faces-is-4)
-           (cong (λ g → 8 ∸ g) gauge-is-6)))
+    (trans (cong (λ d → (d + face-count) ∸ edge-count) dim-is-4)
+    (trans (cong (λ f → (4 + f) ∸ edge-count) faces-is-4)
+           (cong (λ g → 8 ∸ g) edge-is-6)))
 
-  spinor-is-16 : spinor-dim ≡ 16
-  spinor-is-16 = trans ph-spinor (cong (λ d → 2 ^ d) dim-is-4)
+  clifford-is-16 : clifford-dim ≡ 16
+  clifford-is-16 = trans ph-clifford (cong (λ d → 2 ^ d) dim-is-4)
 
-  coupling-is-137 : coupling-inv ≡ 137
-  coupling-is-137 = trans ph-coupling
+  eval-is-137 : graph-eval ≡ 137
+  eval-is-137 = trans ph-eval
     (trans (cong (λ d → (d ^ n-spatial) * euler + n-spatial * n-spatial) dim-is-4)
     (trans (cong (λ s → (4 ^ s) * euler + s * s) spatial-is-3)
            (cong (λ e → (4 ^ 3) * e + 3 * 3) euler-is-2)))
 
-  gen-is-3 : n-gen ≡ 3
-  gen-is-3 = trans ph-gen spatial-is-3
+  codim-is-3 : codim ≡ 3
+  codim-is-3 = trans ph-codim spatial-is-3
 
   hierarchy-is-22 : hierarchy ≡ 22
   hierarchy-is-22 = trans ph-hierarchy
-    (trans (cong (λ d → d * gauge-rank ∸ euler) dim-is-4)
-    (trans (cong (λ g → 4 * g ∸ euler) gauge-is-6)
+    (trans (cong (λ d → d * edge-count ∸ euler) dim-is-4)
+    (trans (cong (λ g → 4 * g ∸ euler) edge-is-6)
            (cong (λ e → 24 ∸ e) euler-is-2)))
 
   auto-is-24 : auto-count ≡ 24
@@ -22736,20 +22737,20 @@ module ForcedValues (r : K4Record) where
     (trans (cong (λ d → d * euler) dim-is-4)
            (cong (λ e → 4 * e) euler-is-2))
 
-  bh-is-4 : bh-norm ≡ 4
-  bh-is-4 = trans ph-bh dim-is-4
+  norm-is-4 : norm-index ≡ 4
+  norm-is-4 = trans ph-norm dim-is-4
 
-  uv-is-1 : uv-cutoff ≡ 1
-  uv-is-1 = trans ph-uv temporal-is-1
+  res-is-1 : res-index ≡ 1
+  res-is-1 = trans ph-res temporal-is-1
 
   loop-is-1 : min-loop ≡ 1
   loop-is-1 = trans ph-loop temporal-is-1
 
-  baryon-num-is-1 : baryon-num ≡ 1
-  baryon-num-is-1 = trans ph-baryon-num temporal-is-1
+  frac-num-is-1 : frac-num ≡ 1
+  frac-num-is-1 = trans ph-frac-num temporal-is-1
 
-  baryon-den-is-6 : baryon-den ≡ 6
-  baryon-den-is-6 = trans ph-baryon-den gauge-is-6
+  frac-den-is-6 : frac-den ≡ 6
+  frac-den-is-6 = trans ph-frac-den edge-is-6
 \end{code}
 
 
@@ -22783,8 +22784,8 @@ module RepUniqueness (r₁ r₂ : K4Record) where
   temporal-≡     : n-temporal r₁ ≡ n-temporal r₂
   temporal-≡     = trans F₁.temporal-is-1 (sym F₂.temporal-is-1)
 
-  gauge-≡        : gauge-rank r₁ ≡ gauge-rank r₂
-  gauge-≡        = trans F₁.gauge-is-6 (sym F₂.gauge-is-6)
+  edge-≡        : edge-count r₁ ≡ edge-count r₂
+  edge-≡        = trans F₁.edge-is-6 (sym F₂.edge-is-6)
 
   faces-≡        : face-count r₁ ≡ face-count r₂
   faces-≡        = trans F₁.faces-is-4 (sym F₂.faces-is-4)
@@ -22792,14 +22793,14 @@ module RepUniqueness (r₁ r₂ : K4Record) where
   euler-≡        : euler r₁ ≡ euler r₂
   euler-≡        = trans F₁.euler-is-2 (sym F₂.euler-is-2)
 
-  coupling-≡     : coupling-inv r₁ ≡ coupling-inv r₂
-  coupling-≡     = trans F₁.coupling-is-137 (sym F₂.coupling-is-137)
+  eval-≡     : graph-eval r₁ ≡ graph-eval r₂
+  eval-≡     = trans F₁.eval-is-137 (sym F₂.eval-is-137)
 
-  gen-≡          : n-gen r₁ ≡ n-gen r₂
-  gen-≡          = trans F₁.gen-is-3 (sym F₂.gen-is-3)
+  codim-≡          : codim r₁ ≡ codim r₂
+  codim-≡          = trans F₁.codim-is-3 (sym F₂.codim-is-3)
 
-  spinor-≡       : spinor-dim r₁ ≡ spinor-dim r₂
-  spinor-≡       = trans F₁.spinor-is-16 (sym F₂.spinor-is-16)
+  clifford-≡       : clifford-dim r₁ ≡ clifford-dim r₂
+  clifford-≡       = trans F₁.clifford-is-16 (sym F₂.clifford-is-16)
 
   hierarchy-≡    : hierarchy r₁ ≡ hierarchy r₂
   hierarchy-≡    = trans F₁.hierarchy-is-22 (sym F₂.hierarchy-is-22)
@@ -22810,20 +22811,20 @@ module RepUniqueness (r₁ r₂ : K4Record) where
   bell-≡         : bell-sq r₁ ≡ bell-sq r₂
   bell-≡         = trans F₁.bell-is-8 (sym F₂.bell-is-8)
 
-  bh-≡           : bh-norm r₁ ≡ bh-norm r₂
-  bh-≡           = trans F₁.bh-is-4 (sym F₂.bh-is-4)
+  norm-≡           : norm-index r₁ ≡ norm-index r₂
+  norm-≡           = trans F₁.norm-is-4 (sym F₂.norm-is-4)
 
-  uv-≡           : uv-cutoff r₁ ≡ uv-cutoff r₂
-  uv-≡           = trans F₁.uv-is-1 (sym F₂.uv-is-1)
+  res-≡           : res-index r₁ ≡ res-index r₂
+  res-≡           = trans F₁.res-is-1 (sym F₂.res-is-1)
 
   loop-≡         : min-loop r₁ ≡ min-loop r₂
   loop-≡         = trans F₁.loop-is-1 (sym F₂.loop-is-1)
 
-  baryon-num-≡   : baryon-num r₁ ≡ baryon-num r₂
-  baryon-num-≡   = trans F₁.baryon-num-is-1 (sym F₂.baryon-num-is-1)
+  frac-num-≡   : frac-num r₁ ≡ frac-num r₂
+  frac-num-≡   = trans F₁.frac-num-is-1 (sym F₂.frac-num-is-1)
 
-  baryon-den-≡   : baryon-den r₁ ≡ baryon-den r₂
-  baryon-den-≡   = trans F₁.baryon-den-is-6 (sym F₂.baryon-den-is-6)
+  frac-den-≡   : frac-den r₁ ≡ frac-den r₂
+  frac-den-≡   = trans F₁.frac-den-is-6 (sym F₂.frac-den-is-6)
 \end{code}
 
 
@@ -22917,17 +22918,17 @@ private
     → (puv   : u ≡ t)                  → (ploop : ml ≡ t)
     → (pbnum : bn ≡ t)                 → (pbden : bd ≡ g)
     → record
-        { dim = d ; n-spatial = s ; n-temporal = t ; gauge-rank = g
-        ; face-count = f ; euler = e ; coupling-inv = c ; n-gen = ng
-        ; spinor-dim = sp ; hierarchy = h ; auto-count = a ; bell-sq = b
-        ; bh-norm = bh ; baryon-num = bn ; baryon-den = bd
-        ; uv-cutoff = u ; min-loop = ml
+        { dim = d ; n-spatial = s ; n-temporal = t ; edge-count = g
+        ; face-count = f ; euler = e ; graph-eval = c ; codim = ng
+        ; clifford-dim = sp ; hierarchy = h ; auto-count = a ; bell-sq = b
+        ; norm-index = bh ; frac-num = bn ; frac-den = bd
+        ; res-index = u ; min-loop = ml
         ; anchor = panc ; cg-deg = pdeg ; cg-temporal = ptemp
         ; cg-edges = pedge ; cg-faces = pface ; cg-euler = pchi
-        ; ph-spinor = pspin ; ph-coupling = pcoup ; ph-gen = pgen
+        ; ph-clifford = pspin ; ph-eval = pcoup ; ph-codim = pgen
         ; ph-hierarchy = phier ; ph-auto = pauto ; ph-bell = pbell
-        ; ph-bh = pbh ; ph-uv = puv ; ph-loop = ploop
-        ; ph-baryon-num = pbnum ; ph-baryon-den = pbden
+        ; ph-norm = pbh ; ph-res = puv ; ph-loop = ploop
+        ; ph-frac-num = pbnum ; ph-frac-den = pbden
         } ≡ canonical-rep
   singleton-lemma .4 .3 .1 .6 .4 .2 .137 .3 .16 .22 .24 .8 .4 .1 .6 .1 .1
     refl refl refl refl refl refl refl refl refl refl refl refl refl refl refl refl refl
@@ -22942,15 +22943,15 @@ private
 
 K4Record-is-canonical : (r : K4Record) → r ≡ canonical-rep
 K4Record-is-canonical r = singleton-lemma
-  dim n-spatial n-temporal gauge-rank face-count euler
-  coupling-inv n-gen spinor-dim hierarchy auto-count bell-sq
-  bh-norm baryon-num baryon-den uv-cutoff min-loop
-  dim-is-4 spatial-is-3 temporal-is-1 gauge-is-6 faces-is-4 euler-is-2
-  coupling-is-137 gen-is-3 spinor-is-16 hierarchy-is-22 auto-is-24 bell-is-8
-  bh-is-4 baryon-num-is-1 baryon-den-is-6 uv-is-1 loop-is-1
+  dim n-spatial n-temporal edge-count face-count euler
+  graph-eval codim clifford-dim hierarchy auto-count bell-sq
+  norm-index frac-num frac-den res-index min-loop
+  dim-is-4 spatial-is-3 temporal-is-1 edge-is-6 faces-is-4 euler-is-2
+  eval-is-137 codim-is-3 clifford-is-16 hierarchy-is-22 auto-is-24 bell-is-8
+  norm-is-4 frac-num-is-1 frac-den-is-6 res-is-1 loop-is-1
   anchor cg-deg cg-temporal cg-edges cg-faces cg-euler
-  ph-spinor ph-coupling ph-gen ph-hierarchy ph-auto ph-bell
-  ph-bh ph-uv ph-loop ph-baryon-num ph-baryon-den
+  ph-clifford ph-eval ph-codim ph-hierarchy ph-auto ph-bell
+  ph-norm ph-res ph-loop ph-frac-num ph-frac-den
   where
     open K4Record r
     open ForcedValues r
@@ -22974,8 +22975,8 @@ The forcing chain is stratified into graph, algebraic, spectral, and combinatori
 module CrossConstraints where
   open K4Record
 
-  -- § Spatial directions = generation count
-  cross-spatial-is-gen : n-spatial canonical-rep ≡ n-gen canonical-rep
+  -- § Spatial directions = codimension count
+  cross-spatial-is-gen : n-spatial canonical-rep ≡ codim canonical-rep
   cross-spatial-is-gen = refl
 
   -- § Bekenstein-Hawking normalization = spacetime dimension
@@ -22986,14 +22987,14 @@ module CrossConstraints where
   cross-loop-is-uv : triangle-loop-order ≡ vertexCountK4 ∸ degree-K4
   cross-loop-is-uv = refl
 
-  -- § Baryon denominator = gauge rank
-  cross-baryon-is-gauge : baryon-den canonical-rep ≡ gauge-rank canonical-rep
-  cross-baryon-is-gauge = refl
+  -- § Fraction denominator = edge count
+  cross-frac-is-edge : frac-den canonical-rep ≡ edge-count canonical-rep
+  cross-frac-is-edge = refl
 
-  -- § Automorphism count = dim × gauge-rank (= V × E = 4 × 6 = 24)
-  cross-auto-is-dim-gauge :
+  -- § Automorphism count = dim × edge-count (= V × E = 4 × 6 = 24)
+  cross-auto-is-dim-edge :
     vertexCountK4 * degree-K4 * (degree-K4 ∸ 1) * (degree-K4 ∸ 2) ≡ 24
-  cross-auto-is-dim-gauge = refl
+  cross-auto-is-dim-edge = refl
 
   -- § Hierarchy + Euler = V · E (22 + 2 = 24)
   cross-hierarchy-plus-euler :
@@ -23028,18 +23029,18 @@ module ConstraintDerivation where
   law-cg-euler = refl
 
   -- § Algebraic laws (representation theory)
-  law-ph-spinor : clifford-dimension ≡ 2 ^ vertexCountK4
-  law-ph-spinor = refl
+  law-ph-clifford : clifford-dimension ≡ 2 ^ vertexCountK4
+  law-ph-clifford = refl
 
   law-ph-auto :
     vertexCountK4 * degree-K4 * (degree-K4 ∸ 1) * (degree-K4 ∸ 2) ≡ 24
   law-ph-auto = refl
 
-  -- § Spectral action law (K₄ Laplacian trace, Chapter 15A)
-  law-ph-coupling :
-    alpha-inverse ≡
+  -- § Simplex-Euler evaluation law (K₄ invariant basis)
+  law-ph-eval :
+    simplex-eval ≡
     (vertexCountK4 ^ degree-K4) * eulerChar-computed + degree-K4 * degree-K4
-  law-ph-coupling = refl
+  law-ph-eval = refl
 
   -- § Combinatorial law (K₄ arithmetic)
   law-ph-hierarchy :
@@ -23052,20 +23053,20 @@ module ConstraintDerivation where
     { dim          = vertexCountK4
     ; n-spatial    = degree-K4
     ; n-temporal   = vertexCountK4 ∸ degree-K4
-    ; gauge-rank   = edgeCountK4
+    ; edge-count   = edgeCountK4
     ; face-count   = faceCountK4
     ; euler        = eulerChar-computed
-    ; coupling-inv = alpha-inverse
-    ; n-gen        = degree-K4
-    ; spinor-dim   = clifford-dimension
+    ; graph-eval = simplex-eval
+    ; codim        = degree-K4
+    ; clifford-dim   = clifford-dimension
     ; hierarchy    = hierarchy-exponent
     ; auto-count   = vertexCountK4 * degree-K4
                    * (degree-K4 ∸ 1) * (degree-K4 ∸ 2)
     ; bell-sq      = vertexCountK4 * eulerChar-computed
-    ; bh-norm      = vertexCountK4
-    ; baryon-num   = vertexCountK4 ∸ degree-K4
-    ; baryon-den   = edgeCountK4
-    ; uv-cutoff    = vertexCountK4 ∸ degree-K4
+    ; norm-index      = vertexCountK4
+    ; frac-num   = vertexCountK4 ∸ degree-K4
+    ; frac-den   = edgeCountK4
+    ; res-index    = vertexCountK4 ∸ degree-K4
     ; min-loop     = vertexCountK4 ∸ degree-K4
     ; anchor       = refl
     ; cg-deg       = refl
@@ -23073,17 +23074,17 @@ module ConstraintDerivation where
     ; cg-edges     = refl
     ; cg-faces     = refl
     ; cg-euler     = refl
-    ; ph-spinor    = refl
+    ; ph-clifford    = refl
     ; ph-auto      = refl
-    ; ph-coupling  = refl
+    ; ph-eval  = refl
     ; ph-hierarchy = refl
-    ; ph-gen       = refl
+    ; ph-codim       = refl
     ; ph-bell      = refl
-    ; ph-bh        = refl
-    ; ph-uv        = refl
+    ; ph-norm        = refl
+    ; ph-res        = refl
     ; ph-loop      = refl
-    ; ph-baryon-num = refl
-    ; ph-baryon-den = refl
+    ; ph-frac-num = refl
+    ; ph-frac-den = refl
     }
 
   -- § derived-rep IS canonical-rep (definitional equality)
@@ -23133,8 +23134,8 @@ module RepresentationComplete (r : K4Record) where
   val-temporal   : n-temporal r   ≡ n-temporal canonical-rep
   val-temporal   = F.temporal-is-1
 
-  val-gauge      : gauge-rank r   ≡ gauge-rank canonical-rep
-  val-gauge      = F.gauge-is-6
+  val-edge      : edge-count r   ≡ edge-count canonical-rep
+  val-edge      = F.edge-is-6
 
   val-faces      : face-count r   ≡ face-count canonical-rep
   val-faces      = F.faces-is-4
@@ -23142,14 +23143,14 @@ module RepresentationComplete (r : K4Record) where
   val-euler      : euler r        ≡ euler canonical-rep
   val-euler      = F.euler-is-2
 
-  val-coupling   : coupling-inv r ≡ coupling-inv canonical-rep
-  val-coupling   = F.coupling-is-137
+  val-eval   : graph-eval r ≡ graph-eval canonical-rep
+  val-eval   = F.eval-is-137
 
-  val-gen        : n-gen r        ≡ n-gen canonical-rep
-  val-gen        = F.gen-is-3
+  val-codim        : codim r        ≡ codim canonical-rep
+  val-codim        = F.codim-is-3
 
-  val-spinor     : spinor-dim r   ≡ spinor-dim canonical-rep
-  val-spinor     = F.spinor-is-16
+  val-clifford     : clifford-dim r   ≡ clifford-dim canonical-rep
+  val-clifford     = F.clifford-is-16
 
   val-hierarchy  : hierarchy r    ≡ hierarchy canonical-rep
   val-hierarchy  = F.hierarchy-is-22
@@ -23160,20 +23161,20 @@ module RepresentationComplete (r : K4Record) where
   val-bell       : bell-sq r      ≡ bell-sq canonical-rep
   val-bell       = F.bell-is-8
 
-  val-bh         : bh-norm r      ≡ bh-norm canonical-rep
-  val-bh         = F.bh-is-4
+  val-bh         : norm-index r      ≡ norm-index canonical-rep
+  val-bh         = F.norm-is-4
 
-  val-uv         : uv-cutoff r    ≡ uv-cutoff canonical-rep
-  val-uv         = F.uv-is-1
+  val-uv         : res-index r    ≡ res-index canonical-rep
+  val-uv         = F.res-is-1
 
   val-loop       : min-loop r     ≡ min-loop canonical-rep
   val-loop       = F.loop-is-1
 
-  val-baryon-num : baryon-num r   ≡ baryon-num canonical-rep
-  val-baryon-num = F.baryon-num-is-1
+  val-frac-num : frac-num r   ≡ frac-num canonical-rep
+  val-frac-num = F.frac-num-is-1
 
-  val-baryon-den : baryon-den r   ≡ baryon-den canonical-rep
-  val-baryon-den = F.baryon-den-is-6
+  val-frac-den : frac-den r   ≡ frac-den canonical-rep
+  val-frac-den = F.frac-den-is-6
 \end{code}
 
 \subsubsection*{Local graph observables}
@@ -23268,20 +23269,20 @@ The representation is rebuilt entirely from computed observables. This removes t
     { dim          = vertexCountK4
     ; n-spatial    = degree-K4
     ; n-temporal   = observer-directions
-    ; gauge-rank   = interaction-channels
+    ; edge-count   = interaction-channels
     ; face-count   = boundary-quanta
     ; euler        = eulerChar-computed
-    ; coupling-inv = alpha-inverse
-    ; n-gen        = degree-K4
-    ; spinor-dim   = clifford-dimension
+    ; graph-eval = simplex-eval
+    ; codim        = degree-K4
+    ; clifford-dim   = clifford-dimension
     ; hierarchy    = hierarchy-exponent
     ; auto-count   = vertexCountK4 * degree-K4
                    * (degree-K4 ∸ 1) * (degree-K4 ∸ 2)
     ; bell-sq      = max-sq-correlator
-    ; bh-norm      = boundary-quanta
-    ; baryon-num   = observer-directions
-    ; baryon-den   = interaction-channels
-    ; uv-cutoff    = observer-directions
+    ; norm-index      = boundary-quanta
+    ; frac-num   = observer-directions
+    ; frac-den   = interaction-channels
+    ; res-index    = observer-directions
     ; min-loop     = observer-directions
     ; anchor       = refl
     ; cg-deg       = refl
@@ -23289,17 +23290,17 @@ The representation is rebuilt entirely from computed observables. This removes t
     ; cg-edges     = refl
     ; cg-faces     = refl
     ; cg-euler     = refl
-    ; ph-spinor    = refl
+    ; ph-clifford    = refl
     ; ph-auto      = refl
-    ; ph-coupling  = refl
+    ; ph-eval  = refl
     ; ph-hierarchy = refl
-    ; ph-gen       = refl
+    ; ph-codim       = refl
     ; ph-bell      = refl
-    ; ph-bh        = refl
-    ; ph-uv        = refl
+    ; ph-norm        = refl
+    ; ph-res        = refl
     ; ph-loop      = refl
-    ; ph-baryon-num = refl
-    ; ph-baryon-den = refl
+    ; ph-frac-num = refl
+    ; ph-frac-den = refl
     }
 
   -- § Closure: observable-rep IS canonical-rep (definitional equality)
@@ -23420,8 +23421,8 @@ An unrestricted numeric container for the global layer reintroduces descriptive 
   global-observable-exhaustive go-channels   = inj₂ (inj₂ (inj₂ refl))
 
   -- § Derived ledger invariants remain observable values, but not new primitive classes.
-  obs-alpha-value : ℕ
-  obs-alpha-value = alpha-inverse
+  obs-eval-value : ℕ
+  obs-eval-value = simplex-eval
 
   obs-clifford-value : ℕ
   obs-clifford-value = clifford-dimension
@@ -23913,7 +23914,7 @@ adjacent-admissible = record
 \end{code}
 
 %───────────────────────────────────────────────────────────────────────────
-\section{Summary and the discrete speed of light}
+\section{Summary and the forced edge weight}
 \label{sec:forced-propagation:summary}
 %───────────────────────────────────────────────────────────────────────────
 
@@ -23936,14 +23937,14 @@ theorem-forced-propagation = record
   }
 \end{code}
 
-With the elimination closed, the propagation rate can be named for what it is: the unit propagation speed in native FD units. The value $c_{\mathrm{FD}} = 1$ is not a numerical input or a convenient convention. It is the only value that survives the four-filter admissibility test.
+With the elimination closed, the propagation rate can be named for what it is: the unit propagation weight in native FD units. The value $\mathit{edge\text{-}weight} = 1$ is not a numerical input or a convenient convention. It is the only value that survives the four-filter admissibility test.
 
 \begin{code}
-c-FD : ℕ
-c-FD = 1
+edge-weight : ℕ
+edge-weight = 1
 
-c-FD-is-propagation-rate : c-FD ≡ max-propagation-per-edge
-c-FD-is-propagation-rate = refl
+edge-weight-is-propagation-rate : edge-weight ≡ max-propagation-per-edge
+edge-weight-is-propagation-rate = refl
 \end{code}
 
 %═══════════════════════════════════════════════════════════════════════════
@@ -23964,7 +23965,7 @@ $K_4$ has a forced cycle structure. At the tetrahedral level there are exactly f
 \end{enumerate}
 Filters 3 and 4 are the wide brackets; filter 2 does the structural work. After invariance, the four face values collapse to a single unknown $r = A\,\mathit{tri}\text{-}012$. The lower bound gives $1 \le r$; minimality gives $r \le 1$; antisymmetry of $\le$ yields $r \equiv 1$.
 
-\textbf{Consequence:} The discrete action unit $\hbar_{\mathrm{FD}} = 1$ is forced by a sandwich argument parallel to propagation. The earlier arithmetic statement $\texttt{triangle-loop-order} = 1$ becomes a corollary.
+\textbf{Consequence:} The forced face weight $\mathit{face\text{-}weight} = 1$ is forced by a sandwich argument parallel to propagation. The earlier arithmetic statement $\texttt{triangle-loop-order} = 1$ becomes a corollary.
 
 %───────────────────────────────────────────────────────────────────────────
 \section{Triangles and action candidates}
@@ -24158,35 +24159,35 @@ theorem-forced-action = record
 \end{code}
 
 %───────────────────────────────────────────────────────────────────────────
-\section{The discrete action unit}
-\label{sec:forced-action:hbar-fd}
+\section{The forced face weight}
+\label{sec:forced-action:face-weight}
 %───────────────────────────────────────────────────────────────────────────
 
-The discrete action unit $\hbar_{\mathrm{FD}} = 1$ names the unique admissible action value in native FD units. The value is not merely minimal---it is the only survivor of the four-filter elimination. It is consistent with the triangle loop order already computed.
+The forced face weight $\mathit{face\text{-}weight} = 1$ names the unique admissible action value in native FD units. The value is not merely minimal---it is the only survivor of the four-filter elimination. It is consistent with the triangle loop order already computed.
 
 \begin{code}
-hbar-FD : ℕ
-hbar-FD = 1
+face-weight : ℕ
+face-weight = 1
 
-hbar-FD-is-loop-order : hbar-FD ≡ triangle-loop-order
-hbar-FD-is-loop-order = refl
+face-weight-is-loop-order : face-weight ≡ triangle-loop-order
+face-weight-is-loop-order = refl
 \end{code}
 
 
 %═══════════════════════════════════════════════════════════════════════════
-\chapter{Forced Geometric Coupling}
+\chapter{Forced Vertex Weight}
 \label{ch:forced-geometric-coupling}
 %═══════════════════════════════════════════════════════════════════════════
 
 The three forced constants of the FD system live on three simplicial dimensions of $K_4$:
 \[
 \begin{array}{ccl}
-\text{dim}\;1 & \text{(edges)}   & \longrightarrow\; c \\
-\text{dim}\;2 & \text{(faces)}   & \longrightarrow\; \hbar \\
-\text{dim}\;0 & \text{(vertices)} & \longrightarrow\; G
+\text{dim}\;1 & \text{(edges)}   & \longrightarrow\; \mathit{edge\text{-}weight} \\
+\text{dim}\;2 & \text{(faces)}   & \longrightarrow\; \mathit{face\text{-}weight} \\
+\text{dim}\;0 & \text{(vertices)} & \longrightarrow\; \mathit{vertex\text{-}weight}
 \end{array}
 \]
-Propagation assigns a weight to each edge; the action assigns a weight to each face. Both were eliminated by the same four-filter sandwich. The curvature coupling completes the triple: it assigns a curvature weight to each \emph{vertex}---the 0-simplices where, in discrete geometry, curvature concentrates.
+Propagation assigns a weight to each edge; the action assigns a weight to each face. Both were eliminated by the same four-filter sandwich. The vertex weight completes the triple: it assigns a curvature weight to each \emph{vertex}---the 0-simplices where, in discrete geometry, curvature concentrates.
 
 A curvature law is any function $K_4\text{Vertex} \to \mathbb{N}$, subject to four constraints---each of which admits genuine alternatives on its own:
 \begin{enumerate}
@@ -24201,7 +24202,7 @@ The sandwich argument is identical to propagation and action: invariance collaps
 
 \textbf{Elimination:} Four filters applied in sequence collapse the space to a singleton.
 
-\textbf{Consequence:} The discrete curvature coupling $G_{\mathrm{FD}} = 1$ is forced by the same simplicial elimination that forces $c$ and $\hbar$. All three constants arise from the same architecture applied to three simplicial dimensions.
+\textbf{Consequence:} The forced vertex weight $\mathit{vertex\text{-}weight} = 1$ is forced by the same simplicial elimination that forces the edge and face weights. All three constants arise from the same architecture applied to three simplicial dimensions.
 
 %───────────────────────────────────────────────────────────────────────────
 \section{Curvature candidates}
@@ -24350,8 +24351,8 @@ curvature-forced C adm v =
 \end{code}
 
 %───────────────────────────────────────────────────────────────────────────
-\section{The discrete curvature coupling}
-\label{sec:forced-coupling:g-fd}
+\section{The forced vertex weight}
+\label{sec:forced-coupling:vertex-weight}
 %───────────────────────────────────────────────────────────────────────────
 
 The summary record packages existence, unconditional uniqueness, and the global value---exactly parallel to the propagation and action results.
@@ -24372,11 +24373,11 @@ theorem-forced-curvature = record
   ; unique       = curvature-forced
   }
 
-G-FD : ℕ
-G-FD = 1
+vertex-weight : ℕ
+vertex-weight = 1
 
-G-FD-forced : (C : CurvatureLaw) → AdmissibleCurvature C → C v₀ ≡ G-FD
-G-FD-forced C adm = curvature-ref-value C adm
+vertex-weight-forced : (C : CurvatureLaw) → AdmissibleCurvature C → C v₀ ≡ vertex-weight
+vertex-weight-forced C adm = curvature-ref-value C adm
 \end{code}
 
 %───────────────────────────────────────────────────────────────────────────
@@ -24600,19 +24601,19 @@ These witnesses prove that the admissibility basis is irreduzible: every primiti
 \label{ch:scale-closure}
 %═══════════════════════════════════════════════════════════════════════════
 
-With $c_{\mathrm{FD}} = 1$, $\hbar_{\mathrm{FD}} = 1$, and $G_{\mathrm{FD}} = 1$, no free scale parameter remains. Three independent dimensionful constants fill three independent dimensions (length, time, mass). The native FD unit system is therefore the natural unit system---not by postulate, but because the three forced constants leave no room for rescaling.
+With $\mathit{edge\text{-}weight} = 1$, $\mathit{face\text{-}weight} = 1$, and $\mathit{vertex\text{-}weight} = 1$, no free scale parameter remains. Three independent simplicial weights fill three independent dimensions (length, time, mass). The native FD unit system is therefore the natural unit system---not by postulate, but because the three forced weights leave no room for rescaling.
 
-\textbf{Constraint:} Each constant was derived by the same simplicial elimination applied to a different dimension of the $K_4$ complex:
+\textbf{Constraint:} Each weight was derived by the same simplicial elimination applied to a different dimension of the $K_4$ complex:
 \[
 \begin{array}{cccc}
-\text{dim}\;1 & \text{(edges, 6)}   & c\;\text{from propagation}    & \text{sandwich on } K_4\text{Vertex} \to K_4\text{Vertex} \to \mathbb{N} \\
-\text{dim}\;2 & \text{(faces, 4)}   & \hbar\;\text{from action}     & \text{sandwich on } K_4\text{Triangle} \to \mathbb{N} \\
-\text{dim}\;0 & \text{(vertices, 4)} & G\;\text{from curvature}     & \text{sandwich on } K_4\text{Vertex} \to \mathbb{N}
+\text{dim}\;1 & \text{(edges, 6)}   & \mathit{edge\text{-}weight}\;\text{from propagation}    & \text{sandwich on } K_4\text{Vertex} \to K_4\text{Vertex} \to \mathbb{N} \\
+\text{dim}\;2 & \text{(faces, 4)}   & \mathit{face\text{-}weight}\;\text{from action}     & \text{sandwich on } K_4\text{Triangle} \to \mathbb{N} \\
+\text{dim}\;0 & \text{(vertices, 4)} & \mathit{vertex\text{-}weight}\;\text{from curvature}     & \text{sandwich on } K_4\text{Vertex} \to \mathbb{N}
 \end{array}
 \]
-No constant was inserted by hand. No constant was derived from another. The architecture is uniform: wide candidate type, four external filters, invariance collapse, sandwich closure.
+No weight was inserted by hand. No weight was derived from another. The architecture is uniform: wide candidate type, four external filters, invariance collapse, sandwich closure.
 
-\textbf{Construction:} With $\hbar = G = c = 1$, every fundamental ratio collapses to~$1$. No independent scale survives; length, time, and mass are forced to the native FD unit. Any deviation would contradict the three constants already eliminated above.
+\textbf{Construction:} With all three simplicial weights equal to~$1$, every fundamental ratio collapses to~$1$. No independent scale survives; length, time, and mass are forced to the native FD unit. Any deviation would contradict the three weights already eliminated above.
 
 \textbf{Consequence:} The natural scale is not an external anchor. It is the native scale of the FD system. One edge is the unit length; one step is the unit time.
 
@@ -24623,21 +24624,22 @@ No constant was inserted by hand. No constant was derived from another. The arch
 
 The standard natural units are:
 \[
-\ell = \sqrt{\frac{\hbar\, G}{c^3}}, \qquad
-t = \sqrt{\frac{\hbar\, G}{c^5}}, \qquad
-m = \sqrt{\frac{\hbar\, c}{G}}.
+\ell = \sqrt{\frac{w_2\, w_0}{w_1^3}}, \qquad
+t = \sqrt{\frac{w_2\, w_0}{w_1^5}}, \qquad
+m = \sqrt{\frac{w_2\, w_1}{w_0}},
 \]
-With $\hbar = G = c = 1$, every numerator and denominator is~$1$, so $\ell = t = m = 1$ in FD units.
+where $w_1$, $w_2$, $w_0$ denote the forced edge, face, and vertex weights respectively.
+With all three weights equal to~$1$, every numerator and denominator is~$1$, so $\ell = t = m = 1$ in FD units.
 
 \begin{code}
 unit-length-FD : ℕ
-unit-length-FD = (hbar-FD * G-FD) * 1
+unit-length-FD = (face-weight * vertex-weight) * 1
 
 unit-time-FD : ℕ
-unit-time-FD = (hbar-FD * G-FD) * 1
+unit-time-FD = (face-weight * vertex-weight) * 1
 
 unit-mass-FD : ℕ
-unit-mass-FD = (hbar-FD * c-FD) * 1
+unit-mass-FD = (face-weight * edge-weight) * 1
 
 unit-length-is-1 : unit-length-FD ≡ 1
 unit-length-is-1 = refl
@@ -24659,18 +24661,18 @@ The closure record packages the three forced constants and the three natural uni
 \begin{code}
 record ScaleClosure : Set where
   field
-    c-forced    : c-FD ≡ 1
-    hbar-forced : hbar-FD ≡ 1
-    G-forced    : G-FD ≡ 1
+    edge-forced    : edge-weight ≡ 1
+    face-forced : face-weight ≡ 1
+    vertex-forced    : vertex-weight ≡ 1
     length-1    : unit-length-FD ≡ 1
     time-1      : unit-time-FD ≡ 1
     mass-1      : unit-mass-FD ≡ 1
 
 theorem-scale-closure : ScaleClosure
 theorem-scale-closure = record
-  { c-forced    = refl
-  ; hbar-forced = refl
-  ; G-forced    = refl
+  { edge-forced    = refl
+  ; face-forced = refl
+  ; vertex-forced    = refl
   ; length-1    = refl
   ; time-1      = refl
   ; mass-1      = refl
@@ -24681,8 +24683,6 @@ theorem-scale-closure = record
 \section{No free scale}
 \label{sec:scale-closure:no-free-scale}
 %───────────────────────────────────────────────────────────────────────────
-
-Three independent constants saturate three independent dimensions. No free parameter survives.
 
 \begin{code}
 independent-constants : ℕ
@@ -24703,7 +24703,7 @@ no-free-scale = refl
 \label{sec:scale-closure:normalized-scale-elimination}
 %───────────────────────────────────────────────────────────────────────────
 
-The closure claim can be sharpened one step further. Work entirely in normalized units, where the three continuum constants are already written as $c = \hbar = G = 1$. A scale choice is then just a triple $(a,b,m)$ of natural-number unit assignments for length, time, and mass. The bridge equations become
+The closure claim can be sharpened one step further. Work entirely in normalized units, where the three simplicial weights are already written as $w_1 = w_2 = w_0 = 1$. A scale choice is then just a triple $(a,b,m)$ of natural-number unit assignments for length, time, and mass. The bridge equations become
 \[
 b = a,
 \qquad
@@ -24723,9 +24723,9 @@ record NormalizedScaleChoice : Set where
     time-step      : ℕ
     mass-step      : ℕ
     length-nonzero : IsScaleNonZero length-step
-    c-lock         : time-step ≡ length-step
-    hbar-lock      : time-step ≡ (mass-step *ℕ length-step) *ℕ length-step
-    G-lock         : (mass-step *ℕ time-step) *ℕ time-step ≡
+    edge-lock         : time-step ≡ length-step
+    face-lock      : time-step ≡ (mass-step *ℕ length-step) *ℕ length-step
+    vertex-lock         : (mass-step *ℕ time-step) *ℕ time-step ≡
                      (length-step *ℕ length-step) *ℕ length-step
 \end{code}
 
@@ -24814,9 +24814,9 @@ normalized-length-is-1 S
      | NormalizedScaleChoice.time-step S
      | NormalizedScaleChoice.mass-step S
      | NormalizedScaleChoice.length-nonzero S
-     | NormalizedScaleChoice.c-lock S
-     | NormalizedScaleChoice.hbar-lock S
-     | NormalizedScaleChoice.G-lock S
+     | NormalizedScaleChoice.edge-lock S
+     | NormalizedScaleChoice.face-lock S
+     | NormalizedScaleChoice.vertex-lock S
 ... | zero          | _ | _ | nz | _  | _  | _  = ⊥-elim (nz refl)
 ... | suc zero      | _ | _ | _  | _  | _  | _  = refl
 ... | suc (suc n)   | b | m | _  | cl | hl | gl =
@@ -24833,7 +24833,7 @@ normalized-length-is-1 S
   ⊥-elim (cubeNotSelf n cubeEq)
 
 normalized-time-is-1 : (S : NormalizedScaleChoice) → NormalizedScaleChoice.time-step S ≡ 1
-normalized-time-is-1 S = trans (NormalizedScaleChoice.c-lock S) (normalized-length-is-1 S)
+normalized-time-is-1 S = trans (NormalizedScaleChoice.edge-lock S) (normalized-length-is-1 S)
 
 normalized-mass-is-1 : (S : NormalizedScaleChoice) → NormalizedScaleChoice.mass-step S ≡ 1
 normalized-mass-is-1 S =
@@ -24843,7 +24843,7 @@ normalized-mass-is-1 S =
       (cong (λ t → (NormalizedScaleChoice.mass-step S *ℕ t) *ℕ t)
             (sym (normalized-length-is-1 S)))
       (trans
-        (sym (NormalizedScaleChoice.hbar-lock S))
+        (sym (NormalizedScaleChoice.face-lock S))
         (normalized-time-is-1 S)))
 
 normalized-scale-witness : NormalizedScaleChoice
@@ -24852,13 +24852,13 @@ normalized-scale-witness = record
   ; time-step      = 1
   ; mass-step      = 1
   ; length-nonzero = λ ()
-  ; c-lock         = refl
-  ; hbar-lock      = refl
-  ; G-lock         = refl
+  ; edge-lock         = refl
+  ; face-lock      = refl
+  ; vertex-lock         = refl
   }
 \end{code}
 
-This is the normalized form of the unit-system claim. The only admissible positive scale triple in the $c = \hbar = G = 1$ regime is the unit triple. Any external calibration---choosing to report the same quantities in metres, seconds, and kilograms---amounts to a conventional relabeling of this already-forced unit system. The eliminative content is fully expressed; notation is convention.
+This is the normalized form of the unit-system claim. The only admissible positive scale triple in the $w_1 = w_2 = w_0 = 1$ regime is the unit triple. Any external calibration---choosing to report the same quantities in metres, seconds, and kilograms---amounts to a conventional relabeling of this already-forced unit system. The eliminative content is fully expressed; notation is convention.
 
 %───────────────────────────────────────────────────────────────────────────
 \section{Distinction as measurement kernel}
@@ -24902,7 +24902,7 @@ measurement-has-distinct-outcomes M =
 
 These lemmas do not yet say that every formal system collapses all the way to $K_4$. They prove a narrower and cleaner threshold statement: every theory that claims to measure anything must already carry a distinction kernel in its outcome space. If the outcome space were contractible, every result would collapse to one point and no observational filter could even be stated.
 
-This is the second independent route to $D_0$. The first—\texttt{Two-distinction} in Chapter~\ref{ch:two-normal-form}—constructs a distinction from pure type theory with no assumptions. Here the route runs through measurement: any apparatus that separates yes from no already presupposes the distinction it purports to discover. The two routes are logically independent; neither imports the other. Their convergence is not a convenience—it is structural evidence that distinction sits at the root of both the formal and the empirical hierarchies.
+This is the second independent route to $D_0$. The first—\texttt{Two-distinction} in Chapter~\ref{ch:two-normal-form}—constructs a distinction from pure type theory with no assumptions. Here the route runs through measurement: any apparatus that separates yes from no already presupposes the distinction it purports to discover. The two routes share no lemma and no definition.
 
 This is the correct red line. The label $D_0$ denotes the fully formalized package that begins from distinction and carries it through elimination. Rival frameworks may refuse that name. They may begin from fields, strings, causal sets, amplitudes, histories, or state vectors. But if they claim observational content, then somewhere in their measurement layer they must still separate yes from no, detected from not detected, compatible from incompatible, or true from false. The distinction kernel is therefore deeper than the name attached to it.
 
@@ -24912,7 +24912,7 @@ The continuum passage assumes only what these lemmas force: that measurement alr
 
 The carrier admits exactly two classes. Those two classes force the unique $K_4$ graph. The graph carries a rigid invariant ledger; the observable principle rules out every quantity dependent on presentation; and the unit system is locked to $(a,b,m) = (1,1,1)$.
 
-What survives this pressure is a sealed discrete record: $V = 4$, $E = 6$, $d = 3$, $\chi = 2$, $\kappa = 8$, the Clifford count $16$, the compactification stratum $17$, and the rigid coupling invariant $\mathcal{C} = 137$. Nothing in this ledger has been fitted. Every entry is already the survivor of an elimination chain.
+What survives this pressure is a sealed discrete record: $V = 4$, $E = 6$, $d = 3$, $\chi = 2$, $\kappa = 8$, the Clifford count $16$, the compactification stratum $17$, and the rigid graph evaluation $\mathcal{C} = 137$. Nothing in this ledger has been fitted. Every entry is already the survivor of an elimination chain.
 
 This is the last point at which the work is purely discrete. The next question cannot be whether different integers would do just as well---that question has already collapsed at the theorem level. The only live question is harsher: are the rational corrections to the integer invariants themselves forced quotients of the same graph, or are they independent values introduced by hand?
 
@@ -24920,16 +24920,16 @@ This is the last point at which the work is purely discrete. The next question c
 
 \textbf{Construction:} The preceding parts eliminate every negotiable invariant and every negotiable observable criterion. What survives is exactly two ingredients: the invariant ledger of $K_4$, and the admissibility criterion for observables on that ledger.
 
-\textbf{Consequence:} The sealed discrete record admits no further combinatorial freedom. Every rational correction derivable from this record belongs to the companion module and is carried out in the companion module \texttt{Physics.agda}.
+\textbf{Consequence:} The sealed discrete record admits no further combinatorial freedom. Every rational correction derivable from this record belongs to the companion volume and is carried out in the companion volume \textit{Form}.
 
 %───────────────────────────────────────────────────────────────────────────
 \section{The Record Presupposes Distinction}
-\label{sec:discrete-continuum:physics-presupposes-distinction}
+\label{sec:discrete-continuum:record-presupposes-distinction}
 %───────────────────────────────────────────────────────────────────────────
 
 The directional asymmetry of the chain is irreversible. A reversal would claim that the invariant record is the deeper object and $K_4$ only one successful encoding of it. That escape collapses at the type level.
 
-One clarification must precede the argument. \texttt{K4Record} is not a downstream theory. It carries no dynamics, no measurement algebra, no spacetime manifold. It is the invariant skeleton: the set of structural constants---dimension, degree, Euler characteristic, coupling inverse, generation count---that survive the elimination chain. Dynamics, observables, and geometry are downstream obligations that live in the gap between the skeleton and any full model. The equivalence proved below therefore says that this skeleton and the primordial cut determine each other, not that distinction replaces or generates downstream structure in any operational sense.
+One clarification must precede the argument. \texttt{K4Record} is not a downstream theory. It carries no dynamics, no measurement algebra, no spacetime manifold. It is the invariant skeleton: the set of structural constants---dimension, degree, Euler characteristic, graph evaluation, codimension count---that survive the elimination chain. Dynamics, observables, and geometry are downstream obligations that live in the gap between the skeleton and any full model. The equivalence proved below therefore says that this skeleton and the primordial cut determine each other, not that distinction replaces or generates downstream structure in any operational sense.
 
 An invariant record is not a free-standing bag of numbers. It is threaded together by identity witnesses: the anchor tying dimension to $K_4$, the chain laws transporting that anchor through every other field, and the closure proofs showing that rival admissible records collapse to the same object. If identity is removed, these fields are not weakened. They become uninhabitable. The record therefore does not generate distinction. It consumes the logical infrastructure distinction has already forced.
 
@@ -24941,24 +24941,24 @@ An invariant record is not a free-standing bag of numbers. It is threaded togeth
 
 This does not close the book by withdrawing from structure into logic. It closes the directional ambiguity that would otherwise remain at the threshold. The route from distinction to $K_4$ to the invariant record is fixed in one direction only. The outward question this fixed direction leaves behind is what follows once the record has been shown to depend on distinction rather than ground it.
 
-\phantomsection\label{law:discrete-continuum:physics-presupposes-distinction}
-\phantomsection\label{law:discrete-continuum:physics-without-distinction-uninhabitable}
+\phantomsection\label{law:discrete-continuum:record-presupposes-distinction}
+\phantomsection\label{law:discrete-continuum:record-without-distinction-uninhabitable}
 
 \begin{code}
 -- § Any admissible K₄ invariant record already consumes distinction.
-physics-presupposes-distinction : (p : K4Record) → Distinction
-physics-presupposes-distinction p with K4Record.anchor p
+record-presupposes-distinction : (p : K4Record) → Distinction
+record-presupposes-distinction p with K4Record.anchor p
 ... | refl = Two-distinction
 
 -- § Denying distinction makes the invariant record uninhabitable.
-physics-without-distinction-uninhabitable : ¬ Distinction → K4Record → ⊥
-physics-without-distinction-uninhabitable noDistinction p with K4Record.anchor p
+record-without-distinction-uninhabitable : ¬ Distinction → K4Record → ⊥
+record-without-distinction-uninhabitable noDistinction p with K4Record.anchor p
 ... | refl = noDistinction Two-distinction
 
 -- § Every invariant record therefore implies the irrefutability of distinction.
-physics-presupposes-distinction-irrefutable : (p : K4Record) → ¬¬ Distinction
-physics-presupposes-distinction-irrefutable p noDistinction =
-  physics-without-distinction-uninhabitable noDistinction p
+record-presupposes-distinction-irrefutable : (p : K4Record) → ¬¬ Distinction
+record-presupposes-distinction-irrefutable p noDistinction =
+  record-without-distinction-uninhabitable noDistinction p
 
 -- § The chain closes: distinction alone produces an admissible invariant record.
 K4-is-inevitable : Distinction → K4Record
@@ -24966,7 +24966,7 @@ K4-is-inevitable _ = canonical-rep
 \end{code}
 
 The loop now has both directions as checked terms.
-\texttt{physics-presupposes-distinction} extracts a distinction from every
+\texttt{record-presupposes-distinction} extracts a distinction from every
 admissible record; \texttt{K4-is-inevitable} constructs the unique
 admissible record from any distinction witness. Together they establish
 the logical equivalence
@@ -24982,25 +24982,34 @@ information: each reconstructs the other with no leftover freedom.
 \chapter{Conclusion}
 \label{ch:conclusion}
 
-The chain is closed in the only direction that survives scrutiny. Distinction forces the two-class carrier; the carrier forces $K_4$; $K_4$ forces the invariant ledger; and the admissible invariant record is shown, in the end, to presuppose the very distinction from which the chain began.
+A specific object survived. Not a class, not an equivalence type in the informal sense---a named, rigid, arithmetically self-sufficient object: the complete graph $K_4$, four vertices, six edges. Its automorphism group fixed the invariant record, which is now proved to be a singleton. The void, examined, forced a shape.
 
-The existence of $D_0$ itself---the claim that \texttt{Distinction} is inhabited---has been established by three independent routes, each eliminating a different escape. First, \texttt{Two-distinction} (Chapter~\ref{ch:two-normal-form}) constructs a witness from pure type theory, with no assumptions whatsoever. Second, \texttt{measurement-outcome-distinction} (Chapter~\ref{ch:scale-closure}) extracts a distinction from any binary measurement apparatus: the yes/no separation that measurement presupposes is already one. Third, \texttt{physics-presupposes-distinction} closes the loop from the other end: every admissible $K_4$ invariant record already consumes the distinction it claims to ground. No single route can be dismissed without abandoning a different foundational commitment---constructive logic, empirical content, or structural admissibility, respectively.
+The existence of $D_0$---the claim that \texttt{Distinction} is inhabited---was established by three independent routes, each eliminating a different escape. First, \texttt{Two-distinction} (Chapter~\ref{ch:two-normal-form}) constructs a witness from pure type theory, with no assumptions whatsoever. Second, \texttt{measurement-outcome-distinction} (Chapter~\ref{ch:scale-closure}) extracts a distinction from any binary measurement apparatus: the yes/no separation that measurement presupposes is already one. Third, \texttt{record-presupposes-distinction} closes the loop from the other end: every admissible $K_4$ invariant record already consumes the distinction it claims to ground. No single route can be dismissed without abandoning a different foundational commitment---constructive logic, empirical content, or structural admissibility, respectively.
 
-Through the entire chain, the method stayed the same. Not invention, but elimination. Not ornament, but survival. Equality had to survive. Negation had to survive. Classification had to survive. Reachability, presentation, fixpoint, graph, arithmetic, spectrum, observable: each was admitted only where contradiction failed to destroy it.
+The method held through the entire chain. Every chapter was a verdict: what cannot survive its own requirements, falls. What remains is not what was assembled---it is what could not be dismantled. What could not be dismantled turned out to be specific: a regularity degree of three, an Euler characteristic of two, a spectrum locked to $\{0,4,4,4\}$, an arithmetic that is a theorem of the graph rather than a pre-existing foundation, and an invariant record admitted by no rival. The arithmetic used to evaluate the graph's invariants is itself a consequence of the graph's structure, not an import. No comparable formal derivation exists in the literature---not because the question is new, but because the filter is strict.
 
-What survived was small. A distinction. Two sides. Four cases. One graph. A narrow arithmetic. A rigid spectrum. A short list of invariants. That is why the result is unsettling. It does not arrive as a grand architecture chosen for elegance. It arrives as residue.
+What survived was small. A distinction. Two sides. Four cases. One graph. A narrow arithmetic. A rigid spectrum. A short list of invariants sealed into a singleton record. That is why the result is unsettling. It does not arrive as a grand architecture chosen for elegance. It arrives as residue---and the residue is specific, unique, and arithmetically self-sufficient.
 
-The formal chain is closed, but closure is not the same as exhaustion. Three obligations survive the proof and none of them reopens the chain from distinction to $K_4$ to the invariant record. They begin only after that chain has been forced.
+Whether the surviving invariants match measured structure, whether the automorphism group admits a sharper algebraic characterization, and what kind of necessity has been exposed here---these questions do not reopen the derivation. They begin where the derivation ends.
 
-The first obligation is empirical comparison: whether the surviving invariants match measured structure, and if so, whether any equally rigid route reaches the same constants without concealed freedom. That comparison belongs to the companion module \texttt{Physics.agda}, which identifies the forced invariants with measured quantities and derives the rational corrections. The formal chain does not depend on that identification; the identification depends on the formal chain.
-
-The second obligation is mathematical sharpening: whether the survivor can be recast in a form still more inevitable than exhaustive classification. The endomorphism representability theorem already provides one such restatement; whether topos-theoretic, sheaf-theoretic, or operadic methods yield a sharper characterization remains open.
-
-The third obligation is interpretive: what kind of necessity has been exposed if a structure forced by elimination reaches so far into stable form. That question is not a repair to a broken argument. It is the proper debt of one that has reached its limit without collapsing.
-
-The proof ends where comparison, sharpening, and interpretation begin. The code stops here. The investigation does not.
+The code stops here. The investigation does not.
 
 \textit{Quod erat demonstrandum.}
+
+%─────────────────────────────────────────────────────────────────────────────
+\chapter*{Outlook}
+\addcontentsline{toc}{chapter}{Outlook}
+%─────────────────────────────────────────────────────────────────────────────
+
+This work answered one question. When the filter is applied without exception---when every structure that cannot survive its own requirements is annihilated---what remains? The answer was $K_4$: rigid, named, arithmetically self-sufficient, unique. The void, examined, forces a specific shape. That shape is not a model of anything. It is the minimum structure any consistent formal system already contains, whether or not it acknowledges it.
+
+But survival is not the only question the void forces. A second question waits at the boundary. $K_4$ is where necessity ends and genesis begins. The same primordial cut $D_0$ that elimination could not dissolve is also the first act---and from a first act, something can follow. The question shifts: not \textit{what cannot be removed?} but \textit{what can arise?}
+
+The companion volume \textit{Form} turns the chain around. Where \textit{Void} filtered, \textit{Form} constructs. Starting from the same mark $D_0$, treated not as a minimal type but as an inhabited cut, \textit{Form} builds upward: the binary tree, the natural numbers, the hierarchy of extensions, until the complete graph appears not as the last survivor of destruction but as the first inevitable structure the mark itself generates. The two volumes share no lemmas. Their conclusions meet.
+
+What bounds the answer is not freedom but the orbit structure of $\mathrm{Aut}(K_4) \cong S_4$: only structures invariant under the automorphism group are admissible emergents. The space of what can arise is therefore not open---it is contoured by the same symmetry that determined which quantities survived the filter. How far that contour extends, and whether it admits structures that circle back to $D_0$ at a higher level, is the genuinely open question.
+
+Nothing in that question is answered here. The void is not empty. It is not full. It is the specific shape of what cannot be absent---and from that shape, something, not everything, can arise.
 
 \end{document}
 

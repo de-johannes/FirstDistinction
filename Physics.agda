@@ -18,7 +18,8 @@
 module Physics where
 
 open import Agda.Primitive using (Setω)
-open import Void   -- § Void.lagda.tex: the full elimination result
+-- § Void.lagda.tex: the full elimination result is imported here, including all survivors and theorems about them.
+open import Void
 
 -- §══════════════════════════════════════════════════════════════════════════
 -- § Convenience aliases — short numerical names used throughout
