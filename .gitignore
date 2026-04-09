@@ -1,9 +1,6 @@
 # macOS
 .DS_Store
 
-# Agda compiled interfaces
-*.agdai
-
 # Agda Haskell backend artifacts
 MAlonzo/
 
@@ -15,6 +12,7 @@ MAlonzo/
 *.synctex.gz
 *.fls
 *.fdb_latexmk
+*.ptb
 
 # Editor
 .vscode/*.log
