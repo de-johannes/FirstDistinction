@@ -9,10 +9,10 @@ MAlonzo/
 *.log
 *.out
 *.toc
-*.synctex.gz
-*.fls
-*.fdb_latexmk
 *.ptb
 
 # Editor
 .vscode/*.log
+
+
+.github/copilot-instructions.md
